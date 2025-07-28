@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>產品安規認證需求分析工具 (v2.3)</title>
+    <title>產品安規認證需求分析工具 (v2.4)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -47,14 +47,12 @@
     </button>
     
     <div class="flex items-center justify-center min-h-screen p-4">
-        <!-- **** 主要修正 **** -->
-        <!-- 移除了 overflow-hidden 以允許 sticky header 正常運作 -->
         <div class="w-full max-w-4xl bg-white rounded-2xl shadow-xl">
             
             <!-- Sticky Header -->
             <header id="main-header" class="sticky top-0 z-20 bg-white/80 backdrop-blur-sm p-6 sm:p-8 shadow-sm">
                 <div class="text-center">
-                    <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">產品安規認證需求分析工具 v2.3</h1>
+                    <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">產品安規認證需求分析工具 v2.4</h1>
                     <p class="mt-2 text-slate-500">整合 BSMI 最新公告，快速釐清您的產品檢驗要求。</p>
                 </div>
             </header>
@@ -156,7 +154,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             // --- 資料庫 (整合兩份公告) ---
             const regulations = {
-                // ... (資料庫內容與 v2.1 相同，此處省略以節省篇幅) ...
                 'electricFan': { name: '電風扇', group: '經標三字第11030003190號 (112年1月1日強制實施)', cccCode: '8414.51.00.00.2A, 8414.59.10.00.2, 8414.59.90.00.5A', baseStandards: ["CNS 60335-1 (103年版)", "CNS 60335-2-80 (104年版)", "CNS 13783-1 (102年版)", "CNS 15663 第5節「含有標示」(102年版)"] },
                 'vacuumCleaner': { name: '真空吸塵器及吸水清潔機', group: '經標三字第11030003190號 (112年1月1日強制實施)', cccCode: '8508.11.00.00.8, 8508.19.00.00.0, 8508.60.00.00.8', baseStandards: ["CNS 60335-1 (103年版)", "CNS 60335-2-2 (104年版)", "CNS 13783-1 (102年版)", "CNS 15663 第5節「含有標示」(102年版)"] },
                 'foodGrinder': { name: '電動食品碾磨器', group: '經標三字第11030003190號 (112年1月1日強制實施)', cccCode: '8509.40.00.00.2A, 8509.80.90.00.4G, 8516.79.00.00.7Y', baseStandards: ["CNS 60335-1 (103年版)", "CNS 60335-2-14 (104年版)", "CNS 13783-1 (102年版)", "CNS 15663 第5節「含有標示」(102年版)"] },
@@ -243,7 +240,9 @@
             document.querySelectorAll('input[name="power-source"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
                     const value = e.target.value;
-                    const showAdapter = value.includes('adapter');
+                    // **** 邏輯修正 ****
+                    // 修正判斷條件，避免 'usb-no-adapter' 觸發 adapter 區塊
+                    const showAdapter = value === 'ac-adapter' || value === 'rechargeable-and-adapter';
                     const showBattery = value.includes('rechargeable');
                     
                     adapterStep.classList.toggle('hidden', !showAdapter);
@@ -281,7 +280,7 @@
                     resultHTML += createCard('notes', '特定產品額外要求', productData.specificNotes);
                 }
 
-                if (powerValue.includes('adapter')) {
+                if (powerValue === 'ac-adapter' || powerValue === 'rechargeable-and-adapter') {
                     const selectedAdapterCb = document.querySelector('input[name="adapter-cb"]:checked');
                     if (!selectedAdapterCb) {
                          resultsDiv.innerHTML = createCard('warning', '分析中斷', ['您選擇了包含電源轉接器的選項，請完成步驟 3a 的選擇。']);
