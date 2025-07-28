@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>產品安規認證需求分析工具 (v2.3)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+        }
+        .custom-radio:checked {
+            background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+            border-color: #3b82f6;
+            background-color: #3b82f6;
+        }
+        .result-card, .info-card, .warning-card, .exempt-card, .notes-card {
+            transition: all 0.3s ease-in-out;
+            border-radius: 0 0.5rem 0.5rem 0;
+            margin-bottom: 1.5rem;
+        }
+        .info-card { border-left: 4px solid #3b82f6; background-color: #eff6ff; }
+        .info-card h3 { color: #1e3a8a; }
+        .warning-card { border-left: 4px solid #f97316; background-color: #fff7ed; }
+        .warning-card h3 { color: #9a3412; }
+        .exempt-card { border-left: 4px solid #16a34a; background-color: #f0fdf4; }
+        .exempt-card h3 { color: #14532d; }
+        .notes-card { border-left: 4px solid #6b7280; background-color: #f9fafb; }
+        .notes-card h3 { color: #1f2937; }
+        .list-disc li::marker { color: #3b82f6; }
+        optgroup { font-weight: bold; background-color: #f3f4f6; padding: 4px; }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800">
+
+    <!-- Floating Reset Button -->
+    <button id="reset-btn" title="重置表單" class="fixed bottom-6 right-6 z-30 bg-white text-slate-600 w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-slate-200 hover:rotate-90 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-300">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h5M20 20v-5h-5M4 4l1.5 1.5A9 9 0 0121.5 10.5M20 20l-1.5-1.5A9 9 0 002.5 13.5" />
+        </svg>
+    </button>
+    
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <!-- **** 主要修正 **** -->
+        <!-- 移除了 overflow-hidden 以允許 sticky header 正常運作 -->
+        <div class="w-full max-w-4xl bg-white rounded-2xl shadow-xl">
+            
+            <!-- Sticky Header -->
+            <header id="main-header" class="sticky top-0 z-20 bg-white/80 backdrop-blur-sm p-6 sm:p-8 shadow-sm">
+                <div class="text-center">
+                    <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">產品安規認證需求分析工具 v2.3</h1>
+                    <p class="mt-2 text-slate-500">整合 BSMI 最新公告，快速釐清您的產品檢驗要求。</p>
+                </div>
+            </header>
+
+            <main class="p-6 sm:p-8">
+                <!-- Step 1: Product Selection -->
+                <div id="step1" class="mb-6">
+                    <label for="product-select" class="block text-lg font-semibold mb-3 text-slate-700">1. 請選擇您的產品類型</label>
+                    <select id="product-select" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                        <option value="">-- 請選擇 --</option>
+                    </select>
+                </div>
+
+                <!-- Step 2: Power Source Selection -->
+                <div id="step2" class="mb-6 hidden">
+                    <fieldset>
+                        <legend class="block text-lg font-semibold mb-3 text-slate-700">2. 請選擇您產品的供電方式</legend>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <label class="flex items-center p-4 border border-slate-200 rounded-lg hover:bg-slate-100 cursor-pointer transition">
+                                <input type="radio" name="power-source" value="primary-battery" class="h-5 w-5 mr-4 custom-radio appearance-none rounded-full border-2 border-slate-300 focus:ring-2 focus:ring-offset-2 focus:ring-blue-400">
+                                <span>僅使用一次性(不可充電)電池</span>
+                            </label>
+                            <label class="flex items-center p-4 border border-slate-200 rounded-lg hover:bg-slate-100 cursor-pointer transition">
+                                <input type="radio" name="power-source" value="usb-no-adapter" class="h-5 w-5 mr-4 custom-radio appearance-none rounded-full border-2 border-slate-300 focus:ring-2 focus:ring-offset-2 focus:ring-blue-400">
+                                <span>USB供電 (DC 5V)，且<strong class="mx-1">未附</strong>電源轉接器</span>
+                            </label>
+                             <label class="flex items-center p-4 border border-slate-200 rounded-lg hover:bg-slate-100 cursor-pointer transition">
+                                <input type="radio" name="power-source" value="car-power" class="h-5 w-5 mr-4 custom-radio appearance-none rounded-full border-2 border-slate-300 focus:ring-2 focus:ring-offset-2 focus:ring-blue-400">
+                                <span>僅使用汽車點菸器電源</span>
+                            </label>
+                            <label class="flex items-center p-4 border border-slate-200 rounded-lg hover:bg-slate-100 cursor-pointer transition">
+                                <input type="radio" name="power-source" value="ac-adapter" class="h-5 w-5 mr-4 custom-radio appearance-none rounded-full border-2 border-slate-300 focus:ring-2 focus:ring-offset-2 focus:ring-blue-400">
+                                <span>使用電源轉接器 (Adapter)</span>
+                            </label>
+                            <label class="flex items-center p-4 border border-slate-200 rounded-lg hover:bg-slate-100 cursor-pointer transition">
+                                <input type="radio" name="power-source" value="rechargeable-only" class="h-5 w-5 mr-4 custom-radio appearance-none rounded-full border-2 border-slate-300 focus:ring-2 focus:ring-offset-2 focus:ring-blue-400">
+                                <span><strong class="mr-1">僅</strong>使用二次(可充電)鋰電池</span>
+                            </label>
+                            <label class="flex items-center p-4 border border-slate-200 rounded-lg hover:bg-slate-100 cursor-pointer transition">
+                                <input type="radio" name="power-source" value="rechargeable-and-adapter" class="h-5 w-5 mr-4 custom-radio appearance-none rounded-full border-2 border-slate-300 focus:ring-2 focus:ring-offset-2 focus:ring-blue-400">
+                                <span>使用二次鋰電池 + 電源轉接器</span>
+                            </label>
+                        </div>
+                    </fieldset>
+                </div>
+                
+                <!-- Step 3: Adapter/Battery Choices (Dynamically shown) -->
+                <div id="step3-choices" class="space-y-8">
+                    <div id="step3-adapter" class="hidden">
+                         <fieldset>
+                            <legend class="block text-lg font-semibold mb-3 text-slate-700">3a. 關於您的電源轉接器 (Adapter)，請選擇處理方式</legend>
+                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <label class="flex items-center p-4 border border-slate-200 rounded-lg hover:bg-slate-100 cursor-pointer transition">
+                                    <input type="radio" name="adapter-cb" value="has-cb" class="h-5 w-5 mr-4 custom-radio appearance-none rounded-full border-2 border-slate-300 focus:ring-2 focus:ring-offset-2 focus:ring-blue-400">
+                                    <span>提供有效的 CB 報告+證書</span>
+                                </label>
+                                <label class="flex items-center p-4 border border-slate-200 rounded-lg hover:bg-slate-100 cursor-pointer transition">
+                                    <input type="radio" name="adapter-cb" value="test-with-product" class="h-5 w-5 mr-4 custom-radio appearance-none rounded-full border-2 border-slate-300 focus:ring-2 focus:ring-offset-2 focus:ring-blue-400">
+                                    <span>隨產品測試 (增加費用)</span>
+                                </label>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div id="step3-battery" class="hidden">
+                         <fieldset>
+                            <legend class="block text-lg font-semibold mb-3 text-slate-700">3b. 關於您的二次鋰電池，其 CB 認證狀況？</legend>
+                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <label class="flex items-center p-4 border border-slate-200 rounded-lg hover:bg-slate-100 cursor-pointer transition">
+                                    <input type="radio" name="battery-cb" value="pack-ok" class="h-5 w-5 mr-4 custom-radio appearance-none rounded-full border-2 border-slate-300 focus:ring-2 focus:ring-offset-2 focus:ring-blue-400">
+                                    <span>整個<strong class="mx-1">電池組 (Pack)</strong>具備 CB</span>
+                                </label>
+                                <label class="flex items-center p-4 border border-slate-200 rounded-lg hover:bg-slate-100 cursor-pointer transition">
+                                    <input type="radio" name="battery-cb" value="cell-only" class="h-5 w-5 mr-4 custom-radio appearance-none rounded-full border-2 border-slate-300 focus:ring-2 focus:ring-offset-2 focus:ring-blue-400">
+                                    <span>僅內部的<strong class="mx-1">電芯 (Cell)</strong>具備 CB</span>
+                                </label>
+                                <label class="flex items-center p-4 border border-slate-200 rounded-lg hover:bg-slate-100 cursor-pointer transition">
+                                    <input type="radio" name="battery-cb" value="none" class="h-5 w-5 mr-4 custom-radio appearance-none rounded-full border-2 border-slate-300 focus:ring-2 focus:ring-offset-2 focus:ring-blue-400">
+                                    <span>電池組與電芯<strong class="mx-1">均無</strong> CB</span>
+                                </label>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+
+                <!-- Analysis Button -->
+                <div class="text-center mt-8">
+                    <button id="analyze-btn" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 transition-transform transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300 disabled:bg-slate-400 disabled:cursor-not-allowed disabled:transform-none" disabled>
+                        分析認證需求
+                    </button>
+                </div>
+
+                <!-- Results Section -->
+                <div id="results" class="mt-10"></div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- 資料庫 (整合兩份公告) ---
+            const regulations = {
+                // ... (資料庫內容與 v2.1 相同，此處省略以節省篇幅) ...
+                'electricFan': { name: '電風扇', group: '經標三字第11030003190號 (112年1月1日強制實施)', cccCode: '8414.51.00.00.2A, 8414.59.10.00.2, 8414.59.90.00.5A', baseStandards: ["CNS 60335-1 (103年版)", "CNS 60335-2-80 (104年版)", "CNS 13783-1 (102年版)", "CNS 15663 第5節「含有標示」(102年版)"] },
+                'vacuumCleaner': { name: '真空吸塵器及吸水清潔機', group: '經標三字第11030003190號 (112年1月1日強制實施)', cccCode: '8508.11.00.00.8, 8508.19.00.00.0, 8508.60.00.00.8', baseStandards: ["CNS 60335-1 (103年版)", "CNS 60335-2-2 (104年版)", "CNS 13783-1 (102年版)", "CNS 15663 第5節「含有標示」(102年版)"] },
+                'foodGrinder': { name: '電動食品碾磨器', group: '經標三字第11030003190號 (112年1月1日強制實施)', cccCode: '8509.40.00.00.2A, 8509.80.90.00.4G, 8516.79.00.00.7Y', baseStandards: ["CNS 60335-1 (103年版)", "CNS 60335-2-14 (104年版)", "CNS 13783-1 (102年版)", "CNS 15663 第5節「含有標示」(102年版)"] },
+                'foodMixer': { name: '電動食品混合器', group: '經標三字第11030003190號 (112年1月1日強制實施)', cccCode: '8509.40.00.00.2B', baseStandards: ["CNS 60335-1 (103年版)", "CNS 60335-2-14 (104年版)", "CNS 13783-1 (102年版)", "CNS 15663 第5節「含有標示」(102年版)"] },
+                'juiceExtractor': { name: '電動榨汁機', group: '經標三字第11030003190號 (112年1月1日強制實施)', cccCode: '8509.40.00.00.2C', baseStandards: ["CNS 60335-1 (103年版)", "CNS 60335-2-14 (104年版)", "CNS 13783-1 (102年版)", "CNS 15663 第5節「含有標示」(102年版)"] },
+                'hairStyler': { name: '燙(整)髮機', group: '經標三字第11030003190號 (112年1月1日強制實施)', cccCode: '8516.32.00.00.3B', baseStandards: ["CNS 60335-1 (103年版)", "CNS 60335-2-23 (104年版)", "CNS 13783-1 (102年版)", "CNS 15663 第5節「含有標示」(102年版)"] },
+                'massager': { name: '電動按摩器具', group: '經標三字第11030003190號 (112年1月1日強制實施)', cccCode: '9019.10.19.00.8B, 9506.91.00.00.1B', baseStandards: ["CNS 60335-1 (103年版)", "CNS 60335-2-32 (104年版)", "CNS 13783-1 (102年版)", "CNS 15663 第5節「含有標示」(102年版)"] },
+                'insectKiller': { name: '電捕昆蟲器 (含捕蚊拍)', group: '經標檢政字第11430006390號 (115年7月1日強制實施)', cccCode: '8509.80.90.00.4A, 8543.70.99.90.6A', baseStandards: ["CNS 60335-1 (103年版)", "CNS 60335-2-59 (104年版)", "CNS 13783-1 (102年版)", "CNS 15663 第5節「含有標示」(102年版)"], specificNotes: [ "<strong>僅具手持式之捕蚊拍商品，額外要求：</strong>", "<strong>本體標示:</strong> 注意符號 (ISO 7000-0434A), 危險電壓符號 (IEC 60417-5036), 閱讀操作手冊符號 (ISO 7000-0790)。", "<strong>說明書警語:</strong> 切勿水洗、嚴禁在易燃氣體場所使用、通電時勿碰觸高壓電網、勿讓兒童使用、充電時勿按開關或觸摸網面、網面破損或變形時切勿使用。" ] },
+                'electricBlanket': { name: '電毯', group: '經標檢政字第11430006390號 (115年7月1日強制實施)', cccCode: '6301.10.00.00.2', baseStandards: ["CNS 60335-1 (103年版)", "CNS 60335-2-17 (104年版)", "CNS 13783-1 (102年版)", "CNS 15663 第5節「含有標示」(102年版)"] },
+                'personalWarmer': { name: '個人用之電保暖器具', group: '經標檢政字第11430006390號 (115年7月1日強制實施)', cccCode: '6307.90.90.90.1F, 8516.29.90.90.0B, 8516.79.00.00.7V, ...', baseStandards: ["CNS 60335-1 (103年版)", "CNS 60335-2-17 (104年版) 或 2-81 或 2-23", "CNS 13783-1 (102年版)", "CNS 15663 第5節「含有標示」(102年版)"] },
+                'heatingMattress': { name: '電熱褥', group: '經標檢政字第11430006390號 (115年7月1日強制實施)', cccCode: '9404.21.00.00.9A, 9404.29.00.10.9A, 9404.29.00.90.2A, ...', baseStandards: ["CNS 60335-1 (103年版)", "CNS 60335-2-17 (104年版) 或 2-81", "CNS 13783-1 (102年版)", "CNS 15663 第5節「含有標示」(102年版)"] },
+                'coffeeGrinder': { name: '磨咖啡豆機 (進料斗容量500公克以下)', group: '經標檢政字第11430006390號 (115年7月1日強制實施)', cccCode: '8509.40.00.00.2D', baseStandards: ["CNS 60335-1 (103年版)", "CNS 60335-2-14 (104年版)", "CNS 13783-1 (102年版)", "CNS 15663 第5節「含有標示」(102年版)"] },
+                'electricShaver': { name: '電動刮鬍刀', group: '經標檢政字第11430006390號 (115年7月1日強制實施)', cccCode: '8510.10.00.00.5', baseStandards: ["CNS 60335-1 (103年版)", "CNS 60335-2-8 (104年版)", "CNS 13783-1 (102年版)", "CNS 15663 第5節「含有標示」(102年版)"] },
+                'hairClipper': { name: '電剪髮器', group: '經標檢政字第11430006390號 (115年7月1日強制實施)', cccCode: '8510.20.00.00.3', baseStandards: ["CNS 60335-1 (103年版)", "CNS 60335-2-8 (104年版)", "CNS 13783-1 (102年版)", "CNS 15663 第5節「含有標示」(102年版)"] }
+            };
+            const commonReqs = {
+                adapter: { 'has-cb': { title: "電源轉接器 (Adapter) 要求 - 提供CB", requirements: [ "需提供有效的 <strong>CB 報告 + CB 證書</strong> (缺一不可)。", "檢驗依據標準須為 <strong>IEC 61558-2-16</strong>。", "注意：若提供 BSMI 證書，其檢驗標準也必須是 IEC 61558-2-16，否則無效。" ] }, 'test-with-product': { title: "電源轉接器 (Adapter) 要求 - 隨產品測試", requirements: [ "此選項代表放棄使用現有CB報告，將Adapter視為產品的一部份進行測試。", "測試標準將依據 <strong>IEC 61558-2-16</strong> 執行。", "此作法將<strong>顯著增加測試費用與時程</strong>，適用於無法取得合格CB報告的狀況。" ] } },
+                battery: { 'pack-ok': { title: "二次鋰電池要求 (電池組有CB)", requirements: ["主要目標：提供<strong>鋰電池組 (Battery Pack)</strong> 的 CB 報告 + CB 證書。", "檢驗依據標準須為 <strong>IEC 62133 (2017年版或更新)</strong>。", "此為最簡潔有效的作法。"] }, 'cell-only': { title: "二次鋰電池要求 (僅電芯有CB)", requirements: ["此情況下，<strong>鋰電池組 (Battery Pack) 仍需在台灣進行測試</strong>。", "送測標準：<strong>CNS 62133-2 (107年版)</strong>，至少需測「振動」與「機械衝擊」。", "可同時提供電芯(Cell)的CB報告+證書 (IEC 62133) 作為技術文件參考，但無法取代電池組的測試。"] }, 'none': { title: "二次鋰電池要求 (均無CB)", requirements: ["此為最複雜情況，需將足量樣品進口至台灣進行兩項獨立測試：", "<strong>鋰電池芯 (Cell)</strong> 測試標準：<strong>CNS 15364 (102年版)</strong>", "<strong>鋰電池組 (Pack)</strong> 測試標準：<strong>CNS 62133-2 (107年版)</strong>", "成本與時程最高，強烈建議源頭廠商提供符合規定的CB報告。"] } }
+            };
+            
+            // --- DOM Elements ---
+            const productSelect = document.getElementById('product-select');
+            const step2Div = document.getElementById('step2');
+            const adapterStep = document.getElementById('step3-adapter');
+            const batteryStep = document.getElementById('step3-battery');
+            const analyzeBtn = document.getElementById('analyze-btn');
+            const resultsDiv = document.getElementById('results');
+            const resetBtn = document.getElementById('reset-btn');
+
+            // --- 動態生成產品選項 ---
+            function populateProducts() {
+                const groups = {};
+                for (const key in regulations) {
+                    const product = regulations[key];
+                    if (!groups[product.group]) {
+                        groups[product.group] = [];
+                    }
+                    groups[product.group].push({ id: key, name: product.name });
+                }
+
+                for (const groupName in groups) {
+                    const optgroup = document.createElement('optgroup');
+                    optgroup.label = groupName;
+                    groups[groupName].forEach(product => {
+                        const option = document.createElement('option');
+                        option.value = product.id;
+                        option.textContent = product.name;
+                        optgroup.appendChild(option);
+                    });
+                    productSelect.appendChild(optgroup);
+                }
+            }
+            
+            populateProducts();
+
+            // --- 重置功能 ---
+            function resetForm() {
+                productSelect.value = '';
+                step2Div.classList.add('hidden');
+                adapterStep.classList.add('hidden');
+                batteryStep.classList.add('hidden');
+                resultsDiv.innerHTML = '';
+                document.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+                analyzeBtn.disabled = true;
+                window.scrollTo(0, 0);
+            }
+
+            // --- 事件監聽 ---
+            resetBtn.addEventListener('click', resetForm);
+            
+            productSelect.addEventListener('change', () => {
+                if(productSelect.value) {
+                    step2Div.classList.remove('hidden');
+                    analyzeBtn.disabled = false;
+                } else {
+                    resetForm();
+                }
+                adapterStep.classList.add('hidden');
+                batteryStep.classList.add('hidden');
+                resultsDiv.innerHTML = '';
+                 document.querySelectorAll('input[name="power-source"], input[name="adapter-cb"], input[name="battery-cb"]').forEach(radio => radio.checked = false);
+            });
+            
+            document.querySelectorAll('input[name="power-source"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    const value = e.target.value;
+                    const showAdapter = value.includes('adapter');
+                    const showBattery = value.includes('rechargeable');
+                    
+                    adapterStep.classList.toggle('hidden', !showAdapter);
+                    batteryStep.classList.toggle('hidden', !showBattery);
+                });
+            });
+
+            analyzeBtn.addEventListener('click', () => {
+                const selectedProductId = productSelect.value;
+                const selectedPower = document.querySelector('input[name="power-source"]:checked');
+                
+                if (!selectedProductId) {
+                    resultsDiv.innerHTML = createCard('warning', '分析錯誤', ['請先從下拉選單中選擇一項產品。']);
+                    return;
+                }
+                if (!selectedPower) {
+                    resultsDiv.innerHTML = createCard('warning', '分析錯誤', ['請選擇您產品的供電方式。']);
+                    return;
+                }
+
+                const powerValue = selectedPower.value;
+                const productData = regulations[selectedProductId];
+                
+                const isExempt = (powerValue === 'primary-battery') || (powerValue === 'usb-no-adapter') || (powerValue === 'car-power');
+
+                if (isExempt) {
+                    resultsDiv.innerHTML = createCard('exempt', '非屬應施檢驗範圍 (免驗)', [ '根據您選擇的供電方式，此產品<strong>非屬</strong>經濟部標準檢驗局(BSMI)公告之應施檢驗品項。', '<strong>關鍵警示：</strong>此判斷的<strong>唯一前提</strong>是您的產品<strong class="text-red-600">完全不具備</strong>二次(可充電)鋰電池。若您的產品實際上仍有內建可充電電池，則上述免驗條件立即失效，產品將被視為應施檢驗品項並適用相關規範。任何不實的宣告都可能導致貨物卡關或罰款。' ]);
+                    return;
+                }
+                
+                let resultHTML = '';
+                resultHTML += createCard('info', '基本要求', [ `<strong>品名：</strong> ${productData.name}`, `<strong>適用公告：</strong> <span class="font-semibold text-red-600">${productData.group}</span>`, `<strong>參考貨品分類號列：</strong> ${productData.cccCode}`, `<strong>基本檢驗標準：</strong><ul class="list-disc pl-6 mt-1">${productData.baseStandards.map(s => `<li>${s}</li>`).join('')}</ul>` ]);
+                
+                if(productData.specificNotes) {
+                    resultHTML += createCard('notes', '特定產品額外要求', productData.specificNotes);
+                }
+
+                if (powerValue.includes('adapter')) {
+                    const selectedAdapterCb = document.querySelector('input[name="adapter-cb"]:checked');
+                    if (!selectedAdapterCb) {
+                         resultsDiv.innerHTML = createCard('warning', '分析中斷', ['您選擇了包含電源轉接器的選項，請完成步驟 3a 的選擇。']);
+                         return;
+                    }
+                    const adapterReqs = commonReqs.adapter[selectedAdapterCb.value];
+                    resultHTML += createCard('info', adapterReqs.title, adapterReqs.requirements);
+                }
+
+                if (powerValue.includes('rechargeable')) {
+                    const selectedBatteryCb = document.querySelector('input[name="battery-cb"]:checked');
+                    if (!selectedBatteryCb) {
+                         resultsDiv.innerHTML = createCard('warning', '分析中斷', ['您選擇了包含二次鋰電池的選項，請完成步驟 3b 的選擇。']);
+                         return;
+                    }
+                    const batteryReqs = commonReqs.battery[selectedBatteryCb.value];
+                    resultHTML += createCard('info', batteryReqs.title, batteryReqs.requirements);
+                }
+                
+                resultHTML += createCard('warning', '⚠️ 風險警示與最終建議', [ '法規的魔鬼藏在細節裡。任何文件的<strong>缺漏、版本不符、或報告內容瑕疵</strong>都將直接導致認證時程延宕，甚至失敗，造成無法預期的時間與金錢損失。別天真地以為供應商給的文件都完美無缺。', 'CB 報告並非絕對的通行證，它更像是一份「資格考卷」。發證單位(如BSMI或指定試驗室)才是「主考官」，有權對任何細節(如關鍵零件表不符、測試條件疑慮)提出質疑，並要求補做測試。', '在投入任何資源送測前，請務必將<strong>所有文件(規格書、照片、CB報告)</strong>備妥，與您的合作實驗室進行專案前的技術審查會議。<strong>不要吝於支付這筆審查費用</strong>，它能為您規避的風險，遠超過您的想像。' ]);
+
+                resultsDiv.innerHTML = resultHTML;
+            });
+
+            function createCard(type, title, items) {
+                const typeClasses = {
+                    info: { card: 'info-card', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>' },
+                    warning: { card: 'warning-card', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>' },
+                    exempt: { card: 'exempt-card', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>' },
+                    notes: { card: 'notes-card', icon: '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" /></svg>' }
+                };
+                const selectedType = typeClasses[type] || typeClasses['info'];
+                const itemsHTML = items.map(item => `<p class="text-slate-700">${item}</p>`).join('');
+                return ` <div class="p-5 ${selectedType.card}"> <div class="flex items-center mb-3"> ${selectedType.icon} <h3 class="ml-3 text-xl font-bold">${title}</h3> </div> <div class="space-y-2 pl-9">${itemsHTML}</div> </div>`;
+            }
+        });
+    </script>
+</body>
+</html>
