@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>無人機安規標準互動分析儀</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+        }
+        .perspective-card {
+            transform-style: preserve-3d;
+            transition: transform 0.8s;
+        }
+        .perspective-card:hover {
+            transform: rotateY(10deg) rotateX(5deg) scale(1.02);
+        }
+        .tab-active {
+            border-bottom-color: #3b82f6;
+            color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <!-- Header Section -->
+        <header class="text-center mb-8 md:mb-12">
+            <h1 class="text-3xl md:text-5xl font-bold text-slate-900 mb-2">遙控無人機安規測試標準</h1>
+            <h2 class="text-xl md:text-2xl font-semibold text-blue-600">互動式綜合安全符合性分析儀</h2>
+            <p class="mt-4 text-slate-500 max-w-3xl mx-auto">
+                本應用程式將 CNS 15598-1:2020 及國際標準的複雜規範，轉化為易於理解的互動式圖表與摘要，協助製造商、測試實驗室及安規工程師快速掌握無人機安全設計的核心要素。
+            </p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Navigation & Key Info -->
+            <aside class="lg:col-span-1 space-y-8">
+                <!-- Navigation Menu -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-slate-200/80">
+                    <h3 class="text-lg font-bold text-slate-900 mb-4 border-b pb-2">快速導覽</h3>
+                    <nav>
+                        <ul class="space-y-2">
+                            <li><a href="#framework" class="block py-2 px-4 rounded-lg hover:bg-slate-100 transition duration-300 font-medium">安全評估框架</a></li>
+                            <li><a href="#hazards" class="block py-2 px-4 rounded-lg hover:bg-slate-100 transition duration-300 font-medium">危害分析與防護</a></li>
+                            <li><a href="#battery" class="block py-2 px-4 rounded-lg hover:bg-slate-100 transition duration-300 font-medium">電池系統安全</a></li>
+                            <li><a href="#environment" class="block py-2 px-4 rounded-lg hover:bg-slate-100 transition duration-300 font-medium">環境耐久性</a></li>
+                            <li><a href="#international" class="block py-2 px-4 rounded-lg hover:bg-slate-100 transition duration-300 font-medium">國際標準比較</a></li>
+                            <li><a href="#lab" class="block py-2 px-4 rounded-lg hover:bg-slate-100 transition duration-300 font-medium">實驗室能量需求</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <!-- Key Concepts Card -->
+                <div class="bg-gradient-to-br from-blue-500 to-indigo-600 text-white p-6 rounded-2xl shadow-xl perspective-card">
+                    <h3 class="text-xl font-bold mb-3">核心觀念：HBSE</h3>
+                    <p class="font-semibold mb-2">危害基礎安全工程 (Hazard-Based Safety Engineering)</p>
+                    <p class="text-sm opacity-90 mb-4">
+                        這是 CNS 15598-1 的核心精神，強調從「能量源」識別風險，並設計「安全防護」來保護「人」，而非死板地遵循規則清單。
+                    </p>
+                    <div class="flex justify-around items-center text-center mt-4">
+                        <div class="flex flex-col items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-yellow-300"><path d="M12.89 1.45l8 4A2 2 0 0 1 22 7.24v9.53a2 2 0 0 1-1.11 1.79l-8 4a2 2 0 0 1-1.78 0l-8-4A2 2 0 0 1 2 16.77V7.24a2 2 0 0 1 1.11-1.79l8-4a2 2 0 0 1 1.78 0z"></path><polyline points="2,8 12,13 22,8"></polyline><line x1="12" y1="22.76" x2="12" y2="13"></line></svg>
+                            <span class="text-xs mt-1 font-semibold">能量源</span>
+                        </div>
+                        <div class="text-2xl font-thin opacity-70">&rarr;</div>
+                        <div class="flex flex-col items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-green-300"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            <span class="text-xs mt-1 font-semibold">安全防護</span>
+                        </div>
+                        <div class="text-2xl font-thin opacity-70">&rarr;</div>
+                        <div class="flex flex-col items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-red-300"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            <span class="text-xs mt-1 font-semibold">人體</span>
+                        </div>
+                    </div>
+                </div>
+
+            </aside>
+
+            <!-- Right Content Area -->
+            <div class="lg:col-span-2 space-y-8">
+                
+                <!-- Framework Section -->
+                <section id="framework" class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-slate-200/80">
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">第 1 節：CNS 15598-1 安全評估框架</h3>
+                    <p class="text-slate-600 mb-6">
+                        此標準的核心精神在於導入「危害基礎安全工程」(HBSE)，將安全評估從傳統的「規範性方法」轉向更具前瞻性的「績效性方法」，特別適合無人機這類技術快速迭代的新興產品。
+                    </p>
+                    <div class="bg-slate-100 p-4 rounded-lg">
+                        <h4 class="font-semibold text-slate-800 mb-3">無人機關鍵能量源分類</h4>
+                        <canvas id="energySourceChart"></canvas>
+                    </div>
+                </section>
+                
+                <!-- Hazards Section -->
+                <section id="hazards" class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-slate-200/80">
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">第 2 & 3 節：危害分析與安全防護</h3>
+                    <p class="text-slate-600 mb-6">
+                        綜合分析機械、熱能與火災三大主要危害，並說明對應的安全防護策略與測試要求。
+                    </p>
+                    <!-- Tabs -->
+                    <div class="border-b border-gray-200">
+                        <nav class="-mb-px flex space-x-6" aria-label="Tabs">
+                            <button class="tab-btn tab-active" data-target="mechanical">機械危害 (MS)</button>
+                            <button class="tab-btn" data-target="thermal">熱能與火災 (TS/PS)</button>
+                        </nav>
+                    </div>
+                    <!-- Tab Content -->
+                    <div class="mt-6">
+                        <div id="mechanical" class="content-section active">
+                            <h4 class="font-bold text-lg mb-2 text-blue-700">機械能量源 (MS)</h4>
+                            <p class="mb-4">主要來自高速旋轉的螺旋槳，被歸類為最高等級的 <strong>MS3</strong> 危害，必須配置最高等級的雙重或強化安全防護。</p>
+                            <ul class="list-disc list-inside space-y-2 text-slate-700">
+                                <li><strong>能量源分級:</strong> 透過 K 因子公式計算，螺旋槳動能遠超 MS3 閾值。</li>
+                                <li><strong>設備式防護:</strong> 必須安裝能通過試驗指測試的<strong class="text-red-600">螺旋槳護罩</strong>。</li>
+                                <li><strong>指示型防護:</strong> 機身與手冊需有清晰的警告標示。</li>
+                                <li><strong>結構完整性:</strong> 整機需通過 <strong>1 公尺落下試驗</strong>，確保防護結構在衝擊後依然有效。</li>
+                            </ul>
+                        </div>
+                        <div id="thermal" class="content-section">
+                            <h4 class="font-bold text-lg mb-2 text-red-700">熱能 (TS) 與火災 (PS) 危害</h4>
+                            <p class="mb-4">高功率密度使無人機面臨熱燙傷與火災雙重風險。</p>
+                            <ul class="list-disc list-inside space-y-2 text-slate-700">
+                                <li><strong>熱燙傷 (TS):</strong> 在最大負載滯空條件下進行溫昇試驗，確保使用者可觸及表面溫度不超標。</li>
+                                <li><strong>火災 (PS):</strong> 動力電池被歸類為 <strong>PS3</strong> 電力能量源，是嚴峻的火災風險來源。</li>
+                                <li><strong>關鍵防護:</strong> 包裹電池和主要電子設備的機身必須是<strong class="text-red-600">防火機殼 (Fire Enclosure)</strong>，材料需具備 V-1 或更高的耐燃等級。</li>
+                                <li><strong>設計制衡:</strong> 機殼材料需同時滿足<strong class="text-indigo-600">良好散熱</strong>與<strong class="text-indigo-600">優異阻燃</strong>的雙重要求，是設計上的關鍵挑戰。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Battery Section -->
+                <section id="battery" class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-slate-200/80">
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">第 4 節：電池系統安全 (附錄 M)</h3>
+                    <p class="text-slate-600 mb-6">
+                        附錄 M 將電池視為一個內含潛在巨大危害的獨立子系統，要求從電氣、機械、材料多維度建立縱深防禦體系。
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-slate-100 p-4 rounded-lg">
+                            <h4 class="font-semibold text-slate-800 mb-2">保護電路 (BMS) 關鍵功能</h4>
+                            <ul class="list-disc list-inside text-sm space-y-1">
+                                <li>過充電保護</li>
+                                <li>過放電保護</li>
+                                <li>過電流保護</li>
+                                <li>短路保護</li>
+                                <li>溫度監控</li>
+                            </ul>
+                        </div>
+                        <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                            <h4 class="font-semibold text-red-800 mb-2">強制性安全試驗</h4>
+                            <p class="text-sm text-red-700">模擬極端濫用情況，允收標準為<strong class="font-bold">不得爆炸或起火</strong>。</p>
+                             <ul class="list-disc list-inside text-sm space-y-1 mt-2">
+                                <li>過充電試驗 (7小時)</li>
+                                <li>強制放電試驗</li>
+                                <li>外部短路試驗</li>
+                            </ul>
+                        </div>
+                    </div>
+                     <div class="mt-6 bg-amber-50 border border-amber-200 p-4 rounded-lg">
+                        <h4 class="font-semibold text-amber-800 mb-2">物理層面關鍵要求</h4>
+                         <ul class="list-disc list-inside text-sm space-y-2">
+                             <li><strong>防火機殼:</strong> 電池必須被容納在一個符合規定的<strong class="font-bold">防火機殼</strong>內，以「圍堵」最壞情況下的熱失控後果。</li>
+                             <li><strong>機械完整性:</strong> 整機需通過 <strong>1 公尺落下試驗</strong>，確保電池艙結構在衝擊後依然完整有效。</li>
+                         </ul>
+                    </div>
+                </section>
+
+                <!-- Environment Section -->
+                <section id="environment" class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-slate-200/80">
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">第 5 節：環境耐久性 (附錄 Y)</h3>
+                    <p class="text-slate-600 mb-6">
+                        對於戶外用無人機，環境耐久性等同於基礎飛行安全 (適航性)。材料劣化是導致飛行事故的直接原因。
+                    </p>
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+                        <div class="bg-slate-100 p-4 rounded-lg">
+                            <p class="font-bold text-lg text-yellow-600">抗 UV 輻射</p>
+                            <p class="text-sm mt-1">氙弧燈 <strong class="text-base">1000小時</strong> 照射</p>
+                            <p class="text-xs text-slate-500 mt-1">防止槳葉、機臂脆化</p>
+                        </div>
+                        <div class="bg-slate-100 p-4 rounded-lg">
+                            <p class="font-bold text-lg text-sky-600">抗腐蝕</p>
+                            <p class="text-sm mt-1">鹽霧試驗 <strong class="text-base">168小時</strong></p>
+                             <p class="text-xs text-slate-500 mt-1">防止金屬件(螺絲)失效</p>
+                        </div>
+                         <div class="bg-slate-100 p-4 rounded-lg col-span-1 md:col-span-2">
+                            <p class="font-bold text-lg text-green-600">侵入防護 (IP 等級)</p>
+                            <p class="text-sm mt-1">建議等級 <strong class="text-base">IP54</strong> (防塵、防潑濺)</p>
+                             <p class="text-xs text-slate-500 mt-1">防止內部電子元件短路</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- International Standards Section -->
+                <section id="international" class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-slate-200/80">
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">第 6 節：國際標準比較分析</h3>
+                    <p class="text-slate-600 mb-6">
+                        全球無人機監管呈現兩種主流哲學：「產品安全」與「操作安全」。採納「產品安全」設計理念的產品具備更強的全球市場普適性。
+                    </p>
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-bold text-lg">歐盟 (EASA) - 產品安全模式</h4>
+                            <p class="text-slate-700">以產品為核心，要求上市前通過認證，獲得 <strong>CE 標誌</strong>並標示 <strong>C0-C6</strong> 等級。設計理念與 CNS 15598-1 高度契合。</p>
+                        </div>
+                        <div class="border-l-4 border-green-500 pl-4">
+                            <h4 class="font-bold text-lg">美國 (FAA) - 操作安全模式</h4>
+                            <p class="text-slate-700">以操作為核心，不對產品進行型式認證，安全責任完全放在<strong>飛行員認證</strong>與<strong>操作規則</strong>上。</p>
+                        </div>
+                        <div class="bg-indigo-50 text-indigo-800 p-4 rounded-lg mt-6">
+                            <p class="font-semibold">戰略啟示：</p>
+                            <p class="text-sm">遵循 EASA 和 ASTM 的嚴格技術要求，不僅是進入歐洲市場的門票，更是證明產品符合 CNS 15598-1 等績效性安全標準的最佳實踐路徑。</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Lab Requirements Section -->
+                <section id="lab" class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-slate-200/80">
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">第 7 節：實驗室能量需求</h3>
+                    <p class="text-slate-600 mb-6">
+                        無人機認證要求實驗室具備電氣、機械、材料科學與環境可靠性的綜合測試能力。
+                    </p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-slate-500">
+                            <thead class="text-xs text-slate-700 uppercase bg-slate-100">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3">測試類別</th>
+                                    <th scope="col" class="px-6 py-3">核心設備</th>
+                                    <th scope="col" class="px-6 py-3">關鍵目的</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="bg-white border-b">
+                                    <th scope="row" class="px-6 py-4 font-medium text-slate-900 whitespace-nowrap">機械強度</th>
+                                    <td class="px-6 py-4">落下試驗裝置、衝擊錘</td>
+                                    <td class="px-6 py-4">驗證機殼與電池艙結構完整性</td>
+                                </tr>
+                                <tr class="bg-white border-b">
+                                    <th scope="row" class="px-6 py-4 font-medium text-slate-900 whitespace-nowrap">熱能/火災</th>
+                                    <td class="px-6 py-4">多通道溫度記錄儀、針焰/熾熱線試驗儀</td>
+                                    <td class="px-6 py-4">防止燙傷、驗證材料阻燃性</td>
+                                </tr>
+                                 <tr class="bg-white border-b">
+                                    <th scope="row" class="px-6 py-4 font-medium text-slate-900 whitespace-nowrap">電池安全</th>
+                                    <td class="px-6 py-4">電池測試系統、可程式電源/負載</td>
+                                    <td class="px-6 py-4">驗證電池保護電路有效性</td>
+                                </tr>
+                                <tr class="bg-white">
+                                    <th scope="row" class="px-6 py-4 font-medium text-slate-900 whitespace-nowrap">環境耐久性</th>
+                                    <td class="px-6 py-4">氙弧燈老化箱、鹽霧試驗箱</td>
+                                    <td class="px-6 py-4">評估抗老化與抗腐蝕能力</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="text-center mt-12 py-6 border-t border-slate-200">
+            <p class="text-sm text-slate-500">&copy; 2025 無人機安規標準互動分析儀. 內容基於 CNS 15598-1:2020 標準分析報告。</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Doughnut Chart for Energy Sources
+            const ctx = document.getElementById('energySourceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['機械 (MS)', '熱能 (TS)', '電氣/火災 (ES/PS)', '輻射 (RS)'],
+                    datasets: [{
+                        label: '危害等級',
+                        data: [45, 25, 25, 5],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.8)', // blue-500
+                            'rgba(239, 68, 68, 0.8)',  // red-500
+                            'rgba(249, 115, 22, 0.8)', // orange-500
+                            'rgba(16, 185, 129, 0.8)'  // emerald-500
+                        ],
+                        borderColor: [
+                            '#ffffff'
+                        ],
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: '無人機潛在危害能量源分佈',
+                            font: {
+                                size: 16
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Tabs functionality
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Deactivate all buttons and sections
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('tab-active');
+                    });
+                    contentSections.forEach(section => {
+                        section.classList.remove('active');
+                    });
+
+                    // Activate the clicked button and corresponding section
+                    button.classList.add('tab-active');
+                    const targetId = button.getAttribute('data-target');
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+            
+            // Smooth scrolling for navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
