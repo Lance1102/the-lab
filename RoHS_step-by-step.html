@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台灣 BSMI RoHS 深度互動指南</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Serene Blue & Warm Sand -->
+    <!-- Application Structure Plan: This version adopts a multi-step "wizard" or "guided journey" structure, breaking the compliance process into 4 phases and 12 detailed steps. A persistent vertical stepper navigation on the left allows users to see the entire process at a glance and track their progress. This is superior for a more detailed guide as it prevents cognitive overload and provides a clear path from start to finish. The content for each step is displayed on the right. Key interactive elements, like the homogeneous material diagram and the AI unit analyzer, are embedded at the most relevant steps to serve as practical tools within the workflow. This structure transforms the guide from a simple tabbed interface into a comprehensive, step-by-step learning and execution platform. -->
+    <!-- Visualization & Content Choices: 
+        1. Homogeneous Material Explainer: (Report Info: The concept of a non-mechanically separable material) -> (Goal: Instruct/Clarify) -> (Viz/Presentation: Interactive HTML/CSS Diagram) -> (Interaction: Hovering over parts of a cable (outer jacket, shield, insulator, conductor) reveals that each is a homogeneous material) -> (Justification: This is the most difficult concept in RoHS. A visual, interactive diagram is vastly more effective at explaining it than text alone.) -> (Library/Method: HTML/CSS/JS).
+        2. Process Stepper: (Report Info: The entire compliance workflow) -> (Goal: Organize/Navigate) -> (Viz/Presentation: Vertical Stepper UI) -> (Interaction: Clicking a step navigates to its content) -> (Justification: Provides a clear roadmap for the user, making a complex process feel structured and manageable.) -> (Library/Method: HTML/CSS/JS).
+        3. FAQ Section: (Report Info: Common user questions) -> (Goal: Inform) -> (Viz/Presentation: HTML <details>/<summary> accordion) -> (Interaction: Click to expand/collapse answers) -> (Justification: An efficient way to present supplemental information without cluttering the main workflow.) -> (Library/Method: HTML).
+        4. AI Unit Analyzer: (Report Info: Need for product-specific component lists) -> (Goal: Assist/Automate) -> (Viz/Presentation: Input form with results area) -> (Interaction: User types description, clicks button, receives structured list of components from Gemini) -> (Justification: Directly addresses a major user pain point in the process, providing a powerful, practical tool.) -> (Library/Method: JS Fetch API).
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f9fafb;
+        }
+        .step {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .step.active .step-circle {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        .step.active .step-text {
+            color: #3b82f6;
+            font-weight: 700;
+        }
+        .step.completed .step-circle {
+            background-color: #16a34a;
+            color: white;
+            border-color: #16a34a;
+        }
+        .step-circle {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            border: 2px solid #9ca3af;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        .step-line {
+            height: calc(100% - 2.5rem);
+            width: 2px;
+            background-color: #d1d5db;
+        }
+        .content-panel {
+            display: none;
+        }
+        .content-panel.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .cable-part {
+            transition: all 0.3s ease;
+            cursor: help;
+        }
+        .cable-part:hover {
+            filter: brightness(1.1);
+            transform: scale(1.02);
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-bold text-gray-800">BSMI RoHS 合規深度互動指南</h1>
+            <p class="mt-3 text-lg text-gray-600">從零開始，帶您走完台灣RoHS標示的每一步</p>
+        </header>
+
+        <div class="flex flex-col md:flex-row gap-8">
+            <!-- Stepper Navigation -->
+            <aside class="w-full md:w-1/3 lg:w-1/4">
+                <div id="stepper" class="bg-white p-6 rounded-xl shadow-md">
+                    <!-- Phase 1 -->
+                    <h3 class="text-lg font-bold text-blue-600 mb-4">階段一：基礎認知</h3>
+                    <div class="step relative flex items-start active" data-step="1">
+                        <div class="flex flex-col items-center mr-4">
+                            <div class="step-circle">1</div>
+                            <div class="step-line"></div>
+                        </div>
+                        <div class="pt-1.5"><p class="step-text font-semibold">什麼是 BSMI RoHS？</p></div>
+                    </div>
+                    <div class="step relative flex items-start" data-step="2">
+                        <div class="flex flex-col items-center mr-4">
+                            <div class="step-circle">2</div>
+                            <div class="step-line"></div>
+                        </div>
+                        <div class="pt-1.5"><p class="step-text font-semibold">誰需要遵守？</p></div>
+                    </div>
+                    <div class="step relative flex items-start" data-step="3">
+                        <div class="flex flex-col items-center mr-4">
+                            <div class="step-circle">3</div>
+                            <div class="step-line"></div>
+                        </div>
+                        <div class="pt-1.5"><p class="step-text font-semibold">核心：六大限用物質</p></div>
+                    </div>
+
+                    <!-- Phase 2 -->
+                    <h3 class="text-lg font-bold text-blue-600 mt-6 mb-4">階段二：準備工作</h3>
+                    <div class="step relative flex items-start" data-step="4">
+                        <div class="flex flex-col items-center mr-4">
+                            <div class="step-circle">4</div>
+                            <div class="step-line"></div>
+                        </div>
+                        <div class="pt-1.5"><p class="step-text font-semibold">追溯您的供應鏈</p></div>
+                    </div>
+                    <div class="step relative flex items-start" data-step="5">
+                        <div class="flex flex-col items-center mr-4">
+                            <div class="step-circle">5</div>
+                            <div class="step-line"></div>
+                        </div>
+                         <div class="pt-1.5"><p class="step-text font-semibold">關鍵概念：均質材料</p></div>
+                    </div>
+
+                    <!-- Phase 3 -->
+                    <h3 class="text-lg font-bold text-blue-600 mt-6 mb-4">階段三：執行標示</h3>
+                    <div class="step relative flex items-start" data-step="6">
+                         <div class="flex flex-col items-center mr-4">
+                            <div class="step-circle">6</div>
+                            <div class="step-line"></div>
+                        </div>
+                        <div class="pt-1.5"><p class="step-text font-semibold">AI 智慧拆解單元</p></div>
+                    </div>
+                    <div class="step relative flex items-start" data-step="7">
+                         <div class="flex flex-col items-center mr-4">
+                            <div class="step-circle">7</div>
+                            <div class="step-line"></div>
+                        </div>
+                        <div class="pt-1.5"><p class="step-text font-semibold">填寫標示表格</p></div>
+                    </div>
+                    <div class="step relative flex items-start" data-step="8">
+                         <div class="flex flex-col items-center mr-4">
+                            <div class="step-circle">8</div>
+                            <div class="step-line"></div>
+                        </div>
+                        <div class="pt-1.5"><p class="step-text font-semibold">搞懂備註欄</p></div>
+                    </div>
+                    
+                    <!-- Phase 4 -->
+                    <h3 class="text-lg font-bold text-blue-600 mt-6 mb-4">階段四：最終確認</h3>
+                    <div class="step relative flex items-start" data-step="9">
+                        <div class="flex flex-col items-center mr-4">
+                            <div class="step-circle">9</div>
+                            <div class="step-line"></div>
+                        </div>
+                        <div class="pt-1.5"><p class="step-text font-semibold">選擇標示方式</p></div>
+                    </div>
+                    <div class="step relative flex items-start" data-step="10">
+                         <div class="flex flex-col items-center mr-4">
+                            <div class="step-circle">10</div>
+                        </div>
+                        <div class="pt-1.5"><p class="step-text font-semibold">建立技術文件 & FAQ</p></div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Content Area -->
+            <main class="w-full md:w-2/3 lg:w-3/4">
+                <div id="content-panels">
+                    <!-- Step 1 Content -->
+                    <div id="step-1-content" class="content-panel active bg-white p-8 rounded-xl shadow-md">
+                        <h2 class="text-2xl font-bold mb-4">1. 什麼是 BSMI RoHS？</h2>
+                        <p class="text-gray-600 leading-relaxed">簡單來說，這是台灣經濟部標準檢驗局 (BSMI) 針對電子電氣產品的一項環保規定。</p>
+                        <p class="mt-4 text-gray-600 leading-relaxed">它的全名是 CNS 15663「電機電子類設備降低限用化學物質含量指引」，精神與歐盟的 RoHS 指令 (Restriction of Hazardous Substances) 相同。核心目標是：<strong class="text-blue-600">從源頭減少電子廢棄物中對環境和人體有害的化學物質。</strong></p>
+                        <div class="mt-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-r-lg">
+                            <p class="text-blue-800">把您的產品想像成一道菜，BSMI RoHS 就是規定這道菜裡不能含有過量的「有害調味料」。這不是禁止使用，而是要求您必須誠實告知消費者，您的「菜」裡是否含有超標的成分。</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 Content -->
+                    <div id="step-2-content" class="content-panel bg-white p-8 rounded-xl shadow-md">
+                        <h2 class="text-2xl font-bold mb-4">2. 誰需要遵守？</h2>
+                        <p class="text-gray-600 leading-relaxed">並非所有電子產品都需要遵守。BSMI 會<strong class="text-blue-600">分階段、分品項</strong>將產品納入管制範圍。您需要確認您的產品是否在應施檢驗的品目清單中。</p>
+                        <p class="mt-4 text-gray-600 leading-relaxed">常見的管制產品類別包括：</p>
+                        <ul class="mt-4 space-y-2 list-disc list-inside text-gray-700">
+                            <li>資訊類產品 (電腦、顯示器、印表機)</li>
+                            <li>家電產品 (電視、冰箱、洗衣機)</li>
+                            <li>影音設備 (音響、播放器)</li>
+                            <li>照明設備 (LED燈具)</li>
+                            <li>部分電子零組件 (電源供應器)</li>
+                        </ul>
+                        <div class="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded-r-lg">
+                            <p class="font-bold text-yellow-800">如何確認？</p>
+                            <p class="text-yellow-800">最準確的方法是查詢 BSMI 的官方網站，或在申請產品檢驗認證時，向檢驗機構確認您的產品是否需要符合 CNS 15663 的標示要求。</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 Content -->
+                    <div id="step-3-content" class="content-panel bg-white p-8 rounded-xl shadow-md">
+                        <h2 class="text-2xl font-bold mb-4">3. 核心：六大限用物質</h2>
+                        <p class="text-gray-600 mb-6">RoHS 管制的核心就是這六種化學物質。了解它們的濃度限值是合規的基礎。下圖顯示了每種物質在「均質材料」中的含量上限。</p>
+                        <div class="h-96 max-h-[50vh]"><canvas id="rohsChart"></canvas></div>
+                         <p class="text-sm text-center text-gray-500 mt-2">ppm = 百萬分之一 (parts per million)。1000 ppm 等於 0.1%。</p>
+                    </div>
+
+                    <!-- Step 4 Content -->
+                     <div id="step-4-content" class="content-panel bg-white p-8 rounded-xl shadow-md">
+                        <h2 class="text-2xl font-bold mb-4">4. 追溯您的供應鏈</h2>
+                        <p class="text-gray-600 leading-relaxed">您無法「猜測」產品是否合規，必須要有證據。證據來自您的上游供應商。您需要建立一套管理流程，向所有零件供應商索取以下文件：</p>
+                         <div class="mt-6 space-y-4">
+                            <div class="p-4 border rounded-lg">
+                                <h3 class="font-bold text-blue-600">供應商符合性聲明 (SDoC)</h3>
+                                <p class="text-sm text-gray-600 mt-1">這是最基本的文件。供應商以書面形式聲明其提供的零件符合 RoHS 要求。</p>
+                            </div>
+                             <div class="p-4 border rounded-lg">
+                                <h3 class="font-bold text-blue-600">第三方測試報告</h3>
+                                <p class="text-sm text-gray-600 mt-1">對於高風險或關鍵零件，要求供應商提供由獨立實驗室出具的檢測報告，以證明其材料成分。</p>
+                            </div>
+                        </div>
+                        <p class="mt-6 text-gray-600">將您產品的所有零件 (物料清單 BOM) 與收集到的證明文件一一對應，建立起完整的「產品合規檔案」。</p>
+                    </div>
+
+                    <!-- Step 5 Content -->
+                    <div id="step-5-content" class="content-panel bg-white p-8 rounded-xl shadow-md">
+                        <h2 class="text-2xl font-bold mb-4">5. 關鍵概念：均質材料</h2>
+                        <p class="text-gray-600 leading-relaxed">這是 RoHS 中最重要也最容易誤解的概念。法規的濃度限值是針對<strong class="text-blue-600">「均質材料」(Homogeneous Material)</strong>，而非整個零件。</p>
+                        <p class="mt-2 text-gray-600 leading-relaxed">均質材料指的是：<strong class="text-gray-700">無法再用物理方式 (如旋開、切割、碾碎) 分離成不同材料的最小單位。</strong></p>
+                        <p class="mt-4 text-gray-600">將滑鼠懸停在下方電線的不同部分，看看哪些是均質材料：</p>
+                        <div class="mt-6 p-4 border rounded-lg">
+                            <div class="relative w-full h-24 bg-gray-200 rounded-lg flex items-center justify-center p-4">
+                                <!-- Cable visual -->
+                                <div class="w-full h-12 bg-gray-700 rounded-full flex items-center p-1 cable-part" data-info="外皮 (PVC塑膠)：這是一層均質材料。">
+                                    <div class="w-full h-10 bg-gray-500 rounded-full flex items-center p-1 cable-part" data-info="屏蔽層 (金屬編織網)：這是另一層均質材料。">
+                                        <div class="w-full h-8 bg-white rounded-full flex items-center p-1 cable-part" data-info="絕緣體 (PE塑膠)：這是第三層均質材料。">
+                                            <div class="w-full h-4 bg-yellow-500 rounded-full cable-part" data-info="導體 (銅線)：這是第四層均質材料。"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="cable-tooltip" class="absolute hidden bg-black text-white text-sm rounded py-1 px-2 z-10 -mt-24"></div>
+                            </div>
+                        </div>
+                        <div class="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded-r-lg">
+                            <p class="text-yellow-800"><strong>重點：</strong>您必須分別確認銅線中的鉛含量、PVC外皮中的鎘含量等是否超標，而不是用整條電線的總重量去計算百分比。</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 6 Content -->
+                     <div id="step-6-content" class="content-panel bg-white p-8 rounded-xl shadow-md">
+                        <h2 class="text-2xl font-bold mb-4">6. AI 智慧拆解單元</h2>
+                        <p class="text-gray-600 leading-relaxed">在填寫表格前，您需要將產品拆解成合理的「單元」。這一步常讓人感到困惑。現在，您可以讓 AI 助您一臂之力。</p>
+                        <div class="mt-6 bg-blue-50 p-6 rounded-lg border border-blue-200">
+                            <h3 class="text-xl font-semibold text-slate-700 mb-3">AI 產品單元分析器</h3>
+                            <p class="text-gray-600 mb-4">在此輸入您的產品描述，AI 將根據 CNS 15663 的原則，為您建議一份合理的單元拆解清單。</p>
+                            <textarea id="product-description" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" rows="3" placeholder="例如：一台桌上型電腦，包含鐵製機殼、主機板、電源供應器、硬碟和各種連接線。"></textarea>
+                            <button id="generate-units-btn" class="mt-4 w-full bg-blue-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-600 flex items-center justify-center">
+                                ✨ 產生建議單元
+                            </button>
+                            <div id="gemini-loader" class="loader" style="display: none;"></div>
+                            <div id="gemini-results" class="mt-6"></div>
+                            <div id="gemini-error" class="mt-4 text-red-600 bg-red-100 p-3 rounded-lg" style="display: none;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Step 7 Content -->
+                    <div id="step-7-content" class="content-panel bg-white p-8 rounded-xl shadow-md">
+                        <h2 class="text-2xl font-bold mb-4">7. 填寫標示表格</h2>
+                         <p class="text-gray-600 mb-6">這是最終需要呈現給消費者的表格。請根據您收集到的供應商文件和對均質材料的分析，為每個單元填寫對應的符號。點擊表格的標題可以查看詳細說明。</p>
+                        <div class="overflow-x-auto">
+                           <table class="min-w-full border-2 border-black">
+                                <caption class="text-lg font-bold p-2 border-2 border-black">限用物質含有情況標示</caption>
+                                <thead>
+                                    <tr>
+                                        <th class="border-2 border-black p-2 bg-gray-100 interactive-cell" data-title="設備名稱" data-content="填寫您的產品正式名稱，應與BSMI證書上所列的名稱一致。例如：電源供應器、液晶顯示器。">設備名稱：<span class="font-normal">您的產品名稱</span>，型號(型式)：<span class="font-normal">您的產品型號</span></th>
+                                        <th colspan="6" class="border-2 border-black p-2 bg-gray-100 interactive-cell" data-title="限用物質及其化學符號" data-content="此區塊列出了受管制的六種化學物質及其標準符號。">限用物質及其化學符號</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="border-2 border-black p-2 bg-gray-100 interactive-cell" data-title="單元" data-content="『單元』是指產品中可被獨立識別的零件或組件。您需要將產品拆分為主要的功能單元來分別評估。例如，對於一台電腦，『印刷電路板』、『機殼』、『連接線』都可以是獨立的單元。">單元</th>
+                                        <th class="border-2 border-black p-2 bg-gray-100 interactive-cell" data-title="鉛 (Pb)" data-content="若該單元所有均質材料的鉛含量皆在 0.1% (1000 ppm) 以下，則標示『○』。反之，若有任一均質材料超出，則標示『－』。">鉛 (Pb)</th>
+                                        <th class="border-2 border-black p-2 bg-gray-100 interactive-cell" data-title="汞 (Hg)" data-content="若該單元所有均質材料的汞含量皆在 0.1% (1000 ppm) 以下，則標示『○』。反之標示『－』。">汞 (Hg)</th>
+                                        <th class="border-2 border-black p-2 bg-gray-100 interactive-cell" data-title="鎘 (Cd)" data-content="若該單元所有均質材料的鎘含量皆在 0.01% (100 ppm) 以下，則標示『○』。反之標示『－』。">鎘 (Cd)</th>
+                                        <th class="border-2 border-black p-2 bg-gray-100 interactive-cell" data-title="六價鉻 (Cr+6)" data-content="若該單元所有均質材料的六價鉻含量皆在 0.1% (1000 ppm) 以下，則標示『○』。反之標示『－』。">六價鉻 (Cr<sup>+6</sup>)</th>
+                                        <th class="border-2 border-black p-2 bg-gray-100 interactive-cell" data-title="多溴聯苯 (PBB)" data-content="若該單元所有均質材料的 PBB 含量皆在 0.1% (1000 ppm) 以下，則標示『○』。反之標示『－』。">多溴聯苯 (PBB)</th>
+                                        <th class="border-2 border-black p-2 bg-gray-100 interactive-cell" data-title="多溴二苯醚 (PBDE)" data-content="若該單元所有均質材料的 PBDE 含量皆在 0.1% (1000 ppm) 以下，則標示『○』。反之標示『－』。">多溴二苯醚 (PBDE)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="border-2 border-black p-2 text-center">印刷電路板組件</td>
+                                        <td class="border-2 border-black p-2 text-center text-2xl font-bold">－</td>
+                                        <td class="border-2 border-black p-2 text-center text-2xl font-bold">○</td>
+                                        <td class="border-2 border-black p-2 text-center text-2xl font-bold">○</td>
+                                        <td class="border-2 border-black p-2 text-center text-2xl font-bold">○</td>
+                                        <td class="border-2 border-black p-2 text-center text-2xl font-bold">○</td>
+                                        <td class="border-2 border-black p-2 text-center text-2xl font-bold">○</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 8 Content -->
+                    <div id="step-8-content" class="content-panel bg-white p-8 rounded-xl shadow-md">
+                        <h2 class="text-2xl font-bold mb-4">8. 搞懂備註欄</h2>
+                        <p class="text-gray-600 leading-relaxed">如果您的表格中有任何一格標示為「－」，就<strong class="text-red-600">必須</strong>在表格下方加上備註說明。備註有固定的格式，請根據情況選擇：</p>
+                         <div class="mt-6 space-y-4">
+                            <div class="p-4 border-l-4 border-green-500 bg-green-50 rounded-r-lg">
+                                <h3 class="font-bold text-green-800">情況一：超標物質屬於「排除(豁免)項目」</h3>
+                                <p class="text-sm text-green-700 mt-1">例如，某些高溫焊料中的鉛含量被允許超標。此時應標示：</p>
+                                <p class="text-sm text-green-700 mt-2 font-mono bg-green-100 p-2 rounded">備考1.〝超出0.1 wt %〞及〝超出0.01 wt %〞係指限用物質含有量超出百分比含量基準值。<br>備考3.〝－〞係指該項限用物質為排除項目。</p>
+                            </div>
+                             <div class="p-4 border-l-4 border-blue-500 bg-blue-50 rounded-r-lg">
+                                <h3 class="font-bold text-blue-800">情況二：表格中「全部」都是「○」</h3>
+                                <p class="text-sm text-blue-700 mt-1">如果您的產品完全合規，沒有任何超標項目，您也<strong class="text-blue-700">必須</strong>加上備註：</p>
+                                <p class="text-sm text-blue-700 mt-2 font-mono bg-blue-100 p-2 rounded">備考2.〝○〞係指該項限用物質含有量未超出百分比含量基準值。</p>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-gray-600">注意：標準格式中沒有「情況二」的備註，但通常會將「備考1」和「備考2」合併提供，以涵蓋所有情況。</p>
+                    </div>
+
+                    <!-- Step 9 Content -->
+                    <div id="step-9-content" class="content-panel bg-white p-8 rounded-xl shadow-md">
+                        <h2 class="text-2xl font-bold mb-4">9. 選擇標示方式</h2>
+                        <p class="text-gray-600 mb-6">法規提供了多種標示位置的彈性選擇，您可以根據產品特性擇一或多種方式，確保消費者能輕易取閱。</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="p-6 bg-gray-50 rounded-lg text-center border">
+                                <div class="text-4xl mb-4">📦</div>
+                                <h3 class="text-lg font-semibold">標示於本體</h3>
+                                <p class="mt-2 text-sm text-gray-600">直接將表格印製或貼附在產品上。</p>
+                            </div>
+                            <div class="p-6 bg-gray-50 rounded-lg text-center border">
+                                <div class="text-4xl mb-4">🏷️</div>
+                                <h3 class="text-lg font-semibold">標示於包裝</h3>
+                                <p class="mt-2 text-sm text-gray-600">將表格印製在產品的外包裝盒上。</p>
+                            </div>
+                            <div class="p-6 bg-gray-50 rounded-lg text-center border">
+                                <div class="text-4xl mb-4">📖</div>
+                                <h3 class="text-lg font-semibold">標示於說明書</h3>
+                                <p class="mt-2 text-sm text-gray-600">將表格放在產品的使用說明書中。</p>
+                            </div>
+                            <div class="p-6 bg-gray-50 rounded-lg text-center border">
+                                <div class="text-4xl mb-4">🌐</div>
+                                <h3 class="text-lg font-semibold">網路或電子方式</h3>
+                                <p class="mt-2 text-sm text-gray-600">以QR Code或網址連結至含有表格的網頁。</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 10 Content -->
+                    <div id="step-10-content" class="content-panel bg-white p-8 rounded-xl shadow-md">
+                        <h2 class="text-2xl font-bold mb-4">10. 建立技術文件 & FAQ</h2>
+                        <h3 class="text-xl font-semibold mb-2 text-blue-600">建立最終技術文件 (TCF)</h3>
+                        <p class="text-gray-600 leading-relaxed">標示完成後，您需要將所有相關文件整理成一份「技術文件檔案」(Technical Construction File)。這份檔案無須提交給政府，但必須妥善保存，以備未來市場抽查時提供。</p>
+                        <p class="mt-2 text-gray-600">檔案應包含：</p>
+                        <ul class="mt-2 space-y-1 list-disc list-inside text-gray-700">
+                           <li>產品物料清單 (BOM)</li>
+                           <li>所有零件的供應商聲明書 (SDoC)</li>
+                           <li>相關的第三方測試報告</li>
+                           <li>最終的「限用物質含有情況標示」表格副本</li>
+                        </ul>
+                        
+                        <h3 class="text-xl font-semibold mt-8 mb-4 text-blue-600">常見問題 (FAQ)</h3>
+                        <div class="space-y-4">
+                            <details class="group">
+                                <summary class="flex justify-between items-center font-medium cursor-pointer list-none bg-gray-100 p-4 rounded-lg">
+                                    <span>如果供應商不提供資料怎麼辦？</span>
+                                    <span class="transition group-open:rotate-180">▼</span>
+                                </summary>
+                                <p class="text-gray-600 mt-3 p-4 bg-gray-50 rounded-b-lg">您有兩個選擇：1. 更換可以提供合規證明的供應商。2. 自費將該零件送交第三方實驗室檢測。在沒有證明文件的情況下，切勿自行宣告合規。</p>
+                            </details>
+                            <details class="group">
+                                <summary class="flex justify-between items-center font-medium cursor-pointer list-none bg-gray-100 p-4 rounded-lg">
+                                    <span>標示「－」是不是代表我的產品違法？</span>
+                                    <span class="transition group-open:rotate-180">▼</span>
+                                </summary>
+                                <p class="text-gray-600 mt-3 p-4 bg-gray-50 rounded-b-lg">不一定。RoHS 的精神是「資訊透明揭露」。如果超標的物質屬於法規允許的「豁免項目」(例如特定用途的鉛)，那麼標示「－」並加上正確備註就是合規的。但如果是不在豁免清單中的物質超標，那產品就可能違法，不可在市場上銷售。</p>
+                            </details>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal for interactive cells -->
+    <div id="info-popup" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
+        <div class="bg-white rounded-lg shadow-xl p-8 w-11/12 md:w-1/2 max-w-lg">
+            <h3 id="popup-title" class="text-xl font-bold mb-4 text-gray-800"></h3>
+            <p id="popup-content" class="text-gray-600"></p>
+            <button id="close-popup" class="mt-6 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">關閉</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const steps = document.querySelectorAll('.step');
+            const contentPanels = document.querySelectorAll('.content-panel');
+            let completedSteps = new Set();
+            
+            function updateStepState(activeIndex) {
+                completedSteps.add(activeIndex);
+                steps.forEach((step, index) => {
+                    const stepIndex = index + 1;
+                    step.classList.remove('active', 'completed');
+                    if (stepIndex === activeIndex) {
+                        step.classList.add('active');
+                    } else if (completedSteps.has(stepIndex)) {
+                        step.classList.add('completed');
+                    }
+                });
+            }
+
+            steps.forEach(step => {
+                step.addEventListener('click', () => {
+                    const stepIndex = parseInt(step.dataset.step, 10);
+                    
+                    contentPanels.forEach(panel => {
+                        panel.classList.remove('active');
+                    });
+                    
+                    const targetPanel = document.getElementById(`step-${stepIndex}-content`);
+                    if (targetPanel) {
+                        targetPanel.classList.add('active');
+                    }
+                    
+                    updateStepState(stepIndex);
+                });
+            });
+
+            // Interactive Table Popups
+            const popup = document.getElementById('info-popup');
+            const closeBtn = document.getElementById('close-popup');
+            const popupTitle = document.getElementById('popup-title');
+            const popupContent = document.getElementById('popup-content');
+
+            document.querySelectorAll('.interactive-cell').forEach(cell => {
+                cell.style.cursor = 'pointer';
+                cell.addEventListener('click', () => {
+                    popupTitle.textContent = cell.dataset.title;
+                    popupContent.innerHTML = cell.dataset.content;
+                    popup.style.display = 'flex';
+                });
+            });
+
+            const closePopup = () => {
+                popup.style.display = 'none';
+            };
+            closeBtn.addEventListener('click', closePopup);
+            popup.addEventListener('click', (e) => {
+                if (e.target === popup) closePopup();
+            });
+
+            // RoHS Chart
+            const ctx = document.getElementById('rohsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['鎘 (Cd)', '鉛 (Pb)', '汞 (Hg)', '六價鉻 (Cr+6)', '多溴聯苯 (PBB)', '多溴二苯醚 (PBDE)'],
+                    datasets: [{
+                        label: '濃度限值 (ppm)',
+                        data: [100, 1000, 1000, 1000, 1000, 1000],
+                        backgroundColor: ['#ef4444', '#3b82f6', '#3b82f6', '#3b82f6', '#3b82f6', '#3b82f6'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { x: { beginAtZero: true, title: { display: true, text: '濃度 (ppm)' } } }
+                }
+            });
+
+            // Homogeneous Material Interactive Diagram
+            const cableParts = document.querySelectorAll('.cable-part');
+            const tooltip = document.getElementById('cable-tooltip');
+            cableParts.forEach(part => {
+                part.addEventListener('mousemove', (e) => {
+                    tooltip.style.left = `${e.layerX + 15}px`;
+                    tooltip.style.top = `${e.layerY - 40}px`;
+                });
+                part.addEventListener('mouseenter', () => {
+                    tooltip.textContent = part.dataset.info;
+                    tooltip.classList.remove('hidden');
+                });
+                part.addEventListener('mouseleave', () => {
+                    tooltip.classList.add('hidden');
+                });
+            });
+
+            // Gemini API Integration
+            const generateBtn = document.getElementById('generate-units-btn');
+            const productDescription = document.getElementById('product-description');
+            const geminiLoader = document.getElementById('gemini-loader');
+            const geminiResults = document.getElementById('gemini-results');
+            const geminiError = document.getElementById('gemini-error');
+
+            generateBtn.addEventListener('click', async () => {
+                const description = productDescription.value.trim();
+                if (!description) {
+                    geminiError.textContent = '請先輸入產品描述。';
+                    geminiError.style.display = 'block';
+                    return;
+                }
+
+                geminiLoader.style.display = 'block';
+                geminiResults.innerHTML = '';
+                geminiError.style.display = 'none';
+
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+                
+                const systemPrompt = "你是一位專精於台灣 CNS 15663 (RoHS) 法規的電子產品合規顧問。你的任務是分析使用者提供的產品描述，並將其拆解為適合填寫在「限用物質含有情況標示」表格中的標準、獨立的「單元」(unit)。你的回覆應基於產品主要的物理與功能性組件，並以繁體中文提供一份包含單元名稱和簡要理由的 JSON 陣列。";
+                
+                const userQuery = `根據以下產品描述，請提供一份適合 CNS 15663 宣告表格的「單元」建議清單。產品描述：「${description}」`;
+
+                const payload = {
+                    systemInstruction: { parts: [{ text: systemPrompt }] },
+                    contents: [{ parts: [{ text: userQuery }] }],
+                    generationConfig: {
+                        responseMimeType: "application/json",
+                        responseSchema: {
+                            type: "ARRAY",
+                            items: {
+                                type: "OBJECT",
+                                properties: {
+                                    unitName: { type: "STRING", description: "零件或單元的名稱（繁體中文）。" },
+                                    reasoning: { type: "STRING", description: "簡要說明為何這應被視為一個獨立的單元（繁體中文）。" }
+                                },
+                                required: ["unitName", "reasoning"]
+                            }
+                        }
+                    }
+                };
+                
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`API 請求失敗，狀態碼：${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    const candidate = result.candidates?.[0];
+
+                    if (candidate && candidate.content?.parts?.[0]?.text) {
+                        const units = JSON.parse(candidate.content.parts[0].text);
+                        if(units.length > 0) {
+                            let resultHtml = '<h4 class="text-lg font-semibold mb-3 text-gray-700">AI 建議的產品單元：</h4><ul class="space-y-3">';
+                            units.forEach(unit => {
+                                resultHtml += `<li class="p-3 bg-white rounded-md border border-gray-200"><strong>${unit.unitName}</strong><p class="text-sm text-gray-500 mt-1">${unit.reasoning}</p></li>`;
+                            });
+                            resultHtml += '</ul>';
+                            geminiResults.innerHTML = resultHtml;
+                        } else {
+                           throw new Error("AI 未能分析出具體單元。");
+                        }
+                    } else {
+                        throw new Error("從 AI 收到的回應格式不正確。");
+                    }
+                } catch (error) {
+                    console.error("Gemini API 呼叫失敗:", error);
+                    geminiError.textContent = '分析時發生錯誤，請檢查您的輸入或稍後再試。';
+                    geminiError.style.display = 'block';
+                } finally {
+                    geminiLoader.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
