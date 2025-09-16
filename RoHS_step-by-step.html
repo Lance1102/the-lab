@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>台灣 BSMI RoHS 深度互動指南</title>
+    <title>台灣 BSMI RoHS 深度互動指南 (靜態版)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- Chosen Palette: Serene Blue & Warm Sand -->
-    <!-- Application Structure Plan: This version adopts a multi-step "wizard" or "guided journey" structure, breaking the compliance process into 4 phases and 12 detailed steps. A persistent vertical stepper navigation on the left allows users to see the entire process at a glance and track their progress. This is superior for a more detailed guide as it prevents cognitive overload and provides a clear path from start to finish. The content for each step is displayed on the right. Key interactive elements, like the homogeneous material diagram and the AI unit analyzer, are embedded at the most relevant steps to serve as practical tools within the workflow. This structure transforms the guide from a simple tabbed interface into a comprehensive, step-by-step learning and execution platform. -->
+    <!-- Application Structure Plan: This version adopts a multi-step "wizard" or "guided journey" structure, breaking the compliance process into 4 phases and 12 detailed steps. A persistent vertical stepper navigation on the left allows users to see the entire process at a glance and track their progress. This is superior for a more detailed guide as it prevents cognitive overload and provides a clear path from start to finish. The content for each step is displayed on the right. Key interactive elements, like the homogeneous material diagram and detailed unit examples, are embedded at the most relevant steps to serve as practical tools within the workflow. This structure transforms the guide from a simple tabbed interface into a comprehensive, step-by-step learning and execution platform. -->
     <!-- Visualization & Content Choices: 
         1. Homogeneous Material Explainer: (Report Info: The concept of a non-mechanically separable material) -> (Goal: Instruct/Clarify) -> (Viz/Presentation: Interactive HTML/CSS Diagram) -> (Interaction: Hovering over parts of a cable (outer jacket, shield, insulator, conductor) reveals that each is a homogeneous material) -> (Justification: This is the most difficult concept in RoHS. A visual, interactive diagram is vastly more effective at explaining it than text alone.) -> (Library/Method: HTML/CSS/JS).
         2. Process Stepper: (Report Info: The entire compliance workflow) -> (Goal: Organize/Navigate) -> (Viz/Presentation: Vertical Stepper UI) -> (Interaction: Clicking a step navigates to its content) -> (Justification: Provides a clear roadmap for the user, making a complex process feel structured and manageable.) -> (Library/Method: HTML/CSS/JS).
         3. FAQ Section: (Report Info: Common user questions) -> (Goal: Inform) -> (Viz/Presentation: HTML <details>/<summary> accordion) -> (Interaction: Click to expand/collapse answers) -> (Justification: An efficient way to present supplemental information without cluttering the main workflow.) -> (Library/Method: HTML).
-        4. AI Unit Analyzer: (Report Info: Need for product-specific component lists) -> (Goal: Assist/Automate) -> (Viz/Presentation: Input form with results area) -> (Interaction: User types description, clicks button, receives structured list of components from Gemini) -> (Justification: Directly addresses a major user pain point in the process, providing a powerful, practical tool.) -> (Library/Method: JS Fetch API).
+        4. Unit Breakdown Examples: (Report Info: Need for product-specific component lists) -> (Goal: Instruct/Provide Examples) -> (Viz/Presentation: Structured example cards with icons and lists) -> (Interaction: Static display) -> (Justification: Replaces the AI feature with concrete, detailed examples which are more reliable for a static deployment and serve the educational purpose effectively.) -> (Library/Method: HTML/Tailwind CSS).
     -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
@@ -73,19 +73,6 @@
         .cable-part:hover {
             filter: brightness(1.1);
             transform: scale(1.02);
-        }
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3b82f6;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -149,7 +136,7 @@
                             <div class="step-circle">6</div>
                             <div class="step-line"></div>
                         </div>
-                        <div class="pt-1.5"><p class="step-text font-semibold">AI 智慧拆解單元</p></div>
+                        <div class="pt-1.5"><p class="step-text font-semibold">學習拆解產品單元</p></div>
                     </div>
                     <div class="step relative flex items-start" data-step="7">
                          <div class="flex flex-col items-center mr-4">
@@ -266,18 +253,47 @@
                     
                     <!-- Step 6 Content -->
                      <div id="step-6-content" class="content-panel bg-white p-8 rounded-xl shadow-md">
-                        <h2 class="text-2xl font-bold mb-4">6. AI 智慧拆解單元</h2>
-                        <p class="text-gray-600 leading-relaxed">在填寫表格前，您需要將產品拆解成合理的「單元」。這一步常讓人感到困惑。現在，您可以讓 AI 助您一臂之力。</p>
-                        <div class="mt-6 bg-blue-50 p-6 rounded-lg border border-blue-200">
-                            <h3 class="text-xl font-semibold text-slate-700 mb-3">AI 產品單元分析器</h3>
-                            <p class="text-gray-600 mb-4">在此輸入您的產品描述，AI 將根據 CNS 15663 的原則，為您建議一份合理的單元拆解清單。</p>
-                            <textarea id="product-description" class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" rows="3" placeholder="例如：一台桌上型電腦，包含鐵製機殼、主機板、電源供應器、硬碟和各種連接線。"></textarea>
-                            <button id="generate-units-btn" class="mt-4 w-full bg-blue-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-600 flex items-center justify-center">
-                                ✨ 產生建議單元
-                            </button>
-                            <div id="gemini-loader" class="loader" style="display: none;"></div>
-                            <div id="gemini-results" class="mt-6"></div>
-                            <div id="gemini-error" class="mt-4 text-red-600 bg-red-100 p-3 rounded-lg" style="display: none;"></div>
+                        <h2 class="text-2xl font-bold mb-4">6. 學習如何拆解產品單元 (附範例)</h2>
+                        <p class="text-gray-600 leading-relaxed">「單元」是宣告表格的主體，指的是產品中可被獨立識別的零件或組件。拆解的原則是<strong class="text-blue-600">依主要功能和物理結構</strong>進行劃分，不需過於細碎。以下提供常見產品的拆解範例供您參考：</p>
+                        
+                        <div class="mt-6 space-y-6">
+                            <!-- Example 1: Desktop Computer -->
+                            <div class="border rounded-lg p-4">
+                                <h3 class="font-bold text-lg text-gray-700">🖥️ 範例一：桌上型電腦</h3>
+                                <ul class="mt-2 list-disc list-inside text-gray-600 space-y-1">
+                                    <li><strong>機殼：</strong>金屬與塑膠組成的外部框架。</li>
+                                    <li><strong>主機板組件：</strong>包含電路板本身、焊點、插槽等。</li>
+                                    <li><strong>電源供應器：</strong>一個獨立的功能模組。</li>
+                                    <li><strong>硬碟/固態硬碟：</strong>儲存裝置。</li>
+                                    <li><strong>記憶體模組 (RAM)：</strong>插入主機板的記憶體條。</li>
+                                    <li><strong>內部連接線材：</strong>如 SATA 線、電源線等。</li>
+                                </ul>
+                            </div>
+
+                            <!-- Example 2: LCD Monitor -->
+                            <div class="border rounded-lg p-4">
+                                <h3 class="font-bold text-lg text-gray-700">💻 範例二：液晶顯示器</h3>
+                                <ul class="mt-2 list-disc list-inside text-gray-600 space-y-1">
+                                    <li><strong>顯示面板模組：</strong>包含液晶面板、背光模組。</li>
+                                    <li><strong>塑膠外殼：</strong>前框、後蓋等塑膠部分。</li>
+                                    <li><strong>電路板：</strong>主驅動板、電源板等。</li>
+                                    <li><strong>內部線材：</strong>連接面板與電路板的排線。</li>
+                                    <li><strong>支架/底座：</strong>金屬或塑膠製的支撐結構。</li>
+                                    <li><strong>外接電源供應器：</strong>如果產品使用外接變壓器。</li>
+                                </ul>
+                            </div>
+
+                            <!-- Example 3: LED Bulb -->
+                            <div class="border rounded-lg p-4">
+                                <h3 class="font-bold text-lg text-gray-700">💡 範例三：LED 燈泡</h3>
+                                <ul class="mt-2 list-disc list-inside text-gray-600 space-y-1">
+                                    <li><strong>LED 晶片與基板：</strong>發光的核心元件。</li>
+                                    <li><strong>驅動電路：</strong>安定器或驅動器電路板。</li>
+                                    <li><strong>燈罩 (PC/玻璃)：</strong>保護與擴散光線的外罩。</li>
+                                    <li><strong>散熱器 (鋁/陶瓷)：</strong>用於散熱的金屬或陶瓷結構。</li>
+                                    <li><strong>燈頭 (E27等)：</strong>連接燈座的金屬與絕緣部分。</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
 
@@ -507,89 +523,6 @@
                 part.addEventListener('mouseleave', () => {
                     tooltip.classList.add('hidden');
                 });
-            });
-
-            // Gemini API Integration
-            const generateBtn = document.getElementById('generate-units-btn');
-            const productDescription = document.getElementById('product-description');
-            const geminiLoader = document.getElementById('gemini-loader');
-            const geminiResults = document.getElementById('gemini-results');
-            const geminiError = document.getElementById('gemini-error');
-
-            generateBtn.addEventListener('click', async () => {
-                const description = productDescription.value.trim();
-                if (!description) {
-                    geminiError.textContent = '請先輸入產品描述。';
-                    geminiError.style.display = 'block';
-                    return;
-                }
-
-                geminiLoader.style.display = 'block';
-                geminiResults.innerHTML = '';
-                geminiError.style.display = 'none';
-
-                const apiKey = "";
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-                
-                const systemPrompt = "你是一位專精於台灣 CNS 15663 (RoHS) 法規的電子產品合規顧問。你的任務是分析使用者提供的產品描述，並將其拆解為適合填寫在「限用物質含有情況標示」表格中的標準、獨立的「單元」(unit)。你的回覆應基於產品主要的物理與功能性組件，並以繁體中文提供一份包含單元名稱和簡要理由的 JSON 陣列。";
-                
-                const userQuery = `根據以下產品描述，請提供一份適合 CNS 15663 宣告表格的「單元」建議清單。產品描述：「${description}」`;
-
-                const payload = {
-                    systemInstruction: { parts: [{ text: systemPrompt }] },
-                    contents: [{ parts: [{ text: userQuery }] }],
-                    generationConfig: {
-                        responseMimeType: "application/json",
-                        responseSchema: {
-                            type: "ARRAY",
-                            items: {
-                                type: "OBJECT",
-                                properties: {
-                                    unitName: { type: "STRING", description: "零件或單元的名稱（繁體中文）。" },
-                                    reasoning: { type: "STRING", description: "簡要說明為何這應被視為一個獨立的單元（繁體中文）。" }
-                                },
-                                required: ["unitName", "reasoning"]
-                            }
-                        }
-                    }
-                };
-                
-                try {
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`API 請求失敗，狀態碼：${response.status}`);
-                    }
-
-                    const result = await response.json();
-                    const candidate = result.candidates?.[0];
-
-                    if (candidate && candidate.content?.parts?.[0]?.text) {
-                        const units = JSON.parse(candidate.content.parts[0].text);
-                        if(units.length > 0) {
-                            let resultHtml = '<h4 class="text-lg font-semibold mb-3 text-gray-700">AI 建議的產品單元：</h4><ul class="space-y-3">';
-                            units.forEach(unit => {
-                                resultHtml += `<li class="p-3 bg-white rounded-md border border-gray-200"><strong>${unit.unitName}</strong><p class="text-sm text-gray-500 mt-1">${unit.reasoning}</p></li>`;
-                            });
-                            resultHtml += '</ul>';
-                            geminiResults.innerHTML = resultHtml;
-                        } else {
-                           throw new Error("AI 未能分析出具體單元。");
-                        }
-                    } else {
-                        throw new Error("從 AI 收到的回應格式不正確。");
-                    }
-                } catch (error) {
-                    console.error("Gemini API 呼叫失敗:", error);
-                    geminiError.textContent = '分析時發生錯誤，請檢查您的輸入或稍後再試。';
-                    geminiError.style.display = 'block';
-                } finally {
-                    geminiLoader.style.display = 'none';
-                }
             });
         });
     </script>
