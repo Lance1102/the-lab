@@ -72,7 +72,7 @@
         }
         .cable-part:hover {
             filter: brightness(1.1);
-            transform: scale(1.02);
+            transform: scale(1.08);
         }
     </style>
 </head>
@@ -242,16 +242,16 @@
                         <p class="mt-2 text-gray-600 leading-relaxed">均質材料指的是：<strong class="text-gray-700">無法再用物理方式 (如旋開、切割、碾碎) 分離成不同材料的最小單位。</strong></p>
                         <p class="mt-4 text-gray-600">將滑鼠懸停在下方電線的不同部分，看看哪些是均質材料：</p>
                         <div class="mt-6 p-4 border rounded-lg">
-                            <div class="relative w-full h-24 bg-gray-200 rounded-lg flex items-center justify-center p-4">
+                            <div class="relative w-full h-32 bg-gray-200 rounded-lg flex items-center justify-center p-4">
                                 <!-- Cable visual -->
-                                <div class="w-full h-12 bg-gray-700 rounded-full flex items-center p-1 cable-part" data-info="外皮 (PVC塑膠)：這是一層均質材料。">
-                                    <div class="w-full h-10 bg-gray-500 rounded-full flex items-center p-1 cable-part" data-info="屏蔽層 (金屬編織網)：這是另一層均質材料。">
-                                        <div class="w-full h-8 bg-white rounded-full flex items-center p-1 cable-part" data-info="絕緣體 (PE塑膠)：這是第三層均質材料。">
-                                            <div class="w-full h-4 bg-yellow-500 rounded-full cable-part" data-info="導體 (銅線)：這是第四層均質材料。"></div>
+                                <div class="w-full h-20 bg-gray-700 rounded-full flex items-center p-2 cable-part" data-info="外皮 (PVC塑膠)：這是一層均質材料。">
+                                    <div class="w-full h-16 bg-gray-500 rounded-full flex items-center p-2 cable-part" data-info="屏蔽層 (金屬編織網)：這是另一層均質材料。">
+                                        <div class="w-full h-12 bg-white rounded-full flex items-center p-2 cable-part" data-info="絕緣體 (PE塑膠)：這是第三層均質材料。">
+                                            <div class="w-full h-6 bg-yellow-500 rounded-full cable-part" data-info="導體 (銅線)：這是第四層均質材料。"></div>
                                         </div>
                                     </div>
                                 </div>
-                                <div id="cable-tooltip" class="absolute hidden bg-black text-white text-sm rounded py-1 px-2 z-10 -mt-24"></div>
+                                <div id="cable-tooltip" class="absolute hidden bg-black text-white text-sm rounded py-1 px-2 z-10"></div>
                             </div>
                         </div>
                         <div class="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded-r-lg">
@@ -595,8 +595,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
