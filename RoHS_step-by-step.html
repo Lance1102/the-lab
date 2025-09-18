@@ -81,9 +81,20 @@
         #cable-container:hover #cable-wrapper {
             transform: scale(1.36); /* Scale the wrapper on container hover */
         }
-        #cable-tooltip {
-            position: fixed; /* Use fixed positioning to escape parent overflow */
-            pointer-events: none; /* Prevent tooltip from blocking mouse events */
+        #cable-info-text {
+            position: absolute;
+            bottom: 28%; /* Position the text inside the frame */
+            left: 5%;
+            right: 5%;
+            text-align: center;
+            color: #1f2937;
+            background-color: rgba(255, 255, 255, 0.75);
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            pointer-events: none; /* Prevent text from blocking hover on cable parts */
         }
     </style>
 </head>
@@ -264,6 +275,8 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- Info text display area inside the container -->
+                                <div id="cable-info-text"></div>
                             </div>
                         </div>
                         <div class="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded-r-lg">
@@ -497,9 +510,6 @@
         </div>
     </div>
 
-    <!-- Tooltip moved outside of any containers with overflow:hidden -->
-    <div id="cable-tooltip" class="absolute hidden bg-black text-white text-sm rounded py-1 px-2 z-50"></div>
-
     <!-- Modal for interactive cells -->
     <div id="info-popup" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center">
         <div class="bg-white rounded-lg shadow-xl p-8 w-11/12 md:w-1/2 max-w-lg">
@@ -590,27 +600,23 @@
                 }
             });
 
-            // Homogeneous Material Interactive Diagram
+            // Homogeneous Material Interactive Diagram v3
             const cableParts = document.querySelectorAll('.cable-part');
-            const tooltip = document.getElementById('cable-tooltip');
-            
-            const onMouseMove = (e) => {
-                tooltip.style.left = `${e.pageX + 15}px`;
-                tooltip.style.top = `${e.pageY + 15}px`;
-            };
+            const cableContainer = document.getElementById('cable-container');
+            const infoText = document.getElementById('cable-info-text');
 
             cableParts.forEach(part => {
-                part.addEventListener('mouseenter', (e) => {
-                    tooltip.textContent = part.dataset.info;
-                    tooltip.classList.remove('hidden');
-                    document.addEventListener('mousemove', onMouseMove);
+                part.addEventListener('mouseenter', () => {
+                    infoText.textContent = part.dataset.info;
+                    infoText.style.opacity = '1';
                 });
-                part.addEventListener('mouseleave', () => {
-                    tooltip.classList.add('hidden');
-                    document.removeEventListener('mousemove', onMouseMove);
-                });
+            });
+
+            cableContainer.addEventListener('mouseleave', () => {
+                infoText.style.opacity = '0';
             });
         });
     </script>
 </body>
 </html>
+
