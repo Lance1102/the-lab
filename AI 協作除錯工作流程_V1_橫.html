@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 協作除錯流程圖 (橫向版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 確保 Mermaid 圖表有足夠的空間並置中 */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f3f4f6; /* Tailwind gray-100 */
+        }
+        .mermaid {
+            width: 100%;
+            max-width: 1600px; /* 橫向版本需要更寬的空間 */
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full">
+        <h1 class="text-2xl font-bold text-center mb-6 text-gray-800">AI 協作除錯工作流程 (橫向版)</h1>
+        <!-- Mermaid 流程圖代碼容器 -->
+        <div class="mermaid">
+            graph LR
+                %% Define styles for different node types
+                classDef startend fill:#004D40,color:#fff,stroke:#000,stroke-width:2px;
+                classDef human fill:#FF6F00,color:#fff,stroke:#000,stroke-width:2px;
+                classDef ai fill:#1E88E5,color:#fff,stroke:#000,stroke-width:2px;
+                classDef decision fill:#AD1457,color:#fff,stroke:#000,stroke-width:2px;
+                classDef process fill:#F9A825,color:#000,stroke:#000,stroke-width:1px;
+            
+                %% Start of the workflow
+                A["發現 Bug"]:::startend --> B["人類初步分析與定義問題<br/>(收集 Log, 描述預期行為)"]:::human;
+            
+                %% Initial interaction with the primary AI
+                B --> C["提交問題給 <b>開發 AI (AI-Dev)</b>"];
+                C --> D{"AI-Dev 能否解決問題?"};
+                class D decision;
+            
+                %% Success path
+                D --o|是| E["驗證解決方案"];
+                E --> F["問題解決 ✨"];
+                class F startend;
+            
+                %% First loop: Rephrasing the problem
+                D --x|否/卡關| G["<b>人類介入：轉換描述方式</b><br/>- 使用者故事法<br/>- 視覺幾何法<br/>- 邊界約束法 等"]:::human;
+                G --> H["重新提交給 AI-Dev"];
+                H --> I{"是否解決?"};
+                class I decision;
+                I --o|是| E;
+            
+                %% Second loop: Multi-Agent Collaboration
+                I --x|否/仍卡關| J["<b>啟用 AI 協同策略</b>"]:::process;
+                J --> K["提交原始問題與對話紀錄<br/>給 <b>分析 AI (AI-Analyst)</b>"];
+                K --> L["AI-Analyst 生成新回饋<br/>與潛在洞見"];
+                class L ai;
+                L --> M["將 (新洞見 + 原始問題)<br/>再次提交給 <b>AI-Dev</b>"];
+                M --> N{"是否解決?"};
+                class N decision;
+                N --o|是| E;
+            
+                %% Escalation path for complex issues
+                N --x|否/深度問題| O["<b>人類主導進階策略</b><br/>- 要求 AI 進行根本原因分析 (RCA)<br/>- 要求 AI 生成最小重現範例<br/>- 要求 AI 撰寫測試案例"]:::human;
+                O --> C;
+            
+                %% Assign classes to nodes
+                class A,F startend;
+                class B,G,O human;
+                class C,H,K,M ai;
+                class J process;
+        </div>
+    </div>
+    
+    <!-- 引入 Mermaid.js 函式庫並初始化 -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: true });
+    </script>
+</body>
+</html>
