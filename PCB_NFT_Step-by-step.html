@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IEC 60335 PCB Compliance Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f3f4f6; color: #1f2937; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin: 0 auto; height: 300px; max-height: 400px; }
+        .card { transition: all 0.3s ease; }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        .step-active { border-left: 4px solid #3b82f6; background-color: #eff6ff; }
+        .step-inactive { border-left: 4px solid transparent; opacity: 0.6; }
+        .hidden-section { display: none; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+    <!-- Chosen Palette: Professional Compliance Blue - Cool Neutrals (Slate/Gray) for structure, Blue (#3b82f6) for primary actions/info, Green for pass/compliance, Amber for warning/testing required. -->
+    <!-- Application Structure Plan: 
+         1. Header: Context setting for IEC 60335 Clause 30 & Annex E.
+         2. Interactive Wizard (The Decision Engine): The core tool. Users answer Qs about their PCB (Laminate vs Finished, UL File type). It outputs a "Pass" or "Test Required" verdict.
+         3. Visual Analysis: A section visualizing WHY V-0 is accepted (comparing test severities).
+         4. Knowledge Base: Detailed breakdown of "Base Material" vs "Finished Board" and UL Categories (ZPMV2 vs QMTS2).
+    -->
+    <!-- Visualization & Content Choices:
+         - Decision Tree: Implemented as a JS-driven step-by-step wizard (No SVG).
+         - Severity Chart: Chart.js Bar Chart comparing Glow Wire, Needle Flame, and V-0 criteria (conceptual duration/severity) to justify exemptions.
+         - Status Indicators: CSS/HTML cards with color coding.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col">
+
+    <!-- Navigation / Header -->
+    <header class="bg-white shadow-sm border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="h-8 w-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">60335</div>
+                <h1 class="text-xl font-bold text-slate-800 tracking-tight">PCB 阻燃合規助手 <span class="text-sm font-normal text-slate-500 hidden sm:inline-block">| IEC 60335-1 第30條款 & 附錄E</span></h1>
+            </div>
+            <nav class="hidden md:flex space-x-6 text-sm font-medium text-slate-600">
+                <button onclick="scrollToSection('wizard')" class="hover:text-blue-600 transition">判定精靈</button>
+                <button onclick="scrollToSection('analysis')" class="hover:text-blue-600 transition">數據分析</button>
+                <button onclick="scrollToSection('knowledge')" class="hover:text-blue-600 transition">知識庫</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-6xl mx-auto px-4 py-8 w-full space-y-12">
+
+        <!-- Intro Section -->
+        <section class="text-center max-w-3xl mx-auto mb-8">
+            <h2 class="text-3xl font-bold text-slate-900 mb-4">印刷電路板 (PCB) 針焰試驗評估</h2>
+            <p class="text-lg text-slate-600 leading-relaxed">
+                根據 IEC 60335-1 第30條款，非金屬材料需通過耐燃測試。對於 PCB，通常需要進行 <strong>Needle Flame Test (NFT, 附錄E)</strong>。
+                但在特定條件下（如取得 UL 94 V-0），可豁免測試。本工具協助您快速判斷是否需要執行 NFT。
+            </p>
+        </section>
+
+        <!-- SECTION 1: Compliance Wizard (Interactive Core) -->
+        <section id="wizard" class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+            <div class="bg-slate-900 px-6 py-4 border-b border-slate-800">
+                <h3 class="text-lg font-semibold text-white flex items-center">
+                    <span class="mr-2">⚡</span> 互動判定精靈 (Compliance Wizard)
+                </h3>
+            </div>
+            
+            <div class="p-6 md:p-8">
+                <p class="mb-6 text-slate-600">請回答以下關於您 PCB 供應商與 UL 認證狀態的問題，系統將自動分析是否需要執行 IEC 60335 針焰試驗。</p>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Left: Questions -->
+                    <div class="lg:col-span-2 space-y-4" id="question-container">
+                        <!-- Questions injected by JS -->
+                    </div>
+
+                    <!-- Right: Live Verdict Panel -->
+                    <div class="lg:col-span-1">
+                        <div class="sticky top-24 bg-slate-50 rounded-xl p-6 border border-slate-200 transition-all duration-300" id="verdict-panel">
+                            <h4 class="text-sm uppercase tracking-wide text-slate-500 font-bold mb-3">當前評估狀態</h4>
+                            <div id="verdict-status" class="text-4xl mb-4">🤔</div>
+                            <h5 id="verdict-title" class="text-xl font-bold text-slate-800 mb-2">等待輸入...</h5>
+                            <p id="verdict-desc" class="text-sm text-slate-600 mb-4">請完成左側問題以獲得評估建議。</p>
+                            
+                            <!-- Dynamic Details Box -->
+                            <div id="verdict-details" class="hidden text-sm bg-white p-3 rounded border border-slate-200 shadow-inner">
+                                <ul class="list-disc pl-4 space-y-1 text-slate-700"></ul>
+                            </div>
+
+                            <button onclick="resetWizard()" class="mt-6 w-full py-2 px-4 bg-white border border-slate-300 text-slate-600 rounded-lg hover:bg-slate-50 text-sm font-medium transition">
+                                重置評估
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: Analysis & Visualization -->
+        <section id="analysis" class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+            <!-- Introductory Text -->
+            <div class="col-span-1 md:col-span-2">
+                <h3 class="text-2xl font-bold text-slate-800 mb-2">為什麼 V-0 可以豁免測試？</h3>
+                <p class="text-slate-600">
+                    IEC 60335 標準承認 UL 94 V-0 (或 IEC 60695-11-10) 的嚴苛度通常涵蓋或超過針焰試驗的要求。
+                    下方圖表比較了不同阻燃等級的相對耐燃性能與測試嚴苛度指標。
+                </p>
+            </div>
+
+            <!-- Chart Container -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h4 class="font-bold text-slate-700 mb-4 text-center">阻燃等級嚴苛度與豁免門檻</h4>
+                <div class="chart-container">
+                    <canvas id="flameChart"></canvas>
+                </div>
+                <p class="text-xs text-center text-slate-400 mt-2">註：數值為基於測試時間與通過標準的綜合嚴苛度指數 (僅供參考)</p>
+            </div>
+
+            <!-- Explainer Text -->
+            <div class="space-y-6">
+                <div class="bg-blue-50 p-5 rounded-lg border-l-4 border-blue-500">
+                    <h5 class="font-bold text-blue-800 mb-2">關鍵觀念：基材 vs. 成品</h5>
+                    <p class="text-sm text-blue-700 mb-2">
+                        <strong>PCB 基材 (Laminate):</strong> 即使基材本身是 V-0，一旦經過加工（印刷線路、阻焊層/綠漆 Solder Mask），其阻燃特性可能改變。
+                    </p>
+                    <p class="text-sm text-blue-700">
+                        <strong>IEC 要求：</strong> 除非證明「成品板」符合 V-0，否則必須對成品進行針焰試驗 (NFT)。這就是為什麼單純看基材黃卡 (QMTS2) 常常不夠的原因。
+                    </p>
+                </div>
+
+                <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                    <h5 class="font-bold text-slate-800 mb-2">UL 認證類別解碼</h5>
+                    <ul class="space-y-3 text-sm text-slate-600">
+                        <li class="flex items-start">
+                            <span class="bg-green-100 text-green-800 text-xs font-bold px-2 py-0.5 rounded mr-2 mt-0.5">ZPMV2</span>
+                            <span><strong>Finished Board (成品板):</strong> 若供應商提供此類別的 E-Number 且為 V-0，通常可直接豁免 NFT。</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-yellow-100 text-yellow-800 text-xs font-bold px-2 py-0.5 rounded mr-2 mt-0.5">QMTS2</span>
+                            <span><strong>Laminate (基層板):</strong> 僅代表"沒有印刷"的板材。若您的 PCB 有綠漆/印刷，不能直接引用此認證來豁免 NFT。</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: Knowledge Base (Details) -->
+        <section id="knowledge" class="space-y-6">
+            <h3 class="text-2xl font-bold text-slate-800">常見問題與判定細節</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 card">
+                    <div class="text-3xl mb-4">🔍</div>
+                    <h4 class="font-bold text-lg text-slate-800 mb-2">只有 UL Logo 沒有號碼？</h4>
+                    <p class="text-sm text-slate-600">
+                        PCB 上僅有 UL 標誌 (Logo) 或 "94V-0" 字樣是<strong>不足以</strong>作為合規證據的。IEC 60335 要求可追溯性。您必須要求供應商提供具體的 <strong>UL File Number (Exxxxxx)</strong> 並上網核實黃卡 (Yellow Card)。
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 card">
+                    <div class="text-3xl mb-4">🧪</div>
+                    <h4 class="font-bold text-lg text-slate-800 mb-2">針焰試驗 (NFT) 怎麼做？</h4>
+                    <p class="text-sm text-slate-600">
+                        依據 IEC 60695-11-5。使用丁烷氣產生 12mm 高的火焰，施加於樣品最薄弱處（如邊緣）持續 <strong>10秒 或 30秒</strong> (視條款而定)。
+                        <strong>合格標準：</strong> 移開火焰後，燃燒時間不超過 30秒，且滴落物不引燃底層衛生紙。
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 card">
+                    <div class="text-3xl mb-4">🛡️</div>
+                    <h4 class="font-bold text-lg text-slate-800 mb-2">Solder Mask (阻焊層) 的影響</h4>
+                    <p class="text-sm text-slate-600">
+                        有些認證機構允許：如果基材是 V-0 (QMTS2)，且使用的油墨/阻焊層也單獨取得了 UL 94 V-0 認證 (類別 QMFZ2)，則可能接受"組合"合規。但最保險的方式仍是進行成品板的 NFT。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-800 text-slate-400 py-8 mt-12">
+        <div class="max-w-6xl mx-auto px-4 text-center text-sm">
+            <p class="mb-2">IEC 60335 PCB Compliance Assistant © 2023</p>
+            <p>本工具僅供輔助參考，最終合規性請以官方實驗室報告與標準原文 (IEC 60335-1) 為準。</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // --- DATA & STATE ---
+        const state = {
+            currentStep: 0,
+            answers: {},
+            history: []
+        };
+
+        // Decision Tree Logic
+        const decisionTree = [
+            {
+                id: 'q1',
+                text: "Q1: 您手上的 PCB 供應商是否提供了 UL 認證號碼 (File Number, 如 E123456)？",
+                options: [
+                    { label: "有，我有 UL 號碼", value: "yes", next: 'q2' },
+                    { label: "沒有，只有 UL Logo 或 V-0 印字", value: "no", next: 'result_no_trace' }
+                ]
+            },
+            {
+                id: 'q2',
+                text: "Q2: 查詢該號碼 (UL Product iQ) 後，該認證屬於哪個類別 (Category)？",
+                note: "提示：查看黃卡頂部的 'Category Name'。",
+                options: [
+                    { label: "ZPMV2 / ZPMV8 (Wiring, Printed - Component)", value: "ZPMV2", next: 'q3_finished' },
+                    { label: "QMTS2 (Industrial Laminates - Component)", value: "QMTS2", next: 'q3_laminate' },
+                    { label: "不確定 / 其他類別", value: "unknown", next: 'result_manual' }
+                ]
+            },
+            {
+                id: 'q3_finished',
+                text: "Q3 (成品板 ZPMV2): 該黃卡上的燃燒等級 (Flammability Rating) 是？",
+                options: [
+                    { label: "V-0 或 V-1", value: "v0", next: 'result_pass' },
+                    { label: "V-2, HB 或更低", value: "low", next: 'result_nft_req' }
+                ]
+            },
+            {
+                id: 'q3_laminate',
+                text: "Q3 (基材 QMTS2): 您的實際 PCB 成品是否有印刷、綠漆 (Solder Mask) 或其他覆蓋層？",
+                options: [
+                    { label: "是，有印刷/綠漆 (絕大多數情況)", value: "printed", next: 'result_check_mask' },
+                    { label: "否，這是完全裸板 (蝕刻後無任何油墨)", value: "bare", next: 'result_pass_bare' }
+                ]
+            }
+        ];
+
+        const results = {
+            'result_pass': {
+                title: "豁免測試 (Exempt)",
+                status: "✅",
+                desc: "您的 PCB 屬於已認證的成品板 (ZPMV2) 且達到了 V-0/V-1 等級。",
+                details: [
+                    "依據 IEC 60335-1 第 30.2 條款，材料分級為 V-0 或 V-1 不需進行針焰試驗。",
+                    "請保存該 UL 黃卡作為技術文件 (Technical Construction File)。"
+                ],
+                color: "green"
+            },
+            'result_pass_bare': {
+                title: "豁免測試 (Exempt)",
+                status: "✅",
+                desc: "基材為 V-0 且無額外可燃印刷層，視為符合 V-0。",
+                details: [
+                    "因為沒有添加額外的有機物(油墨)，基材的 V-0 特性得以保留。",
+                    "請確保生產過程未引入其他易燃塗層。"
+                ],
+                color: "green"
+            },
+            'result_nft_req': {
+                title: "需執行針焰試驗 (Test Required)",
+                status: "🔥",
+                desc: "PCB 阻燃等級不足 (如 HB/V-2)，必須進行 IEC 60695-11-5 針焰試驗。",
+                details: [
+                    "IEC 60335 要求：非金屬材料若非 V-0/V-1，則需通過針焰測試。",
+                    "測試條件：依據產品類別，通常施加火焰 10秒 或 30秒。",
+                    "合格判定：燃燒時間 < 30秒，且滴落物不引燃。"
+                ],
+                color: "red"
+            },
+            'result_check_mask': {
+                title: "高機率需測試 (Likely Test Required)",
+                status: "⚠️",
+                desc: "您僅持有「基材」的 V-0 證明，但「成品」有印刷層。",
+                details: [
+                    "基材的 QMTS2 認證不包含綠漆/油墨的燃燒特性。",
+                    "**建議做法 1 (正規):** 送樣進行成品 PCB 的針焰試驗 (NFT)。",
+                    "**建議做法 2 (文件審查):** 若綠漆本身也有 V-0 證明 (QMFZ2)，部分驗證單位可能接受，但依條款嚴格解釋仍需做 NFT。",
+                    "**結論：** 無法直接豁免，除非證明成品仍為 V-0。"
+                ],
+                color: "amber"
+            },
+            'result_no_trace': {
+                title: "資料不足 (Insufficient Data)",
+                status: "🚫",
+                desc: "僅有 Logo 無法證明合規性。",
+                details: [
+                    "IEC 60335 要求零件需有可追溯性。",
+                    "請聯繫供應商索取具體的 UL File Number。",
+                    "若無法取得，必須將該 PCB 視為未認證材料，直接進行針焰試驗。"
+                ],
+                color: "gray"
+            },
+            'result_manual': {
+                title: "需人工判定 (Manual Check)",
+                status: "🧐",
+                desc: "UL 類別不尋常，建議諮詢發證單位。",
+                details: [
+                    "請確認 UL 黃卡是否適用於該厚度的 PCB。",
+                    "若不確定，執行針焰試驗是最保險的合規路徑。"
+                ],
+                color: "blue"
+            }
+        };
+
+        // --- WIZARD RENDER LOGIC ---
+
+        function renderQuestion(stepId) {
+            const qData = decisionTree.find(q => q.id === stepId);
+            if (!qData) return;
+
+            const container = document.getElementById('question-container');
+            
+            // Create Step Element
+            const stepDiv = document.createElement('div');
+            stepDiv.className = "fade-in bg-slate-50 p-4 rounded-lg border border-slate-200 mb-4";
+            stepDiv.id = `step-${stepId}`;
+            
+            let html = `<h5 class="font-bold text-slate-800 mb-3">${qData.text}</h5>`;
+            if (qData.note) {
+                html += `<p class="text-xs text-slate-500 mb-3 bg-white p-2 rounded border border-slate-100">${qData.note}</p>`;
+            }
+            html += `<div class="flex flex-wrap gap-2">`;
+            
+            qData.options.forEach(opt => {
+                html += `<button onclick="handleAnswer('${stepId}', '${opt.value}', '${opt.next}')" 
+                         class="px-4 py-2 rounded-md bg-white border border-slate-300 shadow-sm hover:bg-blue-50 hover:border-blue-400 text-slate-700 transition">
+                         ${opt.label}
+                         </button>`;
+            });
+            html += `</div>`;
+            
+            stepDiv.innerHTML = html;
+            container.appendChild(stepDiv);
+        }
+
+        function handleAnswer(currentId, value, nextId) {
+            // Disable buttons in current step
+            const currentStepDiv = document.getElementById(`step-${currentId}`);
+            const buttons = currentStepDiv.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                btn.classList.add('opacity-50', 'cursor-not-allowed');
+                if(!btn.textContent.includes(decisionTree.find(q=>q.id===currentId).options.find(o=>o.value===value).label)) {
+                    btn.style.display = 'none'; // Hide unselected
+                } else {
+                    btn.classList.remove('bg-white', 'opacity-50');
+                    btn.classList.add('bg-blue-600', 'text-white', 'border-blue-700'); // Highlight selected
+                }
+            });
+
+            // Check if result
+            if (results[nextId]) {
+                showResult(results[nextId]);
+            } else {
+                renderQuestion(nextId);
+            }
+        }
+
+        function showResult(resultData) {
+            const panel = document.getElementById('verdict-panel');
+            const status = document.getElementById('verdict-status');
+            const title = document.getElementById('verdict-title');
+            const desc = document.getElementById('verdict-desc');
+            const detailsBox = document.getElementById('verdict-details');
+            const detailsList = detailsBox.querySelector('ul');
+
+            // Style Updates
+            const borderColors = { green: 'border-green-500', red: 'border-red-500', amber: 'border-amber-500', gray: 'border-gray-400', blue: 'border-blue-400' };
+            const bgColors = { green: 'bg-green-50', red: 'bg-red-50', amber: 'bg-amber-50', gray: 'bg-slate-50', blue: 'bg-blue-50' };
+            
+            panel.className = `sticky top-24 rounded-xl p-6 border-l-8 shadow-lg transition-all duration-300 ${borderColors[resultData.color]} ${bgColors[resultData.color]}`;
+
+            status.textContent = resultData.status;
+            title.textContent = resultData.title;
+            desc.textContent = resultData.desc;
+
+            // Details
+            detailsList.innerHTML = '';
+            resultData.details.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = item; // Allow HTML in details
+                detailsList.appendChild(li);
+            });
+            detailsBox.classList.remove('hidden');
+        }
+
+        function resetWizard() {
+            document.getElementById('question-container').innerHTML = '';
+            document.getElementById('verdict-details').classList.add('hidden');
+            
+            // Reset Verdict Panel
+            const panel = document.getElementById('verdict-panel');
+            panel.className = "sticky top-24 bg-slate-50 rounded-xl p-6 border border-slate-200 transition-all duration-300";
+            document.getElementById('verdict-status').textContent = "🤔";
+            document.getElementById('verdict-title').textContent = "等待輸入...";
+            document.getElementById('verdict-desc').textContent = "請完成左側問題以獲得評估建議。";
+
+            // Restart
+            renderQuestion('q1');
+        }
+
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // --- CHART JS ---
+        function initChart() {
+            const ctx = document.getElementById('flameChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['HB (水平燃燒)', 'V-2', 'V-1', 'V-0', 'Needle Flame (針焰)'],
+                    datasets: [{
+                        label: '阻燃嚴苛度指數 (Severity Index)',
+                        data: [20, 40, 70, 90, 85], // Conceptual values
+                        backgroundColor: [
+                            'rgba(239, 68, 68, 0.6)',  // Red for HB
+                            'rgba(245, 158, 11, 0.6)', // Amber for V-2
+                            'rgba(59, 130, 246, 0.6)', // Blue for V-1
+                            'rgba(16, 185, 129, 0.8)', // Green for V-0 (High Pass)
+                            'rgba(99, 102, 241, 0.6)'  // Indigo for NFT Reference
+                        ],
+                        borderColor: [
+                            'rgb(239, 68, 68)',
+                            'rgb(245, 158, 11)',
+                            'rgb(59, 130, 246)',
+                            'rgb(16, 185, 129)',
+                            'rgb(99, 102, 241)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            title: { display: true, text: '相對防護能力 / 測試標準高低' },
+                            ticks: { display: false } // Hide numbers as this is conceptual
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const msgs = [
+                                        "HB: 僅要求水平燃燒速度，最寬鬆。",
+                                        "V-2: 允許滴落物引燃棉花。",
+                                        "V-1: 不允許滴落物引燃，餘焰 < 30s。",
+                                        "V-0: 最嚴格，餘焰 < 10s，無引燃滴落。",
+                                        "NFT: 模擬故障火源，要求類似 V-1/V-0。"
+                                    ];
+                                    return msgs[context.dataIndex];
+                                }
+                            }
+                        },
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderQuestion('q1');
+            initChart();
+        });
+
+    </script>
+</body>
+</html>
