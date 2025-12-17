@@ -6,4 +6,5 @@
 ## [產品安規認證需求分析工具](https://lance1102.github.io/the-lab/bsmi_cert_analyze.html)
 > 整合 BSMI 最新公告，快速釐清您的產品檢驗要求
 
-## 
+## [印刷電路板 (PCB) 針焰試驗評估](https://lance1102.github.io/the-lab/PCB_NFT_Step-by-step.html)
+> PCB 阻燃合規助手 | IEC 60335-1 第30條款 & 附錄E
