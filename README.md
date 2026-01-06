@@ -3,7 +3,7 @@
 ## [BSMI RoHS 合規深度互動指南](https://lance1102.github.io/the-lab/RoHS_step-by-step.html)
 > 從零開始，帶您走完台灣RoHS標示的每一步
 
-## [BSMI應施檢驗 認證準備引導互動-通風扇](https://lance1102.github.io/the-lab/RoHS_step-by-step.html)
+## [BSMI應施檢驗 認證準備引導互動-通風扇](https://lance1102.github.io/the-lab/BSMI_Applicable_Testing_and_Certification_Preparation_Guided_Interaction_Ventilation_Fan.html)
 > 檢驗要求需準備的資料的互動引導
 
 ### [商品標示基準](https://lance1102.github.io/the-lab/(Labeling_Regulations_Explanation)_Product_Labeling_Standards.pdf)
