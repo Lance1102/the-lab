@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSMI 通風扇認證準備引導 (TAF 1090)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; }
+        .check-item:checked + label { text-decoration: line-through; color: #9ca3af; }
+        .card-hover:hover { transform: translateY(-2px); transition: all 0.3s ease; }
+        .animate-fade-in { animation: fadeIn 0.5s ease-in; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- Navbar -->
+    <nav class="bg-white text-slate-800 shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-2 flex justify-between items-center">
+            <!-- Left Side -->
+            <div class="flex items-center space-x-3">
+                <i class="fas fa-shield-alt text-3xl text-blue-700"></i>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight text-slate-900">BSMI 認證準備引導</h1>
+                    <p class="text-xs text-slate-500">適用產品：通風扇</p>
+                </div>
+            </div>
+            
+            <!-- Right Side -->
+            <div class="hidden md:flex items-center space-x-4">
+                <div class="text-sm text-right leading-tight font-medium text-slate-600 border-r border-slate-300 pr-4">
+                    <div>財團法人金屬工業研究發展中心</div>
+                    <div>電氣安全實驗室</div>
+                </div>
+                <!-- MIRDC Logo -->
+                <img src="https://raw.githubusercontent.com/Lance1102/the-lab/refs/heads/main/MIRDC_%E9%80%8F%E6%98%8E.png" alt="MIRDC Logo" class="h-10 w-auto object-contain">
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 max-w-5xl space-y-10">
+
+        <!-- Info Card -->
+        <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-yellow-500 animate-fade-in">
+            <h2 class="text-xl font-bold mb-2 text-slate-800"><i class="fas fa-info-circle text-yellow-500 mr-2"></i>適用標準與產品規格</h2>
+            <div class="grid md:grid-cols-2 gap-4 text-sm text-slate-600">
+                <ul class="list-disc list-inside space-y-1">
+                    <li><strong>產品：</strong>通風扇</li>
+                    <li><strong>結構：</strong>AC馬達 (無複雜電子控制板)</li>
+                </ul>
+                <ul class="list-disc list-inside space-y-1">
+                    <li><strong>安規標準：</strong>CNS 60335-1 (103年版), CNS 60335-2-80 (104年版)</li>
+                    <li><strong>EMC標準：</strong>CNS 13783-1 (102年版)</li>
+                    <li><strong>RoHS標準：</strong>CNS 15663 第5節 (102年版)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 1: 技術文件準備 (V1.pdf) -->
+        <section class="space-y-4 animate-fade-in" style="animation-delay: 0.1s;">
+            <div class="flex items-center justify-between border-b pb-2">
+                <h2 class="text-2xl font-bold text-blue-900"><span class="bg-blue-100 text-blue-800 text-sm px-2 py-1 rounded mr-2">Step 1</span>技術文件準備清單</h2>
+                <span class="text-xs text-gray-500">
+                    依據：<a href="https://lance1102.github.io/the-lab/The_fundamental_principles_of_technical_document_requirements_V1.pdf" target="_blank" class="text-blue-600 hover:underline hover:text-blue-800 transition">技術文件需求的大原則 V1.pdf</a>
+                </span>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="p-4 bg-blue-50 border-b border-blue-100 text-sm text-blue-800">
+                    <i class="fas fa-file-contract mr-1"></i> 請依序勾選確認已準備的資料，點擊項目可查看詳細說明。
+                </div>
+                <div class="divide-y divide-gray-100" id="document-checklist">
+                    <!-- Items will be populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: 標示與警語 (標示基準 + CNS 60335-2-80) -->
+        <section class="space-y-4 animate-fade-in" style="animation-delay: 0.2s;">
+            <div class="flex items-center justify-between border-b pb-2">
+                <h2 class="text-2xl font-bold text-blue-900"><span class="bg-blue-100 text-blue-800 text-sm px-2 py-1 rounded mr-2">Step 2</span>本體標籤與說明書警語</h2>
+                <span class="text-xs text-gray-500">
+                    依據：<a href="https://lance1102.github.io/the-lab/(Labeling_Regulations_Explanation)_Product_Labeling_Standards.pdf" target="_blank" class="text-blue-600 hover:underline hover:text-blue-800 transition">商品標示基準</a> & CNS 60335-2-80
+                </span>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- 本體標籤範例 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-gray-100 px-3 py-1 text-xs font-mono text-gray-500 rounded-bl-lg">本體標籤 Stick on Product</div>
+                    <h3 class="font-bold text-lg mb-4 flex items-center"><i class="fas fa-tag text-blue-500 mr-2"></i>本體/銘版標示要求</h3>
+                    
+                    <div class="border-2 border-gray-800 rounded p-4 bg-gray-50 font-sans text-sm relative">
+                        <!-- Mock Label -->
+                        <div class="text-center font-bold text-lg mb-2">通風扇 (商品名稱)</div>
+                        <div class="grid grid-cols-2 gap-x-2 gap-y-1 text-gray-800">
+                            <div><span class="font-bold">型號：</span>EF-XXXX</div>
+                            <div><span class="font-bold">額定電壓：</span>XXX V</div>
+                            <div><span class="font-bold">額定頻率：</span>60 Hz</div>
+                            <div><span class="font-bold">消耗功率：</span>XX W</div>
+                            <div class="col-span-2"><span class="font-bold">製造年份/號碼：</span>2025年 / SN:0001</div>
+                            <div class="col-span-2"><span class="font-bold">產地：</span>台灣</div>
+                            <div class="col-span-2"><span class="font-bold">製造商：</span>〇〇工業股份有限公司</div>
+                            <div class="col-span-2 text-xs text-gray-600">地址：高雄市... / 電話：07-1234567</div>
+                            <div class="col-span-2 text-xs text-red-600 mt-1 font-bold">警語：(若空間不足可放說明書，但建議標示注意高溫或運轉中勿觸摸)</div>
+                        </div>
+                        
+                        <!-- BSMI Mark with Image -->
+                        <div class="mt-4 flex flex-col items-center justify-center border-t border-gray-300 pt-2">
+                            <div class="relative group cursor-help text-center">
+                                <!-- Image Replacement -->
+                                <img src="https://raw.githubusercontent.com/Lance1102/the-lab/refs/heads/main/R%E5%AD%97%E8%BB%8C.png" alt="BSMI 商品檢驗標識" class="w-20 h-auto mx-auto mb-1">
+                                
+                                <div class="text-xs font-mono font-bold leading-tight">
+                                    R3xxxx<br>
+                                    <span class="text-[10px]">RoHS</span>
+                                </div>
+                                
+                                <!-- Tooltip -->
+                                <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block w-48 bg-gray-800 text-white text-xs p-2 rounded z-10 text-center">
+                                    商品檢驗標識 (R字軌)<br>需包含識別號碼與 RoHS 字樣
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-xs text-gray-500">
+                        <i class="fas fa-exclamation-triangle mr-1"></i> 注意：標籤需具牢固性，正常使用下不脫落、文字不模糊。
+                    </div>
+                </div>
+
+                <!-- 說明書警語 -->
+                <div class="bg-white rounded-xl shadow-md p-6 card-hover flex flex-col">
+                    <h3 class="font-bold text-lg mb-4 flex items-center"><i class="fas fa-book-open text-green-500 mr-2"></i>說明書必要內容 (中文)</h3>
+                    
+                    <!-- Power Cord Type Selector -->
+                    <div class="mb-4 bg-yellow-50 p-3 rounded-lg border border-yellow-200 text-sm">
+                        <p class="font-bold text-yellow-800 mb-2"><i class="fas fa-plug mr-1"></i> 請先選擇電源連接型態：</p>
+                        <div class="flex flex-col space-y-2">
+                            <label class="inline-flex items-center cursor-pointer">
+                                <input type="radio" name="powerType" value="withCord" class="form-radio text-yellow-600" checked onchange="togglePowerWarning()">
+                                <span class="ml-2">有電源線 / 非分離式電源線組</span>
+                            </label>
+                            <label class="inline-flex items-center cursor-pointer">
+                                <input type="radio" name="powerType" value="terminal" class="form-radio text-yellow-600" onchange="togglePowerWarning()">
+                                <span class="ml-2">僅提供端子座 (現場施工配線)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 flex-1 overflow-y-auto pr-2 custom-scrollbar">
+                        <!-- Power Cord Warning (Conditional) -->
+                        <div id="power-cord-warning" class="p-3 bg-red-50 rounded border-l-4 border-red-500 text-sm transition-all duration-300">
+                            <span class="font-bold block text-red-700 mb-1">【電源線警語】(強制)</span>
+                            若電源線損壞時，必須由製造廠商或其服務處或具有相關資格的人員加以更換以避免危險。
+                        </div>
+
+                        <div class="p-3 bg-orange-50 rounded border-l-4 border-orange-400 text-sm">
+                            <span class="font-bold block text-orange-700 mb-1">【使用者限制警語】(強制)</span>
+                            <ul class="list-disc list-inside pl-1">
+                                <li>本電器不預期供生理、感知、心智能力、經驗或知識不足之使用者(包含孩童)使用，除非在對其負有安全責任的人員之監護或指導下安全使用。</li>
+                                <li>孩童應受監護，以確保孩童不嬉玩電器。</li>
+                            </ul>
+                        </div>
+                        <div class="p-3 bg-blue-50 rounded border-l-4 border-blue-400 text-sm">
+                            <span class="font-bold block text-blue-700 mb-1">【通風扇/風管扇特有警語】(強制)</span>
+                            為避免氣體經由開放之煙囪或其他燃燒燃料之電器回流至房間中，所需採行之預防措施。(針對安裝於牆壁或窗戶者)
+                        </div>
+                        <div class="p-3 bg-gray-50 rounded border-l-4 border-gray-400 text-sm">
+                            <span class="font-bold block text-gray-700 mb-1">【清潔與安裝】</span>
+                            1. 清潔外部時，先用抹布沾溫水或肥皂水，擰乾擦拭。<br>
+                            2. 拆卸護網前確認電扇已切斷電源 (若有可拆卸護網)。<br>
+                            3. (若安裝於高處) 扇葉應離地2.3m以上。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: 電路圖引導 (辨識範例_電路圖.pdf) -->
+        <section class="bg-slate-800 text-white rounded-xl p-8 shadow-xl animate-fade-in relative overflow-hidden" style="animation-delay: 0.3s;">
+            <div class="absolute top-0 right-0 p-32 bg-blue-500 opacity-10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
+            
+            <div class="flex flex-wrap items-end justify-between mb-6 relative z-10 gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold"><span class="text-blue-400 mr-2">Step 3</span>電路圖準備指南</h2>
+                    <span class="text-xs text-gray-300 mt-1 block">
+                        參考：<a href="https://lance1102.github.io/the-lab/Circuit_diagram_identification_examples.pdf" target="_blank" class="text-blue-300 hover:text-white hover:underline transition">電路圖辨識範例.pdf</a>
+                    </span>
+                </div>
+                <button onclick="document.getElementById('circuit-modal').classList.remove('hidden')" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm transition flex items-center">
+                    <i class="fas fa-search mr-2"></i> 什麼是方塊圖/線路圖?
+                </button>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 relative z-10">
+                <div class="flex flex-col">
+                    <h3 class="font-bold text-lg mb-3 text-yellow-400">本案需求分析</h3>
+                    <p class="text-gray-300 text-sm leading-relaxed mb-4">
+                        若您的產品結構單純 (AC馬達 + 電容)，通常<strong>不需要</strong>複雜的 PCB 銅軌圖或零件位置圖 (除非您有電子式定時器或遙控功能)。
+                    </p>
+                    <div class="bg-white/10 rounded-lg p-4 backdrop-blur-sm border border-white/20 mb-4">
+                        <h4 class="font-bold text-sm mb-2">應提供文件：整機線路圖 (System Circuit Diagram)</h4>
+                        <ul class="text-xs space-y-2 text-gray-300">
+                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-2"></i> 需畫出：插頭 ➔ 電源線 ➔ 開關 ➔ 溫度保險絲(如有) ➔ 馬達線圈 & 電容 的連接關係。</li>
+                            <li class="flex items-start"><i class="fas fa-check text-green-400 mt-1 mr-2"></i> 需標示零件規格 (如電容值、馬達型號)。</li>
+                        </ul>
+                    </div>
+
+                    <!-- Added Disclaimer -->
+                    <div class="mt-auto pt-3 border-t border-gray-600">
+                        <p class="text-orange-400 text-sm font-bold tracking-wide animate-pulse">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>範例僅供參考，請依據產品情況與工廠提供之技術文件為準
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col justify-center items-center bg-white/5 rounded-lg p-4 border border-white/10">
+                    <div class="text-center mb-4">
+                        <!-- Icon removed -->
+                        <p class="text-sm font-bold">簡易示意圖</p>
+                    </div>
+                    
+                    <!-- Replaced CSS drawing with External Image -->
+                    <div class="w-full flex justify-center items-center p-2 bg-white rounded-lg">
+                        <img src="https://lance1102.github.io/the-lab/Circuit%20Diagram.png" alt="簡易電路圖範例" class="max-w-full h-auto object-contain" style="max-height: 200px;">
+                    </div>
+                    
+                    <p class="text-xs text-gray-400 mt-2 text-center w-full">請確保圖面清晰，符號符合電工標準</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: RoHS -->
+        <section class="text-center animate-fade-in" style="animation-delay: 0.4s;">
+            <a href="https://lance1102.github.io/the-lab/RoHS_step-by-step.html" target="_blank" class="inline-flex items-center group bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-full shadow-lg transition transform hover:-translate-y-1">
+                <div class="mr-4 bg-white/20 p-2 rounded-full">
+                    <i class="fas fa-leaf text-xl"></i>
+                </div>
+                <div class="text-left">
+                    <div class="text-xs opacity-90">下一步</div>
+                    <div class="font-bold text-lg">前往 RoHS 符合規定指引</div>
+                </div>
+                <i class="fas fa-arrow-right ml-4 group-hover:translate-x-2 transition"></i>
+            </a>
+            <p class="mt-3 text-xs text-gray-500">依據 CNS 15663 第5節規定</p>
+        </section>
+        
+        <!-- Negative Analysis / Expert Tips -->
+        <section class="bg-red-50 border-l-4 border-red-500 p-6 rounded-r-lg mt-8">
+             <h3 class="text-red-800 font-bold mb-3"><i class="fas fa-exclamation-circle mr-2"></i>專家觀點：常見退件/補件原因分析</h3>
+             <ul class="list-disc list-inside text-sm text-red-700 space-y-2">
+                 <li><strong>電路圖與實物不符：</strong> 圖面標示有溫度保險絲，但樣品內找不到；或是圖面未更新，仍顯示舊款設計。</li>
+                 <li><strong>警語遺漏：</strong> 通風扇常被安裝在窗戶或與燃燒器具共存空間，若遺漏「防廢氣回流」警語，屬重大缺失。</li>
+                 <li><strong>關鍵零組件規格書過期：</strong> 電容或馬達的證書 (如VDE, UL, 或BSMI證書) 已過期，需重新確認有效性。</li>
+                 <li><strong>標籤位置錯誤：</strong> 標籤貼在安裝後「看不見」的地方 (如嵌入天花板後被遮擋的側面)，法規要求安裝後需「明顯易見」。</li>
+                 <li><strong>電源連接方式定義不清：</strong> 選用端子座機種，說明書卻照抄電源線更換警語，導致邏輯錯誤被實驗室開缺點。</li>
+             </ul>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-400 py-8 mt-12 text-sm text-center">
+        <div class="container mx-auto">
+            <p>本工具僅供輔助文件準備，最終要求以經濟部標準檢驗局 (BSMI) 及實驗室判定為準。</p>
+            <p class="mt-2">Developed for TAF Lab 1090 & 1150 Use.</p>
+        </div>
+    </footer>
+
+    <!-- Modal for Circuit Diagram Info -->
+    <div id="circuit-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 animate-fade-in">
+            <div class="flex justify-between items-center mb-4 border-b pb-2">
+                <h3 class="font-bold text-lg">電路圖術語說明</h3>
+                <button onclick="document.getElementById('circuit-modal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="space-y-4 text-sm text-gray-700">
+                <div>
+                    <h4 class="font-bold text-blue-600">1. 方塊圖 (Block Diagram)</h4>
+                    <p>將各模組 (如電源板、馬達、控制板) 用方塊表示，畫出訊號與電源流向。適用於結構複雜的產品。</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-blue-600">2. 整機線路圖 (System Circuit Diagram) <span class="text-xs bg-yellow-200 px-1 rounded text-yellow-800">本案重點</span></h4>
+                    <p>從電源插頭開始，經過保險絲、開關，最後到負載 (馬達) 的完整路徑。需標示L/N極性、接地保護等。</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-blue-600">3. 銅軌圖 (Layout) / 原理圖 (Schematic)</h4>
+                    <p>針對 PCB 電路板的詳細設計圖。若您的通風扇僅有馬達+電容，無電子控制板，則通常不需要此項。</p>
+                </div>
+            </div>
+            <button onclick="document.getElementById('circuit-modal').classList.add('hidden')" class="mt-6 w-full bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 rounded transition">關閉</button>
+        </div>
+    </div>
+
+    <script>
+        // Data derived from "技術文件需求的大原則 V1.pdf"
+        const checklistItems = [
+            {
+                id: "02_02",
+                title: "02_02 主型式及系列差異表",
+                desc: "若只有單一款式，此項可略過。若有多個型號 (如不同顏色、外觀微調)，需填寫差異表。",
+                required: false
+            },
+            {
+                id: "02_03",
+                title: "02_03 繁體中文標籤樣張",
+                desc: "需包含本體標籤 (Rating Label) 與外包裝標示。內容需符合 CNS 15663 與商品標示法 (詳見下方標籤範例)。",
+                required: true
+            },
+            {
+                id: "02_05_1",
+                title: "02_05 產品電路圖 (整機)",
+                desc: "即 System Circuit Diagram。需清楚繪製電源輸入到馬達的接線方式、電容接法、開關位置及保險絲規格。",
+                required: true
+            },
+            {
+                id: "02_05_2",
+                title: "02_05 爆炸圖 (Exploded View)",
+                desc: "將產品拆解並標示各部位零件的圖表。若無法提供，可用詳細的照片或結構圖代替，但爆炸圖能減少溝通誤解。",
+                required: false
+            },
+            {
+                id: "02_07",
+                title: "02_07 重要零組件規格一覽表 (CDF)",
+                desc: "列出關鍵零件：馬達、電容、插頭、電源線、外殼材料(塑膠類)、開關、端子台等。需填寫型號、製造商、額定規格。",
+                required: true
+            },
+            {
+                id: "02_08",
+                title: "02_08 零件證書與規格書",
+                desc: "上述 CDF 表中列出的零件證書 (如 UL, VDE, BSMI 證書) 及規格書 (Specification)。特別注意馬達需有絕緣等級資訊。",
+                required: true
+            },
+            {
+                id: "02_10",
+                title: "02_10 中文使用手冊",
+                desc: "需包含詳細規格、使用方法、安裝說明及下方列出的「必要警語」。",
+                required: true
+            }
+        ];
+
+        const listContainer = document.getElementById('document-checklist');
+
+        checklistItems.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'p-4 hover:bg-gray-50 transition cursor-pointer';
+            div.innerHTML = `
+                <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input id="${item.id}" type="checkbox" class="check-item w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer">
+                    </div>
+                    <div class="ml-3 text-sm flex-1">
+                        <label for="${item.id}" class="font-medium text-gray-900 cursor-pointer select-none">
+                            ${item.title} ${item.required ? '<span class="text-red-500 text-xs ml-1">(必備)</span>' : '<span class="text-gray-400 text-xs ml-1">(依情況)</span>'}
+                        </label>
+                        <p class="text-gray-500 mt-1 text-xs leading-relaxed">${item.desc}</p>
+                    </div>
+                </div>
+            `;
+            listContainer.appendChild(div);
+        });
+
+        function togglePowerWarning() {
+            const powerType = document.querySelector('input[name="powerType"]:checked').value;
+            const warningBox = document.getElementById('power-cord-warning');
+            
+            if (powerType === 'terminal') {
+                warningBox.classList.add('hidden');
+            } else {
+                warningBox.classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
