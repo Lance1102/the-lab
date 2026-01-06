@@ -8,7 +8,7 @@
 
 ### [商品標示基準](https://lance1102.github.io/the-lab/(Labeling_Regulations_Explanation)_Product_Labeling_Standards.pdf)
 ### [技術文件需求的大原則](https://lance1102.github.io/the-lab/The_fundamental_principles_of_technical_document_requirements_V1.pdf)
-### [電路圖辨識範例]](https://lance1102.github.io/the-lab/Circuit diagram identification examples.pdf)
+### [電路圖辨識範例](https://lance1102.github.io/the-lab/Circuit_diagram_identification_examples.pdf)
 
 
 ## [產品安規認證需求分析工具](https://lance1102.github.io/the-lab/bsmi_cert_analyze.html)
