@@ -6,6 +6,11 @@
 ## [BSMI應施檢驗 認證準備引導互動-通風扇](https://lance1102.github.io/the-lab/RoHS_step-by-step.html)
 > 檢驗要求需準備的資料的互動引導
 
+### [商品標示基準](https://lance1102.github.io/the-lab/(Labeling_Regulations_Explanation)_Product_Labeling_Standards.pdf)
+### [技術文件需求的大原則](https://lance1102.github.io/the-lab/The_fundamental_principles_of_technical_document_requirements_V1.pdf)
+### [電路圖辨識範例]](https://lance1102.github.io/the-lab/Circuit diagram identification examples.pdf)
+
+
 ## [產品安規認證需求分析工具](https://lance1102.github.io/the-lab/bsmi_cert_analyze.html)
 > 整合 BSMI 最新公告，快速釐清您的產品檢驗要求
 
