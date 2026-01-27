@@ -3,6 +3,9 @@
 ## [BSMI RoHS 合規深度互動指南](https://lance1102.github.io/the-lab/RoHS_step-by-step.html)
 > 從零開始，帶您走完台灣RoHS標示的每一步
 
+## [濾(淨)水器 BSMI 深度合規檢核系統](https://lance1102.github.io/the-lab/Water_Filter_BSMI_Rules.html)
+> V1.0.3 適用於 113/07/01 實施之檢驗規定・實驗室技術主管專用
+
 ## [BSMI應施檢驗 認證準備引導互動-通風扇](https://lance1102.github.io/the-lab/BSMI_Applicable_Testing_and_Certification_Preparation_Guided_Interaction_Ventilation_Fan.html)
 > 檢驗要求需準備的資料的互動引導
 
