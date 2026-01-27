@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>濾(淨)水器 BSMI 深度合規檢核系統</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React & ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; }
+        .slide-in { animation: slideIn 0.3s ease-out forwards; }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo } = React;
+
+        // --- Data & Regulation Logic ---
+
+        // 法規來源常數
+        const SOURCES = {
+            BSMI_ANN: "(2023-01-17) 應施檢驗濾(淨)水器相關檢驗規定公告",
+            LABEL_EXAMPLE: "(2024-06-13) 濾(淨)水器商品應標示項目及標示範例",
+            CNS_60335: "CNS 60335-1 Clause 7 (標示與說明)",
+            COMMODITY: "(標示規定說明) 商品標示基準/商品標示法",
+            CNS_13783: "CNS 13783-1 (電磁相容)"
+        };
+
+        // 具電源供應者 - 詳細規則資料庫
+        const ELECTRIC_RULES = [
+            // --- 本體標示 (Body) - 強制性 ---
+            {
+                id: "E-B-01", area: "本體", required: true,
+                item: "商品檢驗標識 (R字軌)",
+                detail: "需包含識別號碼 (如：R3xxxx)。應永久固定於本體明顯處。",
+                source: [SOURCES.BSMI_ANN, SOURCES.LABEL_EXAMPLE],
+                note: "依據商品檢驗法第12條。"
+            },
+            {
+                id: "E-B-02", area: "本體", required: true,
+                item: "商品名稱",
+                detail: "應以中文為主，得輔以外文。",
+                source: [SOURCES.BSMI_ANN, SOURCES.COMMODITY],
+                note: "不可塗毀或掩蓋原標示。"
+            },
+            {
+                id: "E-B-03", area: "本體", required: true,
+                item: "型號",
+                detail: "需與型式認可/驗證登錄證書一致。",
+                source: [SOURCES.BSMI_ANN, SOURCES.CNS_60335 + " 7.1"],
+                note: "CNS 60335-1 7.1 要求標示型號。"
+            },
+            {
+                id: "E-B-04", area: "本體", required: true,
+                item: "額定電壓 (V) 或電壓範圍",
+                detail: "例：110V 或 100-240V。若有範圍，需以連字號區隔(7.3)。",
+                source: [SOURCES.BSMI_ANN, SOURCES.CNS_60335 + " 7.1"],
+                note: "CNS 7.3: 不需調整即可適用範圍者用連字號(-)，需調整者用斜線(/)。"
+            },
+            {
+                id: "E-B-05", area: "本體", required: true,
+                item: "供應電源性質符號",
+                detail: "交流電(~)、直流電(⎓)等符號。",
+                source: [SOURCES.BSMI_ANN, SOURCES.CNS_60335 + " 7.1, 7.6"],
+                note: "若已標示額定頻率(如60Hz)，可免標性質符號。符號須符合 IEC 60417。"
+            },
+            {
+                id: "E-B-06", area: "本體", required: true,
+                item: "額定頻率 (Hz)",
+                detail: "例：60Hz 或 50/60Hz。",
+                source: [SOURCES.LABEL_EXAMPLE, SOURCES.COMMODITY],
+                note: "若無則免標。"
+            },
+            {
+                id: "E-B-07", area: "本體", required: true,
+                item: "總額定消耗電功率(W) 或 電流(A)",
+                detail: "需標示輸入功率或電流。",
+                source: [SOURCES.BSMI_ANN, SOURCES.CNS_60335 + " 7.1"],
+                note: "CNS 7.5: 若有電壓範圍，需對應標示功率/電流範圍或平均值。"
+            },
+            {
+                id: "E-B-08", area: "本體", required: true,
+                item: "製造年份及製造號碼",
+                detail: "製造年份(如2024年)及流水號。",
+                source: [SOURCES.COMMODITY, SOURCES.LABEL_EXAMPLE],
+                note: "商品標示基準規定：應於商品本體上標示。"
+            },
+            {
+                id: "E-B-09", area: "本體", required: true,
+                item: "製造/供應商名稱",
+                detail: "製造商或供應商之名稱(姓名)或註冊商標。",
+                source: [SOURCES.BSMI_ANN, SOURCES.CNS_60335 + " 7.1"],
+                note: "若本體僅標示商標，仍需在說明書或包裝詳列製造商詳細資訊。"
+            },
+            {
+                id: "E-B-10", area: "本體", required: true,
+                item: "原產地",
+                detail: "例：台灣、中國。",
+                source: [SOURCES.COMMODITY],
+                note: "商品標示基準規定：應於商品本體上標示。"
+            },
+            {
+                id: "E-B-11", area: "本體", required: false, // 視情況
+                item: "防水等級 (IP Code)",
+                detail: "若非 IPX0，則必須標示 (如 IPX4)。",
+                source: [SOURCES.CNS_60335 + " 7.1"],
+                note: "IPX0 (無防水) 可不標。"
+            },
+            {
+                id: "E-B-12", area: "本體", required: false, // 視情況
+                item: "II 類 / III 類電器符號",
+                detail: "II類(回字記號) 或 III類(菱形記號)。",
+                source: [SOURCES.CNS_60335 + " 7.1, 7.6"],
+                note: "I類電器(接地)不需符號，但需有接地端子標示。"
+            },
+
+            // --- 擇一標示 (Flexible) ---
+            {
+                id: "E-F-01", area: "擇一標示", required: true,
+                item: "詳細製造/委製/進口商資訊",
+                detail: "【本體、包裝或說明書擇一】含名稱、地址、電話。進口者需含國外製造商外文名稱。",
+                source: [SOURCES.BSMI_ANN, SOURCES.COMMODITY],
+                note: "若本體已標完整，此處可免，但建議於說明書完整揭露。"
+            },
+            {
+                id: "E-F-02", area: "擇一標示", required: true,
+                item: "規格",
+                detail: "【本體、包裝或說明書擇一】產品大小、容量、重量、等級、淨水量等。",
+                source: [SOURCES.COMMODITY, SOURCES.LABEL_EXAMPLE],
+                note: ""
+            },
+            {
+                id: "E-F-03", area: "擇一標示", required: true,
+                item: "使用方法",
+                detail: "【本體、包裝或說明書擇一】設備操作說明及濾心更換方式。",
+                source: [SOURCES.BSMI_ANN, SOURCES.COMMODITY],
+                note: ""
+            },
+            {
+                id: "E-F-04", area: "擇一標示", required: true,
+                item: "使用所需進水壓力範圍",
+                detail: "【本體、包裝或說明書擇一】例：100-500 kPa 或 0.1-0.5 MPa。",
+                source: [SOURCES.BSMI_ANN, SOURCES.CNS_60335 + " 7.12.8"],
+                note: "依據 2024-06-13 範例 Item 14 屬擇一標示；但 CNS 7.12.8 要求連接水管電器須說明，通常寫入說明書最完整。"
+            },
+            {
+                id: "E-F-05", area: "擇一標示", required: true,
+                item: "濾心建議更換週期",
+                detail: "【本體、包裝或說明書擇一】明確指出各濾心的更換時間或條件。",
+                source: [SOURCES.BSMI_ANN],
+                note: "依據 2024-06-13 範例 Item 15。"
+            },
+            {
+                id: "E-F-06", area: "擇一標示", required: true,
+                item: "注意事項或警語 (衛生安全)",
+                detail: "【本體、包裝或說明書擇一】如「此機出水含有未經加熱處理...」等衛生警語。",
+                source: [SOURCES.BSMI_ANN],
+                note: "依據 2024-06-13 範例 Item 12。"
+            },
+            
+            // --- 說明書強制 (Instructions Strict) ---
+            {
+                id: "E-I-01", area: "說明書", required: true,
+                item: "CNS 安全警語與安裝說明",
+                detail: "【應載明於說明書】包含弱勢使用者、孩童監護、軟管使用、Y/Z型連接更換等說明。",
+                source: [SOURCES.CNS_60335 + " 7.12"],
+                note: "CNS 規定「說明書應包含(Instructions shall contain)...」，此部分必須在說明書中。"
+            }
+        ];
+
+        // 無電源供應者 - 詳細規則資料庫
+        const NON_ELECTRIC_RULES = [
+            // --- 本體標示 (Body) ---
+            {
+                id: "N-B-01", area: "本體", required: true,
+                item: "商品檢驗標識 (R字軌)",
+                detail: "需包含識別號碼。",
+                source: [SOURCES.BSMI_ANN, SOURCES.LABEL_EXAMPLE],
+                note: ""
+            },
+            {
+                id: "N-B-02", area: "本體", required: true,
+                item: "商品名稱",
+                detail: "應明顯標示。",
+                source: [SOURCES.BSMI_ANN, SOURCES.COMMODITY],
+                note: ""
+            },
+            {
+                id: "N-B-03", area: "本體", required: true,
+                item: "型號",
+                detail: "需與報驗一致。",
+                source: [SOURCES.BSMI_ANN, SOURCES.LABEL_EXAMPLE],
+                note: ""
+            },
+            {
+                id: "N-B-04", area: "本體", required: true,
+                item: "製造商或供應商名稱/商標",
+                detail: "可僅標示商標，但詳細資訊需在包裝/說明書。",
+                source: [SOURCES.BSMI_ANN, SOURCES.LABEL_EXAMPLE],
+                note: ""
+            },
+            
+            // --- 擇一標示 (Flexible) ---
+            {
+                id: "N-F-01", area: "擇一標示", required: true,
+                item: "詳細製造/委製/進口商資訊",
+                detail: "【本體、包裝或說明書擇一】名稱、地址、電話。進口者需含國外製造商外文名稱。",
+                source: [SOURCES.COMMODITY],
+                note: "商品標示法規定。"
+            },
+            {
+                id: "N-F-02", area: "擇一標示", required: true,
+                item: "製造年月或年週",
+                detail: "【本體、包裝或說明書擇一】若有時效性應加註有效日期。",
+                source: [SOURCES.COMMODITY],
+                note: "標示年週者應輔以文字說明。"
+            },
+             {
+                id: "N-F-03", area: "擇一標示", required: true,
+                item: "原產地",
+                detail: "【本體、包裝或說明書擇一】生產國別。",
+                source: [SOURCES.COMMODITY],
+                note: ""
+            },
+            {
+                id: "N-F-04", area: "擇一標示", required: true,
+                item: "主要成分或材料",
+                detail: "【本體、包裝或說明書擇一】例：不鏽鋼、PP、活性碳。",
+                source: [SOURCES.COMMODITY],
+                note: "無電源者特別強調材料標示。"
+            },
+            {
+                id: "N-F-05", area: "擇一標示", required: true,
+                item: "淨重、容量、數量或度量",
+                detail: "【本體、包裝或說明書擇一】需使用法定度量衡單位 (如 kg, L)。",
+                source: [SOURCES.COMMODITY],
+                note: ""
+            },
+            {
+                id: "N-F-06", area: "擇一標示", required: true,
+                item: "用途、使用與保存方法",
+                detail: "【本體、包裝或說明書擇一】包含濾心保存方式。",
+                source: [SOURCES.COMMODITY],
+                note: ""
+            },
+            {
+                id: "N-F-07", area: "擇一標示", required: true,
+                item: "使用所需進水壓力範圍",
+                detail: "【本體、包裝或說明書擇一】操作壓力限制。",
+                source: [SOURCES.BSMI_ANN],
+                note: "公告規定。"
+            },
+            {
+                id: "N-F-08", area: "擇一標示", required: true,
+                item: "濾心建議更換週期",
+                detail: "【本體、包裝或說明書擇一】建議更換頻率。",
+                source: [SOURCES.BSMI_ANN],
+                note: "公告規定。"
+            },
+             {
+                id: "N-F-09", area: "擇一標示", required: true,
+                item: "注意事項或警語",
+                detail: "【本體、包裝或說明書擇一】例：「此機出水含有未經加熱處理...」",
+                source: [SOURCES.BSMI_ANN],
+                note: ""
+            }
+        ];
+
+        // --- Components ---
+
+        const Icon = ({ name, size = 20, className = "" }) => {
+            const icons = {
+                check: <path d="M20 6L9 17l-5-5" />,
+                alert: <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4m0 4h.01" />,
+                book: <path d="M4 19.5A2.5 2.5 0 016.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />,
+                zap: <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />,
+                droplet: <path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z" />,
+                chevronRight: <path d="M9 18l6-6-6-6" />,
+                shield: <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />,
+                info: <path d="M11 12h2v4h-2zm0-6h2v2h-2zm1-4a9 9 0 110 18 9 9 0 010-18z" />
+            };
+            return (
+                <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+                    {icons[name] || icons.info}
+                </svg>
+            );
+        };
+
+        const Card = ({ title, children, className = "", headerColor = "bg-white" }) => (
+            <div className={`bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden ${className}`}>
+                <div className={`px-6 py-4 border-b border-slate-100 ${headerColor}`}>
+                    <h3 className="font-bold text-lg text-slate-800 flex items-center">{children[0]}</h3>
+                </div>
+                <div className="p-6">{children.slice(1)}</div>
+            </div>
+        );
+
+        const RuleItem = ({ rule, isChecked, onToggle }) => {
+            // Determine badge color based on area
+            let badgeClass = "bg-slate-100 text-slate-600";
+            if (rule.area === '本體') badgeClass = "bg-red-100 text-red-700";
+            else if (rule.area === '擇一標示') badgeClass = "bg-purple-100 text-purple-700";
+            else if (rule.area === '說明書') badgeClass = "bg-blue-100 text-blue-700";
+
+            return (
+                <div className={`group flex items-start p-4 rounded-lg transition-all border ${isChecked ? 'bg-green-50 border-green-200' : 'bg-white border-slate-100 hover:border-blue-200 hover:shadow-md'}`}>
+                    <div className="pt-1 pr-4">
+                        <input 
+                            type="checkbox" 
+                            checked={isChecked} 
+                            onChange={() => onToggle(rule.id)}
+                            className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500 cursor-pointer"
+                        />
+                    </div>
+                    <div className="flex-1">
+                        <div className="flex justify-between items-start mb-1">
+                            <h4 className={`font-bold text-base ${isChecked ? 'text-green-800' : 'text-slate-800'}`}>
+                                {rule.item}
+                            </h4>
+                            <span className={`text-xs px-2 py-1 rounded font-medium ${badgeClass} whitespace-nowrap ml-2`}>
+                                {rule.area}
+                            </span>
+                        </div>
+                        <p className="text-slate-600 text-sm mb-2 leading-relaxed">{rule.detail}</p>
+                        
+                        <div className="flex flex-wrap gap-2 mt-2">
+                            {rule.source.map((src, idx) => (
+                                <span key={idx} className="inline-flex items-center text-[10px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded border border-blue-100" title={src}>
+                                    <Icon name="book" size={10} className="mr-1" />
+                                    {src.split(' ')[0]}...
+                                </span>
+                            ))}
+                        </div>
+                        
+                        {rule.note && (
+                            <div className="mt-3 text-xs text-amber-700 bg-amber-50 p-2 rounded border border-amber-100 flex items-start">
+                                <Icon name="info" size={14} className="mr-1 mt-0.5 flex-shrink-0" />
+                                {rule.note}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        const MainApp = () => {
+            const [mode, setMode] = useState(null); // 'electric' | 'non-electric'
+            const [checkedItems, setCheckedItems] = useState({});
+            
+            // Auto-scroll to top when mode changes
+            useEffect(() => {
+                window.scrollTo(0, 0);
+            }, [mode]);
+
+            const toggleCheck = (id) => {
+                setCheckedItems(prev => ({
+                    ...prev,
+                    [id]: !prev[id]
+                }));
+            };
+
+            const calculateProgress = (rules) => {
+                const checkedCount = rules.filter(r => checkedItems[r.id]).length;
+                return Math.round((checkedCount / rules.length) * 100);
+            };
+
+            const renderHome = () => (
+                <div className="max-w-4xl mx-auto py-12 px-4 slide-in">
+                    <div className="text-center mb-12">
+                        <div className="inline-flex items-center justify-center p-3 bg-blue-600 rounded-xl text-white mb-4 shadow-lg">
+                            <Icon name="shield" size={32} />
+                        </div>
+                        <h1 className="text-3xl font-bold text-slate-900 mb-2">濾(淨)水器 BSMI 深度合規檢核系統</h1>
+                        <p className="text-slate-500">適用於 113/07/01 實施之檢驗規定・實驗室技術主管專用</p>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-8">
+                        {/* Electric Card */}
+                        <div 
+                            onClick={() => setMode('electric')}
+                            className="bg-white rounded-2xl shadow-sm border-2 border-transparent hover:border-blue-500 hover:shadow-xl transition-all cursor-pointer group overflow-hidden"
+                        >
+                            <div className="p-8">
+                                <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition-transform">
+                                    <Icon name="zap" size={28} />
+                                </div>
+                                <h2 className="text-2xl font-bold text-slate-800 mb-2">具有電源供應者</h2>
+                                <p className="text-slate-500 text-sm mb-6 leading-relaxed">
+                                    適用含電子控制、加熱、泵浦或 UV 燈之產品。需符合電器安全規範及 EMC。
+                                </p>
+                                <ul className="space-y-2 text-sm text-slate-600 mb-8">
+                                    <li className="flex items-center"><Icon name="check" size={14} className="text-blue-500 mr-2"/> 符合 CNS 60335-1 (103年版)</li>
+                                    <li className="flex items-center"><Icon name="check" size={14} className="text-blue-500 mr-2"/> 符合 CNS 13783-1 (102年版)</li>
+                                    <li className="flex items-center"><Icon name="check" size={14} className="text-blue-500 mr-2"/> BSMI 特別標示規定</li>
+                                </ul>
+                                <div className="w-full py-2 bg-blue-50 text-blue-600 text-center rounded-lg font-bold group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    進入檢核
+                                </div>
+                            </div>
+                            <div className="bg-slate-50 px-8 py-3 text-xs text-slate-400 border-t border-slate-100">
+                                適用號列：8421.21.10.00.8 等
+                            </div>
+                        </div>
+
+                        {/* Non-Electric Card */}
+                        <div 
+                            onClick={() => setMode('non-electric')}
+                            className="bg-white rounded-2xl shadow-sm border-2 border-transparent hover:border-teal-500 hover:shadow-xl transition-all cursor-pointer group overflow-hidden"
+                        >
+                            <div className="p-8">
+                                <div className="w-14 h-14 bg-teal-100 rounded-full flex items-center justify-center text-teal-600 mb-6 group-hover:scale-110 transition-transform">
+                                    <Icon name="droplet" size={28} />
+                                </div>
+                                <h2 className="text-2xl font-bold text-slate-800 mb-2">無電源供應者</h2>
+                                <p className="text-slate-500 text-sm mb-6 leading-relaxed">
+                                    適用濾水壺、傳統濾心過濾器。不需插電，不具備電源供應單元。
+                                </p>
+                                <ul className="space-y-2 text-sm text-slate-600 mb-8">
+                                    <li className="flex items-center"><Icon name="check" size={14} className="text-teal-500 mr-2"/> 免驗 CNS 60335-1</li>
+                                    <li className="flex items-center"><Icon name="check" size={14} className="text-teal-500 mr-2"/> 免驗 CNS 13783-1</li>
+                                    <li className="flex items-center"><Icon name="check" size={14} className="text-teal-500 mr-2"/> 須符合 商品標示法/基準</li>
+                                </ul>
+                                <div className="w-full py-2 bg-teal-50 text-teal-600 text-center rounded-lg font-bold group-hover:bg-teal-600 group-hover:text-white transition-colors">
+                                    進入檢核
+                                </div>
+                            </div>
+                            <div className="bg-slate-50 px-8 py-3 text-xs text-slate-400 border-t border-slate-100">
+                                依據：經標三字第11230000330號
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+
+            const renderChecklist = () => {
+                const rules = mode === 'electric' ? ELECTRIC_RULES : NON_ELECTRIC_RULES;
+                const progress = calculateProgress(rules);
+                const themeColor = mode === 'electric' ? 'blue' : 'teal';
+
+                // Categorize rules for display
+                const bodyRules = rules.filter(r => r.area === '本體');
+                const flexibleRules = rules.filter(r => r.area === '擇一標示');
+                const manualRules = rules.filter(r => r.area === '說明書');
+
+                return (
+                    <div className="max-w-5xl mx-auto py-8 px-4 slide-in pb-20">
+                        {/* Header */}
+                        <div className="flex items-center justify-between mb-8 bg-white p-4 rounded-xl shadow-sm border border-slate-200 sticky top-4 z-20">
+                            <div className="flex items-center">
+                                <button onClick={() => setMode(null)} className="mr-4 p-2 hover:bg-slate-100 rounded-full transition-colors">
+                                    <Icon name="chevronRight" className="transform rotate-180 text-slate-500" />
+                                </button>
+                                <div>
+                                    <h2 className="text-xl font-bold text-slate-800">
+                                        {mode === 'electric' ? '具電源供應者' : '無電源供應者'} 合規檢核
+                                    </h2>
+                                    <div className="flex items-center text-xs text-slate-500 mt-1">
+                                        <span className={`w-2 h-2 rounded-full bg-${themeColor}-500 mr-2`}></span>
+                                        已完成：{progress}% ({rules.filter(r => checkedItems[r.id]).length}/{rules.length})
+                                    </div>
+                                </div>
+                            </div>
+                            <div className={`px-4 py-2 rounded-lg bg-${themeColor}-50 text-${themeColor}-700 font-bold text-sm`}>
+                                {mode === 'electric' ? 'CNS 60335 + BSMI' : '商品標示法 + BSMI'}
+                            </div>
+                        </div>
+
+                        {/* Special Warnings for Electric */}
+                        {mode === 'electric' && (
+                            <div className="mb-8 bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-lg shadow-sm">
+                                <div className="flex items-start">
+                                    <Icon name="alert" className="text-amber-600 mt-1 mr-3" />
+                                    <div>
+                                        <h3 className="font-bold text-amber-800">CNS 60335-1 Clause 7 特別注意事項</h3>
+                                        <ul className="mt-2 text-sm text-amber-800 space-y-1 list-disc list-inside">
+                                            <li><strong>7.14 標示耐久性測試：</strong> 標示需經 15秒水擦拭 + 15秒石油精(己烷)擦拭測試，不可脫落或捲曲。</li>
+                                            <li><strong>7.12.8 水壓限制：</strong> 連接至供水管之電器，說明書務必標示最大/最小進水壓力 (Pa)。</li>
+                                            <li><strong>IP 等級：</strong> 若非 IPX0，必須標示 IP 代碼 (如 IPX4)。</li>
+                                            <li><strong>0類電器：</strong> 公告規定不得為 0 類電器結構 (必須有接地或雙重絕緣)。</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="grid lg:grid-cols-2 gap-8">
+                            {/* Column 1: Body Markings */}
+                            <div className="space-y-6">
+                                <div className={`flex items-center space-x-2 text-${themeColor}-800 font-bold text-lg border-b pb-2`}>
+                                    <span className={`bg-${themeColor}-100 p-1 rounded`}>1</span>
+                                    <h3>本體強制標示項目</h3>
+                                </div>
+                                <div className="space-y-3">
+                                    {bodyRules.map(rule => (
+                                        <RuleItem key={rule.id} rule={rule} isChecked={!!checkedItems[rule.id]} onToggle={toggleCheck} />
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Column 2: Flexible & Manual */}
+                            <div className="space-y-8">
+                                {/* Flexible Section */}
+                                <div className="space-y-4">
+                                    <div className={`flex items-center space-x-2 text-${themeColor}-800 font-bold text-lg border-b pb-2`}>
+                                        <span className={`bg-${themeColor}-100 p-1 rounded`}>2</span>
+                                        <h3>本體 / 包裝 / 說明書 (擇一標示)</h3>
+                                    </div>
+                                    <div className="space-y-3">
+                                        {flexibleRules.map(rule => (
+                                            <RuleItem key={rule.id} rule={rule} isChecked={!!checkedItems[rule.id]} onToggle={toggleCheck} />
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Manual Strict Section (Only for Electric usually, or if needed) */}
+                                {manualRules.length > 0 && (
+                                    <div className="space-y-4">
+                                        <div className="flex items-center space-x-2 text-blue-800 font-bold text-lg border-b pb-2">
+                                            <span className="bg-blue-100 p-1 rounded">3</span>
+                                            <h3>說明書 (強制記載項目)</h3>
+                                        </div>
+                                        <div className="space-y-3">
+                                            {manualRules.map(rule => (
+                                                <RuleItem key={rule.id} rule={rule} isChecked={!!checkedItems[rule.id]} onToggle={toggleCheck} />
+                                            ))}
+                                        </div>
+                                        
+                                        {/* Additional CNS Visual Check */}
+                                        {mode === 'electric' && (
+                                            <div className="bg-slate-100 p-4 rounded-lg text-sm text-slate-600 space-y-3 mt-4 border border-slate-200">
+                                                <h4 className="font-bold text-slate-700">CNS 60335-1 7.12 警語快查：</h4>
+                                                <p className="flex items-start">
+                                                    <span className="text-blue-500 mr-2">●</span>
+                                                    「本電器不預期供生理、感知、心智能力...不足之使用者(包含孩童)使用...」
+                                                </p>
+                                                <p className="flex items-start">
+                                                    <span className="text-blue-500 mr-2">●</span>
+                                                    「孩童應受監護，以確保孩童不嬉玩電器。」
+                                                </p>
+                                                <p className="flex items-start">
+                                                    <span className="text-blue-500 mr-2">●</span>
+                                                    (若有軟管) 「須使用隨附新軟管，舊軟管不得重複使用。」
+                                                </p>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Footer Info */}
+                        <div className="mt-12 text-center text-xs text-slate-400 border-t pt-8">
+                            <p>本系統僅供實驗室內部輔導使用，最終判定請以 BSMI 核發之證書文件與最新公告為主。</p>
+                            <p className="mt-1">資料來源：經濟部標準檢驗局公告、CNS 國家標準</p>
+                        </div>
+                    </div>
+                );
+            };
+
+            return (
+                <div className="min-h-screen bg-slate-50">
+                    {mode ? renderChecklist() : renderHome()}
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<MainApp />);
+    </script>
+</body>
+</html>
