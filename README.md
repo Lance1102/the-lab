@@ -1,5 +1,8 @@
 # The Lab
 
+## [能源效率互動教學與試算系統](https://lance1102.github.io/the-lab/〔互動式網頁〕能源效率互動教學與試算系統.html)
+> 能源效率互動教學與試算系統
+
 ## [BSMI RoHS 合規深度互動指南](https://lance1102.github.io/the-lab/RoHS_step-by-step.html)
 > 從零開始，帶您走完台灣RoHS標示的每一步
 
