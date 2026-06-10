@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blue/Green UAS 評估實驗室 · 策略會議簡報 v2.1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700;800;900&family=Noto+Sans+TC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#070B14;--bg2:#0A1020;--panel:#0E1626;--panel2:#121C30;
+    --line:rgba(123,154,200,.14);--line2:rgba(123,154,200,.30);
+    --ink:#EEF2FA;--dim:#AAB6D0;--faint:#69768F;
+    --blue:#4C8DD6;--blue2:#74B4FF;--amber:#F5B044;--cyan:#4FE0CD;--red:#F0716B;
+    --display:'Saira Condensed','Noto Sans TC',system-ui,sans-serif;
+    --cjk:'Noto Sans TC','Saira Condensed',system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{background:var(--bg);color:var(--ink);font-family:var(--cjk);font-weight:400;line-height:1.7;overflow:hidden;letter-spacing:.01em;-webkit-font-smoothing:antialiased}
+  .bg-grid,.bg-glow,.bg-grain,.scanline{position:fixed;inset:0;pointer-events:none;z-index:0}
+  .bg-grid{background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:52px 52px;opacity:.4;mask-image:radial-gradient(ellipse 125% 95% at 50% 42%,#000 32%,transparent 84%);-webkit-mask-image:radial-gradient(ellipse 125% 95% at 50% 42%,#000 32%,transparent 84%)}
+  .bg-glow{transition:background 1s ease}
+  .bg-grain{opacity:.045;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .scanline{z-index:60}
+  .scanline::after{content:"";position:absolute;left:0;right:0;height:1px;top:0;background:linear-gradient(90deg,transparent,rgba(116,180,255,.4),transparent);box-shadow:0 0 14px rgba(116,180,255,.3);animation:sweep 9.5s linear infinite;opacity:.45}
+  @keyframes sweep{0%{top:-2%}100%{top:102%}}
+  .topbar{position:fixed;top:0;left:0;right:0;z-index:50;height:36px;display:flex;align-items:center;gap:16px;padding:0 24px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);background:linear-gradient(180deg,rgba(7,11,20,.92),transparent)}
+  .topbar .dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);animation:pulse 2.6s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  .topbar .sep{color:var(--line2)} .topbar .right{margin-left:auto;color:var(--dim)}
+  #deck{position:relative;z-index:1;height:100vh;overflow-y:scroll;overflow-x:hidden;scroll-snap-type:y mandatory;scroll-behavior:smooth;scrollbar-width:none}
+  #deck::-webkit-scrollbar{display:none}
+  .slide{position:relative;min-height:100vh;scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column;justify-content:center;padding:78px clamp(34px,7vw,140px) 84px}
+  .slide.center{align-items:center;text-align:center}
+  .inner{width:100%;max-width:1220px;margin:0 auto;position:relative}
+  .reveal{opacity:0;transform:translateY(20px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+  .slide.in .reveal{opacity:1;transform:none}
+  /* header */
+  .kick{font-family:var(--mono);font-size:clamp(11px,1.05vw,13.5px);letter-spacing:.26em;text-transform:uppercase;color:var(--blue2);margin-bottom:16px;display:flex;align-items:center;gap:12px}
+  .kick::before{content:"";width:26px;height:1px;background:currentColor;opacity:.7}
+  .kick.cyan{color:var(--cyan)} .kick.amber{color:var(--amber)} .kick.red{color:var(--red)}
+  .h2{font-family:var(--cjk);font-weight:800;font-size:clamp(25px,3.5vw,46px);line-height:1.22;letter-spacing:.005em;color:var(--ink);text-wrap:balance}
+  .h2 .hl{color:var(--blue2)} .h2 .hlc{color:var(--cyan)} .h2 .hla{color:var(--amber)} .h2 .hlr{color:var(--red)}
+  .tk{font-size:clamp(16px,1.7vw,21px);color:var(--dim);font-weight:300;margin-top:14px;max-width:980px;line-height:1.6}
+  .tk b{color:var(--ink);font-weight:600}
+  .body{font-size:clamp(15px,1.55vw,18px);color:var(--dim);line-height:1.78;margin-top:20px;max-width:1000px;font-weight:300}
+  .body b{color:var(--ink);font-weight:600} .body .em{color:var(--blue2);font-weight:600}
+  .lead-cols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3vw,46px);margin-top:24px}
+  @media(max-width:840px){.lead-cols{grid-template-columns:1fr;gap:18px}}
+  /* panels & cards */
+  .panel{background:linear-gradient(180deg,var(--panel),var(--bg2));border:1px solid var(--line);border-radius:8px;padding:22px 24px;position:relative}
+  .panel.hl{border-color:var(--line2)}
+  .grid{display:grid;gap:18px} .g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)}
+  @media(max-width:860px){.g3,.g2{grid-template-columns:1fr}}
+  .ptag{font-family:var(--mono);font-size:clamp(13px,1.35vw,15.5px);letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:13px;font-weight:500}
+  .pbody{font-size:clamp(14px,1.45vw,16.5px);color:var(--dim);line-height:1.7}
+  .pbody b{color:var(--ink);font-weight:600}
+  .ph{font-family:var(--display);font-weight:700;font-size:clamp(19px,2.1vw,26px);color:var(--ink);margin-bottom:8px;letter-spacing:.01em}
+  ul.li{list-style:none;display:flex;flex-direction:column;gap:11px;margin-top:6px}
+  ul.li li{position:relative;padding-left:22px;font-size:clamp(14px,1.5vw,17px);color:var(--ink);line-height:1.55}
+  ul.li li::before{content:"";position:absolute;left:0;top:9px;width:8px;height:8px;border:1.5px solid var(--blue2);transform:rotate(45deg)}
+  ul.li li b{font-weight:700} ul.li li .s{color:var(--dim);font-weight:300}
+  /* BLUF box */
+  .bluf{border:1px solid var(--line2);border-radius:10px;background:linear-gradient(180deg,rgba(18,28,48,.6),rgba(10,16,32,.4));padding:8px 0;margin-top:8px}
+  .bluf .row{display:grid;grid-template-columns:130px 1fr;gap:20px;padding:16px 26px;border-bottom:1px solid var(--line);align-items:baseline}
+  .bluf .row:last-child{border-bottom:0}
+  .bluf .row .k{font-family:var(--display);font-weight:800;font-size:clamp(18px,2vw,24px);letter-spacing:.04em}
+  .bluf .row .k.o{color:var(--cyan)} .bluf .row .k.b{color:var(--amber)} .bluf .row .k.t{color:var(--blue2)} .bluf .row .k.r{color:var(--ink)}
+  .bluf .row .v{font-size:clamp(15px,1.55vw,18px);color:var(--ink);line-height:1.6}
+  .bluf .row .v b{color:#fff;font-weight:700}
+  @media(max-width:760px){.bluf .row{grid-template-columns:1fr;gap:6px;padding:14px 18px}}
+  /* option cards */
+  .opt{position:relative;overflow:hidden}
+  .opt .bar{position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--blue2),transparent)}
+  .opt.cyan .bar{background:linear-gradient(180deg,var(--cyan),transparent)} .opt.amber .bar{background:linear-gradient(180deg,var(--amber),transparent)}
+  .opt .on{font-family:var(--mono);font-size:clamp(12.5px,1.3vw,14.5px);letter-spacing:.14em;color:var(--blue2);font-weight:500}
+  .opt.cyan .on{color:var(--cyan)} .opt.amber .on{color:var(--amber)}
+  /* comparison table */
+  table.ct{width:100%;border-collapse:collapse;font-size:clamp(13px,1.4vw,16px)}
+  table.ct th{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);text-align:left;padding:12px 14px;border-bottom:1px solid var(--line2)}
+  table.ct td{padding:14px 14px;border-bottom:1px solid var(--line);color:var(--ink);vertical-align:top;line-height:1.55}
+  table.ct td.dim{color:var(--dim)} table.ct tr:last-child td{border-bottom:0}
+  table.ct td .rn{font-family:var(--display);font-weight:700;font-size:18px}
+  table.ct td b{color:#fff}
+  /* callouts */
+  .call{border-left:3px solid var(--amber);background:linear-gradient(90deg,rgba(245,176,68,.08),transparent);padding:16px 20px;border-radius:0 8px 8px 0;font-size:clamp(15px,1.5vw,18px);color:var(--ink);line-height:1.6;margin-top:18px}
+  .call.cyan{border-color:var(--cyan);background:linear-gradient(90deg,rgba(79,224,205,.08),transparent)}
+  .call.blue{border-color:var(--blue2);background:linear-gradient(90deg,rgba(116,180,255,.08),transparent)}
+  .call.red{border-color:var(--red);background:linear-gradient(90deg,rgba(240,113,107,.08),transparent)}
+  .call b{color:#fff;font-weight:700}
+  .rec{border:1px solid rgba(79,224,205,.4);background:linear-gradient(180deg,rgba(20,40,40,.5),rgba(10,18,26,.4));border-radius:10px;padding:24px 28px;margin-top:8px}
+  .rec .rh{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);margin-bottom:14px}
+  .rec .big{font-family:var(--cjk);font-weight:800;font-size:clamp(20px,2.4vw,32px);color:var(--ink);line-height:1.35}
+  .rec .big .hlc{color:var(--cyan)}
+  .ask{counter-reset:a;display:flex;flex-direction:column;gap:16px;margin-top:10px}
+  .ask .item{display:grid;grid-template-columns:48px 1fr;gap:18px;align-items:baseline}
+  .ask .item .n{font-family:var(--display);font-weight:900;font-size:clamp(28px,3.6vw,46px);color:transparent;-webkit-text-stroke:1.5px var(--amber);line-height:1}
+  .ask .item .x{font-size:clamp(16px,1.7vw,21px);color:var(--ink);line-height:1.5;font-weight:600}
+  .ask .item .x .s{display:block;font-size:.78em;font-weight:300;color:var(--dim);margin-top:4px}
+  /* stats */
+  .statrow{display:flex;gap:clamp(24px,5vw,64px);flex-wrap:wrap;margin-top:22px}
+  .stat .n{font-family:var(--display);font-weight:800;font-size:clamp(40px,6vw,84px);line-height:.9;letter-spacing:.005em}
+  .stat .n.cyan{color:var(--cyan)} .stat .n.amber{color:var(--amber)} .stat .n.blue{color:var(--blue2)} .stat .n.red{color:var(--red)}
+  .stat .n .u{font-size:.32em;color:var(--dim);font-weight:600;margin-left:.08em}
+  .stat .l{font-size:clamp(14px,1.45vw,16px);color:var(--dim);margin-top:10px;max-width:240px;line-height:1.5}
+  /* cover */
+  .kickbig{font-family:var(--mono);font-size:clamp(12px,1.2vw,15px);letter-spacing:.3em;text-transform:uppercase;color:var(--cyan);margin-bottom:24px;display:flex;align-items:center;gap:12px}
+  .kickbig::before{content:"";width:30px;height:1px;background:var(--cyan)}
+  .cover-h{font-family:var(--cjk);font-weight:900;font-size:clamp(38px,6.4vw,92px);line-height:1.1;letter-spacing:.005em}
+  .cover-h .hl{color:var(--blue2)} .cover-h .hlc{color:var(--cyan)}
+  .cover-sub{font-size:clamp(16px,1.8vw,23px);color:var(--dim);margin-top:26px;font-weight:300;max-width:900px;line-height:1.6}
+  .cover-sub b{color:var(--ink);font-weight:600}
+  .meta{display:flex;gap:18px;flex-wrap:wrap;margin-top:34px;font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;color:var(--faint)}
+  .meta b{color:var(--cyan);font-weight:700}
+  .reticle{position:absolute;right:-3%;top:50%;transform:translateY(-50%);width:min(36vw,420px);height:min(36vw,420px);opacity:.4;z-index:-1}
+  @media(max-width:920px){.reticle{opacity:.13;right:-14%}}
+  /* chrome */
+  .nav{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:50;display:flex;flex-direction:column;gap:8px}
+  .nav button{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--line2);background:transparent;cursor:pointer;padding:0;transition:all .3s}
+  .nav button:hover{border-color:var(--blue2)} .nav button.on{background:var(--blue2);border-color:var(--blue2);box-shadow:0 0 9px var(--blue2);transform:scale(1.3)}
+  @media(max-width:760px){.nav{display:none}}
+  .prog{position:fixed;left:0;bottom:0;height:2px;background:linear-gradient(90deg,var(--blue2),var(--cyan));z-index:55;width:0;box-shadow:0 0 10px var(--blue2)}
+  .counter{position:fixed;left:24px;bottom:16px;z-index:50;font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--dim)} .counter b{color:var(--ink);font-size:15px}
+  .hint{position:fixed;right:24px;bottom:16px;z-index:50;font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--faint);text-transform:uppercase}
+  .hint .k{border:1px solid var(--line2);border-radius:3px;padding:1px 6px;color:var(--dim);margin:0 2px}
+  .est{font-family:var(--mono);font-size:.62em;color:var(--faint);letter-spacing:.06em}
+  .footsrc{font-family:var(--mono);font-size:13px;color:var(--faint);margin-top:24px;letter-spacing:.03em;line-height:2}
+  .footsrc b{color:var(--dim)}
+  /* glossary tooltip + source links */
+  .term{cursor:help}
+  #tip{position:fixed;z-index:200;max-width:min(390px,80vw);font-family:var(--cjk);font-size:clamp(14px,1.4vw,16px);line-height:1.66;font-weight:400;letter-spacing:.01em;color:#EEF3FC;text-align:left;background:rgba(15,23,40,.52);-webkit-backdrop-filter:blur(20px) saturate(150%);backdrop-filter:blur(20px) saturate(150%);border:1px solid rgba(150,182,230,.32);border-radius:14px;padding:15px 18px;box-shadow:0 20px 54px rgba(0,0,0,.58),0 0 0 1px rgba(255,255,255,.05) inset;opacity:0;transform:translateY(9px);transition:opacity .2s ease,transform .22s cubic-bezier(.2,.7,.2,1);pointer-events:none}
+  #tip.show{opacity:1;transform:translateY(0)}
+  #tip .tt{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue2);margin-bottom:7px;display:block;font-weight:500}
+  .footsrc a.srclink{color:var(--blue2);text-decoration:none;border-bottom:1px solid rgba(116,180,255,.28);padding-bottom:1px;transition:color .2s ease,border-color .2s ease}
+  .footsrc a.srclink:hover{color:#a9ccff;border-bottom-color:var(--blue2)}
+
+  /* ===== RWD：平板與手機適配 ===== */
+  @supports (height:100dvh){ #deck{height:100dvh} .slide{min-height:100dvh} }
+  @media (max-width:1024px){
+    .slide{padding:74px clamp(24px,5vw,68px) 76px}
+    .lead-cols{gap:22px}
+    .topbar{white-space:nowrap;gap:10px;font-size:10.5px}
+    .topbar>span:nth-child(n+3):nth-child(-n+6){display:none}
+  }
+  @media (max-width:680px){
+    #deck{scroll-snap-type:y proximity}
+    .topbar{font-size:9.5px;gap:8px;padding:0 14px;white-space:nowrap}
+    .topbar>span:nth-child(n+3):nth-child(-n+6){display:none}
+    .slide{padding:70px 18px 60px}
+    .kick,.kickbig{margin-bottom:14px;font-size:11px;letter-spacing:.2em}
+    .h2{font-size:clamp(23px,6.4vw,34px);line-height:1.3}
+    .tk{font-size:16px;margin-top:12px}
+    .body{font-size:15.5px;margin-top:18px;line-height:1.75}
+    .cover-h{font-size:clamp(33px,8.8vw,52px)}
+    .cover-sub{font-size:16px;margin-top:20px}
+    .lead-cols{grid-template-columns:1fr;gap:16px;margin-top:18px}
+    .grid.g2,.grid.g3{grid-template-columns:1fr !important;gap:14px}
+    .panel{padding:18px 18px;border-radius:8px;overflow-x:auto}
+    .ph{font-size:clamp(18px,5vw,24px)}
+    .pbody{font-size:15px}
+    ul.li li{font-size:15px !important}
+    .bluf .row{grid-template-columns:1fr;gap:5px;padding:14px 18px}
+    .bluf .row .k{font-size:18px}
+    .bluf .row .v{font-size:15.5px}
+    .statrow{gap:20px 28px;margin-top:18px}
+    .stat .n{font-size:clamp(40px,13vw,66px)}
+    .stat .l{font-size:14px;max-width:200px}
+    .rec{padding:18px 18px}
+    .rec .big{font-size:clamp(18px,5vw,26px)}
+    .ask .item{grid-template-columns:38px 1fr;gap:13px}
+    .ask .item .n{font-size:clamp(26px,8vw,40px)}
+    .ask .item .x{font-size:16.5px}
+    .call{font-size:15.5px;padding:14px 16px}
+    .reticle{display:none}
+    .meta{gap:9px 14px;font-size:11px}
+    .footsrc{font-size:11.5px;line-height:1.9}
+    table.ct{min-width:560px} table.ct th,table.ct td{padding:11px 12px}
+  }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div><div class="bg-glow" id="glow"></div><div class="bg-grain"></div><div class="scanline"></div>
+
+<div class="topbar">
+  <span class="dot"></span><span>STRATEGY BRIEFING v2.1</span><span class="sep">//</span>
+  <span>BLUE / GREEN UAS 評估實驗室</span><span class="sep">//</span><span>進場策略評估</span>
+  <span class="right">2026-06-10 · 7 輪深度研究</span>
+</div>
+
+<nav class="nav" id="nav"></nav>
+<div class="prog" id="prog"></div>
+<div class="counter"><b id="cnum">01</b> / <span id="ctot">20</span></div>
+<div class="hint"><span class="k">&larr;</span><span class="k">&rarr;</span> 翻頁</div>
+
+<main id="deck">
+
+  <!-- 01 COVER -->
+  <section class="slide" data-glow="blue">
+    <div class="inner">
+      <svg class="reticle" viewBox="0 0 200 200" fill="none" stroke="#4C8DD6">
+        <circle cx="100" cy="100" r="80" stroke-width="0.5" opacity="0.5"/><circle cx="100" cy="100" r="56" stroke-width="0.7" opacity="0.7"/><circle cx="100" cy="100" r="30" stroke-width="0.7"/>
+        <path d="M100 4 V40 M100 160 V196 M4 100 H40 M160 100 H196" stroke-width="0.7"/><circle cx="100" cy="100" r="3" fill="#74B4FF" stroke="none"/>
+        <g opacity="0.8" stroke="#74B4FF"><path d="M58 58 h10 v2 M142 58 h-10 v2 M58 142 h10 v-2 M142 142 h-10 v-2" stroke-width="1"/></g>
+        <circle cx="100" cy="100" r="90" stroke-width="0.4" opacity="0.3" stroke-dasharray="2 7"><animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="46s" repeatCount="indefinite"/></circle>
+      </svg>
+      <div class="kickbig reveal">公司策略會議 · 進場評估</div>
+      <div class="cover-h reveal">建置 <span class="hl">Blue / Green UAS</span><br>在地<span class="hlc">評估能量</span>：策略評估</div>
+      <div class="cover-sub reveal">當所有無人機廠商搶著取得美國「可信任」認證以爭奪數十億美元國防需求時 —— <b>驗證，就是那道收費的關卡</b>。本簡報評估我們是否、以及如何切入這門生意。</div>
+      <div class="meta reveal"><span>7 輪深度研究</span><span>·</span><span><b>175</b> 條對抗式查證</span><span>·</span><span><b>77</b> 高信心發現</span><span>·</span><span>2026-06</span></div>
+    </div>
+  </section>
+
+  <!-- 02 BLUF -->
+  <section class="slide" data-glow="cyan">
+    <div class="inner">
+      <div class="kick cyan reveal">結論先行 · Bottom Line Up Front</div>
+      <div class="h2 reveal">一句話：<span class="hlc">機會稀缺、時機正好，建議分階段進場。</span></div>
+      <div class="bluf reveal" style="margin-top:24px">
+        <div class="row"><div class="k o">機會</div><div class="v">美國正大規模重建「<b>非紅供應鏈</b>」國防無人機市場；每家廠商都須通過認證才能賣，<b>評估方是收費關卡 —— 稀缺、具經常性收入、不與客戶競爭</b>。</div></div>
+        <div class="row"><div class="k t">位置</div><div class="v">台灣 <span class="term" data-term="ITRI">ITRI</span> 已是境外<b>唯一</b>評鑑機構，但量能有限、已有 <b>10+ 業者排隊</b> —— 在地評估量能仍有空間。</div></div>
+        <div class="row"><div class="k b">門檻</div><div class="v">非標準認證、而是 <span class="term" data-term="AUVSI">AUVSI</span> <b>合約治理</b>；信任裁定錨定美國；須建技術棧＋品質體系＋人才。<b>費用與遴選門檻屬私有</b>。</div></div>
+        <div class="row"><div class="k r">建議</div><div class="v"><b>以「<span class="term" data-term="ISO 17020">ITRI 模式</span>＋合作切入」分階段建置在地評估能量</b>；本季先完成對 AUVSI／ITRI／TAF 的接洽與可行性評估。</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 為什麼是現在 -->
+  <section class="slide" data-glow="blue">
+    <div class="inner">
+      <div class="kick reveal">情勢 · The Situation</div>
+      <div class="h2 reveal">過去十年全球無人機長在一條<span class="hlr">中國供應鏈</span>上 ——<br>美國正在把它連根拔起。</div>
+      <div class="body reveal">這不是一時的貿易摩擦，而是<b>結構性、不可逆</b>的重劃。<span class="term" data-term="DJI">DJI</span> 一家中國公司就佔全球商用無人機約 <b>70–90%</b><span class="est"> 業界估計</span>；美國認定這是國安風險後，五年內以一連串法律築起一道牆 —— <span class="term" data-term="§848">NDAA §848</span> 定義受限零件、<span class="term" data-term="ASDA">ASDA</span> 禁聯邦採購、<span class="term" data-term="§1260H">§1260H</span> 與 <span class="term" data-term="FCC">FCC</span> <span class="term" data-term="Covered List">Covered List</span> 點名封鎖。<span class="term" data-term="DJI">DJI</span> 與 <span class="term" data-term="Autel">Autel</span> 皆已上榜。</div>
+      <div class="call blue reveal"><b>對我們的意義：</b>一個龐大的「可信任無人機」市場正被重新劃定。每一台要賣進這個市場的無人機，都必須先被<b>驗證</b> —— 而驗證量能，現在嚴重不足。</div>
+    </div>
+  </section>
+
+  <!-- 04 什麼是 Blue UAS -->
+  <section class="slide" data-glow="blue">
+    <div class="inner">
+      <div class="kick reveal">情勢 · The Situation</div>
+      <div class="h2 reveal"><span class="term" data-term="Blue UAS">Blue UAS</span> 是美國國防部的<span class="hl">「信任白名單」</span>。<br>通過，就拿到國防與聯邦採購的門票。</div>
+      <div class="lead-cols reveal">
+        <div class="panel hl">
+          <div class="ptag">這是什麼</div>
+          <div class="pbody"><span class="term" data-term="DIU">DIU</span>（國防創新單位）建立、<b>2025-12 起改由 <span class="term" data-term="DCMA">DCMA</span> 維護</b>的清單。列入 <span class="term" data-term="Blue Cleared">Blue UAS Cleared List</span> 的無人機，即被視為<b>經審查、可信任、可被政府採購</b>。這是進入美國國防無人機市場的唯一門票。</div>
+        </div>
+        <div class="panel">
+          <div class="ptag">為什麼對「評估方」重要</div>
+          <div class="pbody">門票不會自己發 —— 必須有人<b>執行審查與資安測試</b>並產出證據。這正是評估方（assessor）的角色：站在門口，為每一個想進門的廠商驗證。<b>市場越大，門口越塞，驗證需求越強</b>。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 三道關卡 -->
+  <section class="slide" data-glow="blue">
+    <div class="inner">
+      <div class="kick reveal">情勢 · The Situation</div>
+      <div class="h2 reveal">過門，要同時通過<span class="hl">三道關卡</span> —— 這就是我們要替廠商驗證的。</div>
+      <div class="grid g3 reveal" style="margin-top:24px">
+        <div class="panel opt"><div class="bar"></div><div class="on">關卡 01</div><div class="ph"><span class="term" data-term="RMF">RMF</span> 網路弱點評估</div><div class="pbody">依美國國防部風險管理框架做滲透與弱點測試 —— <b>駭得進去嗎？</b>（這是我們實驗室的核心工作）</div></div>
+        <div class="panel opt"><div class="bar"></div><div class="on">關卡 02</div><div class="ph"><span class="term" data-term="ATO">ATO</span> 操作授權</div><div class="pbody">由官方核發的「准許操作」授權，效期約 24 個月。</div></div>
+        <div class="panel opt"><div class="bar"></div><div class="on">關卡 03</div><div class="ph"><span class="term" data-term="§848">§848</span> 供應鏈合規</div><div class="pbody">飛控、無線電、相機、雲台、地面站、軟體等關鍵零件來源<b>夠不夠乾淨</b>。</div></div>
+      </div>
+      <div class="call reveal"><b>關鍵分工：</b>關卡 1（資安測試）可在台灣由我們執行；關卡 3（供應鏈信任裁定）依規定<b>必須錨定美國</b>（由 <span class="term" data-term="AUVSI">AUVSI</span> 與 <span class="term" data-term="Altana">Altana</span> 執行）。這條界線定義了我們能做與不能做的範圍。</div>
+    </div>
+  </section>
+
+  <!-- 06 入門途徑 Green UAS + 評估方機制 -->
+  <section class="slide" data-glow="blue">
+    <div class="inner">
+      <div class="kick reveal">情勢 · The Situation</div>
+      <div class="h2 reveal">入口叫 <span class="hlc">Green UAS</span> —— 而入口由一群<span class="hl">「認可評估方」</span>把守。</div>
+      <div class="body reveal">2025-07 起，完成 <span class="term" data-term="AUVSI">AUVSI</span> 的 <span class="term" data-term="Green UAS">Green UAS</span> 認證，就直接列入 <span class="term" data-term="Blue Cleared">Blue Cleared List</span> —— 這是現在最清晰的官方路徑。執行評估的，是 <span class="term" data-term="AUVSI">AUVSI</span> 指定的<b>六家 <span class="term" data-term="Recognized Assessor">Recognized Assessors</span></b>（含 <span class="term" data-term="Fortress">Fortress</span>），加上滲透測試方。</div>
+      <div class="call cyan reveal"><b>這就是我們要爭取的位置。</b>台灣的 <span class="term" data-term="ITRI">ITRI</span> 已成為其中一員（在台做資安測試）—— 證明了「非美國機構也能成為評估方」這條路走得通。問題只剩：我們如何複製、補充、或合作？</div>
+    </div>
+  </section>
+
+  <!-- 07 賣鏟子 -->
+  <section class="slide" data-glow="cyan">
+    <div class="inner">
+      <div class="kick cyan reveal">機會 · The Opportunity</div>
+      <div class="h2 reveal">這是一場淘金潮 —— <span class="hlc">而我們要賣的是鏟子。</span></div>
+      <div class="body reveal">美國的需求不是預測，是<b>已下訂的合約</b>。<span class="term" data-term="Replicator">Replicator</span> 倡議要量產數千套無人系統；2025-07 國防部「無人機主導權」<span class="term" data-term="defense.gov">備忘錄</span>更要求 <b>2026 年底前每個班配一台無人機</b>、明訂 <span class="term" data-term="Buy American">Buy American</span>，演化成約 <b>34 萬台、約 100 億美元</b>的計畫。</div>
+      <div class="call cyan reveal"><b>關鍵洞察：</b>每一個想吃這塊需求的廠商，都得先通過認證 —— 而通過認證，得先找評估方。<b>我們不必賭哪家無人機會贏；我們向所有參賽者收費。</b>這是低資本、經常性、不與客戶競爭的「賣鏟子」生意。</div>
+    </div>
+  </section>
+
+  <!-- 08 採購與定價 -->
+  <section class="slide" data-glow="cyan">
+    <div class="inner">
+      <div class="kick cyan reveal">機會 · The Opportunity</div>
+      <div class="h2 reveal">錢已經在流動 —— 而且每一筆都<span class="hlc">先經過一次驗證</span>。</div>
+      <div class="grid g3 reveal" style="margin-top:22px">
+        <div class="panel"><div class="ptag">陸軍 SRR</div><div class="ph"><span class="term" data-term="Skydio">Skydio</span> X10D</div><div class="pbody">史上最大單一廠商 sUAS 採購 <b>~$52M</b>；單價 $39,800 → <b>$65,000</b>／套。<span class="term" data-term="SRR">SRR</span> 是陸軍首個小型四旋翼量產案。</div></div>
+        <div class="panel"><div class="ptag">連級 CLS</div><div class="ph"><span class="term" data-term="Anduril">Anduril</span> + PDW</div><div class="pbody"><span class="term" data-term="CLS">CLS</span> 由 Anduril Ghost X 與 PDW C-100 得標，經 DLA 十年 IDIQ 載具採購。</div></div>
+        <div class="panel"><div class="ptag">定價意義</div><div class="ph">可信任溢價</div><div class="pbody"><span class="term" data-term="NDAA">NDAA</span> 合規無人機單價是消費級（<span class="term" data-term="DJI">DJI</span>）的<b>數倍</b>。利潤來自「可信任」這個標籤 —— 而標籤由評估方蓋。</div></div>
+      </div>
+      <div class="call cyan reveal"><b>需求的可見度：</b>計畫已累積 <b>81 家公司、39+ 套系統、165 個零組件</b>通過 —— 且持續成長；每套認證約 6–8 週、未來還有續證。對評估方而言，這是穩定、可重複的案源。</div>
+    </div>
+  </section>
+
+  <!-- 09 市場規模誠實聲明 -->
+  <section class="slide" data-glow="amber">
+    <div class="inner">
+      <div class="kick amber reveal">機會 · 誠實聲明</div>
+      <div class="h2 reveal">計畫規模明確；<span class="hla">整體市場美元數字</span>，我們刻意不誇大。</div>
+      <div class="statrow reveal">
+        <div class="stat"><div class="n cyan" data-count="81">0</div><div class="l">已通過的公司數（計畫產出，持續成長）</div></div>
+        <div class="stat"><div class="n cyan" data-count="39">0<span class="u">+</span></div><div class="l">認證系統數</div></div>
+        <div class="stat"><div class="n cyan" data-count="165">0</div><div class="l">認證零組件數</div></div>
+      </div>
+      <div class="call reveal"><b>誠實邊界：</b>整體美國/盟友 sUAS 市場的<b>美元估值未獲可信公開數據</b> —— 市調機構數字區間過寬，本研究<b>不予採信</b>。我們確知的是「需求真實、案源持續」，但精準市場規模需以一手詢價與在地建模補足。</div>
+    </div>
+  </section>
+
+  <!-- 10 法規三清單 + 2027 -->
+  <section class="slide" data-glow="amber">
+    <div class="inner">
+      <div class="kick amber reveal">門檻與時機 · Barriers & Timing</div>
+      <div class="h2 reveal">三套清單同時合圍 —— 而且有一個<span class="hlr">倒數計時</span>。</div>
+      <div class="lead-cols reveal">
+        <div class="panel">
+          <div class="ptag">三套法律上獨立的清單（須分別查核）</div>
+          <ul class="li" style="font-size:15px">
+            <li><b><span class="term" data-term="§1260H">§1260H</span></b><span class="s"> 中國軍事公司清單（DJI、Autel 在列）</span></li>
+            <li><b><span class="term" data-term="ASDA">ASDA</span></b><span class="s"> 聯邦採購禁令（FASC 清單）</span></li>
+            <li><b><span class="term" data-term="FCC">FCC</span> <span class="term" data-term="Covered List">Covered List</span></b><span class="s"> 整類外國製 UAS（馬達、電池明列）</span></li>
+          </ul>
+        </div>
+        <div class="panel" style="border-color:rgba(240,113,107,.35)">
+          <div class="ptag" style="color:var(--red)">關鍵時機</div>
+          <div class="stat"><div class="n red">2027-01-01</div></div>
+          <div class="pbody" style="margin-top:12px"><b>FCC 對 Blue-Cleared 的射頻授權豁免到期。</b>列入 Blue 清單 = 能否在美合法取得設備授權。這讓「取得認證」變成有時效的剛性需求 —— <b>對評估方是需求集中的時間窗</b>。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 供應鏈 + Buy American -->
+  <section class="slide" data-glow="amber">
+    <div class="inner">
+      <div class="kick amber reveal">門檻 · Barriers</div>
+      <div class="h2 reveal">最難的不是技術，是<span class="hla">供應鏈</span>與<span class="hla">「美國信任」</span>。</div>
+      <div class="body reveal">這對我們是雙面刃。一方面，廠商要去中化<b>很難</b> —— 中國掌握全球約 <b>90%</b> 的<span class="term" data-term="燒結釹鐵硼磁鐵">馬達磁鐵</span>、精煉約 <b>2/3</b> 的<span class="term" data-term="石墨負極">電池芯</span>原料；<span class="term" data-term="Buy American">Buy American</span> 壓力又逼他們在地化。這意味<b>廠商需要更多協助與驗證</b>（對我們是需求）。另一方面，「<b>信任裁定錨定美國</b>」是我們的硬限制 —— 供應鏈/NDAA 的最終判定權留在美方（<span class="term" data-term="AUVSI">AUVSI</span>／<span class="term" data-term="Altana">Altana</span>），我們做技術評估。</div>
+      <div class="call reveal"><b>定位含意：</b>我們的價值不是「發認證」，而是「<b>在地、低障礙、依美國標準產出可被採信的技術評估證據</b>」—— 把廠商的去中化成果，翻譯成美方信得過的語言。</div>
+    </div>
+  </section>
+
+  <!-- 12 為什麼台灣 -->
+  <section class="slide" data-glow="cyan">
+    <div class="inner">
+      <div class="kick cyan reveal">台灣的位置 · Taiwan's Position</div>
+      <div class="h2 reveal">台灣同時握有<span class="hlc">「可信任身分」</span>與<span class="hlc">「製造實力」</span> —— 這正是美國要的。</div>
+      <div class="lead-cols reveal">
+        <div class="panel hl"><div class="ptag">信任</div><div class="ph">民主／非紅供應鏈</div><div class="pbody">美國要的「<span class="term" data-term="非紅供應鏈">非紅供應鏈</span>」夥伴 —— 台灣是被信得過的那一邊。這是評估方公信力的前提。</div></div>
+        <div class="panel hl"><div class="ptag">能力與市場</div><div class="ph">晶片 + 製造 + 在地客戶</div><div class="pbody">台灣有硬實力，更有<b>大量本地無人機廠商</b>需要送測 —— 評估方的客戶，就在隔壁。</div></div>
+      </div>
+      <div class="call cyan reveal"><b>少數兼具者：</b>同時擁有「可信任身分」、「技術能力」與「在地客源」的經濟體不多。台灣是其中之一 —— 這是建置評估能量的天然條件。</div>
+    </div>
+  </section>
+
+  <!-- 13 ITRI 證明 + 空間 -->
+  <section class="slide" data-glow="cyan">
+    <div class="inner">
+      <div class="kick cyan reveal">台灣的位置 · Taiwan's Position</div>
+      <div class="h2 reveal"><span class="term" data-term="ITRI">ITRI</span> 已經證明模式可行 —— <span class="hlc">並留下了空間。</span></div>
+      <div class="lead-cols reveal">
+        <div class="panel hl">
+          <div class="ptag">已發生（2026-06-04 啟動）</div>
+          <ul class="li" style="font-size:15px">
+            <li><b>境外唯一</b><span class="s"> Green UAS 評鑑機構（總統/行政院/美方背書）</span></li>
+            <li><b>時程砍半</b><span class="s"> 在地驗證約 1 年 → 半年</span></li>
+            <li><b><span class="term" data-term="漢翔">漢翔</span>首家送驗</b><span class="s">、10+ 業者排隊登記</span></li>
+          </ul>
+        </div>
+        <div class="panel">
+          <div class="ptag">國家戰略順風</div>
+          <div class="statrow" style="margin-top:4px;gap:32px">
+            <div class="stat"><div class="n amber" data-count="442">0<span class="u">億</span></div><div class="l">行政院無人機國家隊計畫</div></div>
+            <div class="stat"><div class="n amber" data-count="400">0<span class="u">億+</span></div><div class="l">2030 產值目標</div></div>
+          </div>
+          <div class="pbody" style="margin-top:12px">2025 產值已達 129 億、出口增 21 倍 —— 政策、資金、需求三者齊備。</div>
+        </div>
+      </div>
+      <div class="call cyan reveal"><b>留下的空間：</b>ITRI 是<b>單一機構、量能有限</b>，已有 10+ 業者排隊。隨著 2027 時效逼近與廠商數量成長，<b>在地評估量能供不應求</b> —— 這就是我們的進場縫隙。</div>
+    </div>
+  </section>
+
+  <!-- 14 三條策略路徑 -->
+  <section class="slide" data-glow="blue">
+    <div class="inner">
+      <div class="kick reveal">策略選項 · Options</div>
+      <div class="h2 reveal">我們有<span class="hl">三種進場定位</span>。</div>
+      <div class="grid g3 reveal" style="margin-top:24px">
+        <div class="panel opt"><div class="bar"></div><div class="on">選項 A</div><div class="ph">自建評估方</div><div class="pbody">爭取成為 <span class="term" data-term="AUVSI">AUVSI</span> <span class="term" data-term="Green UAS">Green UAS</span> 的 <span class="term" data-term="Recognized Assessor">Recognized Assessor</span>（複製 <span class="term" data-term="ITRI">ITRI</span> 模式）。<b>控制度最高、護城河最深，但門檻與投入最大</b>。</div></div>
+        <div class="panel opt cyan"><div class="bar"></div><div class="on">選項 B</div><div class="ph">合作／補充量能</div><div class="pbody">與 ITRI 或既有評估方<b>合作、轉包或補充測試量能</b>。<b>最快進場、風險低</b>，但受制於對方、利潤分享。</div></div>
+        <div class="panel opt amber"><div class="bar"></div><div class="on">選項 C</div><div class="ph">送測輔導周邊</div><div class="pbody">先做「<b>Green 送測前輔導／預評估</b>」周邊服務（協助廠商備妥 <span class="term" data-term="SBOM">SBOM</span>/<span class="term" data-term="HBOM">HBOM</span>、修補弱點）。<b>幾乎無認可門檻</b>，建立客戶關係與 know-how。</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 15 選項分析 -->
+  <section class="slide" data-glow="blue">
+    <div class="inner">
+      <div class="kick reveal">策略選項 · 分析</div>
+      <div class="h2 reveal">三條路的<span class="hl">取捨</span>一目了然。</div>
+      <div class="panel reveal" style="margin-top:22px">
+        <table class="ct">
+          <thead><tr><th>路徑</th><th>核心活動</th><th>進入門檻</th><th>投入</th><th>進場速度</th><th>主要風險</th></tr></thead>
+          <tbody>
+            <tr><td><span class="rn" style="color:var(--blue2)">A</span> 自建評估方</td><td class="dim">獨立執行資安評估與滲透測試</td><td class="dim">高（AUVSI 認可、QA 體系、人才）</td><td class="dim">高</td><td class="dim">慢（12–18 月+）</td><td class="dim">門檻/費用私有、量能爬坡</td></tr>
+            <tr><td><span class="rn" style="color:var(--cyan)">B</span> 合作/補充</td><td class="dim">為 ITRI/既有評估方補充量能</td><td class="dim">中（技術能力 + 對方接受）</td><td class="dim">中</td><td class="dim">快</td><td class="dim">受制於人、利潤分享</td></tr>
+            <tr><td><span class="rn" style="color:var(--amber)">C</span> 送測輔導</td><td class="dim">送測前準備/預評估/弱點修補</td><td class="dim">低（無正式認可要求）</td><td class="dim">低</td><td class="dim">最快</td><td class="dim">非「官方評估」、價值較淺</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="call blue reveal"><b>觀察：</b>A、B、C 不互斥 —— 可作為<b>同一條成長曲線的三個階段</b>：先以 C/B 低門檻進場、累積客戶與技術能力，再爬升到 A 的高護城河位置。</div>
+    </div>
+  </section>
+
+  <!-- 16 建議 -->
+  <section class="slide" data-glow="cyan">
+    <div class="inner">
+      <div class="kick cyan reveal">建議 · Recommendation</div>
+      <div class="h2 reveal">建議：<span class="hlc">分階段進場，C/B 起步、瞄準 A。</span></div>
+      <div class="rec reveal">
+        <div class="rh">Recommended Path</div>
+        <div class="big">以 <span class="hlc">送測輔導／補充量能</span>（C→B）快速進場、建立客戶與 know-how；同步啟動 <span class="hlc">Recognized Assessor 資格</span>（A）的接洽與能力建置，循 <span class="term" data-term="ISO 17020">ISO 17020</span> 檢驗機構路線（經 <span class="term" data-term="TAF">TAF</span> 認可，與美國 <span class="term" data-term="FedRAMP">FedRAMP</span> <span class="term" data-term="3PAO">3PAO</span> 同邏輯），在 2027 時間窗前卡位。</div>
+      </div>
+      <div class="lead-cols reveal" style="margin-top:18px">
+        <div class="panel"><div class="ptag">為什麼分階段</div><div class="pbody">A 門檻高、費用與遴選標準<b>未公開</b>；先以 C/B 進場可<b>低風險驗證需求、養客戶、練團隊</b>，避免一次重押在資訊不全的賭注上。</div></div>
+        <div class="panel"><div class="ptag">為什麼是現在</div><div class="pbody"><b>2027 時效</b>製造需求高峰、ITRI 量能不足、國家隊資源到位 —— 三者交會的窗口不會永遠開著。</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 17 行動路線圖 -->
+  <section class="slide" data-glow="cyan">
+    <div class="inner">
+      <div class="kick cyan reveal">建議 · 90 天行動路線圖</div>
+      <div class="h2 reveal">九十天，把<span class="hlc">「能不能做」變成「怎麼做」</span>。</div>
+      <div class="grid g3 reveal" style="margin-top:22px">
+        <div class="panel opt cyan"><div class="bar"></div><div class="on">第 0–30 天 · 接洽</div><ul class="li" style="font-size:14.5px"><li>接洽 <span class="term" data-term="ITRI">ITRI</span>（合作/補充量能可能）</li><li>接洽 <span class="term" data-term="AUVSI">AUVSI</span>（評估方資格/費用）</li><li>接洽 <span class="term" data-term="TAF">TAF</span>（17020 認可路徑）</li></ul></div>
+        <div class="panel opt cyan"><div class="bar"></div><div class="on">第 30–60 天 · 能力</div><ul class="li" style="font-size:14.5px"><li>核心團隊（<span class="term" data-term="PNPT">PNPT</span>/<span class="term" data-term="GXPN">GXPN</span>/<span class="term" data-term="GREM">GREM</span> + QA）</li><li>最小設備（SDR/韌體/teardown）</li><li>以 <span class="term" data-term="SOP">SOP</span> 草案接 1–2 件試評</li></ul></div>
+        <div class="panel opt cyan"><div class="bar"></div><div class="on">第 60–90 天 · 試運轉</div><ul class="li" style="font-size:14.5px"><li>跑通一次端到端模擬評估</li><li>建 QA 文件、樣品監管鏈</li><li>規劃 TAF 認可申請（提早備文件）</li></ul></div>
+      </div>
+      <div class="call cyan reveal"><b>並行原則：</b>「在地技術測試」與「美方信任裁定」是兩條<b>並行</b>工作流 —— 我們建前者、對接後者；別讓任一條成為瓶頸。完整建置細節見《實驗室營運 Playbook》。</div>
+    </div>
+  </section>
+
+  <!-- 18 風險 -->
+  <section class="slide" data-glow="amber">
+    <div class="inner">
+      <div class="kick amber reveal">風險與未知 · Risks</div>
+      <div class="h2 reveal">該說的風險，<span class="hla">攤開來說。</span></div>
+      <div class="grid g2 reveal" style="margin-top:22px">
+        <div class="panel">
+          <div class="ptag" style="color:var(--amber)">資訊缺口（需直接接洽）</div>
+          <ul class="li" style="font-size:15px">
+            <li><b>費用與遴選門檻私有</b><span class="s"> —— AUVSI/評估方費用、入選標準未公開</span></li>
+            <li><b>ITRI 設備/收費/人力</b><span class="s"> 即便啟動報導仍未揭露</span></li>
+            <li><b>單位經濟未量化</b><span class="s"> 每案損益、年產能需自建模</span></li>
+          </ul>
+        </div>
+        <div class="panel">
+          <div class="ptag" style="color:var(--amber)">結構性風險</div>
+          <ul class="li" style="font-size:15px">
+            <li><b>裁定錨定美國</b><span class="s"> —— 我們做不了最終信任判定</span></li>
+            <li><b>需求/時效不確定</b><span class="s"> 2027 後 FCC 豁免是否延展未知</span></li>
+            <li><b>競爭與量能爬坡</b><span class="s"> ITRI 先行、團隊養成需時間</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="call reveal"><b>緩解：</b>分階段進場（C→B→A）本身就是風險控管 —— 在資訊不全前不重押；先接洽把「私有未知」轉為「已知」，再決定投入規模。</div>
+    </div>
+  </section>
+
+  <!-- 19 決策請求 -->
+  <section class="slide" data-glow="blue">
+    <div class="inner">
+      <div class="kick reveal">決策請求 · The Ask</div>
+      <div class="h2 reveal">本次會議，請決定<span class="hl">三件事。</span></div>
+      <div class="ask reveal" style="margin-top:26px">
+        <div class="item"><div class="n">1</div><div class="x">核准「分階段進場」策略方向（C→B→A）<span class="s">確認以評估／驗證為切入的商業定位，而非自建整機或零組件。</span></div></div>
+        <div class="item"><div class="n">2</div><div class="x">核定先期「接洽 + 可行性評估」預算與時程<span class="s">支持 90 天內完成對 ITRI／AUVSI／TAF 的接洽，把費用、門檻、設備等私有資訊轉為已知。</span></div></div>
+        <div class="item"><div class="n">3</div><div class="x">指派專責負責人與接洽窗口<span class="s">優先從 ITRI 入手（在地、語言無礙、可經經濟部／國家隊引介）。</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 20 來源 -->
+  <section class="slide center" data-glow="cyan">
+    <div class="inner">
+      <div class="kick cyan reveal" style="justify-content:center">來源與方法 · Method</div>
+      <div class="h2 reveal" style="text-align:center">這份策略的<span class="hlc">底氣</span>。</div>
+      <div class="body reveal" style="text-align:center;margin-left:auto;margin-right:auto">本簡報建立在 <b>7 輪深度研究</b>、約 <b>175 條對抗式查證</b>、約 <b>77 條高信心發現</b>之上。<span class="term" data-term="Blue UAS">Blue UAS</span> 制度、法規、需求引擎、<span class="term" data-term="ITRI">ITRI</span> 實況皆有官方一手佐證；費用、設備明細、市場規模等屬未公開，已誠實標示為缺口。營運層完整建置細節另見《實驗室營運 Playbook》。</div>
+      <div class="footsrc reveal">來源：<a class="srclink" href="https://www.diu.mil/blue-uas-policy" target="_blank" rel="noopener" title="DIU — Blue UAS 政策與計畫頁">DIU</a> · <a class="srclink" href="https://bluelist.dcma.mil" target="_blank" rel="noopener" title="DCMA — 現行 Blue UAS Cleared List（2025-12 接手維護）">DCMA</a> · <a class="srclink" href="https://www.auvsi.org/certification-training/green-uas/" target="_blank" rel="noopener" title="AUVSI — Green UAS 認證計畫頁">AUVSI</a> · <a class="srclink" href="https://media.defense.gov/2025/Jul/10/2003752117/-1/-1/1/UNLEASHING-U.S.-MILITARY-DRONE-DOMINANCE.PDF" target="_blank" rel="noopener" title="國防部 — Hegseth 無人機主導權備忘錄（2025-07-10）">defense.gov</a> · <a class="srclink" href="https://www.congress.gov/bill/118th-congress/senate-bill/473/text" target="_blank" rel="noopener" title="congress.gov — American Security Drone Act（S.473）">congress.gov</a> · <a class="srclink" href="https://www.fcc.gov/covered-list-faqs-uas-and-uas-critical-components" target="_blank" rel="noopener" title="FCC — UAS Covered List FAQ（2025-12）">FCC</a> · <a class="srclink" href="https://csrc.nist.gov/pubs/sp/800/115/final" target="_blank" rel="noopener" title="NIST — SP 800-115 技術資安測試指南">NIST</a> · <a class="srclink" href="https://www.csis.org/analysis/drone-supply-chain-war-identifying-chokepoints-making-drone" target="_blank" rel="noopener" title="CSIS — 無人機供應鏈瓶頸分析">CSIS</a> · <a class="srclink" href="https://www.cna.com.tw/news/afe/202606040191.aspx" target="_blank" rel="noopener" title="中央社 — ITRI 評鑑機構啟動大會（2026-06-04）">中央社</a> · <a class="srclink" href="https://www.ey.gov.tw/Page/9277F759E41CCD91/637531a3-616f-479f-b0b2-88869fda0f35" target="_blank" rel="noopener" title="行政院 — 無人機國家隊／2030 產值 400 億計畫">ey.gov.tw</a></div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function(){
+  var deck=document.getElementById('deck');
+  var slides=Array.prototype.slice.call(deck.querySelectorAll('.slide'));
+  var nav=document.getElementById('nav'),prog=document.getElementById('prog'),cnum=document.getElementById('cnum');
+  document.getElementById('ctot').textContent=String(slides.length);
+  var glow=document.getElementById('glow');
+  var glowMap={
+    blue:'radial-gradient(58% 50% at 76% 14%,rgba(76,141,214,.17),transparent 72%),radial-gradient(50% 45% at 14% 88%,rgba(79,224,205,.07),transparent 72%),radial-gradient(90% 70% at 50% 50%,rgba(10,16,32,.22),#070B14 82%)',
+    cyan:'radial-gradient(58% 50% at 78% 16%,rgba(79,224,205,.16),transparent 72%),radial-gradient(50% 45% at 14% 86%,rgba(76,141,214,.08),transparent 72%),radial-gradient(90% 70% at 50% 50%,rgba(10,16,32,.22),#070B14 82%)',
+    amber:'radial-gradient(58% 50% at 78% 14%,rgba(245,176,68,.15),transparent 72%),radial-gradient(50% 45% at 14% 88%,rgba(76,141,214,.07),transparent 72%),radial-gradient(90% 70% at 50% 50%,rgba(10,16,32,.22),#070B14 82%)'
+  };
+  glow.style.background=glowMap.blue;
+  slides.forEach(function(s,i){var b=document.createElement('button');b.setAttribute('aria-label','Slide '+(i+1));b.addEventListener('click',function(){slides[i].scrollIntoView({behavior:'smooth'});});nav.appendChild(b);});
+  var dots=Array.prototype.slice.call(nav.children);
+  function pad(n){return (n<10?'0':'')+n;}
+  function countUp(slide){slide.querySelectorAll('[data-count]').forEach(function(el){if(el.dataset.done)return;el.dataset.done='1';var target=parseInt(el.getAttribute('data-count'),10);var suffix=el.querySelector('.u');var sufHTML=suffix?suffix.outerHTML:'';var dur=1200,start=null;function tick(ts){if(!start)start=ts;var p=Math.min((ts-start)/dur,1);var e=1-Math.pow(1-p,3);el.innerHTML=String(Math.round(target*e))+sufHTML;if(p<1)requestAnimationFrame(tick);}requestAnimationFrame(tick);});}
+  function reveal(slide){slide.querySelectorAll('.reveal').forEach(function(el,i){el.style.transitionDelay=(i*80)+'ms';});}
+  var io=new IntersectionObserver(function(entries){entries.forEach(function(en){var i=slides.indexOf(en.target);if(en.isIntersecting&&en.intersectionRatio>=0.5){en.target.classList.add('in');reveal(en.target);countUp(en.target);dots.forEach(function(d,j){d.classList.toggle('on',j===i);});cnum.textContent=pad(i+1);glow.style.background=glowMap[en.target.getAttribute('data-glow')||'blue'];}});},{root:deck,threshold:[0.5]});
+  slides.forEach(function(s){io.observe(s);});
+  deck.addEventListener('scroll',function(){var max=deck.scrollHeight-deck.clientHeight;prog.style.width=(max>0?(deck.scrollTop/max*100):0)+'%';},{passive:true});
+  function current(){var idx=0,min=1e9;slides.forEach(function(s,i){var d=Math.abs(s.getBoundingClientRect().top);if(d<min){min=d;idx=i;}});return idx;}
+  function go(d){var i=Math.max(0,Math.min(slides.length-1,current()+d));slides[i].scrollIntoView({behavior:'smooth'});}
+  window.addEventListener('keydown',function(e){if(['ArrowRight','ArrowDown','PageDown',' '].indexOf(e.key)>=0){e.preventDefault();go(1);}else if(['ArrowLeft','ArrowUp','PageUp'].indexOf(e.key)>=0){e.preventDefault();go(-1);}else if(e.key==='Home'){e.preventDefault();slides[0].scrollIntoView({behavior:'smooth'});}else if(e.key==='End'){e.preventDefault();slides[slides.length-1].scrollIntoView({behavior:'smooth'});}});
+  slides[0].classList.add('in');reveal(slides[0]);countUp(slides[0]);dots[0].classList.add('on');
+})();
+</script>
+<script>
+/* 術語 glossary + 毛玻璃 tooltip（繁中；不加底線或連結）+ 來源連結略過 */
+(function(){
+  var G={
+    "Blue UAS":"美國國防部 (DoD) 主導、審查並核可符合 NDAA 供應鏈與資安要求的無人機與零組件清單，可供聯邦／國防採購。",
+    "Blue Cleared":"Blue UAS Cleared List —— 通過審查、可供國防部採購的整機平台清單。",
+    "Green UAS":"AUVSI 推出的商規無人機資安與供應鏈認證；2025-07 起完成即列入 Blue UAS Cleared List。",
+    "AUVSI":"Association for Uncrewed Vehicle Systems International —— 國際無人系統協會，Green UAS 計畫擁有者。",
+    "DIU":"Defense Innovation Unit —— 美國國防部「國防創新單位」，Blue UAS 計畫創建者。",
+    "DCMA":"Defense Contract Management Agency —— 美國「國防合約管理局」；2025-12 起接手 Blue List 維護。",
+    "NDAA":"National Defense Authorization Act —— 美國《國防授權法案》，Blue UAS 供應鏈限制的法源。",
+    "ASDA":"American Security Drone Act —— 《美國安全無人機法案》，禁止聯邦採購受關注實體之無人機。",
+    "FCC":"Federal Communications Commission —— 美國「聯邦通訊委員會」，管理射頻設備授權。",
+    "Covered List":"FCC「涵蓋清單」—— 列入者不得取得新的射頻設備授權。",
+    "DJI":"大疆創新 —— 中國最大無人機廠商、全球商用市場龍頭，已被列入美國多項管制清單。",
+    "Autel":"道通智能 —— 中國無人機廠商，已列入美國 §1260H 等清單。",
+    "RMF":"Risk Management Framework —— 美國國防部「風險管理框架」，Blue UAS 資安評估的依據。",
+    "ATO":"Authority to Operate —— 「操作授權」，Blue UAS 三道關卡之一，效期約 24 個月。",
+    "Replicator":"美國國防部「複製者」倡議 —— 大規模量產可消耗無人系統以形成數量優勢。",
+    "Buy American":"美國聯邦採購的「購買美國貨」偏好原則。",
+    "ITRI":"工業技術研究院（工研院）—— 台灣最大應用研究機構；2026 成為美國境外唯一 Green UAS 資安評鑑機構。",
+    "Recognized Assessor":"DIU／AUVSI 認可的第三方評估機構，執行 NDAA 合規與資安評估（ITRI 為其一，目前共六家）。",
+    "3PAO":"Third-Party Assessment Organization —— FedRAMP 的第三方評估機構模型，是 Blue/Green 評估方治理最接近的類比。",
+    "FedRAMP":"美國聯邦雲端服務資安授權計畫；其 3PAO 評估方制度（依 ISO 17020）是 Blue/Green 的類比藍本。",
+    "Altana":"AUVSI 的供應鏈風險管理夥伴，支援美國端的供應鏈審查與 NDAA 裁定。",
+    "Fortress":"Fortress Information Security —— 與 AUVSI 共同推出 Green UAS 的資安評估夥伴。",
+    "ISO 17020":"國際標準《檢驗機構能力要求》—— 較適合滲透測試這類探索式評估的認可框架（評估方建議走此路線）。",
+    "TAF":"財團法人全國認證基金會（Taiwan Accreditation Foundation）—— 台灣的實驗室認證機構，與美國 A2LA 同屬 ILAC 國際互認。",
+    "PNPT":"Practical Network Penetration Tester —— 全實作滲透測試證照（含書面報告與口頭辯護）。",
+    "GXPN":"GIAC Exploit Researcher and Advanced Penetration Tester —— 進階攻擊／漏洞研究證照。",
+    "GREM":"GIAC Reverse Engineering Malware —— 逆向工程證照。",
+    "SBOM":"Software Bill of Materials —— 軟體物料清單。",
+    "HBOM":"Hardware Bill of Materials —— 硬體物料清單。",
+    "SOP":"Standard Operating Procedure —— 標準作業程序。",
+    "SRR":"Short-Range Reconnaissance —— 美國陸軍短程偵察小型無人機計畫（首個小型四旋翼量產案，Skydio 得標）。",
+    "CLS":"Company-Level Small UAS —— 美國陸軍連級小型無人機需求（Anduril Ghost X + PDW C-100 得標）。",
+    "Skydio":"美國無人機廠商，陸軍 SRR 計畫平台供應商（X10D）。",
+    "Anduril":"美國國防科技公司，連級無人機 Ghost X 供應商。",
+    "漢翔":"漢翔航空工業（AIDC）—— 台灣航太國家隊成員，首家送驗 Green UAS 的廠商。",
+    "defense.gov":"美國國防部官方網站；此處指 2025-07-10 Hegseth「無人機主導權」備忘錄。",
+    "§848":"FY2020 NDAA 第 848 條 —— 定義 Blue UAS「受限零組件」（飛控、無線電、相機、雲台、地面站、軟體）。",
+    "§1260H":"FY2021 NDAA 第 1260H 條 —— 美國國防部公布的「中國軍事公司」清單。",
+    "非紅供應鏈":"不含中國（紅色供應鏈）零組件與控制的供應鏈。",
+    "燒結釹鐵硼磁鐵":"NdFeB 永磁體 —— 無人機馬達的關鍵材料，全球約 90% 產出在中國。",
+    "石墨負極":"鋰電池的負極材料 —— 中國精煉佔比逾 70%。"
+  };
+  var KEYS=Object.keys(G).sort(function(a,b){return b.length-a.length;});
+  function esc(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
+  var RE=new RegExp('('+KEYS.map(esc).join('|')+')');
+  var REG=new RegExp(RE.source,'g');
+  function wrap(node){
+    if(node.nodeType===3){
+      var txt=node.nodeValue;
+      if(txt.length<2||!RE.test(txt))return;
+      var frag=document.createDocumentFragment(),last=0,m,any=false;REG.lastIndex=0;
+      while((m=REG.exec(txt))!==null){
+        any=true;var s=m.index,term=m[1];
+        if(s>last)frag.appendChild(document.createTextNode(txt.slice(last,s)));
+        var sp=document.createElement('span');sp.className='term';sp.setAttribute('data-tip',G[term]);sp.setAttribute('data-term',term);sp.textContent=term;frag.appendChild(sp);
+        last=s+term.length;
+      }
+      if(any){if(last<txt.length)frag.appendChild(document.createTextNode(txt.slice(last)));node.parentNode.replaceChild(frag,node);}
+    } else if(node.nodeType===1){
+      var c=node.classList;
+      if(c&&(c.contains('term')))return;
+      if(node.tagName==='SCRIPT'||node.tagName==='STYLE'||node.tagName==='A')return;
+      Array.prototype.slice.call(node.childNodes).forEach(wrap);
+    }
+  }
+  var deck=document.getElementById('deck');
+  wrap(deck);
+  var tip=document.createElement('div');tip.id='tip';document.body.appendChild(tip);
+  function show(el){
+    tip.innerHTML='<span class="tt">'+(el.getAttribute('data-term')||'')+'</span>'+el.getAttribute('data-tip');
+    tip.style.left='-9999px';tip.style.top='0px';tip.classList.add('show');
+    var tw=tip.offsetWidth,th=tip.offsetHeight,r=el.getBoundingClientRect();
+    var cx=r.left+r.width/2;
+    var left=Math.min(Math.max(12,cx-tw/2),window.innerWidth-tw-12);
+    var top=r.top-th-14;if(top<46)top=r.bottom+14;
+    tip.style.left=left+'px';tip.style.top=top+'px';
+  }
+  function hide(){tip.classList.remove('show');}
+  deck.addEventListener('mouseover',function(e){var t=e.target.closest?e.target.closest('.term'):null;if(t)show(t);});
+  deck.addEventListener('mouseout',function(e){var t=e.target.closest?e.target.closest('.term'):null;if(t&&!(e.relatedTarget&&t.contains(e.relatedTarget)))hide();});
+  deck.addEventListener('scroll',hide,{passive:true});
+  window.addEventListener('keydown',hide);
+  /* 觸控：點按術語顯示、點別處隱藏（手機無 hover） */
+  document.addEventListener('click',function(e){var t=e.target.closest?e.target.closest('.term'):null;if(t){show(t);}else{hide();}});
+})();
+</script>
+</body>
+</html>

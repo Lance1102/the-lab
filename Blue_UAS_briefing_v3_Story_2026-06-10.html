@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BLUE UAS · 一道牆，一扇門 | 敘事簡報 v3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700;800;900&family=Noto+Sans+TC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#070B14; --bg2:#0A1020; --panel:#0E1626;
+    --line:rgba(123,154,200,.14); --line2:rgba(123,154,200,.30);
+    --ink:#EEF2FA; --dim:#A4B0CC; --faint:#65728F;
+    --blue:#4C8DD6; --blue2:#74B4FF; --amber:#F5B044; --cyan:#4FE0CD; --red:#F0716B;
+    --display:'Saira Condensed','Noto Sans TC',system-ui,sans-serif;
+    --cjk:'Noto Sans TC','Saira Condensed',system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{background:var(--bg);color:var(--ink);font-family:var(--cjk);font-weight:400;line-height:1.65;overflow:hidden;letter-spacing:.01em;-webkit-font-smoothing:antialiased}
+
+  /* atmosphere */
+  .bg-grid,.bg-glow,.bg-grain,.scanline{position:fixed;inset:0;pointer-events:none;z-index:0}
+  .bg-grid{background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:54px 54px;opacity:.42;mask-image:radial-gradient(ellipse 120% 95% at 50% 42%,#000 30%,transparent 82%);-webkit-mask-image:radial-gradient(ellipse 120% 95% at 50% 42%,#000 30%,transparent 82%)}
+  .bg-glow{transition:background 1s ease}
+  .bg-grain{opacity:.045;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  .scanline{z-index:60}
+  .scanline::after{content:"";position:absolute;left:0;right:0;height:1px;top:0;background:linear-gradient(90deg,transparent,rgba(116,180,255,.45),transparent);box-shadow:0 0 14px rgba(116,180,255,.35);animation:sweep 9s linear infinite;opacity:.5}
+  @keyframes sweep{0%{top:-2%}100%{top:102%}}
+
+  .topbar{position:fixed;top:0;left:0;right:0;z-index:50;height:34px;display:flex;align-items:center;gap:16px;padding:0 24px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);background:linear-gradient(180deg,rgba(7,11,20,.9),transparent)}
+  .topbar .dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);animation:pulse 2.6s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  .topbar .sep{color:var(--line2)} .topbar .right{margin-left:auto;color:var(--dim)}
+
+  #deck{position:relative;z-index:1;height:100vh;overflow-y:scroll;overflow-x:hidden;scroll-snap-type:y mandatory;scroll-behavior:smooth;scrollbar-width:none}
+  #deck::-webkit-scrollbar{display:none}
+  .stage{position:relative;min-height:100vh;scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:90px clamp(34px,9vw,170px) 96px}
+  .stage.center{align-items:center;text-align:center}
+  .inner{width:100%;max-width:1180px;position:relative}
+  .center .inner{display:flex;flex-direction:column;align-items:center}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .85s cubic-bezier(.2,.7,.2,1),transform .85s cubic-bezier(.2,.7,.2,1)}
+  .stage.in .reveal{opacity:1;transform:none}
+
+  /* narrative type */
+  .kicker{font-family:var(--mono);font-size:clamp(12px,1.15vw,15px);letter-spacing:.34em;text-transform:uppercase;color:var(--blue2);margin-bottom:26px;display:flex;align-items:center;gap:12px}
+  .kicker::before{content:"";width:30px;height:1px;background:var(--blue2);opacity:.7}
+  .kicker.amber{color:var(--amber)} .kicker.amber::before{background:var(--amber)}
+  .kicker.cyan{color:var(--cyan)} .kicker.cyan::before{background:var(--cyan)}
+  .kicker.red{color:var(--red)} .kicker.red::before{background:var(--red)}
+
+  .statement{font-family:var(--cjk);font-weight:900;font-size:clamp(34px,5.6vw,78px);line-height:1.12;letter-spacing:.005em;color:var(--ink);text-wrap:balance}
+  .statement .hl{color:var(--blue2)}
+  .statement .hlc{color:var(--cyan)} .statement .hla{color:var(--amber)} .statement .hlr{color:var(--red)}
+  .center .statement{line-height:1.16}
+
+  .sub{font-size:clamp(17px,1.7vw,23px);color:var(--dim);font-weight:300;margin-top:30px;max-width:880px;line-height:1.7}
+  .center .sub{max-width:760px}
+  .sub b{color:var(--ink);font-weight:600}
+
+  .bignum{font-family:var(--display);font-weight:900;font-size:clamp(80px,17vw,200px);line-height:.86;letter-spacing:.005em;background:linear-gradient(165deg,#bcd8ff,#4C8DD6 62%,#2b5e94);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .bignum.cyan{background:linear-gradient(165deg,#a9f5ea,#4FE0CD 60%,#1f9c8c);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .bignum.amber{background:linear-gradient(165deg,#ffe0a6,#F5B044 60%,#b9791a);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .bignum.red{background:linear-gradient(165deg,#ffc0bc,#F0716B 58%,#b23f3a);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .bignum .u{font-size:.26em;-webkit-text-fill-color:var(--dim);color:var(--dim);font-weight:600;margin-left:.1em;letter-spacing:.02em}
+  .cap{font-size:clamp(18px,1.9vw,26px);color:var(--ink);font-weight:500;margin-top:18px}
+
+  /* chapter divider */
+  .chap{position:relative;text-align:left}
+  .center.chapdiv{align-items:flex-start;text-align:left;padding-left:clamp(34px,9vw,170px)}
+  .chnum{font-family:var(--display);font-weight:900;font-size:clamp(140px,30vw,340px);line-height:.8;color:transparent;-webkit-text-stroke:2px rgba(116,180,255,.34);text-stroke:2px rgba(116,180,255,.34);letter-spacing:-.01em}
+  .chap.amber .chnum{-webkit-text-stroke-color:rgba(245,176,68,.34)}
+  .chap.cyan .chnum{-webkit-text-stroke-color:rgba(79,224,205,.4)}
+  .chap.red .chnum{-webkit-text-stroke-color:rgba(240,113,107,.36)}
+  .chtitle{font-family:var(--cjk);font-weight:900;font-size:clamp(40px,7vw,96px);line-height:1.05;margin-top:-.12em}
+  .chen{font-family:var(--mono);font-size:clamp(13px,1.4vw,18px);letter-spacing:.3em;text-transform:uppercase;color:var(--dim);margin-top:18px}
+  .chnote{font-size:clamp(15px,1.5vw,20px);color:var(--faint);margin-top:14px}
+
+  /* build list (big, airy) */
+  .build{display:flex;flex-direction:column;gap:18px;margin-top:40px}
+  .build .row{display:flex;align-items:center;gap:22px;font-size:clamp(20px,2.3vw,32px);font-weight:700;color:var(--ink)}
+  .build .row .n{font-family:var(--mono);font-size:.5em;color:var(--blue2);min-width:2.4em;letter-spacing:.1em;font-weight:500}
+  .build .row .d{font-size:.62em;color:var(--dim);font-weight:300}
+  .build .row.dim2{color:var(--dim);font-weight:500}
+
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,4vw,56px);margin-top:44px;width:100%}
+  @media(max-width:820px){.duo{grid-template-columns:1fr;gap:24px}}
+  .duo .card{border-left:2px solid var(--line2);padding:6px 0 6px 26px}
+  .duo .card.blue{border-color:var(--blue2)} .duo .card.cyan{border-color:var(--cyan)} .duo .card.amber{border-color:var(--amber)} .duo .card.red{border-color:var(--red)}
+  .duo .card .lab{font-family:var(--mono);font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);margin-bottom:12px}
+  .duo .card .big{font-family:var(--display);font-weight:800;font-size:clamp(40px,6vw,76px);line-height:.95;color:var(--ink)}
+  .duo .card .big.cyan{color:var(--cyan)} .duo .card .big.amber{color:var(--amber)} .duo .card .big.red{color:var(--red)} .duo .card .big.blue{color:var(--blue2)}
+  .duo .card .t{font-size:clamp(16px,1.7vw,21px);color:var(--dim);margin-top:14px;line-height:1.6}
+  .duo .card .t b{color:var(--ink);font-weight:600}
+
+  /* four truths list */
+  .truths{display:flex;flex-direction:column;gap:24px;margin-top:40px;width:100%}
+  .truths .tr{display:flex;gap:24px;align-items:baseline}
+  .truths .tr .tn{font-family:var(--display);font-weight:900;font-size:clamp(32px,4vw,56px);color:transparent;-webkit-text-stroke:1.5px var(--cyan);min-width:1.6em;line-height:1}
+  .truths .tr .tx{font-size:clamp(19px,2.1vw,30px);font-weight:700;color:var(--ink);line-height:1.35}
+  .truths .tr .tx b{color:var(--cyan)}
+  .truths .tr .tx .s{display:block;font-size:.62em;font-weight:300;color:var(--dim);margin-top:6px}
+
+  .tagline{font-family:var(--cjk);font-weight:900;font-size:clamp(30px,4.6vw,62px);line-height:1.18;margin-top:22px}
+  .tagline .hl{color:var(--blue2)} .tagline .hlc{color:var(--cyan)}
+
+  /* cover wordmark */
+  .wm{font-family:var(--display);font-weight:900;font-size:clamp(70px,15vw,210px);line-height:.82;letter-spacing:.005em}
+  .wm .b{background:linear-gradient(160deg,#bcd8ff,#4C8DD6 60%,#2b5e94);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .wm .u{color:transparent;-webkit-text-stroke:1.7px var(--blue)}
+  .meta{display:flex;gap:20px;flex-wrap:wrap;margin-top:34px;font-family:var(--mono);font-size:13px;letter-spacing:.1em;color:var(--faint)}
+  .meta b{color:var(--cyan);font-weight:700}
+  .reticle{position:absolute;right:-3%;top:50%;transform:translateY(-50%);width:min(40vw,460px);height:min(40vw,460px);opacity:.42;z-index:-1}
+  @media(max-width:920px){.reticle{opacity:.14;right:-14%}}
+
+  /* nav / chrome */
+  .nav{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:50;display:flex;flex-direction:column;gap:8px}
+  .nav button{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--line2);background:transparent;cursor:pointer;padding:0;transition:all .3s}
+  .nav button:hover{border-color:var(--blue2)}
+  .nav button.on{background:var(--blue2);border-color:var(--blue2);box-shadow:0 0 9px var(--blue2);transform:scale(1.3)}
+  .nav button.ch{border-radius:1px;transform:rotate(45deg)}
+  .nav button.ch.on{transform:rotate(45deg) scale(1.3)}
+  @media(max-width:760px){.nav{display:none}}
+  .prog{position:fixed;left:0;bottom:0;height:2px;background:linear-gradient(90deg,var(--blue2),var(--cyan));z-index:55;width:0;box-shadow:0 0 10px var(--blue2)}
+  .counter{position:fixed;left:24px;bottom:16px;z-index:50;font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--dim)} .counter b{color:var(--ink);font-size:15px}
+  .hint{position:fixed;right:24px;bottom:16px;z-index:50;font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--faint);text-transform:uppercase}
+  .hint .k{border:1px solid var(--line2);border-radius:3px;padding:1px 6px;color:var(--dim);margin:0 2px}
+  .est{font-family:var(--mono);font-size:.5em;color:var(--faint);letter-spacing:.1em;vertical-align:.5em}
+  .footsrc{font-family:var(--mono);font-size:12px;color:var(--faint);margin-top:30px;letter-spacing:.04em;line-height:1.9}
+  .footsrc b{color:var(--dim)}
+
+  /* glossary terms + frosted-glass tooltip (no underline, no link) */
+  .term{cursor:help}
+  #tip{position:fixed;z-index:200;max-width:min(380px,80vw);font-family:var(--cjk);font-size:clamp(14px,1.4vw,16px);line-height:1.64;font-weight:400;letter-spacing:.01em;color:#EEF3FC;text-align:left;background:rgba(15,23,40,.52);-webkit-backdrop-filter:blur(20px) saturate(150%);backdrop-filter:blur(20px) saturate(150%);border:1px solid rgba(150,182,230,.32);border-radius:14px;padding:14px 18px;box-shadow:0 20px 54px rgba(0,0,0,.58),0 0 0 1px rgba(255,255,255,.05) inset;opacity:0;transform:translateY(9px);transition:opacity .2s ease,transform .22s cubic-bezier(.2,.7,.2,1);pointer-events:none}
+  #tip.show{opacity:1;transform:translateY(0)}
+  #tip .tt{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue2);margin-bottom:7px;display:block;font-weight:500}
+  /* official source links (last slide only) */
+  .footsrc a.srclink{color:var(--blue2);text-decoration:none;border-bottom:1px solid rgba(116,180,255,.28);padding-bottom:1px;transition:color .2s ease,border-color .2s ease}
+  .footsrc a.srclink:hover{color:#a9ccff;border-bottom-color:var(--blue2)}
+
+  /* ===== RWD：平板與手機適配 ===== */
+  @supports (height:100dvh){ #deck{height:100dvh} .stage{min-height:100dvh} }
+  @media (max-width:1024px){
+    .stage{padding:84px clamp(26px,6vw,72px) 78px}
+    .topbar{white-space:nowrap;gap:10px;font-size:10.5px}
+    .topbar>span:nth-child(n+3):nth-child(-n+6){display:none}
+  }
+  @media (max-width:680px){
+    #deck{scroll-snap-type:y proximity}
+    .topbar{font-size:9.5px;gap:8px;padding:0 14px;white-space:nowrap}
+    .topbar>span:nth-child(n+3):nth-child(-n+6){display:none}
+    .stage{padding:74px 20px 64px}
+    .center.chapdiv{padding-left:20px}
+    .kicker{margin-bottom:18px;font-size:11px;letter-spacing:.22em}
+    .statement{font-size:clamp(27px,7.4vw,40px);line-height:1.2}
+    .sub{font-size:16px;margin-top:20px}
+    .bignum{font-size:clamp(62px,21vw,108px)}
+    .cap{font-size:17.5px}
+    .chnum{font-size:clamp(120px,42vw,210px)}
+    .chtitle{font-size:clamp(38px,12vw,64px)}
+    .chnote{font-size:15px}
+    .build{gap:14px;margin-top:26px}
+    .build .row{font-size:clamp(18px,5.2vw,26px);gap:12px;flex-wrap:wrap}
+    .build .row .d{font-size:.66em;flex-basis:100%;margin:-2px 0 0 0}
+    .duo{grid-template-columns:1fr !important;gap:16px;margin-top:24px}
+    .duo .card .big{font-size:clamp(34px,10vw,52px)}
+    .truths{gap:18px;margin-top:26px}
+    .truths .tr{gap:14px}
+    .truths .tr .tn{font-size:clamp(26px,8vw,40px);min-width:1.3em}
+    .truths .tr .tx{font-size:clamp(17px,4.9vw,22px)}
+    .tagline{font-size:clamp(26px,7.6vw,46px)}
+    .wm{font-size:clamp(54px,17vw,92px)}
+    .reticle{display:none}
+    .meta{gap:9px 14px;font-size:11px}
+    .footsrc{font-size:11.5px}
+    .tl{padding-left:20px}
+  }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div><div class="bg-glow" id="glow"></div><div class="bg-grain"></div><div class="scanline"></div>
+
+<div class="topbar">
+  <span class="dot"></span><span>BLUE UAS</span><span class="sep">//</span>
+  <span>一道牆，一扇門</span><span class="sep">//</span><span>敘事簡報 v3</span>
+  <span class="right">2026 · 七輪深度研究</span>
+</div>
+
+<nav class="nav" id="nav"></nav>
+<div class="prog" id="prog"></div>
+<div class="counter"><b id="cnum">01</b> / <span id="ctot">29</span></div>
+<div class="hint"><span class="k">&larr;</span><span class="k">&rarr;</span> 翻頁</div>
+
+<main id="deck">
+
+  <!-- 01 COVER -->
+  <section class="stage" data-glow="blue">
+    <div class="inner">
+      <svg class="reticle" viewBox="0 0 200 200" fill="none" stroke="#4C8DD6">
+        <circle cx="100" cy="100" r="80" stroke-width="0.5" opacity="0.5"/><circle cx="100" cy="100" r="58" stroke-width="0.7" opacity="0.7"/><circle cx="100" cy="100" r="30" stroke-width="0.7"/>
+        <path d="M100 4 V40 M100 160 V196 M4 100 H40 M160 100 H196" stroke-width="0.7"/>
+        <circle cx="100" cy="100" r="3" fill="#74B4FF" stroke="none"/>
+        <g opacity="0.8" stroke="#74B4FF"><path d="M58 58 h10 v2 M142 58 h-10 v2 M58 142 h10 v-2 M142 142 h-10 v-2" stroke-width="1"/></g>
+        <circle cx="100" cy="100" r="90" stroke-width="0.4" opacity="0.3" stroke-dasharray="2 7"><animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="44s" repeatCount="indefinite"/></circle>
+      </svg>
+      <div class="kicker reveal">深度研究敘事 · v3</div>
+      <div class="wm reveal"><span class="b">BLUE</span> <span class="u">UAS</span></div>
+      <div class="tagline reveal">美國築起一道<span class="hl">牆</span>，<br>台灣找到了一扇<span class="hlc">門</span>。</div>
+      <div class="sub reveal">一個關於信任、供應鏈，與一扇正在倒數的門的故事。</div>
+      <div class="meta reveal"><span>七輪深度研究</span><span>·</span><span><b>175</b> 條對抗式查證</span><span>·</span><span><b>77</b> 高信心發現</span><span>·</span><span>2026-06</span></div>
+    </div>
+  </section>
+
+  <!-- 02 CH01 -->
+  <section class="stage chapdiv center" data-glow="red">
+    <div class="inner chap red">
+      <div class="chnum reveal">01</div>
+      <div class="chtitle reveal">斷裂</div>
+      <div class="chen reveal">The Rupture</div>
+      <div class="chnote reveal">為什麼世界上會出現一個叫「Blue UAS」的東西。</div>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="stage" data-glow="red">
+    <div class="inner">
+      <div class="kicker red reveal">起點</div>
+      <div class="statement reveal">全世界的無人機，<br>長在<span class="hlr">同一條</span>供應鏈上。</div>
+      <div class="sub reveal">而那條供應鏈，幾乎整條都在中國。</div>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="stage center" data-glow="red">
+    <div class="inner">
+      <div class="kicker red reveal" style="justify-content:center">一家公司，一個國家</div>
+      <div class="bignum red reveal" data-count="90">0<span class="u">%</span></div>
+      <div class="cap reveal">DJI 在全球商用無人機市場的佔比 <span class="est">業界估計</span></div>
+      <div class="sub reveal">一家中國公司，幾乎掌握了天空。對美軍而言，這不再是商業問題。</div>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="stage" data-glow="red">
+    <div class="inner">
+      <div class="kicker red reveal">轉折</div>
+      <div class="statement reveal">然後，美國把它<br>重新定義成 ——<span class="hlr">國安問題</span>。</div>
+      <div class="sub reveal">不是「要不要買便宜的」，而是「敵人能不能看見、甚至接管我們的無人機」。</div>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="stage" data-glow="red">
+    <div class="inner">
+      <div class="kicker red reveal">五年之間</div>
+      <div class="statement reveal">一道<span class="hlr">法律之牆</span>，<br>一塊一塊砌了起來。</div>
+      <div class="build reveal">
+        <div class="row"><span class="n">FY20</span> NDAA §848 <span class="d">— 定義「受限零組件」</span></div>
+        <div class="row"><span class="n">FY23</span> NDAA §817 <span class="d">— 擴大範圍</span></div>
+        <div class="row"><span class="n">2024</span> American Security Drone Act <span class="d">— 禁聯邦採購</span></div>
+        <div class="row"><span class="n">2025</span> §1260H · FCC Covered List <span class="d">— 點名封鎖</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="stage" data-glow="red">
+    <div class="inner">
+      <div class="kicker red reveal">合圍</div>
+      <div class="statement reveal"><span class="hlr">DJI 與 Autel</span>，<br>同時上了三套清單。</div>
+      <div class="sub reveal"><b>§1260H</b>（中國軍事公司）、<b>ASDA</b>（聯邦採購禁令）、<b>FCC Covered List</b>（連馬達、電池都點名）—— 三套法律上各自獨立的清單，同時把不可信的無人機，鎖在門外。</div>
+    </div>
+  </section>
+
+  <!-- 08 CH02 -->
+  <section class="stage chapdiv center" data-glow="blue">
+    <div class="inner chap">
+      <div class="chnum reveal">02</div>
+      <div class="chtitle reveal">新秩序</div>
+      <div class="chen reveal">The New Order</div>
+      <div class="chnote reveal">牆築好之後，美國造了一道門 —— 還有一套不斷改寫的規則。</div>
+    </div>
+  </section>
+
+  <!-- 09 -->
+  <section class="stage center" data-glow="blue">
+    <div class="inner">
+      <div class="kicker reveal" style="justify-content:center">那扇門</div>
+      <div class="wm reveal" style="font-size:clamp(56px,12vw,150px)"><span class="b">BLUE</span> <span class="u">UAS</span></div>
+      <div class="sub reveal" style="margin-top:34px">美國造了一道「<b>信任之門</b>」。通過，你就是可信任的；國防與聯邦市場，為你打開。</div>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section class="stage" data-glow="blue">
+    <div class="inner">
+      <div class="kicker reveal">門上，三道鎖</div>
+      <div class="statement reveal">過門，要同時通過<span class="hl">三道關卡</span>。</div>
+      <div class="build reveal">
+        <div class="row"><span class="n">01</span> RMF 網路弱點評估 <span class="d">— 駭得進去嗎？</span></div>
+        <div class="row"><span class="n">02</span> DIU 核發 ATO <span class="d">— 准許操作授權</span></div>
+        <div class="row"><span class="n">03</span> §848 供應鏈合規 <span class="d">— 零件夠不夠乾淨？</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 -->
+  <section class="stage" data-glow="blue">
+    <div class="inner">
+      <div class="kicker reveal">但門，一直在變</div>
+      <div class="statement reveal">入口，現在叫<br><span class="hlc">Green UAS</span>。</div>
+      <div class="sub reveal">2025–26 規則整個翻新：完成 AUVSI <b>Green UAS</b> 就直接列入 Blue Cleared（<b>2025-07</b>）；清單維護權移交 <b>DCMA</b>（<b>2025-12</b>）。這是現在最清晰的官方路徑。</div>
+    </div>
+  </section>
+
+  <!-- 12 -->
+  <section class="stage" data-glow="blue">
+    <div class="inner">
+      <div class="kicker reveal">而且，需求被點燃了</div>
+      <div class="statement reveal">美國要在 2026 年底前，<br>讓<span class="hl">每個班</span>都有無人機。</div>
+      <div class="sub reveal">Replicator 倡議 + 2025-07 國防部「無人機主導權」備忘錄，明訂 Buy American，演化成約 <b>34 萬台、約 100 億美元</b>的計畫。這不是願景，是已下訂的合約。</div>
+    </div>
+  </section>
+
+  <!-- 13 -->
+  <section class="stage center" data-glow="red">
+    <div class="inner">
+      <div class="kicker red reveal" style="justify-content:center">門上，有一個倒數</div>
+      <div class="bignum red reveal">2027<span class="u">-01-01</span></div>
+      <div class="cap reveal">FCC 對 Blue-Cleared 的射頻授權豁免，到期日。</div>
+      <div class="sub reveal">列入 Blue 清單，現在直接等於「能在美國合法取得設備授權」—— 但這張通行證，有時效。一扇開著的門，配上一個倒數計時。</div>
+    </div>
+  </section>
+
+  <!-- 14 CH03 -->
+  <section class="stage chapdiv center" data-glow="amber">
+    <div class="inner chap amber">
+      <div class="chnum reveal">03</div>
+      <div class="chtitle reveal">最難的部分</div>
+      <div class="chen reveal">The Hard Truth</div>
+      <div class="chnote reveal">想進這道門的人，很快就會撞上一個意外的真相。</div>
+    </div>
+  </section>
+
+  <!-- 15 -->
+  <section class="stage" data-glow="amber">
+    <div class="inner">
+      <div class="kicker amber reveal">意外的真相</div>
+      <div class="statement reveal">最難的，<br>不是造一台無人機。</div>
+      <div class="sub reveal">整機，台灣組得出來。真正卡住所有人的，在更上游。</div>
+    </div>
+  </section>
+
+  <!-- 16 -->
+  <section class="stage" data-glow="amber">
+    <div class="inner">
+      <div class="kicker amber reveal">真正的瓶頸</div>
+      <div class="statement reveal">是那塊<span class="hla">磁鐵</span>，<br>和那顆<span class="hla">電池芯</span>。</div>
+      <div class="duo reveal">
+        <div class="card amber"><div class="lab">馬達磁鐵</div><div class="big amber" data-count="90">0<span class="u" style="font-size:.5em;color:var(--dim)">%</span></div><div class="t">中國掌握全球燒結釹鐵硼磁鐵產出。即使在他國開採，<b>磁化與精加工仍在中國</b>。</div></div>
+        <div class="card amber"><div class="lab">電池芯</div><div class="big amber">~2/3</div><div class="t">中國精煉全球約三分之二的鋰、逾 70% 石墨負極。<b>瓶頸在精煉，不在開採</b>。</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 17 -->
+  <section class="stage" data-glow="amber">
+    <div class="inner">
+      <div class="kicker amber reveal">還有一個更難的</div>
+      <div class="statement reveal">以及 —— <span class="hla">信任</span>本身。</div>
+      <div class="sub reveal">誰來驗證「這台無人機可信任」？而且，必須是<b>美國信得過的人</b>來驗。這個問題的答案，決定了下一幕。</div>
+    </div>
+  </section>
+
+  <!-- 18 CH04 -->
+  <section class="stage chapdiv center" data-glow="cyan">
+    <div class="inner chap cyan">
+      <div class="chnum reveal">04</div>
+      <div class="chtitle reveal">台灣的時刻</div>
+      <div class="chen reveal">Taiwan's Moment</div>
+      <div class="chnote reveal">在這個「誰可信任」的問題上，台灣剛好站在對的位置。</div>
+    </div>
+  </section>
+
+  <!-- 19 -->
+  <section class="stage" data-glow="cyan">
+    <div class="inner">
+      <div class="kicker cyan reveal">主角登場</div>
+      <div class="statement reveal">這時候，<br><span class="hlc">台灣</span>走了進來。</div>
+      <div class="sub reveal">不是因為運氣，而是因為台灣手上，剛好有兩樣美國最缺的東西。</div>
+    </div>
+  </section>
+
+  <!-- 20 -->
+  <section class="stage" data-glow="cyan">
+    <div class="inner">
+      <div class="kicker cyan reveal">兩樣稀缺的東西</div>
+      <div class="statement reveal">可<span class="hlc">信任</span>，又能<span class="hlc">製造</span>。</div>
+      <div class="duo reveal">
+        <div class="card cyan"><div class="lab">信任</div><div class="big cyan">民主供應鏈</div><div class="t">美國要的「<b>非紅供應鏈</b>」夥伴 —— 台灣是被信得過的那一邊。</div></div>
+        <div class="card cyan"><div class="lab">能力</div><div class="big cyan">晶片 + 製造</div><div class="t">少數同時擁有<b>可信任身分</b>與<b>硬實力</b>的經濟體。</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 21 -->
+  <section class="stage" data-glow="cyan">
+    <div class="inner">
+      <div class="kicker cyan reveal">2026-06-04 · 突破</div>
+      <div class="statement reveal">工研院，成了美國境外<br><span class="hlc">唯一</span>的驗證據點。</div>
+      <div class="sub reveal">ITRI 加入 AUVSI Green UAS，成為<b>美國本土以外第一個、也是目前唯一</b>的資安評鑑機構。獲美國務院次卿、行政院長、總統賴清德多層級背書。</div>
+    </div>
+  </section>
+
+  <!-- 22 -->
+  <section class="stage center" data-glow="cyan">
+    <div class="inner">
+      <div class="kicker cyan reveal" style="justify-content:center">這對台廠意味著</div>
+      <div class="bignum cyan reveal">約 1 年 <span class="u" style="-webkit-text-fill-color:var(--cyan);color:var(--cyan)">→</span> 半年</div>
+      <div class="cap reveal">在台完成資安評鑑，認證時程砍半。</div>
+      <div class="sub reveal">「<b>在地驗證、接軌國際</b>」—— 台灣廠商不必再飛美國、不必跨時區語言，在國內就能依美國標準完成資安關卡。</div>
+    </div>
+  </section>
+
+  <!-- 23 -->
+  <section class="stage" data-glow="cyan">
+    <div class="inner">
+      <div class="kicker cyan reveal">而且，隊伍已經排起來了</div>
+      <div class="statement reveal">這不只是政策，<br>是<span class="hlc">已經在動</span>的市場。</div>
+      <div class="duo reveal" style="grid-template-columns:1fr 1fr 1fr">
+        <div class="card cyan"><div class="big cyan">漢翔</div><div class="t">首家送驗，啟動當天簽約</div></div>
+        <div class="card cyan"><div class="big cyan">10+</div><div class="t">業者排隊登記</div></div>
+        <div class="card cyan"><div class="big cyan">442<span style="font-size:.4em;color:var(--dim)">億</span></div><div class="t">行政院國家隊計畫 · 2030 產值目標 400 億+</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 24 CH05 -->
+  <section class="stage chapdiv center" data-glow="blue">
+    <div class="inner chap">
+      <div class="chnum reveal">05</div>
+      <div class="chtitle reveal">怎麼贏</div>
+      <div class="chen reveal">How To Win</div>
+      <div class="chnote reveal">門開著、需求在、據點在台灣。剩下的問題只有一個：你要怎麼進場？</div>
+    </div>
+  </section>
+
+  <!-- 25 -->
+  <section class="stage" data-glow="blue">
+    <div class="inner">
+      <div class="kicker reveal">兩條路</div>
+      <div class="statement reveal">你可以<span class="hl">做產品</span>，<br>也可以<span class="hlc">做驗證</span>。</div>
+      <div class="duo reveal">
+        <div class="card blue"><div class="lab">路一 · 廠商</div><div class="big blue">送測 Green→Blue</div><div class="t">把你的無人機/零件送進這道門，列入 Blue Cleared，吃國防需求。</div></div>
+        <div class="card cyan"><div class="lab">路二 · 實驗室</div><div class="big cyan">成為評估方</div><div class="t">像 ITRI 一樣，做「驗證」這門生意 —— 境外據點稀缺，量能還有空間。</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 26 -->
+  <section class="stage" data-glow="blue">
+    <div class="inner">
+      <div class="kicker reveal">路一 · 如果你是廠商</div>
+      <div class="statement reveal">四步，走進那道門。</div>
+      <div class="build reveal">
+        <div class="row"><span class="n">01</span> 股權自清 <span class="d">— 排除受關注實體</span></div>
+        <div class="row"><span class="n">02</span> 供應鏈去中 <span class="d">— 先解決最難的馬達、電池</span></div>
+        <div class="row"><span class="n">03</span> Green 認證 <span class="d">— 可在台經 ITRI 完成資安</span></div>
+        <div class="row"><span class="n">04</span> 列入 Blue Cleared <span class="d">— 但要認真考慮 Buy American</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 27 -->
+  <section class="stage" data-glow="cyan">
+    <div class="inner">
+      <div class="kicker cyan reveal">路二 · 如果你要建實驗室</div>
+      <div class="statement reveal">有四個<span class="hlc">反直覺</span>的真相。</div>
+      <div class="truths reveal">
+        <div class="tr"><span class="tn">1</span><span class="tx">走 <b>ISO 17020</b>，不是 17025<span class="s">滲透是探索式，貼合「檢驗機構」模型；走錯會建錯整套品質系統</span></span></div>
+        <div class="tr"><span class="tn">2</span><span class="tx">美國錨定 = <b>申報</b>，不是國籍禁令<span class="s">你用台灣法人、台灣人，在台灣就能做技術測試</span></span></div>
+        <div class="tr"><span class="tn">3</span><span class="tx">標準還不成熟 → 你的 <b>SOP 就是護城河</b><span class="s">無人機弱點常不在 CVE，誰先把 SOP 組好誰贏</span></span></div>
+        <div class="tr"><span class="tn">4</span><span class="tx">最貴的是<b>品質人力</b>，不是設備<span class="s">專責 QA 約佔總成本一半；認證稽核費反而小</span></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 28 -->
+  <section class="stage" data-glow="blue">
+    <div class="inner">
+      <div class="kicker reveal">最後一步</div>
+      <div class="statement reveal">研究到此為止。<br>剩下的，要<span class="hl">去問</span>。</div>
+      <div class="sub reveal">費用、遴選門檻、ITRI 設備 —— 這些最關鍵的，都是<b>私有的</b>，再多研究也撞牆。接洽信稿已備好（AUVSI／ITRI／TAF），<b>先從 ITRI 問起</b>：在地、語言無礙、可引介。</div>
+    </div>
+  </section>
+
+  <!-- 29 CLOSE -->
+  <section class="stage center" data-glow="cyan">
+    <div class="inner">
+      <div class="kicker cyan reveal" style="justify-content:center">收束</div>
+      <div class="tagline reveal" style="font-size:clamp(34px,6vw,82px)">門開著。<br><span class="hlc">鐘，在響。</span></div>
+      <div class="sub reveal">2027 之前，台灣有一個別人沒有的位置。<br>一句話帶走：<b>完成 Green UAS → 列入 Blue Cleared；在台灣，經 ITRI，趁現在。</b></div>
+      <div class="footsrc reveal"><b>這份敘事的底氣：</b>7 輪深度研究 · ~175 條對抗式查證 · ~77 高信心發現。已驗證／估計／缺口均於完整報告逐項標示；費用、ITRI 設備、市場規模等屬未公開，需直接接洽。<br>來源：<a class="srclink" href="https://www.diu.mil/blue-uas-policy" target="_blank" rel="noopener" title="DIU — Blue UAS 政策與計畫頁">DIU</a> · <a class="srclink" href="https://bluelist.dcma.mil" target="_blank" rel="noopener" title="DCMA — 現行 Blue UAS Cleared List（2025-12 接手維護）">DCMA</a> · <a class="srclink" href="https://www.auvsi.org/certification-training/green-uas/" target="_blank" rel="noopener" title="AUVSI — Green UAS 認證計畫頁">AUVSI</a> · <a class="srclink" href="https://media.defense.gov/2025/Jul/10/2003752117/-1/-1/1/UNLEASHING-U.S.-MILITARY-DRONE-DOMINANCE.PDF" target="_blank" rel="noopener" title="國防部 — Hegseth「Unleashing U.S. Military Drone Dominance」備忘錄（2025-07-10）">defense.gov</a> · <a class="srclink" href="https://www.congress.gov/bill/118th-congress/senate-bill/473/text" target="_blank" rel="noopener" title="congress.gov — American Security Drone Act（S.473）法案文本">congress.gov</a> · <a class="srclink" href="https://www.fcc.gov/covered-list-faqs-uas-and-uas-critical-components" target="_blank" rel="noopener" title="FCC — UAS 與關鍵零組件 Covered List FAQ（2025-12）">FCC</a> · <a class="srclink" href="https://csrc.nist.gov/pubs/sp/800/115/final" target="_blank" rel="noopener" title="NIST — SP 800-115 技術資安測試指南">NIST</a> · <a class="srclink" href="https://www.csis.org/analysis/drone-supply-chain-war-identifying-chokepoints-making-drone" target="_blank" rel="noopener" title="CSIS — 無人機供應鏈瓶頸分析（稀土磁鐵/電池芯）">CSIS</a> · <a class="srclink" href="https://www.cna.com.tw/news/afe/202606040191.aspx" target="_blank" rel="noopener" title="中央社 — ITRI 無人機評鑑機構啟動大會（2026-06-04）">中央社</a> · <a class="srclink" href="https://www.ey.gov.tw/Page/9277F759E41CCD91/637531a3-616f-479f-b0b2-88869fda0f35" target="_blank" rel="noopener" title="行政院 — 無人機國家隊／2030 產值 400 億計畫">ey.gov.tw</a></div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function(){
+  var deck=document.getElementById('deck');
+  var slides=Array.prototype.slice.call(deck.querySelectorAll('.stage'));
+  var nav=document.getElementById('nav'),prog=document.getElementById('prog'),cnum=document.getElementById('cnum');
+  document.getElementById('ctot').textContent=String(slides.length);
+  var glow=document.getElementById('glow');
+  var glowMap={
+    blue:'radial-gradient(58% 50% at 75% 16%,rgba(76,141,214,.18),transparent 72%),radial-gradient(50% 45% at 15% 88%,rgba(79,224,205,.07),transparent 72%),radial-gradient(90% 70% at 50% 50%,rgba(10,16,32,.25),#070B14 82%)',
+    cyan:'radial-gradient(58% 50% at 78% 18%,rgba(79,224,205,.17),transparent 72%),radial-gradient(50% 45% at 14% 86%,rgba(76,141,214,.08),transparent 72%),radial-gradient(90% 70% at 50% 50%,rgba(10,16,32,.25),#070B14 82%)',
+    amber:'radial-gradient(58% 50% at 78% 16%,rgba(245,176,68,.15),transparent 72%),radial-gradient(50% 45% at 14% 88%,rgba(76,141,214,.07),transparent 72%),radial-gradient(90% 70% at 50% 50%,rgba(10,16,32,.25),#070B14 82%)',
+    red:'radial-gradient(58% 52% at 76% 16%,rgba(240,113,107,.16),transparent 72%),radial-gradient(50% 45% at 14% 88%,rgba(76,141,214,.06),transparent 72%),radial-gradient(90% 70% at 50% 50%,rgba(10,16,32,.25),#070B14 82%)'
+  };
+  glow.style.background=glowMap.blue;
+  slides.forEach(function(s,i){
+    var b=document.createElement('button');
+    if(s.classList.contains('chapdiv'))b.className='ch';
+    b.setAttribute('aria-label','Slide '+(i+1));
+    b.addEventListener('click',function(){slides[i].scrollIntoView({behavior:'smooth'});});
+    nav.appendChild(b);
+  });
+  var dots=Array.prototype.slice.call(nav.children);
+  function pad(n){return (n<10?'0':'')+n;}
+  function countUp(slide){slide.querySelectorAll('[data-count]').forEach(function(el){if(el.dataset.done)return;el.dataset.done='1';var target=parseInt(el.getAttribute('data-count'),10);var suffix=el.querySelector('.u');var sufHTML=suffix?suffix.outerHTML:'';var dur=1300,start=null;function tick(ts){if(!start)start=ts;var p=Math.min((ts-start)/dur,1);var e=1-Math.pow(1-p,3);el.innerHTML=String(Math.round(target*e))+sufHTML;if(p<1)requestAnimationFrame(tick);}requestAnimationFrame(tick);});}
+  function reveal(slide){slide.querySelectorAll('.reveal').forEach(function(el,i){el.style.transitionDelay=(i*110)+'ms';});}
+  var io=new IntersectionObserver(function(entries){entries.forEach(function(en){var i=slides.indexOf(en.target);if(en.isIntersecting&&en.intersectionRatio>=0.55){en.target.classList.add('in');reveal(en.target);countUp(en.target);dots.forEach(function(d,j){d.classList.toggle('on',j===i);});cnum.textContent=pad(i+1);glow.style.background=glowMap[en.target.getAttribute('data-glow')||'blue'];}});},{root:deck,threshold:[0.55]});
+  slides.forEach(function(s){io.observe(s);});
+  deck.addEventListener('scroll',function(){var max=deck.scrollHeight-deck.clientHeight;prog.style.width=(max>0?(deck.scrollTop/max*100):0)+'%';},{passive:true});
+  function current(){var idx=0,min=1e9;slides.forEach(function(s,i){var d=Math.abs(s.getBoundingClientRect().top);if(d<min){min=d;idx=i;}});return idx;}
+  function go(d){var i=Math.max(0,Math.min(slides.length-1,current()+d));slides[i].scrollIntoView({behavior:'smooth'});}
+  window.addEventListener('keydown',function(e){if(['ArrowRight','ArrowDown','PageDown',' '].indexOf(e.key)>=0){e.preventDefault();go(1);}else if(['ArrowLeft','ArrowUp','PageUp'].indexOf(e.key)>=0){e.preventDefault();go(-1);}else if(e.key==='Home'){e.preventDefault();slides[0].scrollIntoView({behavior:'smooth'});}else if(e.key==='End'){e.preventDefault();slides[slides.length-1].scrollIntoView({behavior:'smooth'});}});
+  slides[0].classList.add('in');reveal(slides[0]);countUp(slides[0]);dots[0].classList.add('on');
+})();
+</script>
+<script>
+/* 術語 glossary + 毛玻璃 tooltip（繁中說明／語言映射；不加底線或連結） */
+(function(){
+  var G={
+    "Blue UAS":"美國國防部 (DoD) 主導、審查並核可符合 NDAA 供應鏈與資安要求的無人機與零組件清單，可供聯邦／國防採購。",
+    "Blue Cleared":"Blue UAS Cleared List —— 通過審查、可供國防部採購的整機平台清單。",
+    "Blue-Cleared":"Blue UAS Cleared List —— 通過審查、可供國防部採購的整機平台清單。",
+    "Green UAS":"AUVSI 推出的商規無人機資安與供應鏈認證；2025-07 起完成即列入 Blue UAS Cleared List。",
+    "AUVSI":"Association for Uncrewed Vehicle Systems International —— 國際無人系統協會，Green UAS 計畫擁有者。",
+    "DIU":"Defense Innovation Unit —— 美國國防部「國防創新單位」，Blue UAS 計畫創建者。",
+    "DCMA":"Defense Contract Management Agency —— 美國「國防合約管理局」；2025-12 起接手 Blue List 維護。",
+    "NDAA":"National Defense Authorization Act —— 美國《國防授權法案》，Blue UAS 供應鏈限制的法源。",
+    "ASDA":"American Security Drone Act —— 《美國安全無人機法案》，禁止聯邦採購受關注實體之無人機。",
+    "FCC":"Federal Communications Commission —— 美國「聯邦通訊委員會」，管理射頻設備授權。",
+    "Covered List":"FCC「涵蓋清單」—— 列入者不得取得新的射頻設備授權。",
+    "DJI":"大疆創新 —— 中國最大無人機廠商、全球商用市場龍頭，已被列入美國多項管制清單。",
+    "Autel":"道通智能 —— 中國無人機廠商，已列入美國 §1260H 等清單。",
+    "RMF":"Risk Management Framework —— 美國國防部「風險管理框架」，Blue UAS 資安評估的依據。",
+    "ATO":"Authority to Operate —— 「操作授權」，Blue UAS 三道關卡之一，效期約 24 個月。",
+    "Replicator":"美國國防部「複製者」倡議 —— 大規模量產可消耗無人系統以形成數量優勢。",
+    "Buy American":"美國聯邦採購的「購買美國貨」偏好原則。",
+    "ITRI":"工業技術研究院（工研院）—— 台灣最大應用研究機構；2026 成為美國境外唯一 Green UAS 資安評鑑機構。",
+    "ISO 17020":"國際標準《檢驗機構能力要求》—— 較適合滲透測試這類探索式評估的認可框架。",
+    "ISO 17025":"國際標準《測試與校正實驗室能力要求》—— 重視可重複性與方法驗證。",
+    "17020":"ISO/IEC 17020《檢驗機構能力要求》—— 較適合探索式的滲透測試評估。",
+    "17025":"ISO/IEC 17025《測試與校正實驗室能力要求》—— 重視可重複性與方法驗證。",
+    "SOP":"Standard Operating Procedure —— 標準作業程序。",
+    "CVE":"Common Vulnerabilities and Exposures —— 公開的資安漏洞編號資料庫。",
+    "QA":"Quality Assurance —— 品質保證／品質管理。",
+    "TAF":"財團法人全國認證基金會（Taiwan Accreditation Foundation）—— 台灣的實驗室認證機構，與美國 A2LA 同屬 ILAC 國際互認。",
+    "§848":"FY2020 NDAA 第 848 條 —— 定義 Blue UAS「受限零組件」（飛控、無線電、相機、雲台、地面站、軟體）。",
+    "§817":"FY2023 NDAA 第 817 條 —— 擴大涉中無人機供應鏈的限制範圍。",
+    "§1260H":"FY2021 NDAA 第 1260H 條 —— 美國國防部公布的「中國軍事公司」清單。",
+    "非紅供應鏈":"不含中國（紅色供應鏈）零組件與控制的供應鏈。",
+    "燒結釹鐵硼磁鐵":"NdFeB 永磁體 —— 無人機馬達的關鍵材料，全球約 90% 產出在中國。",
+    "石墨負極":"鋰電池的負極材料 —— 中國精煉佔比逾 70%。"
+  };
+  var KEYS=Object.keys(G).sort(function(a,b){return b.length-a.length;});
+  function esc(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
+  var RE=new RegExp('('+KEYS.map(esc).join('|')+')');
+  var REG=new RegExp(RE.source,'g');
+  function wrap(node){
+    if(node.nodeType===3){
+      var txt=node.nodeValue;
+      if(txt.length<2||!RE.test(txt))return;
+      var frag=document.createDocumentFragment(),last=0,m,any=false;REG.lastIndex=0;
+      while((m=REG.exec(txt))!==null){
+        any=true;var s=m.index,term=m[1];
+        if(s>last)frag.appendChild(document.createTextNode(txt.slice(last,s)));
+        var sp=document.createElement('span');sp.className='term';sp.setAttribute('data-tip',G[term]);sp.setAttribute('data-term',term);sp.textContent=term;frag.appendChild(sp);
+        last=s+term.length;
+      }
+      if(any){if(last<txt.length)frag.appendChild(document.createTextNode(txt.slice(last)));node.parentNode.replaceChild(frag,node);}
+    } else if(node.nodeType===1){
+      var c=node.classList;
+      if(c&&(c.contains('term')||c.contains('wm')||c.contains('chnum')||c.contains('chen')))return;
+      if(node.tagName==='SCRIPT'||node.tagName==='STYLE'||node.tagName==='A')return;
+      Array.prototype.slice.call(node.childNodes).forEach(wrap);
+    }
+  }
+  var deck=document.getElementById('deck');
+  wrap(deck);
+  /* frosted tooltip element, fixed-position, edge-aware */
+  var tip=document.createElement('div');tip.id='tip';document.body.appendChild(tip);
+  function show(el){
+    tip.innerHTML='<span class="tt">'+(el.getAttribute('data-term')||'')+'</span>'+el.getAttribute('data-tip');
+    tip.style.left='-9999px';tip.style.top='0px';tip.classList.add('show');
+    var tw=tip.offsetWidth,th=tip.offsetHeight,r=el.getBoundingClientRect();
+    var cx=r.left+r.width/2;
+    var left=Math.min(Math.max(12,cx-tw/2),window.innerWidth-tw-12);
+    var top=r.top-th-14;
+    if(top<44)top=r.bottom+14;
+    tip.style.left=left+'px';tip.style.top=top+'px';
+  }
+  function hide(){tip.classList.remove('show');}
+  deck.addEventListener('mouseover',function(e){var t=e.target.closest?e.target.closest('.term'):null;if(t)show(t);});
+  deck.addEventListener('mouseout',function(e){var t=e.target.closest?e.target.closest('.term'):null;if(t&&!(e.relatedTarget&&t.contains(e.relatedTarget)))hide();});
+  deck.addEventListener('scroll',hide,{passive:true});
+  window.addEventListener('keydown',hide);
+  /* 觸控：點按術語顯示、點別處隱藏（手機無 hover） */
+  document.addEventListener('click',function(e){var t=e.target.closest?e.target.closest('.term'):null;if(t){show(t);}else{hide();}});
+})();
+</script>
+</body>
+</html>
