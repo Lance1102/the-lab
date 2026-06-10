@@ -25,3 +25,7 @@
 
 ## [水類產品認證導航系統](https://lance1102.github.io/the-lab/Water-Product-Certification-Navigation.html)
 > 本系統整合台灣 BSMI 安規 (IEC 60335系列) 與 EMC (CNS 13783) 要求，並納入常見卡關議題
+
+## [Blue_UAS_簡報_v2.1_策略會議版_2026-06-10](https://lance1102.github.io/the-lab/Blue_UAS_briefing_v2.1_Strategy_2026-06-10.html)
+
+## [Blue_UAS_簡報_v3_敘事版_2026-06-10.html](https://lance1102.github.io/the-lab/Blue_UAS_briefing_v3_Story_2026-06-10.html)
