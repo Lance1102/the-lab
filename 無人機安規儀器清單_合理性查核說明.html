@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>無人機安規試驗儀器清單 — 建置合理性查核說明</title>
+<meta name="description" content="台中標準檢驗局無人機安規試驗儀器清單之建置合理性查核：對照 CNS 15598-1 / IEC 62368-1 與官方 IECEE CTL P.E.L.，以必備／可外包成本結構說明合理性。">
+<style>
+:root{
+  --bg:#f4f6fb; --surface:#ffffff; --surface-2:#f7f9fd; --surface-3:#eef2f9;
+  --ink:#1a2030; --ink-2:#525f78; --ink-3:#8893a8; --line:#e3e8f1; --line-2:#eef1f7;
+  --brand:#4f46e5; --brand-d:#3a32c4; --brand-wash:#ecebfd;
+  --req:#0d8576; --req-bg:#e1f5f0; --sub:#b9650b; --sub-bg:#fbecd6; --sp:#7c3aed; --sp-bg:#f0eafe;
+  --ok:#0d8576; --warn:#bd7a14; --keep:#64748b;
+  --shadow:0 1px 2px rgba(20,30,60,.05),0 12px 30px -12px rgba(20,30,60,.16);
+  --shadow-sm:0 1px 2px rgba(20,30,60,.06);
+  --r:14px; --r-sm:10px; --maxw:860px;
+  --sans:"Noto Sans TC","Microsoft JhengHei","PingFang TC",-apple-system,"Segoe UI",system-ui,sans-serif;
+  --mono:"Cascadia Code","Consolas","Sarasa Mono TC",ui-monospace,Menlo,monospace;
+}
+html[data-theme="dark"]{
+  --bg:#0e1320; --surface:#161d2c; --surface-2:#1b2333; --surface-3:#222c40;
+  --ink:#e7ebf3; --ink-2:#a3afc6; --ink-3:#73809a; --line:#27314a; --line-2:#202a40;
+  --brand:#7d76f0; --brand-d:#9a94f5; --brand-wash:#241f53;
+  --req:#34c5ae; --req-bg:#0f3a35; --sub:#e0a64e; --sub-bg:#3c2c12; --sp:#b79bf4; --sp-bg:#2c2350;
+  --ok:#34c5ae; --warn:#e0a64e; --keep:#94a2bd;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 14px 34px -14px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--bg);font-size:16px;line-height:1.72;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;transition:background .3s,color .3s}
+h1,h2,h3,h4{margin:0;line-height:1.3;font-weight:800;letter-spacing:-.01em;text-wrap:balance}
+p{margin:.7em 0;text-wrap:pretty}
+a{color:var(--brand-d);text-decoration:none}
+.jump{color:inherit;text-decoration:none;border-bottom:1.5px dotted color-mix(in srgb,var(--brand) 55%,transparent);cursor:pointer;transition:color .15s,background .15s,border-color .15s;text-underline-offset:2px;border-radius:2px}
+.jump:hover,.jump:focus-visible{color:var(--brand-d);background:var(--brand-wash);border-bottom:1.5px solid var(--brand);text-decoration:none;outline:none}
+@keyframes sectionflash{0%,55%{background-color:color-mix(in srgb,var(--brand) 14%,transparent);box-shadow:0 0 0 3px var(--brand),0 0 30px 5px color-mix(in srgb,var(--brand) 50%,transparent)}100%{background-color:transparent;box-shadow:0 0 0 3px transparent,0 0 30px 5px transparent}}
+section.flash{animation:sectionflash 2.8s ease-out;border-radius:12px;position:relative;z-index:2}
+@media (prefers-reduced-motion:reduce){section.flash{animation-duration:.01ms}}
+@media(max-width:680px){.flow{flex-direction:column;align-items:stretch;gap:8px}.flow .node{text-align:center}.flow .arr{align-self:center;transform:rotate(90deg);line-height:0}}
+@media(max-width:560px){.shell{padding:0 16px}main{padding-top:22px}.hero{margin-bottom:24px}}
+code,.mono{font-family:var(--mono);font-size:.9em}
+.mono{background:var(--surface-3);padding:1px 6px;border-radius:5px;font-weight:600}
+::selection{background:var(--brand-wash);color:var(--brand-d)}
+
+/* topbar */
+.topbar{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--surface) 86%,transparent);
+  backdrop-filter:saturate(160%) blur(12px);border-bottom:1px solid var(--line)}
+.topbar-in{max-width:1180px;margin:0 auto;padding:10px 22px;display:flex;align-items:center;gap:14px}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}
+.brand .mk{width:34px;height:34px;flex:0 0 auto;border-radius:9px;background:linear-gradient(135deg,var(--brand),var(--brand-d));
+  display:grid;place-items:center;color:#fff;box-shadow:0 4px 12px -3px rgba(79,70,229,.5)}
+.brand b{font-size:14.5px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand span{display:block;font-size:10.5px;color:var(--ink-3);font-weight:600}
+.tb-actions{margin-left:auto;display:flex;gap:8px}
+.iconbtn{appearance:none;border:1px solid var(--line);background:var(--surface-2);color:var(--ink-2);cursor:pointer;
+  width:36px;height:36px;border-radius:9px;display:grid;place-items:center;transition:.15s}
+.iconbtn:hover{border-color:var(--brand);color:var(--brand-d);background:var(--surface)}
+.iconbtn svg{width:18px;height:18px}
+
+/* layout */
+.shell{max-width:1180px;margin:0 auto;padding:0 22px;display:grid;grid-template-columns:minmax(0,1fr) 248px;gap:40px;align-items:start}
+main{max-width:var(--maxw);padding:30px 0 90px;min-width:0}
+@media(max-width:980px){.shell{grid-template-columns:1fr}}
+
+/* hero */
+.hero{margin:8px 0 30px}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--brand-d);
+  background:var(--brand-wash);padding:5px 12px;border-radius:999px;margin-bottom:14px}
+.hero h1{font-size:clamp(25px,3.6vw,34px);line-height:1.22}
+.hero .lead{color:var(--ink-2);font-size:16px;margin-top:12px;max-width:60ch}
+.meta{margin-top:22px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);overflow:hidden;box-shadow:var(--shadow-sm)}
+.meta dl{margin:0;display:grid;grid-template-columns:auto 1fr}
+.meta dt{padding:10px 16px;font-size:12.5px;font-weight:700;color:var(--ink-2);background:var(--surface-2);
+  border-bottom:1px solid var(--line-2);white-space:nowrap}
+.meta dd{margin:0;padding:10px 16px;font-size:13.5px;color:var(--ink);border-bottom:1px solid var(--line-2)}
+.meta dt:last-of-type,.meta dd:last-of-type{border-bottom:0}
+.meta .warn-note{color:var(--sub);font-weight:600}
+
+/* sections */
+section{scroll-margin-top:72px;margin:0 0 34px}
+section h2{font-size:21px;display:flex;align-items:baseline;gap:11px;padding-bottom:10px;border-bottom:2px solid var(--line);margin-bottom:6px}
+section h2 .no{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--brand-d)}
+section h3{font-size:16.5px;margin:24px 0 4px;color:var(--ink)}
+section h3 .no{font-family:var(--mono);color:var(--ink-3);font-size:14px;margin-right:6px}
+
+/* lead callout */
+.kicker{background:var(--surface);border:1px solid var(--line);border-left:none;border-radius:var(--r);
+  padding:16px 20px;margin:18px 0;box-shadow:var(--shadow-sm);position:relative;display:flex;gap:13px}
+.kicker .ic{flex:0 0 auto;color:var(--brand);margin-top:1px}
+.kicker b{color:var(--ink)}
+.callout{background:var(--req-bg);border:1px solid color-mix(in srgb,var(--req) 30%,transparent);border-radius:var(--r);
+  padding:15px 18px;margin:18px 0;display:flex;gap:13px;font-size:14.5px}
+.callout .ic{flex:0 0 auto;color:var(--req);margin-top:2px}
+.note{background:var(--surface-2);border:1px solid var(--line-2);border-radius:var(--r-sm);padding:13px 16px;
+  margin:16px 0;font-size:13.5px;color:var(--ink-2)}
+.note b{color:var(--ink)}
+
+/* lists */
+ol.steps{counter-reset:s;list-style:none;padding:0;margin:14px 0}
+ol.steps>li{counter-increment:s;position:relative;padding:11px 0 11px 44px;border-bottom:1px solid var(--line-2)}
+ol.steps>li:last-child{border-bottom:0}
+ol.steps>li::before{content:counter(s);position:absolute;left:0;top:11px;width:28px;height:28px;border-radius:8px;
+  background:var(--brand);color:#fff;font-weight:800;font-size:13px;display:grid;place-items:center;font-family:var(--mono)}
+ol.steps>li b{color:var(--ink)}
+ol.steps>li>b:first-child{display:block;font-size:17px;font-weight:800;color:var(--ink);margin:0 0 6px;letter-spacing:-.012em;line-height:1.35}
+
+/* tables */
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);margin:16px 0;box-shadow:var(--shadow-sm)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:460px}
+thead th{background:var(--surface-3);text-align:left;font-weight:700;font-size:12px;color:var(--ink-2);
+  padding:11px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+tbody td{padding:11px 14px;border-bottom:1px solid var(--line-2);vertical-align:top;color:var(--ink)}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:var(--surface-2)}
+td .sub{display:block;font-size:12px;color:var(--ink-3);margin-top:2px}
+.num{text-align:center;font-family:var(--mono);font-weight:700}
+
+/* badges */
+.bdg{display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:11.5px;padding:3px 9px;border-radius:999px;white-space:nowrap}
+.bdg::before{content:"";width:6px;height:6px;border-radius:50%}
+.b-req{background:var(--req-bg);color:var(--req)} .b-req::before{background:var(--req)}
+.b-sub{background:var(--sub-bg);color:var(--sub)} .b-sub::before{background:var(--sub)}
+.b-sp{background:var(--sp-bg);color:var(--sp)} .b-sp::before{background:var(--sp)}
+.b-ok{background:var(--req-bg);color:var(--req)} .b-ok::before{background:var(--req)}
+.b-keep{background:var(--surface-3);color:var(--keep)} .b-keep::before{background:var(--keep)}
+.b-warn{background:#fbf2da;color:var(--warn)} .b-warn::before{background:var(--warn)}
+html[data-theme="dark"] .b-warn{background:#3a2f12}
+
+/* cost summary strip */
+.costbar{display:flex;flex-wrap:wrap;gap:12px;margin:18px 0}
+.costcard{flex:1 1 150px;border:1px solid var(--line);border-radius:var(--r);padding:15px 17px;background:var(--surface);box-shadow:var(--shadow-sm)}
+.costcard .n{font-family:var(--mono);font-size:30px;font-weight:800;line-height:1;letter-spacing:-.02em}
+.costcard .t{font-weight:700;font-size:13.5px;margin-top:7px;display:flex;align-items:center;gap:7px}
+.costcard .d{font-size:12px;color:var(--ink-3);margin-top:4px}
+.costcard.cc-req{box-shadow:inset 3px 0 0 var(--req),var(--shadow-sm)} .costcard.cc-req .n{color:var(--req)}
+.costcard.cc-sub{box-shadow:inset 3px 0 0 var(--sub),var(--shadow-sm)} .costcard.cc-sub .n{color:var(--sub)}
+.costcard.cc-sp{box-shadow:inset 3px 0 0 var(--sp),var(--shadow-sm)} .costcard.cc-sp .n{color:var(--sp)}
+
+/* mechanism grid */
+.mechs{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:18px 0}
+@media(max-width:560px){.mechs{grid-template-columns:1fr}}
+.mech{border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;background:var(--surface);box-shadow:var(--shadow-sm)}
+.mech .h{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14.5px}
+.mech .ch{width:30px;height:30px;border-radius:8px;background:var(--brand-wash);color:var(--brand-d);display:grid;place-items:center;flex:0 0 auto}
+.mech .ch svg{width:17px;height:17px}
+.mech p{margin:9px 0 0;font-size:13.5px;color:var(--ink-2)}
+.mech .pts{margin:8px 0 0;padding-left:0;list-style:none;font-size:12.5px;color:var(--ink-3)}
+.mech .pts li{padding:2px 0 2px 16px;position:relative}
+.mech .pts li::before{content:"";position:absolute;left:2px;top:11px;width:5px;height:5px;border-radius:50%;background:var(--brand)}
+
+/* converge flow */
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:14px 0;padding:16px;background:var(--surface-2);border:1px dashed var(--line);border-radius:var(--r)}
+.flow .node{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:13px;font-weight:700;box-shadow:var(--shadow-sm)}
+.flow .arr{color:var(--ink-3);flex:0 0 auto}
+
+/* TOC */
+.toc{position:sticky;top:64px;align-self:start;max-height:calc(100vh - 84px);overflow:auto;padding:6px 0 20px}
+.toc .tc-head{display:flex;align-items:center;justify-content:space-between;font-size:11.5px;font-weight:700;color:var(--ink-3);
+  letter-spacing:.08em;text-transform:uppercase;margin:0 6px 10px}
+.toc .toc-close{display:none}
+.toc ul{list-style:none;margin:0;padding:0}
+.toc li a{display:block;padding:6px 12px;font-size:13px;color:var(--ink-2);border-left:2px solid var(--line);
+  transition:.15s;border-radius:0 6px 6px 0}
+.toc li a:hover{color:var(--brand-d);background:var(--surface-2);border-left-color:var(--brand)}
+.toc li a.on{color:var(--brand-d);font-weight:700;border-left-color:var(--brand);background:var(--brand-wash)}
+.toc li.sub a{padding-left:26px;font-size:12.5px}
+.toc-fab{position:fixed;right:18px;bottom:18px;z-index:60;display:none;align-items:center;gap:8px;
+  border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;font-family:inherit;font-weight:700;
+  font-size:13px;padding:11px 15px;border-radius:999px;box-shadow:var(--shadow)}
+.toc-fab svg{width:17px;height:17px}
+body.toc-collapsed .toc{display:none}
+body.toc-collapsed .toc-fab{display:inline-flex}
+@media(max-width:980px){
+  .toc{position:fixed;top:0;right:0;bottom:0;width:280px;max-width:84vw;z-index:70;background:var(--surface);
+    border-left:1px solid var(--line);padding:18px 14px;box-shadow:var(--shadow);max-height:none}
+  .toc .tc-head{margin-top:4px}.toc .toc-close{display:grid}
+  .toc-fab{display:inline-flex}
+  body.toc-collapsed .toc-fab{display:inline-flex}
+}
+
+/* back to top */
+.totop{position:fixed;right:18px;bottom:18px;z-index:55;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);
+  background:var(--surface);color:var(--ink-2);cursor:pointer;display:grid;place-items:center;opacity:0;pointer-events:none;
+  transition:.2s;box-shadow:var(--shadow)}
+.totop.show{opacity:1;pointer-events:auto}
+@media(max-width:980px){.totop{bottom:74px}}
+
+footer{border-top:1px solid var(--line);color:var(--ink-3);font-size:12.5px;padding:20px 0;margin-top:20px}
+
+@media print{
+  .topbar,.toc,.toc-fab,.totop{display:none!important}
+  .shell{display:block}body{background:#fff;font-size:12pt}
+  .costcard,.mech,.tw,.meta,.kicker,.callout{break-inside:avoid}
+  section{margin-bottom:18px}
+}
+
+/* ===== charts (hand-built SVG/CSS, offline) ===== */
+.chart{margin:18px 0}
+.donut svg,.gauge .ring svg{transform:rotate(-90deg)}
+.chart-cap{font-size:11.5px;color:var(--ink-3);margin-top:10px;text-align:center;text-wrap:pretty}
+.donut-row{display:flex;flex-wrap:wrap;align-items:center;gap:22px 34px;justify-content:center;padding:6px 0}
+.donut{position:relative;width:200px;height:200px;flex:0 0 auto}
+.donut svg{width:100%;height:100%}
+.donut .ctr{position:absolute;inset:0;display:grid;place-content:center;text-align:center;line-height:1.08}
+.donut .ctr b{font-family:var(--mono);font-size:38px;font-weight:800;display:block}
+.donut .ctr span{font-size:12px;color:var(--ink-3)}
+.donut-legend{display:flex;flex-direction:column;gap:0;flex:1 1 300px;min-width:280px}
+.lg-item{display:flex;align-items:flex-start;gap:14px;padding:13px 2px;border-bottom:1px solid var(--line-2)}
+.lg-item:last-child{border-bottom:0}
+.lg-n{font-family:var(--mono);font-weight:800;font-size:27px;line-height:.96;min-width:48px;text-align:left;flex:0 0 auto}
+.lg-body{flex:1;min-width:0}
+.lg-top{display:flex;align-items:baseline;gap:10px}
+.lg-name{font-weight:700;font-size:14.5px}
+.lg-pct{margin-left:auto;color:var(--ink-3);font-size:11.5px;font-family:var(--mono)}
+.lg-desc{font-size:12px;color:var(--ink-3);margin-top:5px;line-height:1.55}
+.lg-req .lg-n{color:var(--req)} .lg-sub .lg-n{color:var(--sub)} .lg-sp .lg-n{color:var(--sp)}
+.bars-col{display:flex;align-items:flex-end;gap:16px;height:142px;padding:0 4px;border-bottom:2px solid var(--line)}
+.bcol{flex:1 1 0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.bcol .bv{font-family:var(--mono);font-weight:800;font-size:16px;margin-bottom:6px}
+.bcol .bar{width:100%;max-width:60px;border-radius:7px 7px 0 0;min-height:5px}
+.bcol .bx{font-size:12px;color:var(--ink-2);margin-top:9px;font-weight:600;text-align:center}
+.bcol .bx small{display:block;color:var(--ink-3);font-weight:400;font-size:10px}
+.hbars{display:flex;flex-direction:column;gap:13px;padding-top:6px}
+.hbar{display:flex;align-items:center;gap:11px}
+.hbar .hl{font-size:12.5px;font-weight:600;min-width:44px}
+.hbar .htrack{flex:1;height:18px;background:var(--surface-3);border-radius:7px;overflow:hidden}
+.hbar .hfill{display:block;height:100%;border-radius:7px}
+.hbar .hv{font-family:var(--mono);font-weight:800;font-size:13px;min-width:18px;text-align:right}
+.gauge{display:flex;align-items:center;gap:18px;background:var(--surface-2);border:1px solid var(--line-2);border-radius:var(--r);padding:14px 18px;margin:16px 0}
+.gauge .ring{position:relative;width:90px;height:90px;flex:0 0 auto}
+.gauge .ring .gc{position:absolute;inset:0;display:grid;place-content:center;font-family:var(--mono);font-weight:800;font-size:20px;color:var(--req)}
+.gauge .gx{font-size:13px;color:var(--ink-2);text-wrap:pretty}
+.gauge .gx b{color:var(--ink);font-size:14px}
+.chartgrid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:20px 0 4px}
+@media(max-width:620px){.chartgrid{grid-template-columns:1fr}}
+.chartbox{border:1px solid var(--line);border-radius:var(--r);padding:15px 18px 18px;background:var(--surface);box-shadow:var(--shadow-sm)}
+.chartbox h4{font-size:12.5px;color:var(--ink-2);margin:0 0 16px;font-weight:700}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="topbar-in">
+  <div class="brand">
+    <span class="mk"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+    <div><b>合理性查核說明</b><span>無人機安規試驗儀器清單</span></div>
+  </div>
+  <div class="tb-actions">
+    <a class="iconbtn" href="無人機安規儀器清單_深度查證.html" title="深度查證・成本・競品（companion 報告）" aria-label="深度查證報告" style="text-decoration:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/><path d="M8.5 11h5M11 8.5v5"/></svg></a>
+    <button class="iconbtn print-btn" title="列印／另存 PDF" aria-label="列印"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z"/></svg></button>
+    <button class="iconbtn theme-btn" title="深淺色切換" aria-label="主題切換">
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M22 12h-2.5M4.5 12H2M19 5l-1.8 1.8M6.8 17.2 5 19M19 19l-1.8-1.8M6.8 6.8 5 5"/></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg>
+    </button>
+  </div>
+</div></div>
+
+<div class="shell">
+<main>
+  <div class="hero">
+    <span class="eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2 4 5v6c0 5 3.4 8.4 8 11 4.6-2.6 8-6 8-11V5l-8-3Z"/></svg>內部查核說明</span>
+    <h1>無人機安規試驗儀器清單<br>建置合理性查核說明</h1>
+    <p class="lead">針對〈無人機安規試驗儀器〉工作表，對照 CNS 15598-1（IEC 62368-1）標準正文與官方 IECEE CTL P.E.L.，以「必備／可外包」成本結構回應建置合理性。</p>
+    <div class="meta"><dl>
+      <dt>查核標的</dt><dd><span class="mono">台中標準檢驗局之無人機大樓設備清單_all-0609_V1.xlsx</span>〈無人機安規試驗儀器〉（48 測項／107 項設備／79 種獨立儀器）</dd>
+      <dt>對照依據</dt><dd>CNS 15598-1:2020（＝IEC 62368-1:2018 第 3 版）標準正文、IEC 62368-1:2023（第 4 版）、官方 IECEE CTL P.E.L.（2026-01-20 版）、《15598-1_Dashboard》對照網頁</dd>
+      <dt>日　　期</dt><dd>2026-06-12（2026-06-13 全文校訂）</dd>
+      <dt>範圍聲明</dt><dd class="warn-note">依交辦範圍，本說明聚焦「必要性與成本結構之合理性」，未納入設備報價金額分析；價格量化比較已另於《深度查證》companion 報告（D／E 輪）補充。</dd>
+    </dl></div>
+  </div>
+
+  <section id="summary">
+    <h2><span class="no">一</span>結論摘要</h2>
+    <ol class="steps">
+      <li><b>清單合理且可追溯</b><a class="jump" href="#results" title="跳至 3.1 條文對應正確性">48 項測試</a>逐項對應 CNS 15598-1（IEC 62368-1）強制條文，<a class="jump" href="#cost" title="跳至 4.1 必備 vs 可外包">107 項設備</a>逐項對應官方 IECEE CTL P.E.L. 之應備設備，係「由標準反推」而非任意開列。</li>
+      <li><b>成本已具結構性控管</b>依官方 P.E.L.，107 項設備中 <a class="jump" href="#cost" title="跳至 4.1 必備 vs 可外包"><b>86 項為「必備」、21 項屬「可外包／特殊設施」彈性項</b></a>；並輔以<a class="jump" href="#c-mech" title="跳至 4.2 四項成本控管機制">儀器共用、分年採購、設施需求集中三項機制</a>。</li>      <li><b>設備完整性無重大缺口</b>建議補一台<a class="jump" href="#r-equip" title="跳至 3.2 設備完整性">四線繞組電阻計</a>（官方列必備）與 2 kΩ 無感電阻、K 型熱電偶等小額耗材；其餘必備項均已齊備或由共用儀器涵蓋。</li>
+    </ol>
+    <div class="kicker"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5ZM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></span>
+    <div><b>一句話：</b>這份清單站得住腳——每一台儀器都掛在一條強制標準條文與官方應備設備之下；成本面已有<a class="jump" href="#c-mech" title="跳至 4.2 四項成本控管機制">外包彈性、共用、分年、設施集中四道控管</a>，且<a class="jump" href="#c-converge" title="跳至 4.3 成本要素收斂">最貴的項目正好都是「官方允許外包」並已排到後期年度</a>。</div></div>
+  </section>
+
+  <section id="method">
+    <h2><span class="no">二</span>查核方法</h2>
+    <p>採「<b>三方交叉比對</b>」，逐項核對而非抽樣：</p>
+    <div class="tw"><table>
+      <thead><tr><th style="width:46%">來源</th><th>角色</th></tr></thead>
+      <tbody>
+        <tr><td>設備清單 Excel〈無人機安規試驗儀器〉</td><td>查核標的</td></tr>
+        <tr><td>《15598-1_Dashboard》對照網頁</td><td>48 測項 × 儀器 × P.E.L. 之結構化對照</td></tr>
+        <tr><td>CNS 15598-1:2020 標準正文（321 頁）</td><td>條文／條號權威依據</td></tr>
+        <tr><td>IEC 62368-1:2023（第 4 版）</td><td>版次差異前瞻參照</td></tr>
+        <tr><td>官方 IECEE CTL P.E.L.（133 列）</td><td>「應備設備」與「必備／可外包」權威分類</td></tr>
+      </tbody>
+    </table></div>
+    <p>核對四個面向：① 測項 ↔ 標準條文；② 設備 ↔ 官方應備設備；③ 條號正確性；④ 必備／可外包成本分類。</p>
+  </section>
+
+  <section id="results">
+    <h2><span class="no">三</span>查核結果</h2>
+    <h3><span class="no">3.1</span>條文對應正確性（47／48 正確；1 項已更正、1 項屬官方文件誤植之忠實轉錄）</h3>
+    <div class="chart gauge">
+      <div class="ring" role="img" aria-label="條文對應正確率約 96%，48 分之 46">
+        <svg viewBox="0 0 100 100" width="90" height="90" aria-hidden="true">
+          <circle cx="50" cy="50" r="40" fill="none" stroke="var(--surface-3)" stroke-width="12"/>
+          <circle cx="50" cy="50" r="40" fill="none" stroke="var(--req)" stroke-width="12" stroke-linecap="round" stroke-dasharray="240.8 251.3"/>
+        </svg>
+        <div class="gc">96%</div>
+      </div>
+      <div class="gx"><b>46／48 條文原始即正確</b><br>其餘 2 項已釐清：1 項條號更正（8.1→8.10）、1 項確認為忠實轉錄（G.9.3），詳下表。</div>
+    </div>
+    <div class="tw"><table>
+      <thead><tr><th>測項</th><th>Excel 原標</th><th>正確條號</th><th>處置</th></tr></thead>
+      <tbody>
+        <tr><td>推車、支架穩定性（440N／Ø30mm）<span class="sub">CNS p.150；官方 P.E.L. 列 8.10（RB），設備文字逐字相符；8.11 實為「機架安裝設備之架設裝置 SRME」</span></td><td><span class="mono">8.1</span></td><td><span class="mono">8.10</span></td><td><span class="bdg b-ok">已更正</span><span class="sub">網頁已改；Excel V2 查證版已更正（V1 保留）</span></td></tr>
+        <tr><td>直流電動機過載／堵轉替代試驗<span class="sub">與官方 P.E.L. 同列字串「G.5.4.5.3 G.5.4.6.3 G.9.3 S.3.1 S.3.2」逐字相符，屬忠實轉錄；經 Ed.3／Ed.4 正文覆核，「G.9.3」為官方 P.E.L. 誤植（兩版 G.9 均為 IC 電流限制器），已建議回饋 IECEE</span></td><td><span class="mono">…G.9.3…</span></td><td>維持原樣</td><td><span class="bdg b-keep">無需更動</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="note"><b>版次敏感（3 項）：</b><span class="mono">4.1.4</span> 戶外條件、<span class="mono">4.8.4.3</span> 鈕扣電池、<span class="mono">6.4.8.3.3</span> 頂部開孔——第 4 版（2023）有強化；現行依 CNS:2020（第 3 版）送驗無虞，日後改版時複評即可。</div>
+  </section>
+
+  <section id="r-equip">
+    <h3><span class="no">3.2</span>設備完整性（對官方 P.E.L. 必備項）</h3>
+    <ol class="steps">
+      <li><b>無重大缺口</b>官方列為必備（R／RB）之項目均已齊備，或由登錄於相鄰測項之共用儀器涵蓋（功率分析儀、電子負載、扭力計等）。</li>
+      <li><b>四線式繞組電阻計（micro-ohmmeter／DLRO）</b>（依官方規格查證）官方於 <span class="mono">5.4.1.4</span> 將繞組電阻列為 RB 必備，原文明定「&gt; 1.0 Ω 用 2 線式、<b>&lt; 1.0 Ω 須 4 線式</b>」。經查 <b>Fluke 287 為 2 線式量測</b>；惟無人機馬達相電阻、BMS／匯流排常 &lt; 1 Ω，2 線式量測會灌入約 0.1–0.5 Ω 之線阻／接觸電阻而失準。故為滿足官方 &lt; 1 Ω 之 4 線式要求，建議補置一台（成本不高）。</li>
+      <li><b>小額補充</b>2 kΩ 無感電阻（表 4 註(c) 之正弦／直流電流量測，P.E.L. 同列明列）、K 型熱電偶（OD-5014 建議 premium 級、開關電源環境用 T 型）；另 1,500 A 短路源、IEC 60227 線材試驗、蒸餾燃料油屬可外包／耗材級，可委外或低價補購。</li>    </ol>
+  </section>
+
+  <section id="cost">
+    <h2><span class="no">四</span>合理性與成本結構<span style="font-size:13px;font-weight:600;color:var(--ink-3)">（核心）</span></h2>
+    <h3><span class="no">4.1</span>必備 vs 可外包（官方 P.E.L. 權威分類）</h3>
+    <div class="chart donut-row">
+      <div class="donut" role="img" aria-label="成本歸屬：必備 86 項、可外包 18 項、特殊設施 3 項，共 107 項">
+        <svg viewBox="0 0 150 150" width="150" height="150" aria-hidden="true">
+          <circle cx="75" cy="75" r="60" fill="none" stroke="var(--surface-3)" stroke-width="20"/>
+          <circle cx="75" cy="75" r="60" fill="none" stroke="var(--req)" stroke-width="20" stroke-dasharray="303.0 74.0"/>
+          <circle cx="75" cy="75" r="60" fill="none" stroke="var(--sub)" stroke-width="20" stroke-dasharray="63.4 313.6" stroke-dashoffset="-303.0"/>
+          <circle cx="75" cy="75" r="60" fill="none" stroke="var(--sp)" stroke-width="20" stroke-dasharray="10.6 366.4" stroke-dashoffset="-366.4"/>
+        </svg>
+        <div class="ctr"><b>107</b><span>設備項</span></div>
+      </div>
+      <div class="donut-legend">
+        <div class="lg-item lg-req"><span class="lg-n">86</span><div class="lg-body"><div class="lg-top"><span class="lg-name">必備（代碼 R／RB／ROUT…）</span><span class="lg-pct">80.4%</span></div><div class="lg-desc">須自備、不可省——取得認證資格之門檻。</div></div></div>
+        <div class="lg-item lg-sub"><span class="lg-n">18</span><div class="lg-body"><div class="lg-top"><span class="lg-name">可外包（代碼 S）</span><span class="lg-pct">16.8%</span></div><div class="lg-desc">官方允許分包／委外，為主要成本彈性所在。</div></div></div>
+        <div class="lg-item lg-sp"><span class="lg-n">3</span><div class="lg-body"><div class="lg-top"><span class="lg-name">特殊設施（代碼 SP）</span><span class="lg-pct">2.8%</span></div><div class="lg-desc">需特殊試驗設施，為建置成本主要驅動。</div></div></div>
+      </div>
+    </div>
+    <p><b>21 項（可外包＋特殊設施）為主要可選成本所在。</b>判定方式：直接依官方 P.E.L. 代碼——標 <span class="mono">S</span> 即可分包、標 <span class="mono">SP</span> 即需特殊設施，其餘 <span class="mono">R／RB</span> 為必備。（註：突波產生器一列為 RT／S／RC 混合代碼，依主用途歸必備計，統計由初版 85／19 調整為 86／18。）</p>
+    <div class="note"><b>高頻核心設備之重複配置屬合理（合理性推斷）：</b>溫升測試群之功率分析儀、交直流電源、溫度記錄器、直流負載等各列 2 台，係實務上高頻使用之核心設備，且為業務量成長時最先被追加採購更多套之品項；其重複配置具實務合理性、非冗餘。是否進一步刪減，由主管視預算與量能自行衡量。</div>
+  </section>
+
+  <section id="c-mech">
+    <h3><span class="no">4.2</span>四項成本控管機制</h3>
+    <div class="mechs">
+      <div class="mech"><div class="h"><span class="ch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M21 3l-7 7M8 21H3v-5M3 21l7-7"/></svg></span>可外包彈性</div><p>21／107 項官方允許分包或屬特殊設施，可逐項選擇自建或委外。</p></div>
+      <div class="mech"><div class="h"><span class="ch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M5 12H2M22 12h-3M12 5V2M12 22v-3M6.3 6.3 4.2 4.2M19.8 19.8l-2.1-2.1M17.7 6.3l2.1-2.1M4.2 19.8l2.1-2.1"/></svg></span>儀器共用</div><p>79 種獨立儀器中 <b>19 種跨多測項共用（32 筆共用關係均經逐筆驗證，1 筆儀器歸屬已修正）</b>（例：砝碼一套涵蓋 5 個測項；5.4.2 與附錄 X 共用一組量測設備）。</p></div>
+      <div class="mech"><div class="h"><span class="ch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></span>分年採購</div><p>攤平年度預算：逾八成於首年（116）建置核心安規能力，大型與特殊設備遞延後期。</p><div class="bars-col" style="margin-top:14px"><div class="bcol"><div class="bv">91</div><div class="bar" style="height:100%;background:var(--keep)"></div><div class="bx">116 年<small>2027</small></div></div><div class="bcol"><div class="bv">4</div><div class="bar" style="height:7%;background:#2f6bdb"></div><div class="bx">117 年<small>2028</small></div></div><div class="bcol"><div class="bv">12</div><div class="bar" style="height:15%;background:#cf8a1a"></div><div class="bx">118 年<small>2029</small></div></div></div></div>
+      <div class="mech"><div class="h"><span class="ch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/></svg></span>設施需求集中</div><p>107 項中僅 <b>13 個點位</b>需特殊設施，土建／管路衝擊集中且可控。</p><div class="hbars" style="margin-top:12px"><div class="hbar"><span class="hl">排煙</span><span class="htrack"><span class="hfill" style="width:100%;background:#b91c1c"></span></span><span class="hv">6</span></div><div class="hbar"><span class="hl">排水</span><span class="htrack"><span class="hfill" style="width:66.7%;background:#1d4ed8"></span></span><span class="hv">4</span></div><div class="hbar"><span class="hl">用水</span><span class="htrack"><span class="hfill" style="width:50%;background:#0369a1"></span></span><span class="hv">3</span></div></div></div>
+    </div>  </section>
+
+  <section id="c-converge">
+    <h3><span class="no">4.3</span>關鍵觀察：成本要素收斂</h3>
+    <div class="flow">
+      <span class="node" style="color:var(--sub)">官方可外包／特殊設施項<br><span style="font-weight:500;font-size:11px;color:var(--ink-3)">熾熱線·針焰·IP·鹽霧·UV·CTI…</span></span>
+      <span class="arr"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      <span class="node">最貴的專用設備</span>
+      <span class="arr"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      <span class="node">排煙／給排水建置驅動</span>
+      <span class="arr"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      <span class="node" style="color:var(--brand-d)">已排入 117／118 後期</span>
+    </div>
+    <div class="callout"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+    <div>三條線索收斂於同一批項目，顯示 <b>規劃本身已具成本意識</b>，非無差別一次採購。另依標準正文，附錄 C 允許碳弧／氙弧<b>擇一</b>，UV 設備可擇一建置。</div></div>
+    <div class="note"><b>附帶說明（為何測項看似偏多）：</b>48 測項中有 5 項對典型無人機不適用（電信對地隔離、碎紙機類可觸及、高壓燈泡爆裂、電視推車承運、音訊放大器），係為「全範圍 62368-1 認證能力」而保留；且這些項目僅需便宜治具（試探棒、暗墊、放大鏡），<b>幾乎不增加成本</b>，保留為宜。</div>
+  </section>
+
+  <section id="actions">
+    <h2><span class="no">五</span>建議討論事項</h2>
+    <ol class="steps">      <li><b>S／SP 自建 vs 外包</b>21 項（18 可外包＋3 特殊設施）官方彈性項，建議逐項以「預期件量／委外週期／檢驗自主性」決定——此為<b>主要可選成本槓桿</b>。</li>
+      <li><b>三相電源必要性 ／ 實驗室定位</b>官方 P.E.L. 於 <span class="mono">5.4.1.4</span>（最大操作溫度—電源供應）列「三相電源供應器」為 <b>S（可外包）</b>，而無人機多為單相／直流充電。此牽涉一上位問題——<b>本實驗室是否僅為無人機業務需求而建置</b>若定位僅服務無人機，三相電源等非無人機必要之能力可從簡或免列；若定位為全範圍 62368-1 認證實驗室（兼受理一般 AV／ICT 設備），則屬合理保留。建議先確認實驗室定位，再據以決定此類設備之取捨。（補充：經規格查證，清單既有之 Cinergia GE+30 即為三相再生機型，單相／三相皆已涵蓋，無須另購三相電源；本項屬能力定位討論）。</li>      <li><b>設備補充</b>補一台四線式繞組電阻計（供 &lt; 1 Ω 繞組電阻量測；Fluke 287 為 2 線式，僅適用 &gt; 1 Ω）。</li>
+    </ol>
+  </section>
+
+  <section id="conclusion">
+    <h2><span class="no">六</span>結語</h2>
+    <p>本清單在技術必要性與認證範圍上 <b>合理且可追溯</b>；成本結構「必備／可選」分明，並已透過 <b>外包彈性、儀器共用、分年採購、設施集中</b> 四道機制控管，最高成本項亦已前置規劃且具外包彈性。</p>    <div class="note"><b>附：</b>逐項詳細對照請參《15598-1_Dashboard.html》之「<b>清單總表</b>」分頁——依 Excel 原始排序，含 CNS／IEC／P.E.L. 中英對照，並以顏色標示「必備／可外包／特殊設施」成本歸屬。</div>
+  </section>
+
+  <footer>本文件為內部研究／查核用途之整理；條號與分類以最新版 CNS 15598-1／IEC 62368-1 標準正文、官方 IECEE CTL P.E.L. 與 BSMI／NCC 公告為最終依據。產生日期 2026-06-12；2026-06-13 全文校訂。</footer>
+</main>
+
+<nav class="toc" id="toc" aria-label="目錄">
+  <div class="tc-head"><span>目錄</span><button class="iconbtn toc-close" aria-label="收合目錄" style="width:28px;height:28px"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+  <ul>
+    <li><a href="#summary">一、結論摘要</a></li>
+    <li><a href="#method">二、查核方法</a></li>
+    <li><a href="#results">三、查核結果</a></li>
+    <li class="sub"><a href="#r-equip">設備完整性</a></li>
+    <li><a href="#cost">四、合理性與成本結構</a></li>
+    <li class="sub"><a href="#c-mech">四項成本控管機制</a></li>
+    <li class="sub"><a href="#c-converge">成本要素收斂</a></li>
+    <li><a href="#actions">五、建議討論事項</a></li>
+    <li><a href="#conclusion">六、結語</a></li>
+  </ul>
+</nav>
+</div>
+
+<button class="toc-fab" id="tocFab" aria-label="開啟目錄"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>目錄</button>
+<button class="totop" id="toTop" aria-label="回到頂端"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+
+<script>
+(function(){
+  var KT='ars_pel_theme', KC='ars_pel_toc', root=document.documentElement, body=document.body;
+  function applyThemeIcon(){var d=root.getAttribute('data-theme')==='dark';
+    var s=document.querySelector('.i-sun'),m=document.querySelector('.i-moon');if(s&&m){s.style.display=d?'none':'';m.style.display=d?'':'none';}}
+  var st=localStorage.getItem(KT);
+  if(st){root.setAttribute('data-theme',st);} else if(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches){root.setAttribute('data-theme','dark');}
+  applyThemeIcon();
+  document.querySelector('.theme-btn').addEventListener('click',function(){
+    var n=root.getAttribute('data-theme')==='dark'?'light':'dark';root.setAttribute('data-theme',n);localStorage.setItem(KT,n);applyThemeIcon();});
+  document.querySelector('.print-btn').addEventListener('click',function(){window.print();});
+
+  function setToc(open){body.classList.toggle('toc-collapsed',!open);localStorage.setItem(KC,open?'1':'0');}
+  var cs=localStorage.getItem(KC);
+  body.classList.toggle('toc-collapsed', window.innerWidth<980 ? true : !(cs===null||cs==='1'));
+  var fab=document.getElementById('tocFab');if(fab)fab.addEventListener('click',function(){setToc(body.classList.contains('toc-collapsed'));});
+  var cl=document.querySelector('.toc-close');if(cl)cl.addEventListener('click',function(){setToc(false);});
+
+  var links=[].slice.call(document.querySelectorAll('.toc a')), map={};
+  links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;
+    a.addEventListener('click',function(e){e.preventDefault();var el=document.getElementById(a.getAttribute('href').slice(1));
+      if(el){var top=el.getBoundingClientRect().top+window.pageYOffset-70;window.scrollTo({top:top,behavior:'smooth'});if(window.innerWidth<980)setToc(false);}});});
+  var obs=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){
+    links.forEach(function(l){l.classList.remove('on');});var a=map[en.target.id];if(a)a.classList.add('on');}});},
+    {rootMargin:'-18% 0px -72% 0px',threshold:0});
+  document.querySelectorAll('section[id]').forEach(function(s){obs.observe(s);});
+
+  var tt=document.getElementById('toTop');
+  window.addEventListener('scroll',function(){tt.classList.toggle('show',window.pageYOffset>480);},{passive:true});
+  tt.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+})();
+</script>
+<script>
+(function(){
+  document.querySelectorAll('.jump').forEach(function(a){
+    a.addEventListener('click',function(){
+      var el=document.getElementById((a.getAttribute('href')||'').slice(1));
+      if(el){setTimeout(function(){el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');},340);}
+    });
+  });
+})();
+</script>
+</body>
+</html>
