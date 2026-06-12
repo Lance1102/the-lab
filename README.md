@@ -31,3 +31,4 @@
 ## [Blue_UAS_簡報_v3_敘事版_2026-06-10](https://lance1102.github.io/the-lab/Blue_UAS_briefing_v3_Story_2026-06-10.html)
 
 ## [無人機安規測試 · 儀器 × 章節對照](https://lance1102.github.io/the-lab/15598-1_Dashboard.html)
+> 無人機安規對照助手 | CNS 15598-1（IEC 62368-1）：48 測項 × 79 儀器 × 官方 PEL 設備代碼
