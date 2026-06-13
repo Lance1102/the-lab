@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>無人機安規儀器清單 — 深度查證・成本・競品（companion）</title>
+<meta name="description" content="對抗性深度查證（A–F 輪）companion 報告：48 測項條號/內容/儀器對應之一手查證、成本研究與競品分析；與既有合理性查核報告互相連結、不混入。">
+<style>
+:root{--bg:#f4f6fb;--surface:#fff;--surface-2:#f7f9fd;--surface-3:#eef2f9;--ink:#1a2030;--ink-2:#525f78;--ink-3:#8893a8;
+--line:#e3e8f1;--brand:#4f46e5;--brand-d:#3a32c4;--brand-wash:#ecebfd;--ok:#0d8576;--ok-bg:#e1f5f0;--warn:#bd7a14;--warn-bg:#fbecd6;
+--keep:#64748b;--keep-bg:#eef1f6;--shadow:0 1px 2px rgba(20,30,60,.05),0 12px 30px -12px rgba(20,30,60,.16);--r:14px;
+--sans:"Noto Sans TC","Microsoft JhengHei","PingFang TC",-apple-system,"Segoe UI",system-ui,sans-serif;
+--mono:"Cascadia Code","Consolas","Sarasa Mono TC",ui-monospace,Menlo,monospace}
+html[data-theme="dark"]{--bg:#0e1320;--surface:#161d2c;--surface-2:#1b2333;--surface-3:#222c40;--ink:#e7ebf3;--ink-2:#a3afc6;
+--ink-3:#73809a;--line:#27314a;--brand:#7d76f0;--brand-d:#9a94f5;--brand-wash:#241f53;--ok:#34c5ae;--ok-bg:#0f3a35;
+--warn:#e0a64e;--warn-bg:#3c2c12;--keep:#94a2bd;--keep-bg:#222c40;--shadow:0 1px 2px rgba(0,0,0,.3),0 14px 34px -14px rgba(0,0,0,.6)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--bg);font-size:15.5px;line-height:1.7;transition:background .3s,color .3s}
+h1,h2,h3{margin:0;line-height:1.3;font-weight:800;letter-spacing:-.01em}
+p{margin:.7em 0}a{color:var(--brand-d);text-decoration:none}a:hover{text-decoration:underline}
+.mono{font-family:var(--mono)}
+.topbar{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--surface) 86%,transparent);backdrop-filter:blur(12px) saturate(160%);border-bottom:1px solid var(--line)}
+.topbar-in{max-width:1280px;margin:0 auto;padding:10px 22px;display:flex;align-items:center;gap:14px}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}
+.brand .mk{width:34px;height:34px;flex:0 0 auto;border-radius:9px;background:linear-gradient(135deg,var(--brand),var(--brand-d));display:grid;place-items:center;color:#fff}
+.brand b{font-size:14.5px;font-weight:800;white-space:nowrap}.brand span{display:block;font-size:10.5px;color:var(--ink-3);font-weight:600}
+.tb-actions{margin-left:auto;display:flex;gap:8px}
+.iconbtn{appearance:none;border:1px solid var(--line);background:var(--surface-2);color:var(--ink-2);cursor:pointer;width:36px;height:36px;border-radius:9px;display:grid;place-items:center;transition:.15s}
+.iconbtn:hover{color:var(--brand-d);border-color:var(--brand);background:var(--brand-wash)}
+.iconbtn svg{width:17px;height:17px}
+html[data-theme="light"] .i-moon{display:none}html[data-theme="dark"] .i-sun{display:none}
+.shell{max-width:1280px;margin:0 auto;padding:0 22px}
+main{padding:30px 0 70px}
+.hero{margin:6px 0 26px}
+.hero h1{font-size:clamp(21px,3.4vw,30px)}
+.hero .lede{color:var(--ink-2);max-width:70ch}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{font-size:12px;font-weight:700;padding:4px 11px;border-radius:99px;border:1px solid var(--line);background:var(--surface);color:var(--ink-2)}
+.chip b{color:var(--brand-d)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:18px 0 8px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow)}
+.stat .v{font-size:24px;font-weight:800;color:var(--brand-d)}.stat .k{font-size:12px;color:var(--ink-3);font-weight:700}
+section{margin:34px 0;scroll-margin-top:74px}
+section>h2{font-size:19px;margin-bottom:6px;padding-left:12px;border-left:4px solid var(--brand);border-radius:2px}
+section>h3{font-size:16px;margin:18px 0 6px}
+.note{background:var(--surface-2);border:1px solid var(--line);border-left:4px solid var(--brand);border-radius:10px;padding:10px 14px;color:var(--ink-2);font-size:14px}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:860px}
+th{position:sticky;top:0;background:var(--surface-3);color:var(--ink-2);font-size:12px;text-align:left;padding:9px 10px;border-bottom:1.5px solid var(--line);white-space:nowrap}
+td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:color-mix(in srgb,var(--brand-wash) 40%,transparent)}
+td.num{text-align:center;color:var(--ink-3);font-family:var(--mono);font-size:12px;white-space:nowrap}
+td.mono-id{font-family:var(--mono);font-weight:700;white-space:nowrap;color:var(--brand-d)}
+.sub2{color:var(--ink-3);font-size:12px;margin-top:2px}
+.badge{display:inline-block;font-size:11.5px;font-weight:800;padding:2px 9px;border-radius:99px;white-space:nowrap}
+.b-ok{color:var(--ok);background:var(--ok-bg)}.b-fix{color:var(--warn);background:var(--warn-bg)}.b-keep{color:var(--keep);background:var(--keep-bg)}
+ol.list li,ul.list li{margin:.45em 0}
+.placeholder{border:1.5px dashed var(--line);border-radius:var(--r);padding:14px 18px;color:var(--ink-3);background:var(--surface-2)}
+footer{border-top:1px solid var(--line);padding:18px 0 26px;color:var(--ink-3);font-size:12.5px}
+/* floating collapsible TOC */
+.toc{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:60;width:220px;max-height:72vh;display:flex;flex-direction:column;
+background:color-mix(in srgb,var(--surface) 94%,transparent);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;transition:opacity .2s,transform .25s}
+.toc.collapsed{opacity:0;pointer-events:none;transform:translateY(-50%) translateX(12px)}
+.toc h4{margin:0;padding:11px 14px 8px;font-size:12px;color:var(--ink-3);letter-spacing:.06em}
+.toc nav{overflow-y:auto;padding:0 8px 10px}
+.toc a{display:block;padding:6px 10px;border-radius:8px;font-size:13px;color:var(--ink-2);border-left:2.5px solid transparent}
+.toc a:hover{background:var(--brand-wash);text-decoration:none}
+.toc a.on{color:var(--brand-d);font-weight:700;border-left-color:var(--brand);background:color-mix(in srgb,var(--brand-wash) 70%,transparent)}
+.toc-fab{position:fixed;right:18px;bottom:74px;z-index:61;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);
+background:var(--surface);color:var(--ink-2);cursor:pointer;display:grid;place-items:center;box-shadow:var(--shadow);transition:.15s}
+.toc-fab:hover{color:var(--brand-d);border-color:var(--brand)}
+.toc-fab svg{width:19px;height:19px}
+.totop{position:fixed;right:18px;bottom:22px;z-index:61;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);
+background:var(--surface);color:var(--ink-2);cursor:pointer;display:none;place-items:center;box-shadow:var(--shadow)}
+.totop.show{display:grid}.totop:hover{color:var(--brand-d);border-color:var(--brand)}
+@media(max-width:1380px){.toc{width:200px}}
+@media(max-width:980px){.toc{right:12px;width:230px;top:auto;bottom:128px;transform:none;max-height:52vh}.toc.collapsed{transform:translateX(12px)}}
+@media(max-width:560px){.shell{padding:0 15px}table{font-size:12.5px}}
+@media print{.toc,.toc-fab,.totop,.topbar{display:none!important}body{background:#fff}}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="topbar-in">
+  <div class="brand">
+    <span class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/><path d="M8.5 11h5M11 8.5v5"/></svg></span>
+    <div><b>深度查證・成本・競品</b><span>無人機安規試驗儀器清單 — companion 報告</span></div>
+  </div>
+  <div class="tb-actions">
+    <a class="iconbtn" href="無人機安規儀器清單_合理性查核說明.html" title="回既有報告：合理性查核說明" aria-label="合理性查核說明"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></a>
+    <button class="iconbtn print-btn" title="列印／另存 PDF" aria-label="列印"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z"/></svg></button>
+    <button class="iconbtn theme-btn" title="深淺色切換" aria-label="主題切換"><svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M22 12h-2.5M4.5 12H2M19 5l-1.8 1.8M6.8 17.2 5 19M19 19l-1.8-1.8M6.8 6.8 5 5"/></svg><svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+  </div>
+</div></div>
+
+<main class="shell">
+<div class="hero">
+  <h1>深度查證・成本・競品 — 對抗性查證報告</h1>
+  <p class="lede">依〈深度查證_對抗驗證_執行編排〉以 A–F 六輪累進執行；每一結論以「標準正文／官方 P.E.L.／版次」多稜鏡對抗驗證並標註一手來源頁碼。本頁與既有〈合理性查核說明〉分開維護、互相連結，不更動其內容。</p>
+  <div class="meta">
+    <span class="chip">A 輪完成 <b>2026-06-12</b></span>
+    <span class="chip">B 輪完成 <b>2026-06-12</b></span>
+    <span class="chip">C 輪完成 <b>2026-06-12</b></span>
+    <span class="chip">D・E 輪完成 <b>2026-06-12</b></span>
+    <span class="chip">F 輪完成・全輪結案 <b>2026-06-12</b></span>
+    <span class="chip">G 輪（Ed.4 OCR）完成 <b>2026-06-13</b></span>
+    <span class="chip">標的 <b>48 測項</b>／107 設備行／79 儀器</span>
+    <span class="chip">現行依據 <b>CNS 15598-1:2020＝IEC 62368-1 Ed.3</b></span>
+    <span class="chip">Ed.4 (2023) 僅作前瞻</span>
+  </div>
+</div>
+
+<section id="method">
+  <h2>A 輪方法與範圍</h2>
+  <p>① 48 測項條號逐一對回 CNS 15598-1:2020 正文標題（含 PDF 頁碼；內頁＝頁碼−2）；② 儀表板 <span class="mono">purpose／procedure／params</span> 之每一數值回正文驗證（含全文變體搜尋：千分位、kΩ、±、表格散排）；③ 測項↔儀器對應與官方 P.E.L.（IEC 62368-1:2023 系，133 列）交叉比對。</p>
+  <div class="note">版次稜鏡：本機 IEC 62368-1 Ed.4 (2023) PDF 經檢測為 394 頁掃描影像、<b>無文字層</b>；故 Ed.4 條文級查證全數列入待證，僅以官方 P.E.L.（Ed.4 系文件）作等級有限之旁證。</div>
+  <div class="stats">
+    <div class="stat"><div class="v">48／48</div><div class="k">條號對到正文標題</div></div>
+    <div class="stat"><div class="v">29</div><div class="k">裁決＝確認</div></div>
+    <div class="stat"><div class="v">19</div><div class="k">裁決＝修正（已回寫儀表板）</div></div>
+    <div class="stat"><div class="v">6</div><div class="k">待證項（含 Ed.4 全域）</div></div>
+  </div>
+</section>
+
+<section id="table48">
+  <h2>A.1 已查證結果表（48 測項）</h2>
+  <p class="sub2" style="font-size:13px;color:var(--ink-3)">來源頁碼＝CNS 15598-1:2020（筆記版）PDF 1-based 頁碼。「修正」＝儀表板原內容經查證後已更正；CNS/P.E.L. 自身問題另列 A.3。</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>#</th><th>測項</th><th>CNS 條號＝標題（頁）／條號裁決</th><th>內容查證重點</th><th>P.E.L. 儀器對應</th><th>裁決</th><th>信心</th></tr></thead>
+    <tbody><tr><td class="num">1</td><td class="mono-id">4.1.4</td><td>4.1.4＝設備安裝（p.42）<div class="sub2">修正：原以內容當標題</div></td><td>−33～+40°C 預設載於 4.1.4 內文 ✓；30 mA RCD 屬 5.5.9（p.104）非 4.1.4</td><td>Test chamber −33~+40°C（ROUT）✓</td><td><span class="badge b-fix">修正</span></td><td class="num">高</td></tr>
+<tr><td class="num">2</td><td class="mono-id">4.7</td><td>4.7＝直接插接主電源插座之設備（p.51；4.7.3 p.52）<div class="sub2">確認</div></td><td>扭矩限值 0.25 Nm、支點軸距結合面後 8 mm（原標『不可考』→已查證補入）</td><td>Fig.11 of IEC 60065 治具（RB）✓</td><td><span class="badge b-fix">修正(補值)</span></td><td class="num">高</td></tr>
+<tr><td class="num">3</td><td class="mono-id">4.8.4.3</td><td>4.8.4.3＝電池更換試驗（p.53）<div class="sub2">確認</div></td><td>開蓋/更換/閉蓋共 10 次；螺釘以表 37 扭矩鎖緊 ✓</td><td>扭矩計 0.5 Nm＋角度計（RB）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">4</td><td class="mono-id">4.8.4.6</td><td>4.8.4.6＝碾壓試驗（p.53）<div class="sub2">確認</div></td><td>330 N±5 N、100×250 mm 平面、10 s ✓</td><td>Crush 330 N±5N（RB）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">5</td><td class="mono-id">5.2</td><td>5.2＝電氣能量源之分級及限制（p.55）<div class="sub2">確認（CNS 標題含「及限制」）</div></td><td>表 4 限值（p.56-57）；穩態＝持續 ≥2 s；註(c) 2,000 Ω 量測 ✓</td><td>電壓/電流表＋示波器（RB）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">6</td><td class="mono-id">5.3.2</td><td>5.3.2＝對電氣能量源及安全防護之可觸及性（p.61）<div class="sub2">確認</div></td><td>探棒 V.1/V.2/V.3、420 V 峰值分界（p.61-62）✓；力值 10/30/100/250 N 屬附錄 T.2–T.5（p.289）</td><td>探棒 V.1/V.2/V.3/V.5＋力規（RB）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">7</td><td class="mono-id">5.4.1.4</td><td>5.4.1.4＝材料、組件及系統之最大操作溫度（p.64）<div class="sub2">確認</div></td><td>表 9：105(A)→100/120(E)→115/130(B)→120/155(F)→140°C（p.64-65）；穩態 1 K/5 min（p.173）；表 38 接觸溫度實值（p.156）改引</td><td>電源/溫測/負載 多列（RB+S）✓</td><td><span class="badge b-fix">修正(細節)</span></td><td class="num">高</td></tr>
+<tr><td class="num">8</td><td class="mono-id">5.4.1.10.3</td><td>5.4.1.10.3＝球壓試驗（p.68）<div class="sub2">確認</div></td><td>試驗溫度公式＋主電源支撐件最低 125°C＋壓痕 d≤2 mm ✓；裝置細節屬 IEC 60695-10-2；刪「其他零件 75°C」</td><td>球壓裝置＋烤箱（RB）✓</td><td><span class="badge b-fix">修正(細節)</span></td><td class="num">高</td></tr>
+<tr><td class="num">9</td><td class="mono-id">5.4.2</td><td>5.4.2 空間距離（p.68）/5.4.3 沿面距離（p.78）/5.4.4 固體絕緣（p.82）<div class="sub2">確認</div></td><td>表 10：2,500 Vpk→基本 1.8/強化 3.6 mm ✓；附錄 D 電路 2＝1.2/50 µs（p.183）✓；CTI 0.1% NH4Cl＝IEC 60112</td><td>示波器/卡尺/針規/顯微鏡/脈衝產生器/CTI（RB·RT·S·RC）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">10</td><td class="mono-id">5.4.5.2</td><td>5.4.5＝天線端子絕緣（p.91）；5.4.5.2 試驗法<div class="sub2">確認</div></td><td>5.4.5.3：500 Vdc 絕緣電阻 ≥表 23（p.92）✓</td><td>IR meter 500V &gt;4MΩ＋天線介面（RC）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">11</td><td class="mono-id">5.4.8</td><td>5.4.8＝濕度處理（p.93）<div class="sub2">確認</div></td><td>預設 48 h／20–30°C／93±3%；熱帶 120 h／40±2°C（原主從顛倒）；IR 量測屬 5.4.5.3</td><td>溫濕箱 2 列＋大型環境室（RB+S）✓</td><td><span class="badge b-fix">修正</span></td><td class="num">高</td></tr>
+<tr><td class="num">12</td><td class="mono-id">5.4.9</td><td>5.4.9＝耐電壓試驗（p.93）<div class="sub2">確認</div></td><td>維持 60 s（p.94）✓；圖 29：100 g±5 g 刀片/Ø5 mm/圓角 0.5 mm（p.96）✓（UL 6.4mm/50g 為自註）</td><td>耐壓設備＋圖 29 治具（RB+S）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">13</td><td class="mono-id">5.4.11</td><td>5.4.11＝外部電路對地間之隔離（p.98）<div class="sub2">確認</div></td><td>圖 31 網路 5,000 Ω（p.100）✓；SPD Uop＝360/180 V＋ΔUsp＋ΔUsa（p.99）✓</td><td>5000 Ω 無感電阻＋電流表（RB）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">14</td><td class="mono-id">5.5.2.2</td><td>5.5.2.2＝連接器切離後之電容器放電（p.101）<div class="sub2">確認</div></td><td>切離後 2 s 量測；普通/受指導/單一故障 ↔ ES1/ES2/ES2；表 5 C 相依限值（p.59）</td><td>100 MΩ±5 MΩ 量測儀（RB）✓</td><td><span class="badge b-fix">修正(詮釋)</span></td><td class="num">高</td></tr>
+<tr><td class="num">15</td><td class="mono-id">5.6.4.1</td><td>5.6.4＝保護搭接導體之規定（p.105）<div class="sub2">確認（CNS 用「搭接」）</div></td><td>量測屬 5.6.6：≤12 V、200%/2 min、&gt;25 A 取 200% 或 500 A 較小、0.1 Ω/2.5 V（p.110-111）✓</td><td>12 V 大電流源（RB）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">16</td><td class="mono-id">5.7</td><td>5.7＝預期接觸電壓、接觸電流及保護導體電流（p.111）<div class="sub2">確認</div></td><td>表 4：0.5 mA rms/0.707 mA pk（p.57）✓；刪 3.5 mA（舊 60950）→5.7.6 輸入電流 5% 規則（p.112）；網路內部值屬 CNS 15549/IEC 60990</td><td>IEC 60990 圖 4/5 網路（RB）✓</td><td><span class="badge b-fix">修正</span></td><td class="num">高</td></tr>
+<tr><td class="num">17</td><td class="mono-id">6.2.2</td><td>6.2.2＝電力能量源電路分級（p.116）<div class="sub2">確認</div></td><td>PS1≤15 W@3 s、PS2≤100 W@5 s、PS3&gt;100 W（p.119）✓；電弧 PIS：3 s 後 &gt;50 V 且 Vp×Irms&gt;15 ✓；13/5 mm 隔距屬 6.4.7</td><td>瓦特表＋可變電阻＋碼表（RB）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">18</td><td class="mono-id">6.3.1</td><td>6.3＝正常及異常操作條件下之起火安全防護；6.3.1 要求（p.120）<div class="sub2">確認</div></td><td>ISO 871 之 90%／300°C ✓；HB75/HB40/HBF 或 550°C 熾熱線（p.120）✓；GWFI/GWIT 為外部選用值（已自註）</td><td>灼熱絲 IEC 60695-2-11（S）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">19</td><td class="mono-id">6.4.8.3.3</td><td>6.4.8.3.3＝頂部開孔及頂部開孔性質（p.129）<div class="sub2">確認</div></td><td>完整性依 S.2（60 s 針焰＋紗布）；圖 S.1 頂面 12 mm 基準（p.285）✓</td><td>紗布 40 g/m²＋計時器（RB）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">20</td><td class="mono-id">8.2</td><td>8.2＝機械能量源分級（p.135）<div class="sub2">確認</div></td><td>表 35：質量 ≤7/≤25/&gt;25 kg、扇葉 K 參數（p.135）✓</td><td>磅秤 25 kg（RB）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">21</td><td class="mono-id">8.5.4.3</td><td>8.5.4.3＝設備具有破壞介質之電機裝置（p.142）<div class="sub2">修正：標題對齊（碎紙機類）</div></td><td>楔形探棒圖 V.4：條狀型 45 N／破碎型 90 N（p.143）✓；互鎖 2 s 規則 ✓</td><td>V.1/V.2 探棒＋楔形 V.4（RB/RSH）✓</td><td><span class="badge b-fix">修正(標題)</span></td><td class="num">高</td></tr>
+<tr><td class="num">22</td><td class="mono-id">8.5.5</td><td>8.5.5＝高壓燈泡（p.143）；8.5.5.2 試驗方法（p.144）<div class="sub2">確認</div></td><td>運轉 ≥5 min；5 J 步進激發；判準 0.8 mm/1 m（專業設備 5 mm）✓</td><td>深色黏墊＋0.1 mm 放大鏡 ✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">23</td><td class="mono-id">8.6.2</td><td>8.6.2＝靜態穩定性（p.146）<div class="sub2">確認</div></td><td>傾斜 10°/旋轉 360°、垂直力 50%≤100 N、水平 13%≤250 N、125×200 mm 治具；8.6.2.3 向下 800 N（p.146-147）✓</td><td>10° 斜面＋砝碼至 100/250 N＋800 N 治具（RB）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">24</td><td class="mono-id">8.6.4</td><td>8.6.4＝玻璃滑落試驗（p.147-148）<div class="sub2">確認</div></td><td>玻璃覆蓋面朝最不利方向傾斜 10°，不得滑落/傾倒 ✓</td><td>玻璃板＋10° 斜面（RB）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">25</td><td class="mono-id">8.6.5</td><td>8.6.5＝水平力試驗及符合性判斷準則（p.148）<div class="sub2">確認</div></td><td>20% 或 250 N 取低、施力 ≤1.5 m、或傾斜 15°/旋轉 360° ✓</td><td>15° 斜面＋250 N 砝碼（RB）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">26</td><td class="mono-id">8.7</td><td>8.7＝安裝在牆壁、天花板或其他結構上之設備（p.148）<div class="sub2">確認</div></td><td>依表 35 項 6 分級；8.7.2 試驗 1/試驗 2 ✓</td><td>砝碼/計時器/扭矩計/推拉計（RB）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">27</td><td class="mono-id">8.8</td><td>8.8＝握柄強度（正文 p.149；目錄作「把手強度」）<div class="sub2">確認（CNS 目錄/正文用詞不一）</div></td><td>力＝3×設備重量、75 mm 寬帶、5–10 s 升力後維持 60 s ✓</td><td>75 mm 帶＋砝碼＋計時器（RB）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">28</td><td class="mono-id">8.10</td><td>8.10＝推車、支架及類似承運裝置（p.150）<div class="sub2">確認（前輪 8.1→8.10 更正成立）</div></td><td>440 N／Ø30 mm 圓面／自地板 750 mm；滾輪 20 N 拉力；兒童槓桿點 220 N/1 min ✓</td><td>440 N＋Ø30 mm 圓面（RB）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">29</td><td class="mono-id">9.6.3</td><td>9.6＝無線電力傳輸器要求（p.157）；9.6.3 試驗方法（p.160）<div class="sub2">確認</div></td><td>異物試件＝圖 47 鋼盤/圖 48 鋁環/圖 49 鋁箔（p.158-160）；P.E.L.（Ed.4）作 Fig.49/50/51＝版次圖號位移</td><td>鋼盤/鋁環/鋁箔（RWPT）✓</td><td><span class="badge b-ok">確認(版次註)</span></td><td class="num">高</td></tr>
+<tr><td class="num">30</td><td class="mono-id">B.2.5</td><td>B.2.5＝輸入試驗（p.174）<div class="sub2">確認</div></td><td>不得超過額定電流/功率 10%（＝110%；p.175）✓；影像設備三垂直線訊號 IEC 60107-1 ✓</td><td>電流表/功率計＋可變負載＋60107-1 信號（RB/RV）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">31</td><td class="mono-id">B.3.2</td><td>B.3.2＝散熱開孔之覆蓋（p.176）<div class="sub2">確認（CNS 作「散熱」非「通風」）</div></td><td>覆蓋底/側/背開孔；外表面 ≤表 38 TS2 或加指示型防護（p.177）✓；卡紙 ≥200 g/m² 值見 P.E.L.</td><td>卡紙 ≥200 g/m²（RB）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">中高</td></tr>
+<tr><td class="num">32</td><td class="mono-id">C</td><td>附錄 C＝紫外線輻射（p.181）<div class="sub2">確認</div></td><td>碳弧 720 h 或氙弧 1,000 h、黑盤 63±3°C、RH(50±5)%（p.182）✓；表 C.1 保留 ≥70%（p.181）✓</td><td>碳弧曝照裝置（S）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">33</td><td class="mono-id">E</td><td>附錄 E＝設備包含音頻放大器之試驗條件（p.185）<div class="sub2">確認</div></td><td>E.2：1,000 Hz（或峰值響應頻率）＋1/8 非箝制輸出功率（p.185-186）✓；35.32%＝電壓換算自註</td><td>1 kHz 正弦信號產生器＋帶通濾波（RA）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">34</td><td class="mono-id">F.3.7</td><td>F.3.7＝設備 IP 額定值標示（p.191）<div class="sub2">確認</div></td><td>CNS 僅要求依 IEC 60529 標示；試驗參數屬 IEC 60529（IPX5＝6.3 mm/IPX6＝12.5 mm 噴嘴——原口徑對調已更正）</td><td>IEC 60529 IP 試驗裝置（SP）✓</td><td><span class="badge b-fix">修正(細節)</span></td><td class="num">高</td></tr>
+<tr><td class="num">35</td><td class="mono-id">F.3.10</td><td>F.3.10＝標示耐久性試驗（p.192）<div class="sub2">確認</div></td><td>水濕布擦 15 s＋石油精（≥85% 正己烷，CAS#110-54-3）布擦 15 s；標示可辨識、標籤不捲翹 ✓</td><td>水/布/計時器＋石油精（RB）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">36</td><td class="mono-id">G.5.4.5.3</td><td>G.5.4.5＝直流電動機之運轉過載試驗（p.214）；G.5.4.5.3/G.5.4.6.3 替代法（p.214-215）<div class="sub2">確認</div></td><td>綿紙墊板＋紗布覆蓋；不得噴火/熔金屬、紙布不得燒焦起火 ✓；鎖轉子 7 h 或穩態 ✓；紗布 40 g/m²、綿紙 12–30 g/m²（p.31-32）</td><td>Cheesecloth＋wrapping tissue（RB）✓；惟同列含 G.9.3（CNS＝IC 限流器，疑 P.E.L. 誤植）</td><td><span class="badge b-fix">修正(細節)</span></td><td class="num">高</td></tr>
+<tr><td class="num">37</td><td class="mono-id">G.7</td><td>G.7＝主電源系統電源線（p.217）；G.7.3.2 抗拉力（p.219）<div class="sub2">確認</div></td><td>表 G.8 依設備質量：≤1 kg→30 N／1–4 kg→60 N／&gt;4 kg→100 N；1 s×25 次；扭力 0.25 Nm/1 min；位移 ≤2 mm ✓</td><td>60227 試驗裝置＋砝碼＋扭矩計（S/RB）✓</td><td><span class="badge b-fix">修正</span></td><td class="num">高</td></tr>
+<tr><td class="num">38</td><td class="mono-id">P.2</td><td>P.2＝對於固體外物進入或進入之後果的安全防護（p.273）<div class="sub2">確認</div></td><td>P.2.2/P.2.3 結構性查核（直立金屬物模擬工具）✓</td><td>直金屬物模擬工具（RB）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">39</td><td class="mono-id">S</td><td>附錄 S＝耐熱及耐燃試驗（p.284）<div class="sub2">確認</div></td><td>S.1 施焰 10 s/1 min/2 min＋預處理 168 h；S.2 60 s＋紗布；S.3 油盤 10 mL/1 mL/s/100 mm；S.5 5 s×5（p.284-287）；S.6 不存在於 CNS（P.E.L. 燃料錠＝Ed.4 新增）</td><td>針焰 SP／燃油 S／500 W SP／紗布 RB／燃料錠 SP（Ed.4）✓</td><td><span class="badge b-fix">修正</span></td><td class="num">高</td></tr>
+<tr><td class="num">40</td><td class="mono-id">T.2</td><td>T.2/T.3/T.4＝穩定力試驗 10/30/100 N（p.289）<div class="sub2">確認</div></td><td>10 N±1 N 約 5 s；30 N±3 N 直式無關節探棒；100 N±10 N Ø30 mm 圓面（T.5 250 N 另列）✓</td><td>10/30 N 探棒＋100 N 治具（RB）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">41</td><td class="mono-id">T.6</td><td>T.6＝機殼撞擊試驗（p.289）<div class="sub2">確認</div></td><td>Ø50 mm／500 g±25 g 鋼球；自由落下＋鐘擺 1,300 mm±10；防火機殼部件 410 mm；能量階梯屬 T.9/4.8.4.5/8.5.5.2</td><td>50 mm/500 g 鋼球＋尺（RB）✓</td><td><span class="badge b-fix">修正</span></td><td class="num">高</td></tr>
+<tr><td class="num">42</td><td class="mono-id">T.7</td><td>T.7＝落下試驗（p.290）<div class="sub2">確認</div></td><td>750／1,000 mm；防火機殼部件 350/500 mm；13 mm 硬木＋2×18 mm±2 合板＋混凝土 ✓（7 kg 屬 4.8.4.4）</td><td>13 mm 硬木＋18±2 mm 合板×2＋尺（RB）✓</td><td><span class="badge b-fix">修正</span></td><td class="num">高</td></tr>
+<tr><td class="num">43</td><td class="mono-id">T.10</td><td>T.10＝玻璃破碎試驗（p.291）<div class="sub2">確認</div></td><td>擊碎點距長邊中點 15 mm（原誤 13）；5 min 內計數 50 mm 方格 ≥45 片、排除邊緣 15 mm；工具不限（punch 75 g＝P.E.L./Ed.4 引 60335-2-24）</td><td>Centre punch 75 g±5 g、60°±2° 碳化鎢（RB）✓</td><td><span class="badge b-fix">修正</span></td><td class="num">高</td></tr>
+<tr><td class="num">44</td><td class="mono-id">X</td><td>附錄 O＝沿面/空間距離之量測（p.266）＋附錄 X＝≤420 Vpk 絕緣決定（p.306）<div class="sub2">確認（雙附錄並列成立）</div></td><td>表 O.1：PD1＝0.25／PD2＝1.00／PD3＝1.50 mm（p.266）✓；&lt;3 mm 取 1/3 規則 ✓；TRP-8＝P.E.L.「Pins etc. with different diameters」同物</td><td>Pins etc. with different diameters（RB）✓</td><td><span class="badge b-fix">修正(精確化)</span></td><td class="num">高</td></tr>
+<tr><td class="num">45</td><td class="mono-id">Y.3</td><td>Y.3＝抗腐蝕（p.308）；Y.3.3 水飽和 SO₂（p.308-309）<div class="sub2">確認</div></td><td>鹽霧 5%±1%／35±2°C／168 h；SO₂ 300 L 箱/0.067%/0.2 L、8 h@40±3°C＋16 h×5；全程 2 組×12 天 ✓（47°C/80 cm 未見於 CNS）</td><td>鹽霧 60068-2-11（S）＋SO₂ 箱（S）✓</td><td><span class="badge b-fix">修正</span></td><td class="num">高</td></tr>
+<tr><td class="num">46</td><td class="mono-id">Y.4.3</td><td>Y.4.3＝〔CNS 標題誤印「壓縮試驗」〕實＝墊片拉伸/伸長（p.310）<div class="sub2">修正：CNS 排印錯誤（內文＋P.E.L. 雙源證實）</div></td><td>69–70°C×168 h 老化；保留 ≥75% 拉伸/≥60% 伸長；可用 ISO 37/1798、ASTM D412/D3574 替代 ✓；附錄 C 保留 ≥70%（p.181）</td><td>Tensile strength and elongation tests（S）✓</td><td><span class="badge b-fix">修正</span></td><td class="num">高</td></tr>
+<tr><td class="num">47</td><td class="mono-id">Y.4.4</td><td>Y.4.4＝壓縮試驗（p.310）<div class="sub2">確認</div></td><td>69 kPa×2 h；70°C 烤箱 5 天；−33°C×24 h＋1.35 kg/150 mm 衝擊（2 天）；厚度緊縮 ≤50% ✓</td><td>69 kPa 圓柱＋烤箱＋環境箱（S）✓</td><td><span class="badge b-ok">確認</span></td><td class="num">高</td></tr>
+<tr><td class="num">48</td><td class="mono-id">Y.4.5</td><td>Y.4.5＝抗油性（p.311）<div class="sub2">確認</div></td><td>室溫 25±3°C 浸油 70 h；膨脹 ≤25%/萎縮 ≤1%；油依 ISO 1817:2005/ASTM D471-98 ✓（原 100°C 錯誤）</td><td>ISO 1817/ASTM D471 浸油裝置（S）✓</td><td><span class="badge b-fix">修正</span></td><td class="num">高</td></tr></tbody>
+  </table></div>
+</section>
+
+<section id="pending">
+  <h2>A.2 待證／推論清單</h2>
+  <ol class="list"><li>IEC 62368-1 Ed.4 (2023) 條文級查證：本機 PDF 為 394 頁掃描影像、無文字層，無法檢索。受影響項：4.1.4 Ed.4 措辭、G.9.3 Ed.4 內容、S.6（燃料錠）、T.10 工具規定、附錄編號重排、Y 附錄強化內容——全部列待證，待 OCR 或正本。</li>
+<li>官方 P.E.L. 馬達列（G.5.4.5.3 G.5.4.6.3 G.9.3 S.3.1 S.3.2）之「G.9.3」：CNS Ed.3 之 G.9.3＝IC 電流限制器符合性判斷準則（p.226，無紗布關聯）→疑 P.E.L. 誤植或 Ed.4 變動；維持前輪「逐字抄自 P.E.L.」之認定，正誤待 Ed.4 正文。</li>
+<li>外部標準內部參數（本地無正本，標註來源後保留）：IEC 60695-10-2 球壓裝置（Ø5 mm/20 N/1 h/水淬）、IEC 60695-2-11 灼熱絲裝置（Ø4 mm/1.0 N/30 s）、IEC 60529 IP 試驗細節、IEC 60990 量測網路元件值、IEC 60068-2-11 鹽霧裝置（飽和桶溫度等）。</li>
+<li>B.3.2 卡紙密度 ≥200 g/m²：見於官方 P.E.L.；CNS 正文對應數值落於頁面截斷處，待補核（不影響測項成立）。</li>
+<li>TRP-8 量測棒是否成套涵蓋表 O.1 之 X＝0.25/1.00/1.50 mm（§6 既有待覆核項，移交 B 輪名稱對齊＋規格驗證）。</li>
+<li>表 4/表 5/表 10/表 26-28 等全表逐格值：本輪已核關鍵格；全表逐格核對留待引用時執行。</li></ol>
+</section>
+
+<section id="errors">
+  <h2>A.3 矛盾／錯誤／需更正</h2>
+  <p class="sub2" style="font-size:13px;color:var(--ink-3)">D-xx＝儀表板錯誤（已修正）；C-xx＝CNS 文件自身問題（記錄）；P-xx＝官方 P.E.L. 疑誤／版次差異（記錄）。</p>
+  <div class="tablewrap"><table style="min-width:680px">
+    <thead><tr><th>編號</th><th>對象</th><th>內容</th><th>處置</th></tr></thead>
+    <tbody><tr><td class="mono-id">D-01</td><td>儀表板</td><td>4.1.4 以「供戶外使用設備之規定條件…」當標題；CNS 4.1.4 標題實為「設備安裝」（戶外條件為其內文）</td><td>title_zh 已更正（DATA＋CT_DATA 兩處）</td></tr>
+<tr><td class="mono-id">D-02</td><td>儀表板</td><td>4.7 扭矩限值標『無法自由來源確認』；CNS 4.7.3（p.52）明定 0.25 Nm</td><td>params 已補入【已查證】</td></tr>
+<tr><td class="mono-id">D-03</td><td>儀表板</td><td>4.1.4 params 將 30 mA RCD 要求掛於 4.1.4；實位於 5.5.9（p.104）</td><td>params 已加歸屬更正</td></tr>
+<tr><td class="mono-id">D-04</td><td>儀表板</td><td>5.4.8 將熱帶條件（120 h/40°C）當預設；CNS 預設為 48 h/20–30°C；又「IR ≥2 MΩ@500 V」屬 5.4.5.3 表 23</td><td>params 重寫</td></tr>
+<tr><td class="mono-id">D-05</td><td>儀表板</td><td>5.7 引用 3.5 mA 一般接觸電流限值（舊 IEC 60950-1）；CNS 無此值，超 ES2 時依 5.7.6（輸入電流 5% 規則）</td><td>params 已更正</td></tr>
+<tr><td class="mono-id">D-06</td><td>儀表板</td><td>G.7 表 G.8 寫成「依額定電流/截面」且扭力「0.1/0.25/0.35 N·m」；CNS 依設備質量分級、扭力單一 0.25 Nm</td><td>params 已更正</td></tr>
+<tr><td class="mono-id">D-07</td><td>儀表板</td><td>附錄 S params 大面積誤植（施焰 30 s、預處理 15-35°C/24 h、校正 700°C/23.5 s、紗布 26-28 m²/kg 皆非 CNS 條文）</td><td>params 依 S.1/S.2/S.3/S.5 重寫</td></tr>
+<tr><td class="mono-id">D-08</td><td>儀表板</td><td>T.6 寫「典型 5 J、0.5–3.5 J 多級」；CNS T.6＝500 g 鋼球 1,300 mm（防火件 410 mm）；能量階梯屬 T.9/4.8.4.5/8.5.5.2</td><td>params 已更正</td></tr>
+<tr><td class="mono-id">D-09</td><td>儀表板</td><td>T.7 合板寫 19~20 mm（實 18 mm±2）；「≤7 kg/1 m」屬 4.8.4.4 非 T.7</td><td>params 已更正</td></tr>
+<tr><td class="mono-id">D-10</td><td>儀表板</td><td>T.10 擊碎點寫 13 mm（實 15 mm）；punch 75 g 為 P.E.L./Ed.4 工具，CNS Ed.3 未規定</td><td>params 已更正＋版次註</td></tr>
+<tr><td class="mono-id">D-11</td><td>儀表板</td><td>Y.3 箱溫 ±1°C、飽和桶 47°C、沉降率、60068-2-42 等非 CNS 規定；CNS＝35±2°C/168 h＋SO₂ 8 h@40±3°C×5、2 組 12 天</td><td>params 重寫</td></tr>
+<tr><td class="mono-id">D-12</td><td>儀表板</td><td>Y.4.3 params 只有附錄 C 內容，缺 Y.4.3 墊片拉伸本體（69–70°C/168 h、≥75%/60%）</td><td>params 重寫補齊</td></tr>
+<tr><td class="mono-id">D-13</td><td>儀表板</td><td>Y.4.5 浸油「典型約 100°C」；CNS 為室溫 25±3°C/70 h</td><td>params 已更正</td></tr>
+<tr><td class="mono-id">D-14</td><td>儀表板</td><td>F.3.7 IPX5/IPX6 噴嘴口徑對調（正確：IPX5＝6.3 mm、IPX6＝12.5 mm）</td><td>params 已更正</td></tr>
+<tr><td class="mono-id">D-15</td><td>儀表板</td><td>G.5.4.5.3 紗布規格混入他標準值 35.7–38.5 g/m²；CNS 定義約 40 g/m²</td><td>params 已更正</td></tr>
+<tr><td class="mono-id">D-16</td><td>儀表板</td><td>5.4.1.10.3 「其他零件至少 75°C」未見於 CNS（CNS 為公式＋125°C 下限）</td><td>params 已更正</td></tr>
+<tr><td class="mono-id">D-17</td><td>儀表板</td><td>5.5.2.2 「&gt;18 nF 觸發單一故障」詮釋不符表 5 結構（C 相依之 Upeak 限值表）</td><td>params 已更正</td></tr>
+<tr><td class="mono-id">D-18</td><td>儀表板</td><td>8.5.4.3 標題未對齊 CNS「設備具有破壞介質之電機裝置」</td><td>title_zh 已更正（兩處）</td></tr>
+<tr><td class="mono-id">D-19</td><td>儀表板</td><td>X 值寫「約 0.25/1.0/1.5 mm」；表 O.1 精確值 0.25/1.00/1.50 mm＋&lt;3 mm 之 1/3 規則</td><td>params 已精確化</td></tr>
+<tr><td class="mono-id">D-20</td><td>儀表板</td><td>5.4.1.4 接觸溫度寫概略值（~60/75/80°C）；改引表 38 實值（60/71/77/107；70/81/87/117）；絕緣等級改引表 9 實值</td><td>params 已更正</td></tr>
+<tr><td class="mono-id">C-01</td><td>CNS 文件</td><td>Y.4.3 節標題誤印為「壓縮試驗」（與 Y.4.4 重複）；內文實為墊片拉伸/伸長試驗（P.E.L. 同證）</td><td>記錄；引用時註記</td></tr>
+<tr><td class="mono-id">C-02</td><td>CNS 文件</td><td>8.8 目錄作「把手強度」、正文作「握柄強度」；8.10 目錄作「推車、腳座及類似承載器」、正文作「推車、支架及類似承運裝置」</td><td>記錄；引用以正文為準</td></tr>
+<tr><td class="mono-id">P-01</td><td>官方 P.E.L.</td><td>馬達紗布列含「G.9.3」；CNS Ed.3 G.9.3＝IC 電流限制器符合性判斷準則，無紗布關聯</td><td>記錄；待 Ed.4 正文裁決</td></tr>
+<tr><td class="mono-id">P-02</td><td>官方 P.E.L.</td><td>9.6.3 異物圖號 Fig.49/50/51 為 Ed.4 編號；CNS Ed.3 為圖 47/48/49</td><td>儀表板已加版次對映註</td></tr></tbody>
+  </table></div>
+</section>
+
+<section id="changes">
+  <h2>A.4 對目標檔之具體修改</h2>
+  <ul class="list"><li>15598-1_Dashboard.html：先建備份「15598-1_Dashboard_A輪修正前備份.html」，後套用 24 處查證後修正（20 項 params、2 項 title_zh×各 2 處、含 D-01～D-20）；DATA 與 CT_DATA 同步、JSON 結構驗證通過（48 測項/79 儀器）。</li>
+<li>對抗查證記錄表.md：新建（A 輪 47 筆測項裁決＋錯誤 24 筆＋待證 6 筆；逐輪累進、不覆蓋）。</li>
+<li>無人機安規儀器清單_深度查證.md／.html：新建 companion 報告（A 輪四項結果；B–F 輪預留章節）；與既有「合理性查核說明」互相連結，未動其既有內容。</li>
+<li>台中標準檢驗局之無人機大樓設備清單_all-0609_V1.xlsx：本輪未修改（依編排 §4-F 於 F 輪複製後彙整）。</li></ul>
+</section>
+
+
+<section id="roundB">
+  <h2>B 輪：BSMI 設備命名對齊查證（2026-06-12）</h2>
+  <p>107 設備行逐行對齊【BSMI 名稱/型號】↔【官方 P.E.L. 列＋代碼】↔【標準用語】；「缺漏」判定前先窮舉 P.E.L. 候選列與全表關鍵字（延續沿面距離量測棒之方法）。</p>
+  <div class="stats">
+    <div class="stat"><div class="v">77</div><div class="k">① 完全對應</div></div>
+    <div class="stat"><div class="v">30</div><div class="k">② 同物異名／共用／概括展開</div></div>
+    <div class="stat"><div class="v">0</div><div class="k">③ 真正多餘</div></div>
+    <div class="stat"><div class="v">5</div><div class="k">真缺漏（PEL→BSMI）</div></div>
+  </div>
+  <h3 id="b-table">B.1 名稱對齊表（107 行）</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>B#</th><th>測試項目（章節）</th><th>BSMI 設備／型號</th><th>P.E.L. 對應與證據</th><th>分類</th></tr></thead>
+    <tbody><tr><td class="num">1</td><td>設備安裝、使用環境條件模擬<div class="sub2">4.1.4</div></td><td>walkin chamber<div class="sub2">ESPEC / 客制</div></td><td>P0 Test chamber −33~+40°C｜ROUT（walk-in＝test chamber；量程/濕度待 C）</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">2</td><td>設備安裝、使用環境條件模擬<div class="sub2">4.1.4</div></td><td>power supply<div class="sub2">Cinergia/GE 30AC/DC Sic-</div></td><td>P10 Voltage supply｜RB（跨測項共用）</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">3</td><td>設備安裝、使用環境條件模擬<div class="sub2">4.1.4</div></td><td>Circulation chiller<div class="sub2">LAUDA/ UC-2400</div></td><td>PEL 未列｜P0 chamber 之必要配套子系統（達 −33°C）</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">4</td><td>直接插入主電源設備- 刃片轉矩測試<div class="sub2">4.7</div></td><td>Main Plug Torque Tester<div class="sub2">ASIA Qtech/65-DPT</div></td><td>P3 Test equipment（IEC 60065 Fig.11）｜RB（同功能市售品）</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">5</td><td>具鈕扣型電池之設備_電池更換試驗<div class="sub2">4.8.4.3</div></td><td>Torque gauge<div class="sub2">TOHNICHI/15BTG</div></td><td>P6 Torque gauges 0.5Nm＋angle meter｜RB（角度計共用 B59，適用性待 C）</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">6</td><td>手持式遙控裝置設備_碾壓試驗<div class="sub2">4.8.4.6</div></td><td>Weight<div class="sub2">ASIA Qtech/E816.368</div></td><td>P5 Crush 330N＋100×250mm 平面｜RB（砝碼式）</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">7</td><td>手持式遙控裝置設備_碾壓試驗<div class="sub2">4.8.4.6</div></td><td>rigid test finger<div class="sub2">Asia Qtech / ULP-1</div></td><td>P4 rigid test finger（圖 V.1）｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">8</td><td>手持式遙控裝置設備_碾壓試驗<div class="sub2">4.8.4.6</div></td><td>test hook<div class="sub2">ASIA Qtech/TH-1</div></td><td>P4 test hook（圖 20，約 20N）｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">9</td><td>手持式遙控裝置設備_碾壓試驗<div class="sub2">4.8.4.6</div></td><td>Stop watch<div class="sub2">Casio / HS-70W-1</div></td><td>P4/P5 timer｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">10</td><td>電氣能量源分級-
+電壓及電流量測<div class="sub2">5.2</div></td><td>Oscilloscope<div class="sub2">R. &amp; S./RTM3004</div></td><td>P8 Oscilloscope｜RB（PEL 條號 5.2.A.4＝Ed.4 制；Ed.3 對應 5.2.2.4/5.2.2.5）</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">11</td><td>電氣能量源分級-
+電壓及電流量測<div class="sub2">5.2</div></td><td>Multimeter<div class="sub2">Fluke/287</div></td><td>P7 Ampere-/Voltmeter｜RB（萬用表；兼 P14 繞組電阻 2-wire &gt;1Ω）</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">12</td><td>電氣能量源分級-
+電壓及電流量測<div class="sub2">5.2</div></td><td>Measuring instruments<div class="sub2">Ikonix / 620L</div></td><td>P7 IEC 60990 Fig.4/5 量測儀器＋2kΩ｜RB（620L 內建網路待 C）</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">13</td><td>對電氣能量源及安全防護
+之可觸及性評<div class="sub2">5.3.2.</div></td><td>Test probes<div class="sub2">Asia Qtech / WZ-1</div></td><td>P9 探棒（圖 V.1/V.2/V.3/V.5 其一）｜RB（型號↔圖號對映待 C）</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">14</td><td>對電氣能量源及安全防護
+之可觸及性評<div class="sub2">5.3.2.</div></td><td>Test probes<div class="sub2">Asia Qtech / TFP-1</div></td><td>P9 探棒｜RB（同左）</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">15</td><td>對電氣能量源及安全防護
+之可觸及性評<div class="sub2">5.3.2.</div></td><td>Test probes<div class="sub2">Asia Qtech / TTP-1</div></td><td>P9 探棒｜RB（同左）</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">16</td><td>對電氣能量源及安全防護
+之可觸及性評<div class="sub2">5.3.2.</div></td><td>Test probes<div class="sub2">ASIA Qtech/FV.5</div></td><td>P9 探棒（FV.5＝圖 V.5）｜RB</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">17</td><td>對電氣能量源及安全防護
+之可觸及性評<div class="sub2">5.3.2.</div></td><td>force gauge<div class="sub2">ALGOL / NK300</div></td><td>P9 force gauge ≥30N｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">18</td><td>對電氣能量源及安全防護
+之可觸及性評<div class="sub2">5.3.2.</div></td><td>calliper<div class="sub2">Mitutoyo/ 500-196</div></td><td>P9 calliper｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">19</td><td>材料、組件及系統之最大操作溫度測試<div class="sub2">5.4.1.4, 9.3, 
+A</div></td><td>Power meter<div class="sub2">Zes Zimmer /LMG641-A</div></td><td>P15/P17 電壓/電流量測→功率計｜RB（兼 P47/P72 watt meter 共用）</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">20</td><td>材料、組件及系統之最大操作溫度測試<div class="sub2">5.4.1.4, 9.3, 
+A</div></td><td>Power meter<div class="sub2">Zes Zimmer /LMG641-A</div></td><td>P15/P17 同左｜RB</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">21</td><td>材料、組件及系統之最大操作溫度測試<div class="sub2">5.4.1.4, 9.3, 
+A</div></td><td>Voltage supply systems (Power supply<div class="sub2">Cinergia/GE 30AC/DC Sic-</div></td><td>P10 單相電源（P11 三相｜S；三相能力待 C）｜RB</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">22</td><td>材料、組件及系統之最大操作溫度測試<div class="sub2">5.4.1.4, 9.3, 
+A</div></td><td>Voltage supply systems (Power supply<div class="sub2">Cinergia/GE 30AC/DC Sic-</div></td><td>P10/P11 同左</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">23</td><td>材料、組件及系統之最大操作溫度測試<div class="sub2">5.4.1.4, 9.3, 
+A</div></td><td>DC power supply<div class="sub2">EA/PSI 10500-30 3U</div></td><td>P10 Voltage supply（DC 側）｜RB</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">24</td><td>材料、組件及系統之最大操作溫度測試<div class="sub2">5.4.1.4, 9.3, 
+A</div></td><td>DC power supply<div class="sub2">EA/PSI 10500-30 3U</div></td><td>P10 同左｜RB</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">25</td><td>材料、組件及系統之最大操作溫度測試<div class="sub2">5.4.1.4, 9.3, 
+A</div></td><td>Temperature/ Temperature Datalogger<div class="sub2">GraphTec / GL860(60ch)</div></td><td>P12 Temperature recorder（multi-channel）｜RB（P13 熱電偶耗材未列→M-5）</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">26</td><td>材料、組件及系統之最大操作溫度測試<div class="sub2">5.4.1.4, 9.3, 
+A</div></td><td>Temperature/ Temperature Datalogger<div class="sub2">GraphTec / GL860(60ch)</div></td><td>P12 同左｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">27</td><td>材料、組件及系統之最大操作溫度測試<div class="sub2">5.4.1.4, 9.3, 
+A</div></td><td>Portable Temperature/ Temperature re<div class="sub2">GraphTec / GL860(30ch)</div></td><td>P12 同左（攜帶型）｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">28</td><td>材料、組件及系統之最大操作溫度測試<div class="sub2">5.4.1.4, 9.3, 
+A</div></td><td>Portable Temperature/ Temperature re<div class="sub2">GraphTec / GL860(30ch)</div></td><td>P12 同左｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">29</td><td>材料、組件及系統之最大操作溫度測試<div class="sub2">5.4.1.4, 9.3, 
+A</div></td><td>DC load<div class="sub2">EA / ELR 10080-340 3U</div></td><td>P18 Loads（resistive）｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">30</td><td>材料、組件及系統之最大操作溫度測試<div class="sub2">5.4.1.4, 9.3, 
+A</div></td><td>DC load<div class="sub2">EA / ELR 10080-340 3U</div></td><td>P18 同左｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">31</td><td>球壓試驗<div class="sub2">5.4.1.10.3</div></td><td>Ball pressure test apparatus<div class="sub2">Asia Qtech / BPT-1</div></td><td>P21 球壓裝置（IEC 60695-10-2）｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">32</td><td>球壓試驗<div class="sub2">5.4.1.10.3</div></td><td>Oven<div class="sub2">ESPEC/PH-102</div></td><td>P21 Oven ≥125°C±2｜RB（PH-102 上限待 C；兼 T.8/S.1 預處理共用）</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">33</td><td>空間距離、沿面距離及固體絕緣量測<div class="sub2">5.4.2, 5.4.3, 5.</div></td><td>calliper<div class="sub2">Mitutoyo/500-196</div></td><td>P23 Dial gauge or calliper｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">34</td><td>空間距離、沿面距離及固體絕緣量測<div class="sub2">5.4.2, 5.4.3, 5.</div></td><td>Creepage distance test rod<div class="sub2">ASIA Qtech/TRP-8</div></td><td>P25 Pins etc. with different diameters＝TRP-8｜RB（表 O.1：0.25/1.00/1.50mm，A 輪已證）</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">35</td><td>空間距離、沿面距離及固體絕緣量測<div class="sub2">5.4.2, 5.4.3, 5.</div></td><td>Micrometer<div class="sub2">Mitutoyo / 102-707</div></td><td>P24 Micrometer｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">36</td><td>空間距離、沿面距離及固體絕緣量測<div class="sub2">5.4.2, 5.4.3, 5.</div></td><td>2.5D Projector<div class="sub2">TOMAS / G2515A</div></td><td>P26 Microscope｜RB（2.5D 投影儀同功能替代，倍率/精度待 C）</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">37</td><td>空間距離、沿面距離及固體絕緣量測<div class="sub2">5.4.2, 5.4.3, 5.</div></td><td>Impulse test generator<div class="sub2">EMTEST / TSS 500N10</div></td><td>P27 脈衝產生器 D.1 電路 1/2/3｜RT S RC（TSS 500N10 涵蓋組合待 C）</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">38</td><td>空間距離、沿面距離及固體絕緣量測<div class="sub2">5.4.2, 5.4.3, 5.</div></td><td>Test equipment for tracking index<div class="sub2">PTL/M31.10</div></td><td>P28 IEC 60112 CTI｜S</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">39</td><td>空間距離、沿面距離及固體絕緣量測<div class="sub2">5.4.2, 5.4.3, 5.</div></td><td>Mandrel Tester<div class="sub2">ASIA Qtech/客制</div></td><td>P29 Mandrel 成套（含金屬箔、砝碼、碼表）｜S</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">40</td><td>空間距離、沿面距離及固體絕緣量測<div class="sub2">5.4.2, 5.4.3, 5.</div></td><td>Insulation resistance meter<div class="sub2">Ikonix-SCI / 297</div></td><td>P30（500V&gt;4MΩ）/P36（500V&gt;2MΩ）IR meter｜RC/RB（xlsx 歸組 5.4.2 群＝跨組）</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">41</td><td>天線端子絕緣-雷擊試驗<div class="sub2">5.4.5.2</div></td><td>10KV Antenna surge tester<div class="sub2">Testing/T3-05</div></td><td>P30 antenna interface＝D.1 電路 3（10kV）＋timer｜RC</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">42</td><td>耐濕試驗<div class="sub2">5.4.8</div></td><td>Chamber<div class="sub2">Espec</div></td><td>P31/P32 溫濕箱（20–30°C 與 40±2°C 一台涵蓋）｜RB（P33 特大箱→B1 共用待 C）</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">43</td><td>耐電壓試驗<div class="sub2">5.4.9</div></td><td>Hi pot tester<div class="sub2">Ikonix-AR / 7800</div></td><td>P34 耐壓試驗器（含跳脫電流）｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">44</td><td>耐電壓試驗<div class="sub2">5.4.9</div></td><td>Test Instrument/equipment for electr<div class="sub2">Asia-Qtech / KQ-1</div></td><td>P35 圖 29 固體/薄片絕緣治具｜S</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">45</td><td>電信網路與地間之隔離試驗<div class="sub2">5.4.11</div></td><td>Non-inductive Resistor<div class="sub2">Asia-Qtech / 950-K</div></td><td>P38 5,000Ω 無感電阻＋電流表｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">46</td><td>電容放電試驗<div class="sub2">5.5.2.2</div></td><td>Measuring instrument with input impe<div class="sub2">probe</div></td><td>P40 100MΩ±5MΩ（≤25pF）量測儀｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">47</td><td>保護接地阻抗量測<div class="sub2">5.6.4.1</div></td><td>Earth Resistance Tester 
+(High curre<div class="sub2">Ikonix-SCI / 266</div></td><td>P43 ≤12V 大電流源｜RB（同群 P44 1500A 短路源缺→M-2）</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">48</td><td>預期接觸電壓、接觸電流
+及保護導體電<div class="sub2">5.7</div></td><td>Test Networks (IEC 60990:1999 figure<div class="sub2">Ikonix / 620L</div></td><td>P45 IEC 60990 圖 4/5 網路＋電流表｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">49</td><td>電力能量源分級-功率量測<div class="sub2">6.2.2</div></td><td>variable resistor load<div class="sub2">ASIA Qtech/客制</div></td><td>P47 可變電阻負載｜RB（watt meter 共用 B19/20、碼表共用 B9）</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">50</td><td>熾熱線試驗<div class="sub2">6.3.1</div></td><td>Glow-Wire tester<div class="sub2">PTL/ T03.50</div></td><td>P48 灼熱絲（IEC 60695-2-11）｜S</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">51</td><td>頂部開孔及頂部開孔性質評估<div class="sub2">6.4.8.3.3</div></td><td>Cheesecloth bleached cotton cloth<div class="sub2">耗材</div></td><td>P49 紗布 40g/m²＋timer｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">52</td><td>機械能量源分級<div class="sub2">8.2</div></td><td>Scale up to 50kg<div class="sub2">LXPAS</div></td><td>P51 Scale up to 25kg｜RB（50kg 規格向上涵蓋）</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">53</td><td>設備具有破壞介質之電機裝置
+-可觸及<div class="sub2">8.5.4.3</div></td><td>Test probe<div class="sub2">ASIA-Qtech /  ULP-1</div></td><td>P52 jointed 探棒 V.1｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">54</td><td>設備具有破壞介質之電機裝置
+-可觸及<div class="sub2">8.5.4.3</div></td><td>Test probe<div class="sub2">ASIA-Qtech /  ULP-2</div></td><td>P52 jointed 探棒 V.2｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">55</td><td>設備具有破壞介質之電機裝置
+-可觸及<div class="sub2">8.5.4.3</div></td><td>Force 45N and 90 N with wedge probe<div class="sub2">ASIA-Qtech / TP-NAF</div></td><td>P52 wedge V.4（45N/90N）｜RSH</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">56</td><td>高壓燈泡- 爆裂評估<div class="sub2">8.5.5.2.</div></td><td>Dark sticky mat<div class="sub2">ASIA Qtech/客制</div></td><td>P53 深色黏墊</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">57</td><td>高壓燈泡- 爆裂評估<div class="sub2">8.5.5.2.</div></td><td>magnified glass<div class="sub2">ASIA Qtech/客制</div></td><td>P53 0.1mm 解析度放大鏡</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">58</td><td>穩定性測試<div class="sub2">8.6.2</div></td><td>Inclined plane 10°/15°<div class="sub2">Asia Qtech / IN100      </div></td><td>P54/P57 斜面 10°/15°｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">59</td><td>穩定性測試<div class="sub2">8.6.2</div></td><td>Angle Level<div class="sub2">DAHN 達恩 / 200mm角度規</div></td><td>PEL 8.6.2 未列｜量斜角治具輔助；兼 P6 angle meter 共用（待 C）</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">60</td><td>穩定性測試<div class="sub2">8.6.2</div></td><td>Test tool (weight)<div class="sub2">ASIA Qtech/E816-Kg</div></td><td>P54/P55 砝碼至 100/250N｜RB（800N/12.5×20cm 平面治具是否含→待 C）</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">61</td><td>玻璃滑落試驗<div class="sub2">8.6.4</div></td><td>Asia Qtech/ Glass75              75x<div class="sub2">7</div></td><td>P56 玻璃板｜RB（斜面共用 B58）</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">62</td><td>水平力試驗<div class="sub2">8.6.5</div></td><td>weights at least 250 N<div class="sub2">ASIA Qtech/客制</div></td><td>P57 ≥250N 砝碼｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">63</td><td>安裝在牆壁、天花板之設備 - 承重試<div class="sub2">8.7</div></td><td>Several weights 總和至少 880N<div class="sub2">ASIA Qtech/客制</div></td><td>P58 砝碼｜RB（CNS p.148：3 倍重量或＋880N 取小→「總和至少 880N」✓）</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">64</td><td>安裝在牆壁、天花板之設備 - 承重試<div class="sub2">8.7</div></td><td>push-pull gauge<div class="sub2">ALGU/ZP-500</div></td><td>P58 push-pull gauge｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">65</td><td>握柄強度試驗<div class="sub2">8.8</div></td><td>Belts<div class="sub2">ASIA Qtech/客制</div></td><td>P59 75mm 寬帶＋砝碼｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">66</td><td>推車、支架及類似承運裝置 
+- 機械<div class="sub2">8.1</div></td><td>Force up to 440 N with a circular pl<div class="sub2">ASIA Qtech/客制</div></td><td>P61 Force up to 440N＋Ø30mm 圓面｜RB（幾乎逐字；兼 T.5 P111 250N 共用；xlsx 章節 8.1→8.10 F 輪更正）</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">67</td><td>無線電力傳輸器試驗<div class="sub2">9.6.3</div></td><td>Steel disc<div class="sub2">ASIA Qtech/T5-1254</div></td><td>P64 Steel disc（Ed.4 Fig.49＝CNS Ed.3 圖 47）｜RWPT</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">68</td><td>無線電力傳輸器試驗<div class="sub2">9.6.3</div></td><td>Aluminium ring<div class="sub2">ASIA Qtech/T5-1255</div></td><td>P64 Aluminium ring（圖 48）｜RWPT</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">69</td><td>無線電力傳輸器試驗<div class="sub2">9.6.3</div></td><td>Aluminium foil<div class="sub2">ASIA Qtech/T5-1256</div></td><td>P64 Aluminium foil（圖 49）｜RWPT</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">70</td><td>無線電力傳輸器試驗<div class="sub2">9.6.3</div></td><td>Spacers<div class="sub2">ASIA Qtech/客制</div></td><td>P64 Spacers 2.0±0.5mm／5.0±0.5mm｜RWPT（CNS 圖面影像待目視）</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">71</td><td>輸入試驗<div class="sub2">Annex B.2.5</div></td><td>Signal generator in acc. IEC 60107-1<div class="sub2">DEKTEC/客制</div></td><td>P74 Signal generator（IEC 60107-1:1997）｜RV（P72/P73 共用 B19/20、B29/30）</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">72</td><td>散熱開孔之覆蓋模擬試驗<div class="sub2">Annex B.3.2</div></td><td>piece of card<div class="sub2">ASIA Qtech/客制</div></td><td>P75 卡紙 ≥200 g/m²｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">73</td><td>UV輻射試驗<div class="sub2">Annex C</div></td><td>Carbon-arc light-exposure tester<div class="sub2"></div></td><td>P76 碳弧（ISO 4892-4＋type 1 filter＋噴水）｜S</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">74</td><td>UV輻射試驗<div class="sub2">Annex C</div></td><td>Xenon-arc light-exposure tester<div class="sub2"></div></td><td>P76 氙弧（ISO 4892-2:2013 cycle 1 method A、無噴水）｜S</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">75</td><td>UV輻射試驗<div class="sub2">Annex C</div></td><td>Tensile strength tester<div class="sub2"></div></td><td>P76 拉伸 ISO 527｜S</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">76</td><td>UV輻射試驗<div class="sub2">Annex C</div></td><td>Flexural strength tester<div class="sub2"></div></td><td>P76 彎曲 ISO 178｜S</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">77</td><td>UV輻射試驗<div class="sub2">Annex C</div></td><td>Charpy impact tester<div class="sub2"></div></td><td>P76 Charpy ISO 179-1｜S</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">78</td><td>UV輻射試驗<div class="sub2">Annex C</div></td><td>Izod impact tester<div class="sub2"></div></td><td>P76 Izod ISO 180｜S</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">79</td><td>UV輻射試驗<div class="sub2">Annex C</div></td><td>Tensile impact tester<div class="sub2"></div></td><td>P76 拉伸衝擊 ISO 8256｜S</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">80</td><td>音頻訊號模擬試驗<div class="sub2">Annex E</div></td><td>variable wood testing box<div class="sub2">ASIA Qtech/客制</div></td><td>P77 Variable wood test box｜RA（CNS p.186 開放式木箱雙源）</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">81</td><td>音頻訊號模擬試驗<div class="sub2">Annex E</div></td><td>Signal generator (sinus) 1kHz<div class="sub2">Topward / 8150P</div></td><td>P77 1kHz 正弦信號產生器｜RA</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">82</td><td>音頻訊號模擬試驗<div class="sub2">Annex E</div></td><td>pink noise signal generator &amp;
+Band-p<div class="sub2">Suniliab</div></td><td>P77 粉紅噪音＋帶通濾波（圖 E.1）｜RA</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">83</td><td>防水防塵試驗<div class="sub2">Annex F.3.7</div></td><td>IP test equipment according to IEC 6<div class="sub2">PTL/客制</div></td><td>P78 IEC 60529 IP 試驗設備｜SP</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">84</td><td>標示耐久性試驗<div class="sub2">Annex F.3.10</div></td><td>water/piece of cloth<div class="sub2">耗材</div></td><td>P79 水/布/timer｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">85</td><td>標示耐久性試驗<div class="sub2">Annex F.3.10</div></td><td>Petroleum spirit<div class="sub2">耗材</div></td><td>P80 石油精（85% 正己烷，CAS#110-54-3）｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">86</td><td>直流電動機運轉過載、堵轉替代試驗<div class="sub2">Annex G.5.4.5.3 </div></td><td>Cheesecloth<div class="sub2">耗材</div></td><td>P81 紗布 40g/m²｜RB（同列 G.9.3＝P.E.L. 疑誤 P-01）</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">87</td><td>直流電動機運轉過載、堵轉替代試驗<div class="sub2">Annex G.5.4.5.3 </div></td><td>Wrapping Tissue<div class="sub2">耗材</div></td><td>P81 包裝棉紙 12–30g/m²｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">88</td><td>電源線抗拉力試驗<div class="sub2">Annex G.7</div></td><td>Appropriate weights<div class="sub2">ASIA Qtech/客制</div></td><td>P84 Appropriate weights｜RB（P85 扭矩計共用 B5；P83 IEC 60227 線材試驗缺→M-4）</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">89</td><td>電源線曲率半徑量測<div class="sub2">Annex G.7</div></td><td>Radius Gage<div class="sub2">FUJITOOL/</div></td><td>PEL 未列｜CNS G.7.5：彎曲保護曲率半徑 ≥1.5D（p.221）→量規有據</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">90</td><td>防止固體外物進入的安全防護試驗<div class="sub2">Annex P.2</div></td><td>Suitable tool to simulate a straight<div class="sub2">ASIA Qtech/TPP-13</div></td><td>P102 Ø1mm×≤13mm 直金屬物模擬工具｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">91</td><td>耐熱及耐燃試驗<div class="sub2">Annex S</div></td><td>Needle flame test apparatus &amp;
+Gauge <div class="sub2">ASIA-Qtech / ZLT-ZY2P</div></td><td>P105 針焰裝置（60695-11-5）＋火焰高度規｜SP</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">92</td><td>耐熱及耐燃試驗<div class="sub2">Annex S</div></td><td>500W flame test apparatus<div class="sub2">ASIA-Qtech / ZLT-UL94</div></td><td>P107 500W 火焰裝置（60695-11-20）｜SP</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">93</td><td>耐熱及耐燃試驗<div class="sub2">Annex S</div></td><td>Cheesecloth<div class="sub2">耗材</div></td><td>P108 紗布｜RB（同群 P106 蒸餾燃料油缺→M-3）</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">94</td><td>耐熱及耐燃試驗<div class="sub2">Annex S</div></td><td>Wrapping Tissue<div class="sub2">耗材</div></td><td>P108 包裝棉紙｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">95</td><td>穩定力試驗<div class="sub2">Annex
+T.2 - T.4</div></td><td>Test finger 
+(figure V1 or V2 unjoin<div class="sub2">ASIA Qtech/ 30N</div></td><td>P110 直式無關節探棒 30N±3N｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">96</td><td>穩定力試驗<div class="sub2">Annex
+T.2 - T.4</div></td><td>10N ± 1N<div class="sub2"></div></td><td>P110 10N±1N 穩定力｜RB</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">97</td><td>機殼撞擊試驗<div class="sub2">Annex T.6</div></td><td>Impact steel ball<div class="sub2">ASIA Qtech/ITB-1</div></td><td>P112 Ø50mm/500g±25g 鋼球＋尺｜RB（兼 T.9 P115 同球）</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">98</td><td>落下試驗<div class="sub2">Annex T.7</div></td><td>plywood<div class="sub2">ASIA Qtech/客制</div></td><td>P113 13mm 硬木＋18mm±2 合板×2｜RB（B 行名僅 plywood，成套須含硬木層）</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">99</td><td>落下試驗<div class="sub2">Annex T.7</div></td><td>ruler up to 5000 mm ± 10mm<div class="sub2">市售品</div></td><td>P113 ruler up to 1000mm｜RB（B 行 5000mm 向上涵蓋；「±10mm」係落高容差誤植於尺→X-3）</td><td><span class="badge b-fix">②</span></td></tr>
+<tr><td class="num">100</td><td>玻璃破碎試驗<div class="sub2">Annex T.10</div></td><td>Centre punch<div class="sub2">ASIA Qtech/ITB-1</div></td><td>P116 Centre punch 75g±5g/60°±2° 碳化鎢（引 60335-2-24）｜RB（型號 ITB-1 與 B97 重複疑誤→X-2）</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">101</td><td>抗腐蝕試驗<div class="sub2">Y.3</div></td><td>Salt spray test apparatus<div class="sub2">ITABACH</div></td><td>P124 鹽霧裝置（IEC 60068-2-11；Ed.4 箱引 ISO 22479、CNS Ed.3 用 ISO 3231）｜S</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">102</td><td>抗腐蝕試驗<div class="sub2">Y.3.3</div></td><td>Water - sulphur dioxide test chamber<div class="sub2">ITABACH</div></td><td>P125 水飽和 SO₂ 試驗箱｜S</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">103</td><td>拉伸強度及伸長率試驗<div class="sub2">Y.4.3</div></td><td>Tensile strength test apparatus<div class="sub2">GoTech/GT-7010-AE</div></td><td>P126 拉伸強度試驗機｜S</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">104</td><td>壓縮試驗<div class="sub2">Y.4.4</div></td><td>Cylindrical weight for 69 kPa<div class="sub2">ASIA Qtech/客制</div></td><td>P127 69kPa 圓柱荷重｜S</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">105</td><td>壓縮試驗<div class="sub2">Y.4.4</div></td><td>1,35 kg impact hammer apparatus<div class="sub2">ASIA Qtech/客制</div></td><td>P127 1.35kg 衝擊鎚（150mm 落高）｜S</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">106</td><td>壓縮試驗<div class="sub2">Y.4.4</div></td><td>Clear spruce wood pieces<div class="sub2">耗材</div></td><td>P127 Clear spruce＝CNS「杉木板 50×100mm」（p.310）｜S</td><td><span class="badge b-ok">①</span></td></tr>
+<tr><td class="num">107</td><td>抗油性試驗<div class="sub2">Y.4.5</div></td><td>Oil immersion test equipment per ISO<div class="sub2">耗材</div></td><td>P128 ISO 1817 浸油設備（Ed.4 :2022；CNS 引 :2005／ASTM D471-98）｜S</td><td><span class="badge b-ok">①</span></td></tr></tbody>
+  </table></div>
+  <h3 id="b-missing">B.2 真缺漏清單（窮舉後成立）</h3>
+  <div class="tablewrap"><table style="min-width:680px">
+    <thead><tr><th>編號</th><th>缺漏項</th><th>證據（PEL 列／CNS 頁／窮舉）</th><th>信心／建議</th></tr></thead>
+    <tbody><tr><td class="mono-id">M-1</td><td>4 線式微歐姆計（繞組電阻 &lt;1.0 Ω）</td><td>PEL P14：「Winding resistance（normally &gt;1.0 Ω 2-wire、4-wire &lt;1.0 Ω）」｜RB。BSMI 僅有 Fluke 287（2 線）。無人機 BLDC 馬達繞組常為毫歐級→4 線量測為必須。窮舉：全表無 micro-ohm／4-wire／毫歐字樣。</td><td>高（建議補購：毫歐姆計/微歐姆計）</td></tr>
+<tr><td class="mono-id">M-2</td><td>1,500 A 短路電流源</td><td>PEL P44（接續 5.6.4.1 群）：「Source with at least 1500A short circuit」｜S；同源 Annex R P104；CNS p.282：「確認該電源能提供至少 1,500 A」。窮舉：全表無 1500/短路/short。</td><td>高（S 級→可外包或委其他單位）</td></tr>
+<tr><td class="mono-id">M-3</td><td>蒸餾燃料油（＋灌注金屬勺 Ø≤65mm）</td><td>PEL P106：「Distillate fuel oil as described in annex S.3.2」｜S；CNS S.3.2（p.286）：10 mL、0.845–0.865 g/mL、燃點 43.5–93.5°C；金屬勺為 CNS 規定治具（PEL 未列）。窮舉：全表無 fuel/燃料/油（除 Y.4.5 浸油）。</td><td>高（耗材級，單價低）</td></tr>
+<tr><td class="mono-id">M-4</td><td>IEC 60227 線材試驗設備</td><td>PEL P83：「Test equipment according IEC 60227」｜S（G.7 電源線被覆/柔軟度等整線驗證）。窮舉：G37/G38 僅砝碼與曲率規。</td><td>中（S 級→以線材廠認證/外包替代為常規）</td></tr>
+<tr><td class="mono-id">M-5</td><td>熱電偶（K 型等，耗材）</td><td>PEL P13：「Thermocouples」｜RB。GL860 資料記錄器之必要感測耗材，BSMI 107 行未列。</td><td>中（耗材；可能已含於儀器配件，向實驗室確認）</td></tr></tbody>
+  </table></div>
+  <h3 id="b-suspect">B.3 疑似缺漏／共用待證（C 輪規格驗證）</h3>
+  <ol class="list"><li>B1 walk-in（ESPEC 客制）可否兼任 P33「特大型環境試驗箱」（93%RH 能力）與 Y.6.2 −33°C 箱——規格待 C 輪。</li>
+<li>B32 Oven（ESPEC PH-102）上限是否 ≥125°C±2（球壓/PCB 預處理需求）——規格待 C 輪。</li>
+<li>B60「Test tool (weight)」是否含 8.6.2.3 之 800N／12.5×20cm 平面治具（PEL P55）——待 C 輪；若無→補製治具。</li>
+<li>B5 扭矩計（TOHNICHI 15BTG）量程是否同時涵蓋 0.5 Nm（4.8.3）／0.25 Nm（G.7.3.2）／0.6 Nm（8.12/T.11，測項未列但建議）——待 C 輪。</li>
+<li>B37 突波產生器（EM TEST TSS 500N10）是否涵蓋 D.1 電路 1（10/700µs）＋電路 2（1.2/50µs）＋電路 3（10kV）三組合——待 C 輪。</li>
+<li>B13–B16 探棒型號（WZ-1/TFP-1/TTP-1/FV.5）↔ 圖 V.1/V.2/V.3/V.5 之一對一對映——以實物/型錄確認（C 輪）。</li>
+<li>B21/22 Cinergia GE30 之三相輸出能力（PEL P11 三相電源｜S）——待 C 輪。</li></ol>
+  <h3 id="b-ed4">B.4 版次註記（Ed.4）</h3>
+  <ol class="list"><li>S.6 燃料錠試驗（PEL P109「fuel tablet in according to S.6」｜SP）：CNS Ed.3 附錄 S 無 S.6（A 輪已證）→僅 Ed.4 採用後才需要。</li>
+<li>PEL 條號「5.2.A.4」（單一脈衝）＝Ed.4 編制；Ed.3 對應 5.2.2.4/5.2.2.5——示波器需求不變。</li>
+<li>PEL 引用版次：鹽霧箱 ISO 22479（CNS 用 ISO 3231）、浸油 ISO 1817:2022（CNS 引 :2005）、T.10 punch 引 IEC 60335-2-24——工具/方法相同，引用版本不同。</li>
+<li>9.6.3 異物圖號 Ed.4 Fig.49/50/51＝CNS Ed.3 圖 47/48/49（A 輪已證）。</li></ol>
+  <h3 id="b-xlsx">B.5 BSMI xlsx 行內疑誤（F 輪修正建議）</h3>
+  <ol class="list"><li>X-1 章節欄「8.1」應為 8.10（A 輪以 CNS p.150＋P.E.L. 證實；F 輪更正）。</li>
+<li>X-2 B100 Centre punch 型號「ASIA Qtech/ITB-1」與 B97 鋼球同型號，疑複製錯誤（punch 為 IEC 60335-2-24 規格件；F 輪標記）。</li>
+<li>X-3 B99「ruler up to 5000 mm ± 10mm」：±10mm 為 T.7 落下高度容差，誤植於量尺敘述；長度 5000mm 向上涵蓋（兼 T.6 1,300mm 量測）。</li>
+<li>X-4 B46 廠牌欄填「probe」、B107 廠牌欄填「耗材」但設備名為整套浸油設備——欄位語意不一致（F 輪統一標記）。</li></ol>
+  <h3 id="b-scope">B.6 測項範圍觀察</h3>
+  <div class="note">PEL 涵蓋而 48 測項未含之條款（資訊性，供測項範圍決策）：4.1.8 液體/冷媒（S）、4.1.9 電子量測儀器（由現有儀器滿足）、5.4.10（V.3＋IR 已備可支應）、5.4.12 絕緣液（無人機通常 N/A）、5.5.8、5.6.3（量具共用 B18/B35）、5.8、7.2、8.9 滾輪/腳輪（p.150；20N 力規 B17 可支應）、8.11 SRME、8.12/T.11 伸縮天線（p.154/p.291；B5/B17 可支應）、第 10 節雷射/LED/投影/X-ray/聲學（與無人機 LED/雷射雲台相關，全 S 級）、G.5.3.4 FIW、G.8/G.9/G.10/G.13/G.15/G.16 組件試驗、Annex H（5000Ω 已備）、J、M 電池及保護電路（本表與其他六張工作表均未見 Annex M/CNS 62133 專項→與無人機高度相關，建議補列或確認歸屬）、R（=M-2）、U（CRT N/A）、Y.5 防濕/塵（B83 IP 設備可支應）、Y.6（B1 可支應）。</div>
+</section>
+
+
+<section id="roundC">
+  <h2>C 輪：共用設備合理性查證（2026-06-12）</h2>
+  <p>母體＝儀表板 19 筆共用宣稱＋B 輪辨識之 13 筆事實共用（共 32 筆）；逐筆檢核標準依據、量程/精度/治具涵蓋（7 件關鍵規格經廠商資料表查證）與排程/工位衝突。</p>
+  <div class="stats">
+    <div class="stat"><div class="v">20</div><div class="k">可共用</div></div>
+    <div class="stat"><div class="v">10</div><div class="k">有條件／待證</div></div>
+    <div class="stat"><div class="v">1</div><div class="k">共用宣稱不成立（修正）</div></div>
+    <div class="stat"><div class="v">1</div><div class="k">配套澄清</div></div>
+  </div>
+  <h3 id="c-table">C.1 共用合理性表（32 筆）</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>#</th><th>儀器</th><th>共用範圍</th><th>標準依據</th><th>規格涵蓋判定</th><th>排程風險</th><th>裁決</th></tr></thead>
+    <tbody><tr><td class="num">1</td><td><b>砝碼／配重組</b></td><td>4.8.4.6＋8.6.2＋8.6.5＋8.7＋G.7</td><td>P5（330N）/P54-55（100/250N）/P57（250N）/P58（880N 或 3 倍取小，CNS p.148）/表 G.8（30/60/100N，p.219）</td><td>分立砝碼可組合至 880N ✓</td><td>力學試驗多為 1 min 級短佔用→低</td><td><span class="badge b-ok">可共用</span></td></tr>
+<tr><td class="num">2</td><td><b>可程式交直流電源 Cinergia GE+30</b></td><td>4.1.4＋5.4.1.4＋E（＋B.2.x）</td><td>P0/P10/P11/P77；B.2.3 ±10%（p.174）</td><td>已查證：三相再生 4 象限、0–277V L-N、10–400Hz→單相/三相/DC 皆涵蓋</td><td>溫升試驗長時佔用→中；DC 可由 EA PSI 分流</td><td><span class="badge b-ok">可共用（已證）</span></td></tr>
+<tr><td class="num">3</td><td><b>游標卡尺 Mitutoyo 500-196</b></td><td>5.3.2＋5.4.2–X（＋5.6.3）</td><td>P9＋P23＋P42</td><td>0.01mm 解析 vs 最小判讀 0.25mm ✓</td><td>量具短佔用→低</td><td><span class="badge b-ok">可共用</span></td></tr>
+<tr><td class="num">4</td><td><b>可觸及性探棒組</b></td><td>4.8.x＋5.3.2＋8.5.4.3</td><td>P4（V.1＋圖20 勾）/P9（V.1/V.2/V.3/V.5）/P52（V.1/V.2＋V.4）</td><td>幾何由標準圖定義；型號↔圖號對映待證</td><td>低</td><td><span class="badge b-fix">有條件（對映待證）</span></td></tr>
+<tr><td class="num">5</td><td><b>棉紗布（40g/m²）</b></td><td>6.4.8.3.3＋G.5.4.5.3＋S</td><td>P49/P81/P108；CNS 3.1.16（p.31）</td><td>耗材，規格單一 ✓</td><td>以用量計畫管理→無</td><td><span class="badge b-ok">可共用</span></td></tr>
+<tr><td class="num">6</td><td><b>直流電源 EA PSI 10500-30</b></td><td>5.4.1.4＋E</td><td>P10（DC 側）</td><td>500V/30A 級（型錄待證-低）</td><td>低</td><td><span class="badge b-ok">可共用</span></td></tr>
+<tr><td class="num">7</td><td><b>直流電子負載 EA ELR 10080-340</b></td><td>5.4.1.4＋E</td><td>P18（resistive loads）</td><td>80V/340A 再生型（型錄待證-低）</td><td>低</td><td><span class="badge b-ok">可共用</span></td></tr>
+<tr><td class="num">8</td><td><b>洩漏/接觸電流儀 620L</b></td><td>5.2＋5.7</td><td>P7＋P45（60990 圖 4/5）</td><td>已查證：7 組 MD（含 60990 圖 3/4/5）＋8 故障組合、40A</td><td>低；注意校正排程</td><td><span class="badge b-ok">可共用（已證）＋補 2kΩ（M-6）</span></td></tr>
+<tr><td class="num">9</td><td><b>功率分析儀 LMG641</b></td><td>5.4.1.4＋E（＋6.2.2/B.2.5 共用）</td><td>P15/P17＋P47/P72</td><td>4 通道精密功率計（型錄待證-低）</td><td>與溫升同站→低</td><td><span class="badge b-ok">可共用</span></td></tr>
+<tr><td class="num">10</td><td><b>絕緣電阻計 Ikonix-SCI 297</b></td><td>宣稱 5.4.2–X</td><td>P.E.L. 5.4.2–X 群無 IR 計；實際依據＝P30（5.4.5.3，表 23）＋P36（5.4.10）</td><td>—</td><td>—</td><td><span class="badge b-keep">共用宣稱不成立→修正歸屬 5.4.5.2/5.4.5.3</span></td></tr>
+<tr><td class="num">11</td><td><b>突波產生器 TSS 500N10</b></td><td>5.4.2–X（D.1 電路 1/2）＋兼 5.4.5.2（電路 3）</td><td>P27＋P30；表 D.1（p.183）</td><td>已查證：10/700µs＋1.2/50µs、至 10kV、2/4 線耦合</td><td>突波試驗短佔用→低</td><td><span class="badge b-ok">可共用（已證；電路 3 元件級細部待證）</span></td></tr>
+<tr><td class="num">12</td><td><b>CTI 試驗機 PTL M31.10</b></td><td>5.4.2–X（材料群組判定）</td><td>P28；IEC 60112（0.1% NH4Cl、50 滴）</td><td>專用機 ✓</td><td>材料級試驗離線進行→低</td><td><span class="badge b-ok">可共用</span></td></tr>
+<tr><td class="num">13</td><td><b>測微器 Mitutoyo 102-707</b></td><td>5.4.2–X（＋5.6.3）</td><td>P24＋P42</td><td>µm 級 ✓</td><td>低</td><td><span class="badge b-ok">可共用</span></td></tr>
+<tr><td class="num">14</td><td><b>2.5D 投影量測儀 TOMAS G2515A</b></td><td>5.4.2–X（替代顯微鏡）</td><td>P26（Microscope）</td><td>光學放大量測同功能；解析/倍率待型錄</td><td>低</td><td><span class="badge b-fix">有條件（解析待證）</span></td></tr>
+<tr><td class="num">15</td><td><b>沿面距離量測棒 TRP-8</b></td><td>5.4.2–X</td><td>P25（Pins etc.）＋表 O.1（X＝0.25/1.00/1.50mm，p.266）</td><td>成套是否涵蓋 3 尺寸待證（§6 既有）</td><td>低</td><td><span class="badge b-fix">有條件（成套待證）</span></td></tr>
+<tr><td class="num">16</td><td><b>心軸彎曲試驗機（客制）</b></td><td>5.4.2–X（5.4.4.5 薄片絕緣）</td><td>P29（含金屬箔/砝碼/碼表/耐壓配套）</td><td>成套內容物待確認</td><td>低</td><td><span class="badge b-fix">有條件（成套內容）</span></td></tr>
+<tr><td class="num">17</td><td><b>溫度記錄器 GL860（60/30ch）</b></td><td>5.4.1.4＋E（全溫升類）</td><td>P12</td><td>已查證：20–200ch、TC K/J/E/T…</td><td>多測項溫升併行時通道分配→低</td><td><span class="badge b-ok">可共用（已證）＋熱電偶耗材（M-5）</span></td></tr>
+<tr><td class="num">18</td><td><b>拉伸試驗機 GoTech GT-7010-AE</b></td><td>附錄 C＋Y.4.3</td><td>P126＋P76（ISO 527/ISO 37 系）</td><td>夾具相容（啞鈴試片/O 形環）待證</td><td>UV 後批次量測→低</td><td><span class="badge b-fix">有條件（夾具）；與 118 年 B75 重疊→整併建議</span></td></tr>
+<tr><td class="num">19</td><td><b>包裝棉紙（12–30g/m²）</b></td><td>G.5.4.5.3＋S</td><td>P81/P108；CNS 3.1.16.17（p.32）</td><td>耗材 ✓</td><td>無</td><td><span class="badge b-ok">可共用</span></td></tr>
+<tr><td class="num">20</td><td><b>烤箱 ESPEC PH-102</b></td><td>5.4.1.10.3＋4.8.4.2/T.8＋S 預處理＋Y.4.3＋Y.4.4(b)</td><td>P21（≥125°C±2）＋T.8（p.290）＋S.1（p.284）＋Y.4.3/Y.4.4（p.310）</td><td>已查證：+20~+200°C 全涵蓋</td><td>高——168h×多批次長佔用互斥；建議排程規劃或第二台</td><td><span class="badge b-ok">可共用（排程條件）</span></td></tr>
+<tr><td class="num">21</td><td><b>步入式環境室（客制）</b></td><td>4.1.4＋候補 5.4.8 特大箱（P33）＋Y.4.4(c)/Y.6.2（−33°C）</td><td>P0＋P33＋P127/P132</td><td>客制：規格書須載明 −33～+40°C＋93±3%RH（待證）</td><td>4.1.4 條件試驗 vs 長時濕處理→中</td><td><span class="badge b-fix">有條件（規格書要件）</span></td></tr>
+<tr><td class="num">22</td><td><b>循環式冷卻機 LAUDA UC-2400</b></td><td>4.1.4（chamber 配套）</td><td>xlsx 設施欄（連接室內 chamber）</td><td>已查證：工作 +13~+25°C、環境 −15~+45→排熱/冷凝配套，非低溫源</td><td>隨 chamber 連動→低</td><td><span class="badge b-ok">配套合理（角色澄清）</span></td></tr>
+<tr><td class="num">23</td><td><b>萬用表 Fluke 287</b></td><td>5.2＋5.4.1.4（繞組電阻 2 線）</td><td>P7＋P14（normally &gt;1.0Ω 2-wire）</td><td>§6 已證：&gt;1Ω 可、&lt;1Ω 不可（→M-1 四線微歐姆計）</td><td>低</td><td><span class="badge b-ok">可共用（限 &gt;1Ω）</span></td></tr>
+<tr><td class="num">24</td><td><b>示波器 R&amp;S RTM3004</b></td><td>5.2（5.2.2.4/5 脈衝）＋5.4.2–X</td><td>P8＋P22</td><td>頻寬遠超 10/700µs 級需求（型錄待證-低）</td><td>低</td><td><span class="badge b-ok">可共用</span></td></tr>
+<tr><td class="num">25</td><td><b>扭矩計 TOHNICHI 15BTG</b></td><td>4.8.4.3（0.5Nm）＋G.7（0.25Nm）＋建議 8.12（0.6Nm）</td><td>P6＋P85＋P63</td><td>已查證型錄歧義：BTG15CN＝0.02–0.15N·m（不敷）；15BTG-A＝0.23–1.7N·m（可）</td><td>低</td><td><span class="badge b-fix">待證-高（型號盤點決定；必要時改購）</span></td></tr>
+<tr><td class="num">26</td><td><b>力規 ALGOL NK300</b></td><td>5.3.2（30N±3N）＋T.2（10N±1N）＋8.9/8.12（20N）</td><td>P9＋P110＋P60/P63</td><td>300N 量程 ✓；10N±1N 之刻度解析待證</td><td>低</td><td><span class="badge b-fix">有條件（10N 建議砝碼施加）</span></td></tr>
+<tr><td class="num">27</td><td><b>斜面（10°/15°）</b></td><td>8.6.2＋8.6.4＋8.6.5</td><td>P54/P56/P57</td><td>一座兩角度 ✓</td><td>穩定性試驗群同站短佔用→低</td><td><span class="badge b-ok">可共用</span></td></tr>
+<tr><td class="num">28</td><td><b>角度規 DAHN 200mm</b></td><td>8.6.x 斜角校核＋4.8.4.3（P6 angle meter）</td><td>P6＋8.6.2.2（10°）</td><td>量斜角 ✓；量螺釘旋轉 90° 之適用性待證</td><td>低</td><td><span class="badge b-fix">有條件（4.8.3 適用性）</span></td></tr>
+<tr><td class="num">29</td><td><b>鋼球 Ø50mm/500g ITB-1</b></td><td>T.6＋T.9＋4.8.4.5</td><td>P112＋P115＋4.8.4.5（p.53）</td><td>同一球，能量以落高換算 ✓（表 T.1，p.291）</td><td>低</td><td><span class="badge b-ok">可共用</span></td></tr>
+<tr><td class="num">30</td><td><b>碼表 Casio HS-70W</b></td><td>4.8.4.6＋5.4.9（60s）＋6.2.2＋8.7/8.8＋T.2–T.5 等</td><td>P5/P34/P47/P58/P59/P110</td><td>通用計時 ✓</td><td>多站並用→加購即解</td><td><span class="badge b-ok">可共用</span></td></tr>
+<tr><td class="num">31</td><td><b>440N/Ø30mm 施力治具（客制）</b></td><td>8.10＋候補 T.5（250N±10N）</td><td>P61＋P111</td><td>up to 440N 含 250N 檔之可調性待證</td><td>低</td><td><span class="badge b-fix">有條件（可調性）</span></td></tr>
+<tr><td class="num">32</td><td><b>溫濕箱 Espec（B42）</b></td><td>5.4.8（20–30°C/93% 與 40±2°C/93% 雙條件）</td><td>P31＋P32（一台涵蓋）</td><td>標準溫濕箱能力（型號未明-待證低）</td><td>48/120h 長佔用→中</td><td><span class="badge b-ok">可共用（排程注意）</span></td></tr></tbody>
+  </table></div>
+  <h3 id="c-find">C.2 新發現</h3>
+  <div class="tablewrap"><table style="min-width:680px">
+    <thead><tr><th>編號</th><th>項目</th><th>內容</th><th>信心／處置</th></tr></thead>
+    <tbody><tr><td class="mono-id">M-6</td><td>2 kΩ 無感電阻</td><td>表 4 註(c)：「對於正弦波形及直流，使用 2,000 Ω 電阻量測電流值」（CNS p.57）＋P.E.L. P7「2 k resistor」；BSMI 全表僅 5kΩ（B45）→ 補購（單價極低）</td><td>高</td></tr>
+<tr><td class="mono-id">C-R1</td><td>拉伸機重複編列</td><td>B103 GoTech GT-7010-AE（116 年，Y.4.3）與 B75 Tensile strength tester（118 年，附錄 C）功能重疊→建議 D/E 輪檢視整併或差異化（夾具/量程）</td><td>中</td></tr>
+<tr><td class="mono-id">C-F1</td><td>儀表板 4.1.4 程序描述錯誤</td><td>原文稱「用循環式冷卻機把腔體拉到低溫」；UC-2400 工作範圍 +13～+25°C，非低溫源（chamber 自身製冷達 −33°C）→ 已更正 procedure_zh</td><td>高（已修正）</td></tr>
+<tr><td class="mono-id">C-F2</td><td>ir-meter 共用宣稱不成立</td><td>儀表板將絕緣電阻計掛於 5.4.2–X；P.E.L. 該群無此儀器，實際依據 5.4.5.3/5.4.10 → desc 已註記更正</td><td>高（已修正）</td></tr></tbody>
+  </table></div>
+  <h3 id="c-pending">C.3 待證清單</h3>
+  <ol class="list"><li>15BTG 實際型號（BTG15CN vs 15BTG-A）→ 決定 0.5/0.25/0.6 Nm 量測成立與否（高優先；向實驗室盤點）。</li>
+<li>walk-in 客制規格書：−33～+40°C、93±3%RH、容積（兼任 P33/Y.6.2 之要件）。</li>
+<li>B60 是否含 800N／12.5×20cm 平面治具（8.6.2.3）。</li>
+<li>TRP-8 成套是否含 X＝0.25/1.00/1.50mm 三規（§6 既有）。</li>
+<li>探棒 B13–B16 型號 ↔ 圖 V.1/V.2/V.3/V.5 對映。</li>
+<li>NK-300 刻度/解析（10N±1N 適用性；建議砝碼替代）。</li>
+<li>2.5D 投影儀（G2515A）解析/倍率之顯微鏡替代適足性。</li>
+<li>440N 治具 250N±10N 檔可調性（兼 T.5）。</li>
+<li>EA PSI/ELR、LMG641、RTM3004、Espec B42 型錄級確認（低風險）。</li>
+<li>心軸彎曲成套內容（金屬箔/砝碼/碼表）。</li>
+<li>D.1 電路 3 元件級 vs TSS 500N10/T3-05（細部）。</li>
+<li>GT-7010 夾具相容（ISO 37 啞鈴 vs ISO 527 試片）；與 B75 整併方案。</li></ol>
+  <h3 id="c-src">C.4 規格查證來源</h3>
+  <ul class="list"><li>Tohnichi BTG15CN-S（0.02–0.15 N·m）：tohnichi.com／flexibleassembly.com；15BTG-A-S（2–15 lbf·in）：testequipmentusa.com</li>
+<li>EM TEST TSS 500N10（10/700µs＋1.2/50µs、10kV）：theemcshop.com／ametek-cts.com／maximinstruments.com</li>
+<li>ESPEC PH-102（+20～+200°C）：everythingrf.com／espec.co.jp 型錄</li>
+<li>Cinergia GE+ 30 vAC/DC（三相再生、0–277V L-N、10–400Hz）：cinergiapower.com／inteprosystems.com</li>
+<li>AR/Ikonix LINECHEK 620L（7 組 MD、8 故障組合、40A）：arisafety.com／datasheets.globalspec.com</li>
+<li>LAUDA Ultracool UC-2400（工作 +13~+25°C、環境 −15~+45°C、±2K）：lauda.de（E6240221）</li>
+<li>GRAPHTEC GL860（20–200ch、TC K/J/E/T/R/S/B/N/C）：graphteccorp.com／graphtecamerica.com</li></ul>
+</section>
+
+
+<section id="roundD">
+  <h2>D 輪：各設備成本研究（2026-06-12）</h2>
+  <div class="note">幣別/匯率慣例：本輪以 1 USD≈NT$32.5、1 EUR≈NT$35（2026-06 約略中價）換算僅供比較；「已查證」＝有公開列價來源；「區間推估」＝無公開價，以行情帶標註並列入待證。xlsx 報價欄=千元 NT 含稅（表頭載明），「k」字尾列（如 38k、1780k）經交叉比對亦為千元語意（D-X5 寫法混雜，F 輪標記）。</div>
+  <h3 id="d-table">D.1 成本研究表（採購單元彙整）</h3>
+  <div class="tablewrap"><table style="min-width:860px"><thead><tr><th>列</th><th>設備</th><th>xlsx 報價A(千NT含稅)</th><th>市場成本（區間/幣別/日期/來源）</th><th>差異判讀</th><th>狀態</th></tr></thead><tbody><tr><td>B1</td><td>步入式環境室 ESPEC 客制（−33~+40）</td><td>9,500</td><td>台製 walk-in 客制行情 NT$4,000-8,000 千；ESPEC 客制常高 20-40%（推估-待證；2026-06）</td><td>於高階區間，含 −33°C 製冷與工程則屬合理上緣；以規格書議價</td><td>區間推估</td></tr>
+<tr><td>B2/21/22</td><td>Cinergia GE+30 AC/DC SiC-RS</td><td>1,780</td><td>歐系 30kVA 級再生電網模擬器行情 €45-60k ≈ NT$1,550-2,100 千（推估-待證）</td><td>區間內合理</td><td>區間推估</td></tr>
+<tr><td>B3</td><td>循環冷卻機 LAUDA UC-2400</td><td>7,700</td><td>UC 24 公開列價 US$24,300 ≈ NT$790 千（Across International，2026-06 查）</td><td>【離群 D-O1】報價約為單機行情 9.7 倍——應釐清是否含整套戶外冷卻工程/管路/安裝；否則疑誤植</td><td>已查證（單機價）</td></tr>
+<tr><td>B4</td><td>插頭扭矩治具 65-DPT</td><td>100</td><td>治具級行情 NT$50-150 千（推估）</td><td>合理</td><td>區間推估</td></tr>
+<tr><td>B5</td><td>扭矩計 TOHNICHI 15BTG</td><td>20</td><td>BTG 系列街價 US$300-600 ≈ NT$10-20 千（flexibleassembly 列售-待證）</td><td>合理；惟型號歧義（C 輪）優先解決</td><td>區間推估</td></tr>
+<tr><td>B6-9</td><td>4.8.4 治具組（砝碼/試指/勾/碼表）</td><td>85（合計）</td><td>治具市場 NT$40-120 千（推估）</td><td>合理；碼表單列 15 千 vs 街價 ~1 千→疑含多支/校正（D-O6）</td><td>區間推估</td></tr>
+<tr><td>B10</td><td>示波器 R&amp;S RTM3004</td><td>500</td><td>街價區間 US$7-12k ≈ NT$230-390 千（TEquipment 列售-本次未取得數字；待證）</td><td>上緣偏高（或含選配/探棒）→ 議價</td><td>區間推估</td></tr>
+<tr><td>B11</td><td>萬用表 Fluke 287</td><td>38</td><td>街價 US$600-800 ≈ NT$20-26 千（推估-待證）</td><td>偏高 ~1.5×（含校正則合理）</td><td>區間推估</td></tr>
+<tr><td>B12/48</td><td>洩漏電流儀 AR/Ikonix 620L</td><td>150</td><td>新品列價 US$4,595 ≈ NT$150 千；二手 US$1.5-2.2k（AccuSource/TEquipment，2026-06 查）</td><td>【合理範例 D-O8】與新品列價幾乎一致</td><td>已查證</td></tr>
+<tr><td>B13-16</td><td>探棒四支（V.1/V.2/V.3/V.5）</td><td>105（合計）</td><td>標準探棒市場：亞系 NT$8-40 千/支、PTL 原廠 3-5×（推估）</td><td>合理</td><td>區間推估</td></tr>
+<tr><td>B17</td><td>力規 ALGOL NK300</td><td>15</td><td>街價 NT$4-10 千（推估）</td><td>偏高 ~1.5-2×（含校正則合理）</td><td>區間推估</td></tr>
+<tr><td>B18/33</td><td>游標卡尺 Mitutoyo 500-196</td><td>25/25</td><td>街價 NT$3-5 千；含校正報告 ~NT$8-12 千（推估）</td><td>偏高 2-3×（D-O6 群組：小量具含校正/備品慣例待釐清）</td><td>區間推估</td></tr>
+<tr><td>B19/20</td><td>功率分析儀 ZES LMG641</td><td>1,000×2</td><td>行情 €25-35k ≈ NT$870-1,220 千（推估-待證）</td><td>區間內；兩台必要性可檢討（D/E：一台＋降規第二台）</td><td>區間推估</td></tr>
+<tr><td>B23/24</td><td>直流電源 EA PSI 10500-30</td><td>345×2</td><td>行情 €7.5-9k ≈ NT$260-315 千（推估-待證）</td><td>略高（含稅代理後合理）</td><td>區間推估</td></tr>
+<tr><td>B25-28</td><td>溫度記錄器 GL860（60ch×2、30ch×2）</td><td>385×2＋165×2</td><td>主機公開價 US$2,000-2,195＋20ch 端子模組約 US$5-700/件 → 60ch 配置約 US$3.6-4.5k ≈ NT$120-150 千（TestEquipmentDepot/DATAQ/MicroDAQ，2026-06 查）</td><td>【偏高 D-O4】60ch 報價約市場配置 2.5-3×——釐清是否含熱電偶線/校正/代理保固</td><td>已查證（主機）</td></tr>
+<tr><td>B29/30</td><td>直流負載 EA ELR 10080-340</td><td>560×2</td><td>行情 €13-16k ≈ NT$455-560 千（推估-待證）</td><td>區間內合理</td><td>區間推估</td></tr>
+<tr><td>B31/32</td><td>球壓治具＋烤箱 PH-102</td><td>35＋350</td><td>BPT 治具 NT$20-60 千；PH-102 行情 NT$250-400 千（推估）</td><td>合理</td><td>區間推估</td></tr>
+<tr><td>B34</td><td>沿面距離量測棒 TRP-8</td><td>15</td><td>量規組行情 NT$8-30 千（推估）</td><td>合理</td><td>區間推估</td></tr>
+<tr><td>B36</td><td>2.5D 投影儀 TOMAS G2515A</td><td>550</td><td>台製 2.5D/影像量測行情 NT$250-500 千（推估）</td><td>上緣略高</td><td>區間推估</td></tr>
+<tr><td>B37</td><td>突波產生器 EM TEST TSS 500N10</td><td>3,000</td><td>同級新品行情 US$30-60k ≈ NT$950-1,900 千（推估-待證；租賃市場存在）</td><td>【偏高 D-O2】約行情 1.6-3×——釐清是否含 CDN/配件/校正；強議價點</td><td>區間推估</td></tr>
+<tr><td>B38</td><td>CTI 試驗機 PTL M31.10</td><td>1,100</td><td>歐系 CTI €20-28k ≈ NT$700-980 千；亞系 US$3-6k（推估）</td><td>偏高 ~1.2-1.6×（歐系含代理稅後近上緣）；E 輪有強替代</td><td>區間推估</td></tr>
+<tr><td>B39-49</td><td>5.4.x 治具/儀器群（心軸/IR/天線突波/腔體/耐壓/接地/網路等）</td><td>合計約 2,236</td><td>分項：IR 297≈US$1.2-1.5k ✓、Hipot 7800≈US$5-6k ✓、SCI 266≈US$2.5-3.5k ✓、T3-05 650 千 vs 行情 NT$400-800 千（皆推估-待證）</td><td>大致合理；T3-05 可能由 TSS 兼任（E 輪）</td><td>區間推估</td></tr>
+<tr><td>B50</td><td>灼熱絲 PTL T03.50</td><td>1,200</td><td>市場帶 US$1.2-12k（LISUN/亞系-已查證帶）；歐系 Wazau/PTL €20-28k ≈ NT$700-980 千（推估）</td><td>【偏高 D-O3】超出歐系含稅行情 ~1.2-1.7×；亞系替代可省 75-90%</td><td>已查證（市場帶）</td></tr>
+<tr><td>B52-72</td><td>機械/標示/治具群（磅秤~卡紙）</td><td>合計約 698</td><td>治具與市售品行情皆 NT$5-100 千級（推估）</td><td>大致合理</td><td>區間推估</td></tr>
+<tr><td>B73</td><td>碳弧燈耐候機（118 年）</td><td>（無報價）</td><td>SUGA 級碳弧 JPY 8-15M ≈ NT$1,700-3,200 千（推估-待證）</td><td>【缺值 D-O7】CNS 附錄 C 允許碳弧「或」氙弧擇一（p.182）→ 建議刪列、以氙弧替代（E 輪）</td><td>區間推估</td></tr>
+<tr><td>B74</td><td>氙弧燈耐候機（118 年）</td><td>（無報價）</td><td>Q-SUN Xe-2/Xe-3 級 US$60-100k ≈ NT$1,900-3,200 千；台製氙燈箱 NT$1,200-2,500 千（推估-待證）</td><td>【缺值 D-O7】補列預算區間</td><td>區間推估</td></tr>
+<tr><td>B75-79</td><td>機械性質五機（拉伸/彎曲/Charpy/Izod/拉衝，118 年）</td><td>（無報價）</td><td>UTM 10kN NT$400-1,500 千；擺錘式三合一 NT$300-800 千（推估-待證）</td><td>【缺值 D-O7】五機可整併為「UTM＋三合一擺錘」兩台（E 輪），預算 NT$700-2,300 千</td><td>區間推估</td></tr>
+<tr><td>B80-82</td><td>附錄 E 組（木箱/1kHz/粉紅噪音）</td><td>480（合計）</td><td>木箱治具 NT$20-80 千；信號源 NT$10-50 千；粉紅噪音+帶通 NT$100-400 千（推估）</td><td>Suniliab 400 千於上緣（客制含帶通濾波則可）</td><td>區間推估</td></tr>
+<tr><td>B83</td><td>IP 試驗套件 PTL 客制</td><td>4,500</td><td>台製全套（6X 塵箱+IPX1-6+浸水）NT$1,000-2,500 千（推估）；歐系客制 2-3×</td><td>【偏高 D-O9】台製替代可省 ~50-70%；或降規自建＋深水委外（E 輪）</td><td>區間推估</td></tr>
+<tr><td>B91/92</td><td>針焰＋500W（ZLT）</td><td>300＋350</td><td>亞系針焰 NT$80-250 千、UL94 燃燒箱 NT$150-350 千（推估）</td><td>合理（500W 上緣）</td><td>區間推估</td></tr>
+<tr><td>B100</td><td>Centre punch</td><td>40</td><td>60335-2-24 規格件行情 NT$5-15 千（推估）</td><td>偏高 ~3×＋型號疑誤（X-2）</td><td>區間推估</td></tr>
+<tr><td>B101/102</td><td>鹽霧＋SO₂ 箱（ITABACH）</td><td>300＋200</td><td>台製鹽霧 NT$150-400 千、Kesternich SO₂ NT$150-350 千（推估）</td><td>合理</td><td>區間推估</td></tr>
+<tr><td>B103</td><td>拉伸機 GoTech GT-7010-AE</td><td>130</td><td>台製 UTM 行情 NT$250-650 千（推估）</td><td>【偏低 D-O5】低於行情下緣——確認是否基本機無夾具（Y.4.3/C 需夾具）</td><td>區間推估</td></tr>
+<tr><td>B104-107</td><td>Y.4.4/Y.4.5 治具耗材組</td><td>約 130＋</td><td>治具行情 NT$30-150 千（推估）</td><td>合理</td><td>區間推估</td></tr>
+<tr><td>M-1 新購</td><td>4 線微歐姆計 HIOKI RM3545(A)</td><td>—</td><td>公開列價 US$2,846-4,254 ≈ NT$95-140 千（TestEquipmentDepot，2026-06 查）</td><td>建議納入採購（B 輪缺漏）</td><td>已查證</td></tr>
+<tr><td>M-6 新購</td><td>2 kΩ 無感電阻</td><td>—</td><td>NT$2-10 千（推估）</td><td>建議隨 B45 同供應商加購</td><td>區間推估</td></tr></tbody></table></div>
+  <h3 id="d-pending">D.2 待證清單</h3>
+  <ol class="list"><li>所有「區間推估」列之正式報價/型錄價（含 TSS、LMG641、EA、RTM3004、UV 機、UTM、擺錘機、IP 套件、PTL 兩機）。</li>
+<li>B3 冷卻機 7,700 千之報價範圍明細（單機 vs 含戶外冷卻工程）——D-O1 裁決前不得逕判「誤植」。</li>
+<li>GL860 報價內含（端子模組/熱電偶/校正/保固）明細——D-O4。</li>
+<li>B103 GoTech 配置（夾具有無）——D-O5。</li>
+<li>小量具（碼表/卡尺/力規/萬用表）報價是否含校正與備品——D-O6 群組。</li>
+<li>匯率與含稅口徑：本輪換算僅供比較，F 輪 xlsx 以「千元NT，含稅」原口徑標註。</li></ol>
+</section>
+<section id="roundE">
+  <h2>E 輪：競品／替代品研究（2026-06-12）</h2>
+  <h3 id="e-table">E.1 競品/替代品表</h3>
+  <div class="tablewrap"><table style="min-width:860px"><thead><tr><th>設備</th><th>現規劃</th><th>競品/替代方案</th><th>規格符合性判定</th><th>成本對比/建議</th></tr></thead><tbody><tr><td>步入式環境室</td><td>ESPEC 客制</td><td>巨孚 Giant Force／慶聲 KSON／泰琪 Terchy（台製客制）</td><td>−33~+40°C＋RH93% 須入規格書（待證-型錄）</td><td>台製約可省 20-40%（推估）；核心設施不宜委外</td></tr>
+<tr><td>電網模擬電源</td><td>Cinergia GE+30</td><td>Chroma 61845/61860（台製 4 象限再生）／Regatron TC.ACS／Pacific AFX</td><td>30kVA 級、三相、回收式皆符（待證-型錄）</td><td>Chroma 在地服務佳；價位相近（推估）</td></tr>
+<tr><td>直流電源/負載</td><td>EA PSI/ELR</td><td>ITECH IT6000C/IT8000／Chroma 62000H/63200A</td><td>電壓/電流/功率同級（待證-型錄）</td><td>ITECH 常為 7-8 折（推估）</td></tr>
+<tr><td>功率分析儀</td><td>ZES LMG641</td><td>Yokogawa WT5000／HIOKI PW8001；降規：HIOKI PW3390／Yokogawa WT300E</td><td>PS 分級與輸入試驗精度 0.1-0.5% 已足（6.2.2/B.2.5）→ 降規可行（待證-不確定度評估）</td><td>降規第二台可省 NT$600-800 千（推估）</td></tr>
+<tr><td>示波器</td><td>R&amp;S RTM3004</td><td>Keysight DSOX3034G／Tektronix MDO34</td><td>100-350MHz、10bit 皆足（待證-型錄）</td><td>同級互替；以校期/在地服務取捨</td></tr>
+<tr><td>接觸電流儀</td><td>AR 620L</td><td>EEC 7630（台製）／Chroma 19601</td><td>60990 圖 3/4/5 網路皆備（7630 已查證手冊存在）</td><td>620L 報價＝列價 ✓ 維持；7630 約 6-8 折（推估）</td></tr>
+<tr><td>突波產生器</td><td>EM TEST TSS 500N10</td><td>NoiseKen／3Ctest／Haefely AXOS 系（10/700＋1.2/50）</td><td>波形組合與 CNS 表 D.1 對應（待證-型錄逐波形）</td><td>行情 NT$950-1,900 千 → 對 3,000 千報價之議價依據（D-O2）</td></tr>
+<tr><td>天線突波器</td><td>Testing T3-05（650 千）</td><td>由 TSS 500N10 兼任（C 輪已證含 10kV 與電路 3 類波形）</td><td>D.1 電路 3 元件級對應待證</td><td>若兼任成立可免購 → 省 NT$650 千（待證後決策）</td></tr>
+<tr><td>灼熱絲</td><td>PTL T03.50（1,200 千）</td><td>Wazau GPD（德）／SCR Elektroniks（印）／LISUN ZRS-3H（中）／台製</td><td>IEC 60695-2-10/-2-11 合規皆宣稱（待證-型錄＋驗收）</td><td>亞系 US$1.2-5k → 省 75-90%；CB 佐證紀錄偏好歐系（風險註記）</td></tr>
+<tr><td>CTI 試驗機</td><td>PTL M31.10（1,100 千）</td><td>Wazau KB／LISUN TTC-1／SCR</td><td>IEC 60112 合規（待證-型錄）</td><td>亞系 US$3-6k → 省 ~80%；同上風險註記</td></tr>
+<tr><td>IP 套件</td><td>PTL 客制（4,500 千）</td><td>台製源耀 Yuanyao／巨孚／BONAD 全套；或降規自建（IPX4-6＋IP5X/6X）＋IPX7/8 委外</td><td>IEC 60529 各等級治具規格明確（待證-型錄）</td><td>台製全套 NT$1,000-2,500 千 → 省 50-70%（D-O9）；委外單案 NT$20-80 千（推估）</td></tr>
+<tr><td>UV 耐候</td><td>B73 碳弧＋B74 氙弧（118 年雙列）</td><td>CNS 附錄 C p.182：碳弧「或」氙弧擇一 → 僅購氙弧（Q-SUN Xe-2/3 或台製）；碳弧刪列</td><td>已查證-CNS 條文擇一</td><td>省 NT$1,700-3,200 千（刪碳弧）；或 UV 全委外 NT$100-250 千/案（推估）</td></tr>
+<tr><td>機械性質五機</td><td>B75-79（118 年五列）</td><td>整併：UTM 10kN（拉伸+彎曲治具）＋三合一擺錘（Charpy/Izod/拉衝）＝兩台</td><td>ISO 527/178/179-1/180/8256 治具化共機（待證-夾具清單）</td><td>五機→兩台 省 NT$600-1,500 千（推估）；並與 B103 整併檢討（C-R1）</td></tr>
+<tr><td>拉伸機</td><td>GoTech GT-7010-AE（130 千）</td><td>Cometech／弘達 HungTa／Instron（高階）</td><td>Y.4.3（ISO 37 系）＋C（ISO 527）夾具相容待證</td><td>130 千疑基本機（D-O5）→ 補夾具預算 NT$50-150 千（推估）</td></tr>
+<tr><td>鹽霧/SO₂</td><td>ITABACH 台製</td><td>ASCOTT（英）／Q-FOG（美）／台製鼎耀</td><td>IEC 60068-2-11＋ISO 3231 合規（待證-型錄）</td><td>現報價已在台製合理帶 → 維持</td></tr>
+<tr><td>溫度記錄器</td><td>GL860×4（1,100 千合計）</td><td>HIOKI LR8450／Yokogawa GM10</td><td>60ch 配置市場 US$3.6-4.5k（已查證主機價）</td><td>議價或減列 1 台 → 省 NT$165-385 千（D-O4）</td></tr>
+<tr><td>微歐姆計（M-1）</td><td>（缺漏新購）</td><td>HIOKI RM3545(A)（US$2,846-4,254 已查證）／Chroma 16502／Keysight 34420A</td><td>4 線、µΩ 解析皆符（RM3545 已查證規格頁）</td><td>建議 RM3545：NT$95-140 千</td></tr>
+<tr><td>1500A 短路源（M-2）</td><td>（缺漏）</td><td>自建短路變壓器系統 NT$800-2,000 千（推估）vs 委外每案 NT$30-100 千（推估）</td><td>Annex R/5.6.4.2 要求 ≥1,500A（CNS p.282 已證）</td><td>建議委外（年案量低）</td></tr>
+<tr><td>60227 線材試驗（M-4）</td><td>（缺漏）</td><td>委外或憑線材廠 CNS/IEC 認證報告</td><td>G.7 線材合規以認證文件採認（慣例）</td><td>零設備成本</td></tr>
+<tr><td>60107 視訊源</td><td>DekTec 客制（400 千）</td><td>DekTec DTA-2115B 卡＋PC（US$3-5k）／圖型產生器</td><td>三垂直線訊號（IEC 60107-1 3.2.1.3）輸出（已查證-CNS 引用）</td><td>自組可省 ~50%（推估）</td></tr></tbody></table></div>
+  <h3 id="e-ss">E.2 S/SP 項：自建 vs 委外 vs 替代</h3>
+  <div class="tablewrap"><table style="min-width:760px"><thead><tr><th>項目</th><th>自建</th><th>替代</th><th>委外</th><th>建議</th></tr></thead><tbody><tr><td>IP 防護（F.3.7｜SP）</td><td>自建 4,500 千（PTL）</td><td>台製降規 1,000-2,500 千</td><td>委外 20-80 千/案</td><td>年案量 &lt;15-20 → 委外/降規較優（推估）</td></tr>
+<tr><td>針焰/500W（S｜SP）</td><td>已購台製 650 千合計</td><td>—</td><td>委外 10-30 千/案</td><td>使用頻率高 → 自建合理 ✓</td></tr>
+<tr><td>燃料錠 S.6（SP，Ed.4）</td><td>—</td><td>—</td><td>—</td><td>Ed.4 採用後再購（單價低）；現行 CNS 無此試驗</td></tr>
+<tr><td>特大溫濕箱（5.4.8｜S）</td><td>免購</td><td>walk-in 兼任（C 輪條件：規格書 RH 能力）</td><td>委外 30-80 千/案</td><td>兼任成立則零成本</td></tr>
+<tr><td>三相電源（5.4.1.4｜S）</td><td>GE+30 已涵蓋（已查證三相）</td><td>—</td><td>—</td><td>免購 ✓</td></tr>
+<tr><td>1,500A 短路（5.6.4.2/R｜S）</td><td>自建 800-2,000 千</td><td>—</td><td>委外 30-100 千/案</td><td>委外 ✓</td></tr>
+<tr><td>熱循環箱（5.4.1.5.3｜S，未列測項）</td><td>—</td><td>PH-102＋低溫箱組合</td><td>委外</td><td>需求出現時再決策</td></tr>
+<tr><td>UV 附錄 C（S）</td><td>氙弧自建 1,900-3,200 千</td><td>台製氙燈箱 1,200-2,500 千</td><td>委外 100-250 千/案</td><td>刪碳弧；氙弧自建或委外視年案量</td></tr>
+<tr><td>鹽霧+SO₂（Y.3｜S）</td><td>已購 500 千合計</td><td>—</td><td>委外 50-150 千/案（24 天程序）</td><td>長程序佔機 → 自建合理 ✓</td></tr>
+<tr><td>Y.4.x 墊片試驗（S）</td><td>治具級已購</td><td>—</td><td>委外可</td><td>自建 ✓（治具便宜）</td></tr>
+<tr><td>雷射/LED（第 10 節｜S，未列測項）</td><td>—</td><td>—</td><td>委外（60825/62471 專業實驗室）</td><td>無人機 LED/雷射雲台相關 → 委外</td></tr>
+<tr><td>圖 29 薄片絕緣（5.4.9｜S）</td><td>已購 KQ-1（33 千）</td><td>—</td><td>—</td><td>自建 ✓</td></tr></tbody></table></div>
+  <h3 id="e-save">E.3 優化彙總</h3>
+  <div class="note">採購優化潛在空間（推估彙總，皆待正式報價驗證）：刪碳弧 1,700-3,200 千＋五機整併 600-1,500 千＋IP 降規/台製 2,000-3,000 千＋天線突波兼任 650 千＋GL860 議價 200-500 千＋TSS 議價 1,000-1,800 千＋灼熱絲/CTI 亞系替代（若接受非歐系）1,300-2,000 千 ≈ 合計 NT$7,450-12,650 千（對總表 ~31,000 千＋118 年未列預算而言顯著）；另建議新增：RM3545 約 100-140 千、2kΩ 電阻、蒸餾燃料油、熱電偶（合計 &lt;200 千）。</div>
+  <h3 id="e-pending">E.4 待證清單</h3>
+  <ol class="list"><li>各競品之逐項規格符合性（型錄核對）——本輪僅標定候選與行情帶，未逐一驗規格（依鐵律全列待證）。</li>
+<li>亞系灼熱絲/CTI 之 CB/TAF 驗收接受度（實驗室認證面）。</li>
+<li>TSS 500N10 兼任天線突波（D.1 電路 3 元件級）之確認——決定 T3-05 免購與否。</li>
+<li>五機整併之夾具相容清單（ISO 527/178/179-1/180/8256）。</li>
+<li>UV 委外單價與排程（720-1,000 h 佔機 vs 委外）。</li></ol>
+</section>
+
+
+<section id="roundF">
+  <h2>F 輪：xlsx 校正與標記（2026-06-12）</h2>
+  <ol class="list"><li>複製 V1 → 「台中標準檢驗局之無人機大樓設備清單_all-0609_V2_查證版.xlsx」（V1 原檔未動）。</li><li>〈無人機安規試驗儀器〉：章節欄 8.1 → 8.10（紅字標示）；新增 N–U 共 8 欄並逐列回填 107 行——官方P.E.L.代碼／成本歸屬／名稱對齊(P.E.L.用語)／共用涵蓋測項／競品·替代品／成本研究(區間/來源/日期/幣別)／查證狀態(確認·修正·待證)／來源(可追溯)。</li><li>新增工作表「深度查證_摘要」：口徑說明＋缺漏 M-1~M-6＋行內疑誤 X-1~X-5＋成本離群 D-O 系列＋採購優化 E-1~E-5＋P.E.L. 疑點＋版次與範圍觀察。</li><li>成本歸屬逐列重算（依 P.E.L. 代碼）：必備 86（含治具配套 6、含 S 列共用 1）／可外包·特殊 18／特殊設施 3——對 §6 舊統計 85/19/3 之覆核修正。</li><li>查證狀態統計：確認 81／修正 6（B40/B46/B66/B99/B100/B107）／待證 20（含 118 年估價類 7 行）。</li><li>儀表板：8.10 之 iec_bsmi 加註 xlsx V2 更正記錄（A/C 輪已完成 39 處內容修正）。</li><li>（2026-06-13 追加，當日以官方正本覆核）新增 V 欄「精度要求（IECEE OD-5014 Ed.1.2／P.E.L. 官方事實）」：107 列逐列標示儀器精度（官方值：電壓±1.5%、電流±1.5%、洩漏±3.5% 總公差、功率±3%、溫度±2°C／±3%(100–500°C)、時間±1%、尺寸±0.1mm、質量±1/±2/±5%、力±6%、扭矩±10%、RH±6%；註2 熱電偶建議 premium 級 K/T/J、開關電源環境用 T 型）與應用容差（P.E.L./CNS ±值；標準自定優先於 OD 預設）；原鏡像 * 號歧異三項已以 od-5014_ed.1.2.pdf 終裁（力/質量鏡像正確、溫度高帶改 ±3%）。</li></ol>
+  <div class="note">結案：A–F 六輪完成。未決事項彙總於各輪待證清單；建議優先＝盤點 15BTG 型號、釐清 B3 報價範圍、向 BSMI 確認 Annex M 歸屬、Ed.4 正本 OCR 後補版次稜鏡。</div>
+</section>
+
+
+<section id="roundG">
+  <h2>G 輪（補輪）：Ed.4 版次稜鏡——定點 OCR 查證（2026-06-13）</h2>
+  <p>Ed.4 PDF 無文字層；以 Windows 原生 OCR 對目錄（p.4–16）與 11 個目標頁定點辨識（非全文 OCR），關閉 A–F 輪遺留之版次待證叢集。印刷頁＝PDF 頁−2。</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>#</th><th>主張/問題</th><th>Ed.4 證據（OCR 頁）</th><th>裁決</th><th>信心</th></tr></thead>
+    <tbody><tr><td>G-1</td><td>4.1.4 標題/內容（Ed.4）</td><td>Ed.4 p.71（印刷69）：「4.1.4 Equipment installation」；戶外溫度與 Annex Y 要求仍在本條內文</td><td>確認（A 輪修正於兩版皆成立）</td><td>高</td></tr>
+<tr><td>G-2</td><td>4.7.3 扭矩（Ed.4）</td><td>Ed.4 p.82：additional torque shall not exceed 0,25 Nm；支點軸 8 mm——與 CNS Ed.3 同值</td><td>確認</td><td>高</td></tr>
+<tr><td>G-3</td><td>5.5.9 RCD 30 mA（Ed.4）</td><td>Ed.4 p.138（印刷136）：5.5.9 Safeguards for socket-outlets in outdoor equipment；RCD ≤30 mA；可為設備整體或建物安裝＋說明書要求</td><td>確認（RCD 歸屬 5.5.9 兩版一致）</td><td>高</td></tr>
+<tr><td>G-4</td><td>P-01 終裁：P.E.L. 馬達列之 G.9.3</td><td>Ed.4 p.273-274：G.9＝Integrated circuit (IC) current limiters；G.9.3 Compliance criteria＝限流/開路判準，與紗布/馬達無關——Ed.3＋Ed.4 雙版一致</td><td>推翻 P.E.L. 該欄（誤植；正確引用應為 G.5.4.5.3/G.5.4.6.3＋S.3.1/S.3.2）</td><td>高</td></tr>
+<tr><td>G-5</td><td>S.6 燃料錠試驗（Ed.4 新增）</td><td>Ed.4 p.347（印刷345）：S.6 Grille covering material, cloth, and reticulated foam——燃料錠置最薄面點燃至燒盡，自錠中心延燒不得超過 50 mm</td><td>確認（Ed.4 新增；CNS Ed.3 無此節——維持「Ed.4 採用後再購」）</td><td>高</td></tr>
+<tr><td>G-6</td><td>表 O.1 X 值（Ed.4）</td><td>Ed.4 p.322（印刷320）：Table O.1—Value of X；PD1/PD2 截獲 0,25／1,00；&lt;3 mm 取 1/3 規則同句</td><td>確認（PD3＝1,50 位於影像表右欄未截獲——低風險待證）</td><td>高/中</td></tr>
+<tr><td>G-7</td><td>T.10 擊碎工具（Ed.4）</td><td>Ed.4 p.350（印刷348）：正文明文 centre punch＋距長邊中點約 15 mm＋50 mm 方格＋排除邊緣 15 mm</td><td>確認（版次釐清：Ed.3 未定工具→Ed.4 已納正文；15 mm 兩版一致，A 輪 13→15 修正再證）</td><td>高</td></tr>
+<tr><td>G-8</td><td>C-01 終裁：CNS Y.4.3 標題誤印</td><td>Ed.4 p.380（印刷378）：Y.4.3 Tensile strength and elongation tests；內文 69–70°C/168 h、≥75%/≥60%、O-rings——與 CNS 內文同</td><td>確認（三源終裁：CNS 內文＋P.E.L.＋Ed.4 正文；CNS 中文標題「壓縮試驗」為排印/翻譯錯誤）</td><td>高</td></tr>
+<tr><td>G-9</td><td>P-02 終裁：WPT 異物圖號</td><td>Ed.4 p.202（印刷200）：「Figure 51 — Aluminium foil」緊接 9.6.3；spacer 條文存在</td><td>確認（Ed.4 Fig.49/50/51＝Ed.3 圖 47/48/49 位移屬實）</td><td>高</td></tr>
+<tr><td>G-10</td><td>G.7.3.2 抗拉力（Ed.4）</td><td>Ed.4 G.7.3.2 結構已證（OCR p.268）；0,25 Nm 句已截獲（p.267）：from being transmitted to the cord or cable terminations. The linear force applied to the cord or cable is specified in </td><td>確認（結構）</td><td>高/中</td></tr>
+<tr><td>G-11</td><td>G.5.4.5.3 替代法（Ed.4）</td><td>Ed.4 p.261（印刷259）：cheesecloth 單層覆蓋＋wooden board＋wrapping tissue；不得噴焰/熔金屬、布紙不得燒焦起火——與 CNS 同義</td><td>確認</td><td>高</td></tr>
+<tr><td>G-12</td><td>P-03 新增：P.E.L.「5.2.A.4」條號</td><td>Ed.4 TOC（含細目層）未見「5.2.A」編號；5.2.2 改題 ES1 and ES2 limits——P.E.L. 該列條號寫法與 Ed.4 結構不符，疑為 5.2.2.x 之誤植（設備＝示波器，不受影響）</td><td>記錄（P.E.L. 第 3 件疑點）</td><td>中</td></tr></tbody>
+  </table></div>
+  <h3>G 輪殘餘待證——已全數關閉（2026-06-13）</h3>
+  <div class="tablewrap"><table>
+    <thead><tr><th>#</th><th>項目</th><th>Ed.4 證據（OCR 頁）</th><th>裁決</th><th>信心</th></tr></thead>
+    <tbody><tr><td>G-13</td><td>表 O.1 PD3 欄（殘餘#1）</td><td>Ed.4 p.322 高 DPI 重辨識：「Table O.1 Value of X…1 2 3 / X mm 0,25 1.00 1.50」——PD3＝1,50 mm 截獲</td><td>確認（Ed.4 X 值三欄與 CNS Ed.3 完全一致）</td><td>高</td></tr>
+<tr><td>G-14</td><td>S.6 燃料錠規格（殘餘#2）</td><td>Ed.4 p.347-348：white round bevelled compressed tablet；hexamethylene-tetramine (C6H12N4)；burn time 130 s±10%；Ø6 mm±1 mm；400dpi 覆核讀值「weight of 149 mg ± 5 mg」（兩次 OCR 一致；裁切圖 Ed4_p347crop）</td><td>確認（規格句完整；重量讀值 149/150 mg 級——佐證圖 p348crop 供對照）</td><td>高/中</td></tr>
+<tr><td>G-15</td><td>P-03 終裁：「5.2.A.4」（殘餘#3）</td><td>Ed.4 p.90（印刷 88）：「5.2.2.4 Single pulse limits—…Values are given in Table 6 and Table 7」</td><td>終裁：P.E.L.「5.2.A.4」確為「5.2.2.4」之誤植（CNS Ed.3 同有 5.2.2.4 單一脈衝限制值）</td><td>高</td></tr>
+<tr><td>G-16</td><td>G.7 扭力原句（殘餘#4＋自我修正）</td><td>Ed.4 p.267（印刷 265）：「Table G.8 Strain relief test force…30/60/100」＋「A torque of 0,25 Nm is applied for 1 min…repeated in the opposite direction」</td><td>確認（Ed.4 與 CNS Ed.3 同值同制；並更正 G-10 先前僅截獲 Table G.8 上下文卻標「已截獲 0,25 Nm 句」之過度宣稱）</td><td>高</td></tr></tbody>
+  </table></div>
+  <div class="note">佐證影像包：Ed4_OCR佐證頁／14 頁全頁 PNG（150dpi）＋1 張 400dpi 重量欄裁切圖——「OCR 屬輔助辨識」之保留事項（殘餘#4 之方法聲明）以影像對照包收斂：正式引用 Ed.4 時可直接開啟對應 PNG 核對。</div>
+</section>
+
+<section id="rounds">
+  <h2>輪次狀態</h2>
+  <div class="placeholder">A–G 七輪完成（G 輪以定點 OCR 關閉 Ed.4 版次待證叢集，2026-06-13）。殘餘待證見各輪清單。</div>
+</section>
+
+<section id="links">
+  <h2>相關檔案</h2>
+  <ul class="list">
+    <li>既有報告（維持原貌）：<a href="無人機安規儀器清單_合理性查核說明.html">無人機安規儀器清單_合理性查核說明.html</a>／<a href="無人機安規儀器清單_合理性查核說明.md">.md</a></li>
+    <li>本報告 Markdown 對應：<a href="無人機安規儀器清單_深度查證.md">無人機安規儀器清單_深度查證.md</a></li>
+    <li>累進記錄：<a href="對抗查證記錄表.md">對抗查證記錄表.md</a></li>
+    <li>儀表板（A 輪已修正）：<a href="15598-1_Dashboard.html">15598-1_Dashboard.html</a>（修正前備份：15598-1_Dashboard_A輪修正前備份.html）</li>
+  </ul>
+</section>
+
+<footer>深度查證 companion 報告・A 輪（事實與標準對期查證）・2026-06-12・工作語言：正體中文・無外部相依，可離線開啟</footer>
+</main>
+
+<aside class="toc collapsed" id="toc" aria-label="章節目錄">
+  <h4>目錄</h4>
+  <nav>
+    <a href="#method">A 輪方法與範圍</a>
+    <a href="#table48">A.1 查證結果表（48）</a>
+    <a href="#pending">A.2 待證清單</a>
+    <a href="#errors">A.3 錯誤／矛盾</a>
+    <a href="#changes">A.4 檔案修改</a>
+    <a href="#roundB">B 輪：命名對齊（107）</a>
+    <a href="#b-missing">B.2 真缺漏</a>
+    <a href="#roundC">C 輪：共用合理性（32）</a>
+    <a href="#c-find">C.2 新發現</a>
+    <a href="#roundD">D 輪：成本研究</a>
+    <a href="#roundE">E 輪：競品/替代</a>
+    <a href="#roundF">F 輪：xlsx 校正</a>
+    <a href="#roundG">G 輪：Ed.4 OCR</a>
+    <a href="#rounds">B–F 預留</a>
+    <a href="#links">相關檔案</a>
+  </nav>
+</aside>
+<button class="toc-fab" id="tocFab" title="目錄" aria-label="切換目錄"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="4" cy="6" r="1.2" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.2" fill="currentColor" stroke="none"/></svg></button>
+<button class="totop" id="totop" title="回頂部" aria-label="回頂部"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+<script>
+(function(){
+var root=document.documentElement;
+var saved=localStorage.getItem('dv-theme');
+if(saved){root.setAttribute('data-theme',saved)}
+else if(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches){root.setAttribute('data-theme','dark')}
+document.querySelector('.theme-btn').addEventListener('click',function(){
+  var t=root.getAttribute('data-theme')==='dark'?'light':'dark';
+  root.setAttribute('data-theme',t);localStorage.setItem('dv-theme',t);});
+var pb=document.querySelector('.print-btn');if(pb)pb.addEventListener('click',function(){print()});
+/* TOC */
+var toc=document.getElementById('toc'),fab=document.getElementById('tocFab');
+var collapsed=localStorage.getItem('dv-toc')==='1'||(innerWidth<980&&localStorage.getItem('dv-toc')===null);
+function setToc(c){collapsed=c;toc.classList.toggle('collapsed',c);localStorage.setItem('dv-toc',c?'1':'0')}
+setToc(collapsed);
+fab.addEventListener('click',function(){setToc(!collapsed)});
+var links=[].slice.call(toc.querySelectorAll('a'));
+links.forEach(function(a){a.addEventListener('click',function(e){
+  e.preventDefault();var el=document.querySelector(a.getAttribute('href'));
+  if(el){window.scrollTo({top:el.getBoundingClientRect().top+pageYOffset-66,behavior:'smooth'})}
+  if(innerWidth<980)setToc(true);});});
+var secs=links.map(function(a){return document.querySelector(a.getAttribute('href'))});
+function spy(){var y=pageYOffset+90,cur=0;
+  secs.forEach(function(s,i){if(s&&s.offsetTop<=y)cur=i});
+  links.forEach(function(a,i){a.classList.toggle('on',i===cur)});}
+addEventListener('scroll',spy,{passive:true});spy();
+/* back to top */
+var bt=document.getElementById('totop');
+addEventListener('scroll',function(){bt.classList.toggle('show',pageYOffset>600)},{passive:true});
+bt.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+})();
+</script>
+</body>
+</html>
