@@ -141,8 +141,8 @@ main{max-width:var(--maxw);margin:0 auto;padding:24px 22px 90px}
 /* ---- info cards grid ---- */
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;margin-top:6px}
 .icard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow-sm)}
-.icard h3{font-size:15px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
-.icard h3 .dot{width:8px;height:8px;border-radius:3px;background:var(--brand)}
+.icard h3{font-size:15px;margin-bottom:8px;line-height:1.45}
+.icard h3 .dot{display:inline-block;width:8px;height:8px;border-radius:3px;background:var(--brand);margin-right:8px;vertical-align:middle}
 
 /* structured one-per-row lists (from data html) */
 .s-intro{display:block;font-size:13.5px;color:var(--ink-2);margin-bottom:6px}
@@ -1119,7 +1119,7 @@ function renderOverview(){
     </div>
     ${o.intro_plain?`<div class="panel intro-card"><span class="qm"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5M12 7.5v.5"/></svg></span><p>${esc(o.intro_plain)}</p></div>`:''}
     ${primary.length?`<div class="cards cards-2" style="margin-top:20px">${primary.map(c=>`<div class="icard"><h3><span class="dot"></span>${esc(c.t)}</h3><div>${/如何閱讀/.test(c.t)?buildReadGuide():(/無人機/.test(c.t)?c.d+DRONE_NOTE:c.d)}</div></div>`).join('')}</div>`:''}
-    ${cls.length?`<div class="section-head" style="margin-top:28px"><h2>五種會傷人的「能量」</h2><p>這套標準的核心：先看產品上有哪些會傷人的能量（電、火、機械、高溫、光/聲），判斷強弱，再決定要做哪些防護與測試。</p></div>
+    ${cls.length?`<div class="section-head" style="margin-top:28px"><h2>核心觀念 - 五種會傷人的「能量」</h2><p>這套標準的核心：先看產品上有哪些會傷人的能量（電、火、機械、高溫、光/聲），判斷強弱，再決定要做哪些防護與測試。</p></div>
       <div class="es-grid">${cls.map(c=>`<div class="es-card"><span class="bar" style="background:${esc(c.color||'#888')}"></span>
         <div class="ec-h"><span class="es-code" data-tip="${esc(c.code+'：'+(c.zh||''))}" style="background:${esc(c.color||'#888')}">${esc(c.code)}</span><span class="ec-zh">${esc(c.zh)}</span></div>
         <p class="ec-desc">${esc(c.desc)}</p>${c.tech?`<p class="ec-tech">${esc(c.tech)}</p>`:''}</div>`).join('')}</div>`:''}
