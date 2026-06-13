@@ -312,11 +312,11 @@ footer{border-top:1px solid var(--line);color:var(--ink-3);font-size:12.5px;padd
     <div class="tw"><table>
       <thead><tr><th>測項</th><th>Excel 原標</th><th>正確條號</th><th>處置</th></tr></thead>
       <tbody>
-        <tr><td>推車、支架穩定性（440N／Ø30mm）<span class="sub">CNS p.150；官方 P.E.L. 列 8.10（RB），設備文字逐字相符；8.11 實為「機架安裝設備之架設裝置 SRME」</span></td><td><span class="mono">8.1</span></td><td><span class="mono">8.10</span></td><td><span class="bdg b-ok">已更正</span><span class="sub">網頁已改；Excel V2 查證版已更正（V1 保留）</span></td></tr>
+        <tr><td>推車、支架穩定性（440N／Ø30mm）<span class="sub">CNS p.150；官方 P.E.L. 列 8.10（RB），設備文字逐字相符；8.11 實為「滑軌安裝式設備之架設裝置（SRME）」</span></td><td><span class="mono">8.1</span></td><td><span class="mono">8.10</span></td><td><span class="bdg b-ok">已更正</span><span class="sub">網頁已改；Excel V2 查證版已更正（V1 保留）</span></td></tr>
         <tr><td>直流電動機過載／堵轉替代試驗<span class="sub">與官方 P.E.L. 同列字串「G.5.4.5.3 G.5.4.6.3 G.9.3 S.3.1 S.3.2」逐字相符，屬忠實轉錄；經 Ed.3／Ed.4 正文覆核，「G.9.3」為官方 P.E.L. 誤植（兩版 G.9 均為 IC 電流限制器），已建議回饋 IECEE</span></td><td><span class="mono">…G.9.3…</span></td><td>維持原樣</td><td><span class="bdg b-keep">無需更動</span></td></tr>
       </tbody>
     </table></div>
-    <div class="note"><b>版次敏感（3 項）：</b><span class="mono">4.1.4</span> 戶外條件、<span class="mono">4.8.4.3</span> 鈕扣電池、<span class="mono">6.4.8.3.3</span> 頂部開孔——第 4 版（2023）有強化；現行依 CNS:2020（第 3 版）送驗無虞，日後改版時複評即可。</div>
+    <div class="note"><b>版次敏感（2 項）：</b><span class="mono">4.1.4</span> 戶外條件、<span class="mono">4.8.4.3</span> 鈕扣電池——第 4 版（2023）有調整；現行依 CNS:2020（第 3 版）送驗無虞，日後改版時複評即可。<br><b>更正：</b><span class="mono">6.4.8.3.3</span> 頂部開孔原列版次敏感，經 Ed.3／Ed.4 正文逐字比對（CNS p.127／IEC:2023 印刷 p.163–165）為<b>實質相同</b>（火錐＋2 mm、圖 41、免試 5 mm 任一尺度或 1 mm 寬，兩版一致），非版次差異項，已自清單移除。</div>
   </section>
 
   <section id="r-equip">
@@ -426,6 +426,8 @@ footer{border-top:1px solid var(--line);color:var(--ink-3);font-size:12.5px;padd
   body.classList.toggle('toc-collapsed', window.innerWidth<980 ? true : !(cs===null||cs==='1'));
   var fab=document.getElementById('tocFab');if(fab)fab.addEventListener('click',function(){setToc(body.classList.contains('toc-collapsed'));});
   var cl=document.querySelector('.toc-close');if(cl)cl.addEventListener('click',function(){setToc(false);});
+  /* 跨越行動斷點：進入手機(<=980px)一律收合（不寫入 localStorage，避免汙染桌機偏好；含嵌入 iframe 縮窄情境）；回到桌機則依儲存狀態還原 */
+  if(window.matchMedia){var _mq=matchMedia('(max-width:980px)');var _onMq=function(e){if(e.matches){body.classList.add('toc-collapsed');}else{body.classList.toggle('toc-collapsed',localStorage.getItem(KC)==='0');}};_mq.addEventListener?_mq.addEventListener('change',_onMq):_mq.addListener(_onMq);}
 
   var links=[].slice.call(document.querySelectorAll('.toc a')), map={};
   links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;
