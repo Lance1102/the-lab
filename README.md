@@ -33,5 +33,8 @@
 ## [無人機安規測試 · 儀器 × 章節對照](https://lance1102.github.io/the-lab/15598-1_Dashboard.html)
 > 無人機安規對照助手 | CNS 15598-1（IEC 62368-1）：48 測項 × 79 儀器 × 官方 PEL 設備代碼
 
+## [無人機資安全景](https://lance1102.github.io/the-lab/UAV-Cyber_Dashboard.html)
+> 無人機資安 · 標準 × 測試 × 建置模式
+
 ## [Doc88 全能下載助手](https://lance1102.github.io/the-lab/doc88_crewler/index.html)
 > 以「開發人員模式」載入解壓縮（未封裝）的擴充功能，只要 5 個步驟即可完成。本擴充功能專門用於下載 Doc88 網站的文件。
