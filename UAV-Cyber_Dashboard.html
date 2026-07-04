@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>無人機資安 · 標準 × 測試 × 建置模式 儀表板</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --surface:#ffffff; --surface2:#f0f2f5; --ink:#1a1d23; --muted:#5b636e;
+    --line:#e2e6ec; --accent:#1f6feb; --accent-ink:#134a9e; --code-bg:#eef1f5;
+    --ok:#1a7f5a; --warn:#b5820a; --bad:#c0392b; --pend:#8a63d2;
+    /* 標準分群色 */
+    --g-air:#c0392b; --g-uas:#1f6feb; --g-prod:#1a7f5a; --g-reg:#b5820a;
+    --g-comm:#8a63d2; --g-supply:#0d7d7d; --g-frame:#5b636e; --g-tw:#d6336c;
+  }
+  html[data-theme="dark"]{
+    --bg:#0f1319; --surface:#171c24; --surface2:#1e242e; --ink:#e6e9ee; --muted:#9aa4b2;
+    --line:#2a313c; --accent:#6ea8ff; --accent-ink:#a9c9ff; --code-bg:#1c222b;
+    --ok:#4fc48b; --warn:#e0b451; --bad:#ef8a7f; --pend:#b79cf0;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%; scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Hanken Grotesk","Noto Sans TC","Microsoft JhengHei","Segoe UI",system-ui,sans-serif;
+    font-size:16px;line-height:1.7}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{color:var(--accent-ink);text-decoration:underline}
+  code,.mono{font-family:"Spline Sans Mono",Consolas,"Cascadia Code",monospace;font-size:.88em;
+    background:var(--code-bg);padding:.08em .38em;border-radius:5px}
+  header.top{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--line);
+    padding:10px 18px;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between}
+  .brand{font-weight:800;font-size:1.05rem;letter-spacing:.2px}
+  .brand small{display:block;font-weight:400;color:var(--muted);font-size:.72rem;margin-top:1px}
+  .tools{display:flex;gap:8px;align-items:center}
+  .btn{background:var(--surface2);border:1px solid var(--line);color:var(--ink);border-radius:8px;
+    padding:6px 11px;font:inherit;font-size:.85rem;cursor:pointer}
+  .btn:hover{border-color:var(--accent)}
+  nav.tabs{position:sticky;top:53px;z-index:19;background:var(--bg);border-bottom:1px solid var(--line);
+    display:flex;flex-wrap:wrap;gap:2px;padding:6px 12px}
+  nav.tabs button{background:none;border:none;color:var(--muted);font:inherit;font-size:.9rem;
+    padding:7px 12px;border-radius:8px 8px 0 0;cursor:pointer;border-bottom:2px solid transparent}
+  nav.tabs button:hover{color:var(--ink);background:var(--surface2)}
+  nav.tabs button.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:700}
+  main{max-width:1080px;margin:0 auto;padding:22px 18px 90px}
+  .view{display:none;animation:fade .25s ease}
+  .view.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  h1{font-size:1.7rem;margin:.2em 0 .5em}
+  h2{font-size:1.28rem;margin:1.5em 0 .5em;padding-bottom:.2em;border-bottom:2px solid var(--line)}
+  h3{font-size:1.05rem;margin:1.2em 0 .35em}
+  p{margin:.6em 0}
+  .lead{color:var(--muted);font-size:1.02rem}
+  .grid{display:grid;gap:12px}
+  .g2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+  .g3{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .card h3{margin-top:0}
+  .card.tint{border-left:4px solid var(--accent)}
+  .kpi{font-size:1.6rem;font-weight:800;line-height:1.1}
+  .kpi small{display:block;font-size:.72rem;font-weight:500;color:var(--muted);margin-top:3px}
+  .chip{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:20px;
+    background:var(--surface2);color:var(--muted);border:1px solid var(--line);white-space:nowrap}
+  .chip.ok{color:var(--ok);border-color:var(--ok)} .chip.warn{color:var(--warn);border-color:var(--warn)}
+  .chip.bad{color:var(--bad);border-color:var(--bad)} .chip.pend{color:var(--pend);border-color:var(--pend)}
+  .b{font-weight:700}
+  table{border-collapse:collapse;width:100%;margin:.8em 0;font-size:.9rem}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  th{background:var(--surface2);font-weight:700}
+  tr:nth-child(even) td{background:color-mix(in srgb,var(--surface2) 45%,transparent)}
+  .tag{display:inline-block;font-size:.7rem;font-weight:700;color:#fff;padding:1px 7px;border-radius:5px;margin-right:4px}
+  .note{background:var(--surface2);border-radius:10px;padding:10px 14px;font-size:.9rem;color:var(--muted)}
+  .src{color:var(--muted);font-size:.8rem}
+  ul.tight{margin:.4em 0;padding-left:1.25em} ul.tight li{margin:.25em 0}
+  .foot{color:var(--muted);font-size:.82rem;border-top:1px solid var(--line);margin-top:30px;padding-top:14px}
+  svg.ic{width:16px;height:16px;vertical-align:-3px;fill:none;stroke:currentColor;stroke-width:2;
+    stroke-linecap:round;stroke-linejoin:round}
+  @media(max-width:640px){body{font-size:15px} main{padding:16px 12px 80px}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">無人機資安 · 標準 × 測試 × 建置模式<small>UAV Cybersecurity — Standards · Testing · Lab-Build Map　·　v0.2.0（2026-07-03）</small></div>
+  <div class="tools">
+    <span class="chip" id="roundchip">Round A+B</span>
+    <button class="btn" id="themebtn" title="切換深/淺色">深淺色</button>
+  </div>
+</header>
+<nav class="tabs" id="tabs"></nav>
+<main id="main"></main>
+
+<script>
+/* ===== 內嵌資料（DATA）：綜合自兩張地圖 .md 與 A/B 輪查證。長引述避免；深度見同層 .md 報告。===== */
+const DATA = {
+  meta:{version:"0.2.0",date:"2026-07-03",
+    note:"開放來源（Round A）＋ Tier-1 正本坐實（Round B）。標「待證」者需一手正本確認；成本為公開估計帶非報價。深度與完整來源見同層兩張地圖 .md 報告。"},
+  tabs:[["overview","總覽"],["standards","標準地圖"],["testing","測試方法"],["labs","世界實驗室"],
+        ["build","建置藍圖"],["taiwan","台灣落地"],["matrix","對照矩陣"],["glossary","詞彙"],["audit","稽核/待證"]],
+  kpis:[["標準/法規分群","7"],["世界機構/模式","10+"],["建置級距","低/中/高"],["Tier-1 正本坐實","6/7"],["查證輪次","A + B"]],
+  threats:[
+    ["C2 鏈路劫持/注入","MAVLink 未加密未認證 → 指令注入/replay；DJI DroneID 未加密可擷"],
+    ["GNSS 欺騙/干擾","spoof/jam → 位置竄改；需 failsafe 行為驗證（模擬器 + 屏蔽室）"],
+    ["Remote ID 偽造","F3411 廣播無密碼完整性 → ghost drone；緩解＝IETF DRIP RFC 9575"],
+    ["韌體/供應鏈","老化函式庫+已知 CVE、無 binary hardening、secure-boot 弱簽章驗證"],
+    ["地面站 App/雲","GCS 憑證、telemetry、API keys（OWASP MASVS L2+R）"],
+    ["硬體除錯埠","UART/JTAG/SWD 常 active → 韌體萃取；側通道/故障注入取金鑰"]],
+  pillars:[
+    ["航空適航資安","DO-326A/356A/355 · ED-202A/203A/204 · ASTM F3532","g-air","經 AMC 對已認證類 UAS de-facto 強制；付費文本"],
+    ["UAS 運營與 RID","ISO 21384-3 · ASTM F3411+F3586 · JARUS SORA 2.5 Cyber Ext","g-uas","安全推向運營者 + RID 符合性"],
+    ["橫向產品資安","ETSI EN 303 645+TS 103 701 · EN 18031/RED · UK PSTI · EU CRA","g-prod","最快演進、最可測；消費/商用無人機首當其衝"],
+    ["美國供應鏈信任","NDAA §848/§817 · ASDA · Blue/Green UAS","g-supply","原產地/信任而非技術測試（Blue 內含 cyber 評估）"],
+    ["威脅/參考框架","MITRE EMB3D/ATT&CK-ICS · NIST 800-193/8259A · FIPS 140-3 · IETF DRIP","g-frame","供測試案例詞彙"]],
+  timeline:[
+    ["2024-04-29","UK PSTI 生效（強制）","ok"],
+    ["2024-12-01","台灣《遙控無人機資安檢測規範》生效（moda×交通部）","ok"],
+    ["2025-08-01","EU RED cyber（EN 18031）強制適用","ok"],
+    ["2026-06-11","EU CRA — CAB 通報框架","warn"],
+    ["2026-09-11","EU CRA — 漏洞/事件報告義務","warn"],
+    ["2027-01-01","US FCC Blue UAS 豁免到期","warn"],
+    ["2027-12-11","EU CRA — 全面適用","bad"]],
+  standards:[
+    {g:"g-air",name:"航空適航資安流程",items:[
+      ["DO-326A / ED-202A","RTCA/EUROCAE","de-facto 強制(AMC)","適航安全流程 7-step AWSP + 工件(PSecAC/PASRA)","正本",""],
+      ["DO-356A / ED-203A","RTCA/EUROCAE","伴隨 AMC","方法：SRA、attack tree、SAL 0–3、pentest/fuzz、refutation","正本","待證：sources/ 之 DO-356A 為中文次級解析；ED-203A 缺"],
+      ["DO-355 / ED-204(A)","RTCA/EUROCAE","伴隨 AMC","服役期資安（場載軟體、漏洞管理）","正本",""],
+      ["ASTM F3532-22","ASTM","自願 MOC(ASISP)","小型航機系統防 IUEI（非 UAS 專屬）","正本",""]]},
+    {g:"g-uas",name:"UAS 運營與 Remote ID",items:[
+      ["ISO 21384-3:2023","ISO","自願(可被引用)","運營程序、安全關鍵 C2 link","正本",""],
+      ["ASTM F3411-22a","ASTM F38.02","FAA 接受 MOC 基礎","RID Broadcast+Network；Annex A1 Broadcast Authentication Verifier Service（IEEE 1609.2-2016 HashedID8）","正本","B輪✓"],
+      ["ASTM F3586-22 (MOC)","ASTM","FAA 接受 MOC","綁 F3411→14 CFR Part 89 §89.310/§89.305","正本","B輪✓"],
+      ["JARUS SORA 2.5 + Cyber Ext","JARUS","自願→EASA AMC","security-by-design 綁 OSO robustness/SAIL","free",""]]},
+    {g:"g-prod",name:"橫向產品資安基線",items:[
+      ["ETSI EN 303 645 V3.1.3","ETSI","自願(撐 PSTI/EN18031/CRA)","13 高階 provisions(5.1–5.13)+clause 6；top-3＝無預設密碼/VDP/保持更新","正本","B輪✓"],
+      ["ETSI TS 103 701","ETSI","自願","EN 303 645 之符合性測試：test group/case + IXIT + PASS/FAIL + ICS(M/R/C)","正本","B輪✓"],
+      ["EN 18031-1/-2/-3:2024","CEN/CENELEC","RED cyber 推定(EU)","依 Reg (EU) 2022/30 補充 RED Art.3(3)(d)(e)(f)；asset-mnemonic [ACM]…[CRY]","正本","B輪✓（OJ「with restrictions」）"],
+      ["UK PSTI (2022/2023)","UK","強制(UK,2024-04-29)","無預設密碼、VDP、更新支援期透明","free",""],
+      ["ISA/IEC 62443-4-1/-4-2","IEC/ISA","自願","SDL、元件/系統安全 SL1–4（飛控/GCS 供應鏈）","正本",""],
+      ["ISO/IEC 27001","ISO/IEC","自願(可驗證)","組織 ISMS（治理層）","正本",""]]},
+    {g:"g-reg",name:"監理 / 法規",items:[
+      ["Reg (EU) 2019/945 & 947","EU","強制","UAS 產品(C0–C6)+運營(Open/Specific/Certified，SORA 2.5)","free",""],
+      ["U-space 2021/664","EU","強制(指定區)","飛行授權、network ID、geo-awareness","free",""],
+      ["Part-IS 2022/1645 + 2023/203","EU","強制(2026-02-22)","航空組織(含 U-space)資安風險管理","free",""],
+      ["EU CRA 2024/2847","EU","強制","security-by-design、漏洞處理；2026-09-11 報告/2027-12-11 全面","free",""],
+      ["NIS2 2022/2555","EU","強制(內國轉換)","實體風管+通報(或涵蓋 UTM)","free",""],
+      ["FAA Remote ID 14 CFR Part 89","US","強制","DOC + FAA 接受 MOC(AC 89-2)","free",""]]},
+    {g:"g-comm",name:"通訊 / 密碼",items:[
+      ["MAVLink 2 signing","開源","自願","48-bit 簽章＝僅認證/完整性(非機密性)；預設啟用與否待證","free","待證"],
+      ["GNSS anti-spoof/jam","多方","無單一強制","多星系/null-steering/INS 融合；測 spoof/jam+failsafe","mixed",""],
+      ["IETF DRIP RFC 9153/9374/9434/9575","IETF","自願","Remote-ID 密碼認證+隱私層（補 F3411 缺之真實性）","free",""],
+      ["FIPS 140-3 (ISO/IEC 19790)","NIST","條件強制","密碼模組驗證(CMVP/CAVP)；19790 測試文本付費","partial",""]]},
+    {g:"g-supply",name:"供應鏈信任（美國主導）",items:[
+      ["NDAA §848 / §817","US Congress","強制(DoD)","禁 covered 國製/含其關鍵元件 UAS；擴及使用者","free",""],
+      ["American Security Drone Act","US","強制(聯邦+補助)","政府全域 covered-UAS 採購/操作禁","free",""],
+      ["§1260H / §1709","DoD/US","清單/市場准入","DJI/Autel 列(2026-06 達 188)；DJI 入 FCC Covered List","free",""],
+      ["Blue UAS / Green UAS","DoD DIU / AUVSI","自願(採購 de-facto)","NDAA 合規+cyber 評估；Green→Blue 路徑","free","方法非公開(待證)"]]},
+    {g:"g-frame",name:"威脅 / 參考框架",items:[
+      ["MITRE EMB3D (2024-05)","MITRE","自願","嵌入式裝置威脅模型（最直接適用 UAV）","free",""],
+      ["MITRE ATT&CK-ICS / FiGHT","MITRE","自願","控制系統/5G 攻擊 TTP","free",""],
+      ["NIST SP 800-193 / 8259A / CSF 2.0","NIST","自願","韌體韌性/secure-boot 測試、IoT 基線","free",""],
+      ["CISA/FBI/GSA UAS best practices","US","指引","secure-by-design 採購、網段/air-gap、MFA","free",""]]}],
+  en303645:{
+    provisions:[["5.1","No universal default passwords"],["5.2","Manage reports of vulnerabilities (VDP)"],
+      ["5.3","Keep software updated"],["5.4","Securely store sensitive security parameters"],
+      ["5.5","Communicate securely"],["5.6","Minimize exposed attack surfaces"],
+      ["5.7","Ensure software integrity"],["5.8","Ensure that personal data is secure"],
+      ["5.9","Make systems resilient to outages"],["5.10","Examine system telemetry data"],
+      ["5.11","Make it easy for users to delete user data"],["5.12","Make install & maintenance easy"],
+      ["5.13","Validate input data"],["6","Data protection provisions"]],
+    method:["每 provision 5.x-y 對一 Test group 5.x-y（objective 指明所測 provision）",
+      "Test case 5.x-y-z：Test purpose（conceptual 文件評估 / functional 實機）",
+      "Test units a)/b)…：實驗室(TL)對 DUT + 廠商 IXIT（如 IXIT 15-Intf/14-SecMgmt）逐項評估",
+      "Assignment of verdict：達成全部 units → PASS，否則 FAIL（部分 INCONCLUSIVE）",
+      "總判定依 ICS(clause A.3) 狀態欄 M/R/C：全部 mandatory 通過方整體 PASS"]},
+  en18031:{map:[["-1","Art.3.3(d) 網路保護（internet-connected radio equipment）"],
+      ["-2","Art.3.3(e) 個資/隱私（含兒童/玩具 COWS，[ACM-3..6] 家長控制）"],
+      ["-3","Art.3.3(f) 防詐（避免金錢損失）"]],
+    fams:[["[ACM]","Access Control"],["[AUM]","Authentication（AUM-5 Password Strength、AUM-6 Brute force）"],
+      ["[SUM]","Secure Update"],["[SSM]","Secure Storage"],["[SCM]","Secure Communication（SCM-4 replay）"],
+      ["[RLM]","Resilience"],["[NMM]/[TCM]","Network Monitoring / Traffic Control"],
+      ["[CCK]","Confidential Crypto Keys（CCK-3 禁靜態預設）"],["[GEC]","General Capabilities（GEC-6 Input Validation）"],
+      ["[CRY]","Cryptography（CRY-1 best practice）"]]},
+  testmethods:[
+    ["正式評測(CC)","ST/PP 符合、AVA_VAN、依 attack potential pentest","流程為主","ISO/IEC 15408+18045;EUCC","ITSEF 評測員"],
+    ["IoT 輕量保證","組合重用、自評→實驗室 pentest","SESIP/PSA 服務","SESIP(EN 17927)/PSA/EN 303 645","IoT 評測員"],
+    ["航空適航安全","AWSP、SRA、SAL、refutation","Ansys medini、attack-tree、LDRA","DO-326A/356A","航空安全工程師"],
+    ["GCS/App pentest","靜/動態、runtime、anti-tamper","Frida、MobSF、jadx、Burp","OWASP MASVS(L2+R)","行動 pentester"],
+    ["韌體萃取/分析","binwalk 拆、entropy/簽章、RE、rehost","binwalk、Ghidra、QEMU/FirmAE、EMBA","DO-356A/CC AVA","韌體 RE"],
+    ["硬體除錯/記憶體","JTAG/SWD/UART、chip-off","JTAGulator、Bus Pirate、Saleae、CH341A","CC AVA_VAN(實體)","硬體 hacker"],
+    ["故障注入/glitch","電壓/時脈/EMFI/laser；繞 secure-boot","ChipWhisperer、Riscure Glitcher","SOG-IS/JIL、FIPS 實體","故障注入專家"],
+    ["側通道(SCA/DPA)","功率/EM trace、DPA/CPA、TVLA","ChipWhisperer、Riscure Inspector","ISO/IEC 17825、FIPS","側通道分析師"],
+    ["協定 fuzzing","MAVLink/C2 stateful fuzz、replay","boofuzz、AFLNet/AFL++","餵 DO-356A pentest","fuzzing 工程師"],
+    ["Wi-Fi/RF/telemetry","deauth、RC replay、video demod、jam","HackRF、USRP B210、GNU Radio、URH","RED、FCC","RF/SDR 工程師"],
+    ["GNSS 欺騙/干擾","模擬星系+注入 spoof/jam","Spirent GSS9000/7000、Safran Skydel","ETSI TS 103 246-5","GNSS/PNT 工程師"],
+    ["Remote ID 欺騙","造/播 spoofed RID、ghost-drone","droneRemoteIDSpoofer、OpenDroneID","ASTM F3411、DRIP","RF/協定研究員"],
+    ["供應鏈/SBOM","SBOM、binary composition、CVE、VEX","Syft、CVE-bin-tool、Grype、Trivy","SPDX/CycloneDX、CRA","DevSecOps"],
+    ["密碼模組驗證","模組審、CAVP(ACVTS)、金鑰管理","ACVTS、CST-lab harness","FIPS 140-3=ISO/IEC 19790+24759","密碼驗證工程師"]],
+  labs:[
+    ["HUNGUARD ⭐","HU","評測+驗證(兩部門)","17025(NAH-1-1578)+17065(NAH-6-0048);ISO 9001","CC/OWASP/NIST/eIDAS/C-ITS","組織模板：一機構兩認可部門。※簡報之 AI 平台/~90%/EN 319 403/CRA-CAB 未經公開證實（待證）"],
+    ["atsec","US/DE/IT/SE","評測+CB","NVLAP+BSI/OCSI/CSEC;FIPS 140","CC、FIPS 140/CMVP","多 scheme 跨國擴張"],
+    ["SGS Brightsight","NL(5 站)","ITSEF","17025;EUCC ITSEF(RDI)","CC、EUCC 硬體高保證","一 license 多站；晶片/SE/datalink"],
+    ["TrustCB","NL","私營 CB","17065","NSCIB CC、EUCC","罕見私營 CB＝非政府 UAV CB 先例"],
+    ["NIAP / CCEVS","US","scheme owner+validation","NVLAP HB 150-20","CC(PP-mandated)","PP 強制、12 點監管"],
+    ["DoD DIU Blue UAS","US","無人機保證 scheme","NDAA §848/§817","NDAA 合規+cyber 評估","最接近本域；委第三方評估員、清單轉 DCMA"],
+    ["AUVSI Green UAS","US","產業鏡像 scheme","對齊 Blue","cyber+供應鏈(SBOM/HBOM)","最可轉移樣板；非政府 bootstrap 獲 DoD 承認"],
+    ["TÜBİTAK OKTEM","TR","評測(+基礎驗證)","TÜRKAK 17025;QCCS","CC EAL1–7、TSE K 505","國家實驗室+自營快 scheme+出口承認"],
+    ["CSA SG (SCCS+CLS)","SG","scheme owner+CB","政府 CB","CC+NITES+IoT 標籤","分層含 IoT labelling on-ramp"],
+    ["TAF / BV CPS Taiwan","TW","認可者 / 評測","17011/17025;ILAC MRA","EN 303 645;台灣無人機資安規範","台灣認可錨 + 已有無人機 cyber 測試"]],
+  build:{
+    roadmap:[["QMS+gap+doc control","3–9 月","—"],["ISO/IEC 17025(窄)","3–6 月(複雜 6–12+)","小型首次 $6K–$12K[S]"],
+      ["ISO/IEC 27001(小)","3–6 月","首年總 $15K–$50K+[S]"],["ISO/IEC 17065","+4–9 月","報價制"],
+      ["CCTL/ITSEF","+6–12 月","全包中五~低六位數 USD[E]"],["EUCC high 授權","+6–18 月","未公開牌價"],
+      ["greenfield→CC-capable","~2–3.5 年[E]","持續 $15K–$60K/yr[E]"]],
+    bom:[["RF 屏蔽室/anechoic","合法 Tx;含 jam/spoof","Faraday $5K–$40K[E];二手 anechoic $16.7K–$444K[S]"],
+      ["GNSS 星系模擬器","spoof/jam GNSS","高階 $100K–$300K+[E];Skydel BYOH $20K–$60K[E]"],
+      ["SDR 套組","嗅探/注入 C2/GNSS","HackRF ~$300[S];USRP B210 ~$1,100[S]"],
+      ["側通道+FI 台(入門)","功率/EM、glitch","ChipWhisperer Husky ~$500[S]/Pro ~$3,800[S]"],
+      ["側通道+FI(專業)","認證級含 laser","Keysight/Riscure 全套 $100K–$500K+[E]"],
+      ["韌體/二進位工作站","RE、靜/動態","IDA $2K–$10K/seat[E](Ghidra free)"],
+      ["樣本 UAS/GCS + 證據儲存","DUT + IP 隔離","$5K–$50K + $20K–$100K[E]"]],
+    staffing:[["品質經理(17025/17065)","1→2–3","$90K–$140K[E]"],["技術經理/主任","1→1–2","$140K–$200K+[E]"],
+      ["CC 評測員","1–2→5–10","$110K–$170K[E]"],["滲透測試員","1–2→4–8","~$103K–$155K[S]"],
+      ["RF/GNSS 工程師","1→2–4","~$106K–$148K[S]"],["硬體安全/SCA-FI","1→2–4","~$137K–$181K[S]"],
+      ["驗證員(獨立部門)","1→2–4","$110K–$160K[E]"]],
+    tiers:[["低/精簡","窄 17025+27001;UAV RF/C2+IoT pentest;無 chamber","$0.2M–$0.5M","$1.0M–$1.8M(6–9 人)"],
+      ["中","17025+17065 雙部門;模組屏蔽室;中階 GNSS sim","$1.2M–$3.5M","$2.0M–$4.5M(12–20 人)"],
+      ["高","CCTL/ITSEF+EUCC high;anechoic;全 Riscure FI+laser","$4M–$10M+","$5M–$12M(25–50 人)"]],
+    revenue:[["EAL2","4–6 月","$80K–$150K"],["EAL3","6–9 月","$120K–$200K"],
+      ["EAL4/4+","7–12 月","$175K–$300K(複雜 $300K–$750K)"],["EAL5–7","18+ 月","數百萬"]]},
+  taiwan:{
+    scheme:["《遙控無人機資安檢測規範》— 數位發展部(moda)×交通部，令 2024-12-26（稱 2024-12-01 生效）",
+      "結構：Ch.6 無人機+GCS · Ch.7 群飛 · Ch.8 增項（政府/軍用商規，源自《無人機資安保障規範 v2.0》）",
+      "測試項：弱點掃描(無 CVSS≥7.0)、加密 RF(3GPP/ETSI/IEEE 級)、GNSS anti-spoof/定位強化、資料加密、authN/Z、實體保護",
+      "級費：初/中/高階 ≈ NT$8/16/32 萬（待證，來自訪談非正文）",
+      "採購強制：2–25kg 無人機 + 群飛計畫需檢測報告；政府採購飛越禁區或 ≥25kg 須過中階"],
+    labs6:["中華資安國際(CHT Security)","安華聯網(Onward Security)","台灣商品檢測驗證中心(ETC)",
+      "電信技術中心(TTC，DEKRA 首個承認之無人機 cyber 實驗室)","國家中山科學研究院(NCSIST)","鑑智實相科技"],
+    gaps:[["規範非 CNS","行政規範，非正式 CNS（可倡議升級）"],["無國際互認","TW 非 CCRA；僅 DEKRA/AUVSI 橋"],
+      ["消費 IoT 基線缺 CNS","無 ETSI EN 303 645 之 CNS 鏡射"],["航空 cyber 缺","無 DO-326A 式適航-cyber(待證)"],
+      ["地理/整合缺口","6 指定機構多北部；安規(台中 BSMI)與資安(北部)分離"]],
+    synergy:["同廠需 BSMI 安規標章 + moda cyber 報告方能登錄；一站送測省成本(呼應 TEDIBOA「輔導取代補貼」)",
+      "皆跑 TAF 17025；cyber scope 可加於安規實驗室既有 QMS 傘下",
+      "兩憑證：TAF 17025 認可規範 scope + moda 指定為檢測機構",
+      "出口橋：對齊 DEKRA/AUVSI Green/Blue UAS 預評（雷虎 2025-09-20 入 Blue UAS 為先例）",
+      "與 CNS 15598-1 安規實驗室（台中，姐妹專案）併置＝填地理+整合缺口"]},
+  audit:{
+    rounds:[["A 輪","開放來源 landscape（5 pillars）→ 兩張地圖 + 正本清單"],
+      ["B 輪","Tier-1 正本 OCR 坐實（6/7）：EN 303 645/TS 103 701/EN 18031/F3411/F3586 確認；航空適航待正本"]],
+    catch:"對抗式發現：HUNGUARD 簡報之 AI 平台/~90% 削減/EN 319 403-1/CRA-CAB 未經公開來源證實 → 依來源位階列待證；sources/ 之 DO-356A 檔實為 CNKI 中文次級解析，非正本。",
+    pending:[["航空適航","取得 EUROCAE ED-203A + DO-356A 正本（現僅中文次級解析）","pend"],
+      ["DO-326A 小 UAS 適用 / DO-326B 版次","RTCA/EUROCAE + EASA SC","pend"],
+      ["MAVLink 2 signing 預設啟用","mavlink.io/ArduPilot/PX4","pend"],
+      ["Blue/Green UAS cyber 方法","非公開(DIU/AUVSI)","pend"],
+      ["UAS 元件是否獲 NDcPP/SESIP/PSA/FIPS","各 registry","pend"],
+      ["台灣規範級費/生效日精確","規範全文(政府公報)","pend"],
+      ["成本估計帶(GNSS sim/CCTL/薪資)","報價/調查","pend"],
+      ["HUNGUARD 簡報宣稱","NAH 登錄/EU NANDO/Trusted List","pend"]]}
+};
+
+/* ===== 渲染 ===== */
+const $=(s,r=document)=>r.querySelector(s), el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;};
+const esc=s=>String(s).replace(/[&<>]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[m]));
+function chipFor(s){if(!s)return"";const t=esc(s);let c="";if(/B輪✓/.test(s))c="ok";else if(/待證|缺|非公開|次級/.test(s))c="pend";else if(/正本/.test(s))c="";return`<span class="chip ${c}">${t}</span>`;}
+
+const views={
+  overview(){const d=DATA;let h=`<h1>無人機資安全景</h1><p class="lead">把無人機（UAV/drone）資安之<b>驗證、測試、標準</b>與<b>實驗室建置/管理模式</b>整理為兩張可查閱、可回溯的地圖。台灣為錨。</p>`;
+    h+=`<div class="grid g3" style="margin:14px 0">`+d.kpis.map(k=>`<div class="card"><div class="kpi">${esc(k[1])}<small>${esc(k[0])}</small></div></div>`).join("")+`</div>`;
+    h+=`<h2>威脅面（測試對象）</h2><div class="grid g2">`+d.threats.map(t=>`<div class="card tint"><h3>${esc(t[0])}</h3><p class="src">${esc(t[1])}</p></div>`).join("")+`</div>`;
+    h+=`<h2>五大標準支柱</h2><div class="grid g2">`+d.pillars.map(p=>`<div class="card" style="border-left:4px solid var(--${p[2]})"><h3>${esc(p[0])}</h3><p class="mono src">${esc(p[1])}</p><p class="src">${esc(p[3])}</p></div>`).join("")+`</div>`;
+    h+=`<h2>合規時程</h2><table><tr><th>日期</th><th>里程碑</th></tr>`+d.timeline.map(t=>`<tr><td class="mono"><span class="chip ${t[2]}">${esc(t[0])}</span></td><td>${esc(t[1])}</td></tr>`).join("")+`</table>`;
+    h+=`<div class="note" style="margin-top:14px">${esc(d.meta.note)}</div>`;return h;},
+  standards(){let h=`<h1>標準地圖（依分群）</h1><p class="lead">哪些標準適用 → 各要求什麼 → 測試意涵 → 正本狀態。<span class="chip ok">B輪✓</span>＝Tier-1 正本坐實。</p>`;
+    DATA.standards.forEach(g=>{h+=`<h2><span class="tag" style="background:var(--${g.g})">　</span>${esc(g.name)}</h2><table><tr><th>識別碼</th><th>發行</th><th>強制/自願</th><th>核心要求</th><th>正本/狀態</th></tr>`;
+      g.items.forEach(it=>{h+=`<tr><td class="b">${esc(it[0])}</td><td>${esc(it[1])}</td><td>${esc(it[2])}</td><td>${esc(it[3])}</td><td>${chipFor(it[4])} ${it[5]?chipFor(it[5]):""}</td></tr>`;});
+      h+=`</table>`;});return h;},
+  testing(){const d=DATA;let h=`<h1>測試方法 × 工具</h1>`;
+    h+=`<h2>測試領域 → 方法 → 工具 → 標準 → 角色</h2><table><tr><th>領域</th><th>方法</th><th>工具/設備</th><th>標準</th><th>角色</th></tr>`+
+      d.testmethods.map(t=>`<tr><td class="b">${esc(t[0])}</td><td>${esc(t[1])}</td><td class="src">${esc(t[2])}</td><td>${esc(t[3])}</td><td>${esc(t[4])}</td></tr>`).join("")+`</table>`;
+    h+=`<h2>消費 IoT 基線測試（EN 303 645 × TS 103 701）<span class="chip ok">B輪✓</span></h2><p class="src">無人機作為消費 IoT 裝置最可直接落地之測試套（EU RED/UK PSTI/CRA 基線）。</p>`;
+    h+=`<div class="grid g2"><div class="card"><h3>EN 303 645 provisions（13 高階 + clause 6）</h3><ul class="tight">`+d.en303645.provisions.map(p=>`<li><span class="mono">${esc(p[0])}</span> ${esc(p[1])}</li>`).join("")+`</ul></div>`;
+    h+=`<div class="card"><h3>TS 103 701 測試方法</h3><ul class="tight">`+d.en303645.method.map(m=>`<li>${esc(m)}</li>`).join("")+`</ul></div></div>`;
+    h+=`<h2>RED 網宇要求（EN 18031-1/-2/-3）<span class="chip ok">B輪✓</span></h2><p class="src">依 Reg (EU) 2022/30 補充 RED Art.3(3)(d)(e)(f)；asset-based 機制族。</p>`;
+    h+=`<table><tr><th>部</th><th>RED 條</th></tr>`+d.en18031.map.map(m=>`<tr><td class="b">${esc(m[0])}</td><td>${esc(m[1])}</td></tr>`).join("")+`</table>`;
+    h+=`<table><tr><th>機制族</th><th>要求</th></tr>`+d.en18031.fams.map(f=>`<tr><td class="mono b">${esc(f[0])}</td><td>${esc(f[1])}</td></tr>`).join("")+`</table>`;return h;},
+  labs(){let h=`<h1>世界實驗室 / 驗證機構 survey</h1><p class="lead">三層生態：認可(17025/17065)→ scheme(CC/EUCC/NIAP/Blue)→ 運營(ITSEF/CB)。承重原則＝評測員與驗證員分離。</p>`;
+    h+=`<table><tr><th>機構</th><th>國</th><th>型態</th><th>認可</th><th>範圍</th><th>模式特徵</th></tr>`+
+      DATA.labs.map(l=>`<tr><td class="b">${esc(l[0])}</td><td>${esc(l[1])}</td><td>${esc(l[2])}</td><td class="src">${esc(l[3])}</td><td class="src">${esc(l[4])}</td><td class="src">${esc(l[5])}</td></tr>`).join("")+`</table>`;return h;},
+  build(){const b=DATA.build;let h=`<h1>建置藍圖</h1><p class="lead">認證路線 · 設備 BOM · 人員 · 級距成本 · 營運。<span class="chip">[S]=有來源</span> <span class="chip">[E]=估計帶</span></p>`;
+    h+=`<h2>認證路線圖</h2><table><tr><th>里程碑</th><th>時程</th><th>成本</th></tr>`+b.roadmap.map(r=>`<tr><td class="b">${esc(r[0])}</td><td>${esc(r[1])}</td><td class="src">${esc(r[2])}</td></tr>`).join("")+`</table>`;
+    h+=`<h2>設備 BOM（價帶）</h2><table><tr><th>設備</th><th>用途</th><th>估價帶</th></tr>`+b.bom.map(r=>`<tr><td class="b">${esc(r[0])}</td><td>${esc(r[1])}</td><td class="src">${esc(r[2])}</td></tr>`).join("")+`</table>`;
+    h+=`<h2>人員（lean→full）</h2><table><tr><th>角色</th><th>人數</th><th>薪(US)</th></tr>`+b.staffing.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td><td class="src">${esc(r[2])}</td></tr>`).join("")+`</table>`;
+    h+=`<h2>低/中/高 級距</h2><table><tr><th>級</th><th>範圍</th><th>總資本</th><th>年 OpEx</th></tr>`+b.tiers.map(r=>`<tr><td class="b">${esc(r[0])}</td><td class="src">${esc(r[1])}</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td></tr>`).join("")+`</table>`;
+    h+=`<h2>每案營收（CC 業界帶）</h2><table><tr><th>保證級</th><th>期程</th><th>報價</th></tr>`+b.revenue.map(r=>`<tr><td class="b">${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join("")+`</table>`;return h;},
+  taiwan(){const t=DATA.taiwan;let h=`<h1>台灣落地（錨）</h1><p class="lead">台灣已運行國家級無人機資安檢測制度——世界領先；缺口＝非 CNS、無國際互認、安規/資安分離。</p>`;
+    h+=`<h2>國家無人機資安檢測制度</h2><div class="card"><ul class="tight">`+t.scheme.map(s=>`<li>${esc(s)}</li>`).join("")+`</ul></div>`;
+    h+=`<h3>6 家指定檢測機構（moda 2025-01-08）</h3><div class="grid g3">`+t.labs6.map(l=>`<div class="card"><b>${esc(l)}</b></div>`).join("")+`</div>`;
+    h+=`<h2>缺口（機會）</h2><table><tr><th>缺口</th><th>說明</th></tr>`+t.gaps.map(g=>`<tr><td class="b">${esc(g[0])}</td><td class="src">${esc(g[1])}</td></tr>`).join("")+`</table>`;
+    h+=`<h2>綜效：與 CNS 15598-1 安規實驗室（台中）併置</h2><div class="card tint"><ul class="tight">`+t.synergy.map(s=>`<li>${esc(s)}</li>`).join("")+`</ul></div>`;return h;},
+  matrix(){let h=`<h1>對照矩陣（標準 ↔ 測試）</h1><p class="lead">要驗證什麼 → 用哪些測試 → 綁哪個標準。</p>`;
+    const rows=[["C2 鏈路完整性/機密性","協定 fuzzing、RF/telemetry、MAVLink signing 檢","ISO 21384-3、DO-356A"],
+      ["GNSS 抗欺騙","GNSS spoof/jam + failsafe","SORA robustness、ISO 21384-3"],
+      ["Remote ID 真實性","RID 欺騙/符合性","ASTM F3411/F3586、DRIP RFC 9575"],
+      ["韌體/secure boot","韌體分析、FI、secure-boot 測試、SBOM","DO-356A、NIST 800-193、PSA/SESIP、CRA"],
+      ["GCS/App/雲","MASVS/ASVS pentest","EN 303 645、EN 18031、CRA"],
+      ["密碼模組","FIPS 140-3 模組/演算法","FIPS 140-3/ISO 19790"],
+      ["產品基線合規","EN 303 645(TS 103 701)測試套","EN 303 645、EN 18031、UK PSTI"],
+      ["適航型認 cyber","AWSP/SRA/SAL+refutation+pentest","DO-326A/356A(AMC)"],
+      ["供應鏈信任","Blue/Green 評估(SBOM/HBOM+cyber)","NDAA §848、Blue/Green UAS"]];
+    h+=`<table><tr><th>若要驗證…</th><th>用哪些測試</th><th>綁哪個標準</th></tr>`+rows.map(r=>`<tr><td class="b">${esc(r[0])}</td><td>${esc(r[1])}</td><td class="src">${esc(r[2])}</td></tr>`).join("")+`</table>`;return h;},
+  glossary(){const g=[["ITSEF","受認可之 CC 評測實驗室（Information Technology Security Evaluation Facility）"],
+      ["ISO/IEC 17025 / 17065","測試實驗室 / 產品驗證機構之認可標準"],["CC / CEM","Common Criteria(ISO 15408)/評測方法(ISO 18045)"],
+      ["EUCC","EU CC scheme（取代 SOG-IS；substantial/high）"],["CRA","EU Cyber Resilience Act 2024/2847"],
+      ["RED","Radio Equipment Directive 2014/53/EU（cyber 經 DA 2022/30 + EN 18031）"],
+      ["IXIT","Implementation eXtra Information for Testing（TS 103 701 之廠商佐證包）"],
+      ["ICS","Implementation Conformance Statement（M/R/C 狀態）"],["SAL","Security Assurance Level（DO-356A，0–3）"],
+      ["Remote ID","遠端識別（ASTM F3411；DRIP 加密認證）"],["MAVLink","開源無人機 C2 協定（signing=認證非機密）"],
+      ["Blue/Green UAS","US DoD/AUVSI 無人機信任+cyber vetting"],["NDAA §848","US 去中供應鏈禁令"],
+      ["待證","無一手來源之主張，不得當結論，須正本坐實"]];
+    let h=`<h1>中英詞彙</h1><table><tr><th>詞</th><th>定義</th></tr>`+g.map(x=>`<tr><td class="b mono">${esc(x[0])}</td><td>${esc(x[1])}</td></tr>`).join("")+`</table>`;return h;},
+  audit(){const a=DATA.audit;let h=`<h1>稽核 / 待證帳本</h1><p class="lead">一手來源或標「待證」；對抗式查證（先假設為錯→交叉≥2 來源→裁決）。逐輪見同層 對抗查證記錄表.md。</p>`;
+    h+=`<h2>查證輪次</h2><table><tr><th>輪</th><th>內容</th></tr>`+a.rounds.map(r=>`<tr><td class="b">${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("")+`</table>`;
+    h+=`<div class="note" style="border-left:4px solid var(--pend)"><b>對抗式查核重點</b>：${esc(a.catch)}</div>`;
+    h+=`<h2>待證帳本（需正本/官方坐實）</h2><table><tr><th>項目</th><th>如何關閉</th><th></th></tr>`+a.pending.map(p=>`<tr><td class="b">${esc(p[0])}</td><td class="src">${esc(p[1])}</td><td><span class="chip pend">待證</span></td></tr>`).join("")+`</table>`;return h;}
+};
+
+function render(id){$("#main").innerHTML="";const v=el("section","view active");v.id="view-"+id;v.innerHTML=views[id]();
+  $("#main").appendChild(v);document.querySelectorAll("nav.tabs button").forEach(b=>b.classList.toggle("active",b.dataset.v===id));
+  window.scrollTo({top:0});location.hash=id;}
+function boot(){const nav=$("#tabs");DATA.tabs.forEach(([id,label])=>{const b=el("button",null,esc(label));b.dataset.v=id;b.onclick=()=>render(id);nav.appendChild(b);});
+  const foot=el("div","foot","本頁為自包含單檔研究儀表板（v"+DATA.meta.version+"，"+DATA.meta.date+"）。深度與完整來源見同層兩張地圖 .md 報告與 對抗查證記錄表.md。標「待證」者需一手正本確認；成本為公開估計帶非報價。無 emoji。");
+  const start=(location.hash||"#overview").slice(1);render(DATA.tabs.some(t=>t[0]===start)?start:"overview");
+  $("#main").appendChild(foot);}
+$("#themebtn").onclick=()=>{const r=document.documentElement;r.dataset.theme=r.dataset.theme==="dark"?"":"dark";};
+if(matchMedia&&matchMedia("(prefers-color-scheme:dark)").matches)document.documentElement.dataset.theme="dark";
+boot();
+</script>
+</body>
+</html>
