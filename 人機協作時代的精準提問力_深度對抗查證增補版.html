@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>精準提問力 — 深度對抗查證增補版（v2）</title>
+<meta name="description" content="對《人機協作時代的精準提問力》研究報告之對抗式查證、修訂與增補：12 項可否證主張裁決、5 項重大更正、2025-2026 最新進展補充。">
+<style>
+:root{--bg:#f4f6fb;--surface:#fff;--surface-2:#f7f9fd;--surface-3:#eef2f9;--ink:#1a2030;--ink-2:#525f78;--ink-3:#8893a8;
+--line:#e3e8f1;--brand:#4f46e5;--brand-d:#3a32c4;--brand-wash:#ecebfd;--brand-wash2:#e2e0fc;
+--ok:#0d8576;--ok-bg:#e1f5f0;--warn:#bd7a14;--warn-bg:#fbecd6;--err:#c2334d;--err-bg:#fde5ea;
+--keep:#64748b;--keep-bg:#eef1f6;--new:#2563b8;--new-bg:#e3eefc;
+--hl-g:#dcf5e8;--hl-y:#fdf0c9;--hl-r:#fde0e6;--hl-b:#e3e9fd;
+--shadow:0 1px 2px rgba(20,30,60,.05),0 12px 30px -12px rgba(20,30,60,.16);--r:14px;
+--sans:"Noto Sans TC","Microsoft JhengHei","PingFang TC",-apple-system,"Segoe UI",system-ui,sans-serif;
+--mono:"Cascadia Code","Consolas","Sarasa Mono TC",ui-monospace,Menlo,monospace}
+html[data-theme="dark"]{--bg:#0e1320;--surface:#161d2c;--surface-2:#1b2333;--surface-3:#222c40;--ink:#e7ebf3;--ink-2:#a3afc6;
+--ink-3:#73809a;--line:#27314a;--brand:#7d76f0;--brand-d:#9a94f5;--brand-wash:#241f53;--brand-wash2:#2c2668;
+--ok:#34c5ae;--ok-bg:#0f3a35;--warn:#e0a64e;--warn-bg:#3c2c12;--err:#ef7d93;--err-bg:#46101c;
+--keep:#94a2bd;--keep-bg:#222c40;--new:#6ea8ef;--new-bg:#122c4d;
+--hl-g:#123c2d;--hl-y:#3d3310;--hl-r:#471623;--hl-b:#1c2750;
+--shadow:0 1px 2px rgba(0,0,0,.3),0 14px 34px -14px rgba(0,0,0,.6)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--bg);font-size:15.5px;line-height:1.75;transition:background .3s,color .3s}
+h1,h2,h3{margin:0;line-height:1.3;font-weight:800;letter-spacing:-.01em}
+p{margin:.7em 0}a{color:var(--brand-d);text-decoration:none}a:hover{text-decoration:underline}
+.mono{font-family:var(--mono)}
+.topbar{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--surface) 86%,transparent);backdrop-filter:blur(12px) saturate(160%);border-bottom:1px solid var(--line)}
+.topbar-in{max-width:1240px;margin:0 auto;padding:10px 22px;display:flex;align-items:center;gap:14px}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}
+.brand .mk{width:34px;height:34px;flex:0 0 auto;border-radius:9px;background:linear-gradient(135deg,var(--brand),var(--brand-d));display:grid;place-items:center;color:#fff}
+.brand b{font-size:14.5px;font-weight:800;white-space:nowrap}.brand span{display:block;font-size:10.5px;color:var(--ink-3);font-weight:600}
+.tb-actions{margin-left:auto;display:flex;gap:8px}
+.iconbtn{appearance:none;border:1px solid var(--line);background:var(--surface-2);color:var(--ink-2);cursor:pointer;width:36px;height:36px;border-radius:9px;display:grid;place-items:center;transition:.15s}
+.iconbtn:hover{color:var(--brand-d);border-color:var(--brand);background:var(--brand-wash)}
+.iconbtn svg{width:17px;height:17px}
+html[data-theme="light"] .i-moon{display:none}html[data-theme="dark"] .i-sun{display:none}
+.shell{max-width:1240px;margin:0 auto;padding:0 22px}
+main{padding:30px 0 70px}
+.hero{margin:6px 0 26px}
+.hero h1{font-size:clamp(21px,3.4vw,30px)}
+.hero .lede{color:var(--ink-2);max-width:74ch}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{font-size:12px;font-weight:700;padding:4px 11px;border-radius:99px;border:1px solid var(--line);background:var(--surface);color:var(--ink-2)}
+.chip b{color:var(--brand-d)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:18px 0 8px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow)}
+.stat .v{font-size:23px;font-weight:800;color:var(--brand-d)}.stat .k{font-size:12px;color:var(--ink-3);font-weight:700}
+.stat.s-ok .v{color:var(--ok)}.stat.s-warn .v{color:var(--warn)}.stat.s-err .v{color:var(--err)}
+section{margin:36px 0;scroll-margin-top:74px}
+section>h2{font-size:19px;margin-bottom:8px;padding-left:12px;border-left:4px solid var(--brand);border-radius:2px}
+section>h3,.card h3{font-size:15.5px;margin:18px 0 6px}
+.note{background:var(--surface-2);border:1px solid var(--line);border-left:4px solid var(--brand);border-radius:10px;padding:10px 14px;color:var(--ink-2);font-size:14px;margin:10px 0}
+.note.n-warn{border-left-color:var(--warn)}
+.note.n-err{border-left-color:var(--err)}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);box-shadow:var(--shadow);margin:12px 0}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:760px}
+th{position:sticky;top:0;background:var(--surface-3);color:var(--ink-2);font-size:12px;text-align:left;padding:9px 10px;border-bottom:1.5px solid var(--line);white-space:nowrap}
+td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:color-mix(in srgb,var(--brand-wash) 40%,transparent)}
+td.num{text-align:center;color:var(--ink-3);font-family:var(--mono);font-size:12px;white-space:nowrap}
+.sub2{color:var(--ink-3);font-size:12px;margin-top:2px}
+.badge{display:inline-block;font-size:11.5px;font-weight:800;padding:2px 9px;border-radius:99px;white-space:nowrap}
+.b-ok{color:var(--ok);background:var(--ok-bg)}.b-part{color:var(--warn);background:var(--warn-bg)}
+.b-err{color:var(--err);background:var(--err-bg)}.b-keep{color:var(--keep);background:var(--keep-bg)}
+.b-new{color:var(--new);background:var(--new-bg)}
+.b-lv{color:var(--brand-d);background:var(--brand-wash)}
+ol.list li,ul.list li{margin:.5em 0}
+footer{border-top:1px solid var(--line);padding:18px 0 26px;color:var(--ink-3);font-size:12.5px}
+/* highlights（顏色標記） */
+.hl-g,.hl-y,.hl-r,.hl-b{padding:0 3px;border-radius:4px}
+.hl-g{background:var(--hl-g)}.hl-y{background:var(--hl-y)}.hl-r{background:var(--hl-r)}.hl-b{background:var(--hl-b)}
+b.k-ok{color:var(--ok)}b.k-warn{color:var(--warn)}b.k-err{color:var(--err)}b.k-new{color:var(--new)}
+/* term = 虛底線 tooltip 錨點 */
+.term{border-bottom:1px dotted var(--brand);cursor:help;text-underline-offset:2px;transition:background .12s}
+.term:hover{background:var(--brand-wash2)}
+/* 毛玻璃 tooltip */
+[data-tip]{cursor:help}
+.tipbubble{position:fixed;display:none;z-index:9999;pointer-events:none;
+  background:rgba(12,14,20,.9);-webkit-backdrop-filter:blur(16px) saturate(1.4);backdrop-filter:blur(16px) saturate(1.4);
+  color:#fff;font-size:12.5px;font-weight:600;line-height:1.62;padding:10px 14px;border-radius:13px;max-width:300px;
+  border:1px solid rgba(255,255,255,.22);box-shadow:0 16px 40px -10px rgba(8,12,28,.62),0 1px 0 rgba(255,255,255,.12) inset;
+  letter-spacing:.004em;text-wrap:pretty;opacity:0;transform:translateY(5px) scale(.985);
+  transition:opacity .15s ease,transform .15s ease}
+.tipbubble.show{opacity:1;transform:none}
+.tipbubble b{color:#c7cdff;font-weight:800}
+.tipbubble::after{content:"";position:absolute;top:100%;left:var(--ax,50%);transform:translateX(-50%);
+  border:7px solid transparent;border-top-color:rgba(12,14,20,.92)}
+.tipbubble.below::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:rgba(12,14,20,.92)}
+/* 卡片 */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;box-shadow:var(--shadow);margin:14px 0}
+.card .ct{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.card .ct h3{margin:0;font-size:15.5px}
+/* 展開元件（預設收合） */
+.more{margin-top:10px}
+.more-tg{width:100%;display:flex;align-items:center;gap:10px;cursor:pointer;background:var(--surface-2);
+  border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-family:inherit;font-size:13.5px;
+  font-weight:700;color:var(--ink-2);transition:.16s;text-align:left}
+.more-tg:hover{border-color:var(--brand);color:var(--brand-d);background:var(--brand-wash)}
+.more-tg .chev{margin-left:auto;transition:transform .25s;color:var(--ink-3);flex:0 0 auto}
+.more.open .more-tg .chev{transform:rotate(180deg)}
+.more-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s ease}
+.more.open .more-body{grid-template-rows:1fr}
+.more-body>div{overflow:hidden}
+.more-inner{padding:12px 4px 4px;font-size:14px;color:var(--ink-2)}
+.more-inner p{margin:.55em 0}
+.more-inner .q{border-left:3px solid var(--line);padding:2px 12px;margin:8px 0;color:var(--ink-3);font-size:13px}
+/* floating TOC */
+.toc{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:60;width:216px;max-height:72vh;display:flex;flex-direction:column;
+background:color-mix(in srgb,var(--surface) 94%,transparent);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;transition:opacity .2s,transform .25s}
+.toc.collapsed{opacity:0;pointer-events:none;transform:translateY(-50%) translateX(12px)}
+.toc h4{margin:0;padding:11px 14px 8px;font-size:12px;color:var(--ink-3);letter-spacing:.06em}
+.toc nav{overflow-y:auto;padding:0 8px 10px}
+.toc a{display:block;padding:6px 10px;border-radius:8px;font-size:13px;color:var(--ink-2);border-left:2.5px solid transparent}
+.toc a:hover{background:var(--brand-wash);text-decoration:none}
+.toc a.on{color:var(--brand-d);font-weight:700;border-left-color:var(--brand);background:color-mix(in srgb,var(--brand-wash) 70%,transparent)}
+.toc-fab{position:fixed;right:18px;bottom:74px;z-index:61;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);
+background:var(--surface);color:var(--ink-2);cursor:pointer;display:grid;place-items:center;box-shadow:var(--shadow);transition:.15s}
+.toc-fab:hover{color:var(--brand-d);border-color:var(--brand)}
+.toc-fab svg{width:19px;height:19px}
+.totop{position:fixed;right:18px;bottom:22px;z-index:61;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);
+background:var(--surface);color:var(--ink-2);cursor:pointer;display:none;place-items:center;box-shadow:var(--shadow)}
+.totop.show{display:grid}.totop:hover{color:var(--brand-d);border-color:var(--brand)}
+@media(max-width:1380px){.toc{width:196px}}
+@media(max-width:980px){.toc{right:12px;width:230px;top:auto;bottom:128px;transform:none;max-height:52vh}.toc.collapsed{transform:translateX(12px)}}
+@media(max-width:560px){.shell{padding:0 15px}table{font-size:12.5px}}
+@media print{.toc,.toc-fab,.totop,.topbar{display:none!important}body{background:#fff}.more-body{grid-template-rows:1fr!important}}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="topbar-in">
+  <div class="brand">
+    <span class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/><path d="M8.5 11h5M11 8.5v5"/></svg></span>
+    <div><b>深度對抗查證・增補</b><span>人機協作時代的精準提問力 — v2 修訂報告</span></div>
+  </div>
+  <div class="tb-actions">
+    <button class="iconbtn print-btn" title="列印／另存 PDF" aria-label="列印"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z"/></svg></button>
+    <button class="iconbtn theme-btn" title="深淺色切換" aria-label="主題切換"><svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M22 12h-2.5M4.5 12H2M19 5l-1.8 1.8M6.8 17.2 5 19M19 19l-1.8-1.8M6.8 6.8 5 5"/></svg><svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+  </div>
+</div></div>
+
+<main class="shell">
+<div class="hero">
+  <h1>精準提問力 — 深度對抗查證增補版（v2）</h1>
+  <p class="lede">對原報告《人機協作時代的精準提問力：深度研究與AI提問素養之全景解析》進行<span class="term" data-tip="對抗式查證（adversarial verification）&#10;不是找證據「支持」主張，而是派多個獨立查證者主動嘗試「推翻」每一條主張；推不倒的才算存活。">對抗式查證</span>：逐一檢驗 12 項<span class="term" data-tip="可否證主張（falsifiable claim）&#10;可以被證據推翻的具體陳述（如「某論文說了 X 數據」），相對於無法檢驗的模糊說法。">可否證主張</span>、更正 5 項重大錯誤、補充 2025–2026 最新實證進展。滑鼠移到<span class="term" data-tip="就是這樣的提示框！&#10;全文虛底線詞彙都有毛玻璃註解，長段落則收合在「展開」按鈕內。">虛底線詞彙</span>可看註解。</p>
+  <div class="meta">
+    <span class="chip">查證基準日 <b>2026-07-13</b></span>
+    <span class="chip">子代理 <b>107</b> 個</span>
+    <span class="chip">來源 <b>25</b> 個・主張抽取 <b>116</b> 條</span>
+    <span class="chip"><span class="term" data-tip="三票對抗驗證&#10;每條主張交給 3 個互相獨立的查證代理，每個都被指示「盡力反駁」。3 票中被 2 票以上推翻即淘汰。">三票驗證</span> <b>20 存活／5 否決</b></span>
+    <span class="chip">裁決 <b>✅3・🟡4・❌3・❓1・🆕1</b></span>
+  </div>
+</div>
+
+<section id="overview">
+  <h2>一、查證總覽</h2>
+  <p>12 項主張中：<span class="hl-g"><b>3 項完全正確</b></span>（CLEAR、FTPL、臺灣教育部框架）、<span class="hl-y"><b>4 項部分正確</b></span>（需修正細節或更新時效）、<span class="hl-r"><b>3 項錯誤</b></span>（虛構數據或出處錯置）、<b>1 項無法證實</b>（TRUST）、<b>1 項為增補</b>。</p>
+  <div class="stats">
+    <div class="stat s-ok"><div class="v">3</div><div class="k">✅ 正確（可安心保留）</div></div>
+    <div class="stat s-warn"><div class="v">4</div><div class="k">🟡 部分正確（需修）</div></div>
+    <div class="stat s-err"><div class="v">3</div><div class="k">❌ 錯誤（必須更正）</div></div>
+    <div class="stat"><div class="v">1＋1</div><div class="k">❓ 待考 ＋ 🆕 增補</div></div>
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>#</th><th>原報告主張</th><th>裁決</th><th>驗證等級</th><th>一句話結論</th></tr></thead>
+    <tbody>
+    <tr><td class="num">1</td><td>UNESCO 框架＝「Understand/Acquire、Apply/Deepen、Create」三階層＋四維度</td><td><span class="badge b-part">部分正確</span></td><td class="num"><span class="term" data-tip="三票對抗驗證 3-0&#10;三個獨立反駁者都未能推翻，最高信心等級。">3-0</span></td><td>把<b class="k-warn">學生版與教師版兩套框架混寫成一套</b>；教師版其實是五維度</td></tr>
+    <tr><td class="num">2</td><td>OECD 與歐盟聯合 AI 素養框架（AILit）</td><td><span class="badge b-part">部分正確</span></td><td class="num">3-0</td><td>機構歸屬正確，但 <b class="k-warn">2026-06-17 已發布最終版</b>，草案表述過時</td></tr>
+    <tr><td class="num">3</td><td>FTPL 四維度框架（MDPI Appl. Sci. 2026）</td><td><span class="badge b-ok">正確</span></td><td class="num">3-0</td><td>論文與四維度屬實，但為<span class="term" data-tip="概念性文章（conceptual article）&#10;提出理論模型、未做實驗驗證的學術文章。FTPL 論文摘要自稱 conceptual article，無受試者、無資料蒐集。">概念性文章</span>，<b class="k-warn">不可寫成「經實驗驗證」</b></td></tr>
+    <tr><td class="num">4</td><td>CLEAR 模型（Leo Lo 2023）</td><td><span class="badge b-ok">正確</span></td><td class="num">3-0</td><td>引用完全正確，被引 200+ 次，權威性充分</td></tr>
+    <tr><td class="num">5</td><td>「XML 標籤使輸出品質提升 20%–40%」（Anthropic 內部測試）</td><td><span class="badge b-err">錯誤</span></td><td class="num"><span class="term" data-tip="單源一手查證&#10;直接抓取一手來源（官方文件、原始貼文、API 中繼資料）驗證，但未經三票對抗程序。信心中高，低於 3-0。">單源一手</span></td><td>Anthropic 官方<b class="k-err">從未發布此數據</b>，源頭是第三方部落格</td></tr>
+    <tr><td class="num">6</td><td>「CoT 將複雜邏輯準確率提升 30%–40%」</td><td><span class="badge b-err">錯誤</span></td><td class="num">3-0</td><td>原始論文<b class="k-err">無任何通用百分比</b>；旗艦數據是任務特定的 GSM8K 17.9%→56.9%</td></tr>
+    <tr><td class="num">7</td><td>Lyra 4D 方法論（專業提示工程實踐）</td><td><span class="badge b-err">出處錯置</span></td><td class="num">單源一手</td><td>實為 <b class="k-err">2025-06-29 Reddit 病毒式貼文</b>，非學術或專業方法論</td></tr>
+    <tr><td class="num">8</td><td>TRUST 模型</td><td><span class="badge b-keep">無法證實</span></td><td class="num">—</td><td>未能溯源原始文獻，建議標「出處待考」或降級</td></tr>
+    <tr><td class="num">9</td><td>CO-STAR／CRAFT／RISEN／TRACE／SPECS</td><td><span class="badge b-part">部分正確</span></td><td class="num">單源一手</td><td>CO-STAR 出處確立（新加坡 GovTech）；<b class="k-warn">RISEN 五字母引用錯誤</b>；其餘屬部落格框架</td></tr>
+    <tr><td class="num">10</td><td>臺灣教育部「中小學教師與學生AI素養框架」</td><td><span class="badge b-ok">正確</span></td><td class="num">3-0</td><td>官方文件屬實（115.6.18 函發布）；內容維度細節待 PDF 核對</td></tr>
+    <tr><td class="num">11</td><td>5W2H 應用於提示工程＋金字塔整合</td><td><span class="badge b-part">部分正確</span></td><td class="num">單源一手</td><td>原引用是 <b class="k-warn">SEO 行銷部落格</b>；2026 新實證顯示效益<b>任務相依</b></td></tr>
+    <tr><td class="num">12</td><td>2025–2026 重要進展（原報告缺漏）</td><td><span class="badge b-new">已增補</span></td><td class="num">單源一手</td><td><span class="term" data-tip="Context Engineering（脈絡工程）&#10;Anthropic 2025 官方定義：在 LLM 推論期間策展與維護最佳 token（資訊）集合的策略。是 prompt engineering 的涵蓋與擴展。">脈絡工程</span>、認知卸載實證、官方指南重構</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="errata">
+  <h2>二、重大更正（Errata）</h2>
+  <p>三處<span class="hl-r">必須更正的硬錯誤</span>與兩處<span class="hl-y">引用混淆</span>。最深刻的教訓：<b>原報告引用了它自己警告過的那類無出處數據——這正是「批判性評估」缺席的反面教材</b>。</p>
+
+  <div class="card">
+    <div class="ct"><span class="badge b-err">E-1</span><h3>CoT「30%–40% 提升」是虛構的通用倍率</h3><span class="badge b-lv">三票 3-0</span></div>
+    <p>Wei et al. (2022) 的<span class="term" data-tip="Chain-of-Thought（思維鏈）&#10;Wei et al. 2022（arXiv:2201.11903）提出：在提示中示範逐步推理過程，誘導模型也逐步推理。是提示工程最重要的學術成果之一。">思維鏈原始論文</span>從未提出任何通用百分比。旗艦結果是<span class="hl-b">PaLM 540B 在 <span class="term" data-tip="GSM8K&#10;Grade School Math 8K：8千題小學數學文字題基準測試集，是衡量 LLM 多步推理能力的經典基準。">GSM8K</span> 上由 17.9% 提升至 56.9%</span>（加計算器 58%，超越當時 <span class="term" data-tip="SOTA（State of the Art）&#10;當時的最佳紀錄。此處指 Cobbe et al. 2021 以微調 GPT-3＋驗證器達成的 55%。">SOTA</span> 55%）——是<b class="k-err">任務特定</b>結果，不是通用倍率。</p>
+    <div class="more"><button class="more-tg" type="button">展開：完整證據與修訂建議<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="more-body"><div><div class="more-inner">
+        <p><b>證據鏈</b>：arXiv 摘要原文僅稱增益「可能顯著」（the empirical gains can be striking），幅度依任務與模型而異；JMLR 正式版 PDF 逐字驗證：「Using 8-shot chain-of-thought prompting in combination with an external calculator, PaLM 540B achieves a performance of 58%, which outperforms the prior SOTA of 55%」。</p>
+        <p><b>關鍵限定</b>：CoT 是<span class="term" data-tip="湧現能力（emergent ability）&#10;只在模型規模超過某臨界值後才出現的能力。Wei et al. 發現 CoT 約在 100B 參數以上才有效，小模型使用 CoT 無益甚至有害。">規模湧現能力</span>——約 100B 參數以下的模型使用 CoT 無益甚至有害。</p>
+        <p><b>時代註記</b>：2024 年後的推理模型（o1、Claude 擴展思考等）已內建推理鏈，「Think step by step」對這類模型的邊際效益已大幅改變——提問素養教材應注明技巧的適用世代。</p>
+        <p><b>修訂寫法</b>：「CoT 在多步推理任務上可帶來顯著增益（如 PaLM 540B 於 GSM8K 由 17.9% 提升至 56.9%，Wei et al. 2022），但增益幅度依任務與模型規模而異，且僅在大規模模型上湧現。」</p>
+      </div></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct"><span class="badge b-err">E-2</span><h3>XML「20%–40% 提升」非 Anthropic 官方數據</h3><span class="badge b-lv">單源一手</span></div>
+    <p>直接抓取 Anthropic 官方文件：對 XML 標籤只有<span class="hl-g">質性建議</span>（無歧義解析、減少誤解），<b class="k-err">全文無 20%–40% 數據</b>。此數字的實際源頭是第三方部落格 aipromptlibrary.app——<span class="hl-r">正是原報告的引用來源 22</span>，其聲稱出自「Anthropic Guide 2025」但無任何可驗證連結。</p>
+    <div class="more"><button class="more-tg" type="button">展開：數據的真實流傳路徑與正確寫法<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="more-body"><div><div class="more-inner">
+        <p><b>混淆源推定</b>：官方文件唯一相近的量化數據是「<span class="hl-y">長上下文（20k+ tokens）中將查詢置於文末，可提升回應品質最多 30%</span>」——講的是查詢位置擺放，與 XML 標籤完全無關，疑似被第三方移花接木。</p>
+        <p><b>旁證</b>：獨立技術分析（glthr.com，2026-03）通篇無量化數據，僅有軼事性使用者回報；CO-STAR 原始文章（Sheila Teo）推薦 XML 分隔符時也只用質性描述。</p>
+        <p><b>文件時效</b>：原「Use XML tags」獨立頁面已被 Anthropic 整併為涵蓋最新模型（Claude Fable 5、Opus 4.8 等）的統一「Prompting best practices」指南——引用舊版獨立頁面的內容需更新連結。</p>
+        <p><b>修訂寫法</b>：「Anthropic 官方建議以 XML 標籤結構化提示詞：使用一致且具描述性的標籤名稱；內容有自然階層時使用巢狀標籤（如 &lt;documents&gt; 內含 &lt;document index="n"&gt;），以降低誤解與來源混淆。」（不附百分比）</p>
+      </div></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct"><span class="badge b-err">E-3</span><h3>Lyra「4D 方法論」是病毒式網路提示詞</h3><span class="badge b-lv">單源多點一手</span></div>
+    <p>原報告稱其為「專業的提示詞工程實踐」。溯源結果：Lyra 是 <span class="hl-r">2025-06-29 Reddit r/ChatGPT 匿名用戶 u/Prestigious-Fan118 的病毒式貼文</span>（自稱 600 萬瀏覽），本質是一段角色扮演式系統提示詞，<b class="k-err">無任何實驗數據、對照或文獻</b>。</p>
+    <div class="more"><button class="more-tg" type="button">展開：完整溯源證據鏈（Reddit → GitHub → X）<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="more-body"><div><div class="more-inner">
+        <p><b>原帖</b>（2025-06-29）：開頭即為「You are Lyra, a master-level AI prompt optimization specialist…」；作者自述動機是「凌晨 3 點第 147 次嘗試讓 ChatGPT 寫一封不像機器人的 email」——純軼事，無任何基準測試。</p>
+        <p><b>GitHub</b>：repo「Prestigious-Fan118/Lyra-Prompt-Optimizer-v1」建立於 2025-06-29（GitHub API 中繼資料），僅含兩個純文字提示詞檔（2.9KB＋10KB），無 README、無程式碼、無驗證材料；199 stars。</p>
+        <p><b>擴散節點</b>：2025-07-02 經 AI 網紅帳號 Min Choi 在 X 全文轉發（60.1 萬瀏覽、1.1 萬收藏），其後被大量部落格與影片誤當「方法論」轉述——原報告引用的 CSDN 文章即屬此類二手轉述。</p>
+        <p><b>公允之處</b>：4-D 四步驟（Deconstruct／Diagnose／Develop／Deliver）的內容轉述本身無誤，作為「迭代提問的自我檢核順序」不無教學價值。錯的是<b>權威性定位</b>。</p>
+        <p><b>修訂選項</b>：(a) 刪除；(b) 保留但改稱「2025 年社群流傳的提示詞自我檢核心法（無實證支持）」。建議 (b)——它恰好是「來源分級素養」的活教材。</p>
+      </div></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct"><span class="badge b-part">E-4</span><h3>UNESCO 學生版／教師版框架混淆</h3><span class="badge b-lv">三票 3-0</span></div>
+    <p>原報告「取得理解（Understand / Acquire）、深化應用（Apply / Deepen）、創造轉型（Create）」<b class="k-warn">把兩套框架的層級混寫成一套</b>：<span class="hl-b">Understand / Apply / Create 是學生版</span>層級；<span class="hl-y">Acquire / Deepen / Create 是教師版</span>層級。且「AI system design」僅存在於學生版——教師版是<b>五維度</b>。</p>
+    <div class="more"><button class="more-tg" type="button">展開：兩框架正確結構對照表<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="more-body"><div><div class="more-inner">
+        <div class="tablewrap"><table style="min-width:640px">
+          <thead><tr><th></th><th>學生版（2024-09）</th><th>教師版（2024-09）</th></tr></thead>
+          <tbody>
+            <tr><td><b>維度</b></td><td><b>4</b>：Human-centred mindset｜Ethics of AI｜AI techniques and applications｜<span class="hl-b">AI system design</span></td><td><b>5</b>：Human-centred mindset｜Ethics of AI｜AI foundations and applications｜<span class="hl-y">AI pedagogy</span>｜<span class="hl-y">AI for professional development</span></td></tr>
+            <tr><td><b>層級</b></td><td>Understand → Apply → Create</td><td>Acquire → Deepen → Create</td></tr>
+            <tr><td><b>能力數</b></td><td>12（4×3）</td><td>15（5×3）</td></tr>
+          </tbody>
+        </table></div>
+        <p>UNESCO 官方頁面原文：「The framework outlines 12 competencies across four dimensions」＋「Three levels are specified: Understand, Apply, Create」。另注意 UNESCO 原文 PDF 稱四類為 aspects（官網稱 dimensions），屬用詞差異、非錯誤。截至 2026-07 兩框架無修訂版。</p>
+      </div></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct"><span class="badge b-part">E-5</span><h3>RISEN 五字母與創作者定義不符</h3><span class="badge b-lv">單源一手</span></div>
+    <p>原報告：RISEN＝Role、<span class="hl-r">Intention、Scenario、Expectation、Notation</span>。創作者 Kyle Balmer（個人品牌「Prompt Entrepreneur」）的原始定義：<span class="hl-g">Role（角色）、Instructions（指示）、Steps（步驟）、End Goal（最終目標）、Narrowing（限縮）</span>。且 RISEN 是<b class="k-warn">個人教學框架</b>，非學術產物、無實證效度。</p>
+  </div>
+</section>
+
+<section id="confirmed">
+  <h2>三、獲得確認的部分（可安心保留）</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>項目</th><th>確認內容</th><th>等級</th></tr></thead>
+    <tbody>
+    <tr><td><b>CLEAR 模型</b></td><td>Leo S. Lo (2023),《The CLEAR path》, <i>J. Academic Librarianship</i> 49(4):102720, <span class="mono">DOI: 10.1016/j.acalib.2023.102720</span>。五原則 <span class="term" data-tip="CLEAR 五原則&#10;Concise 簡潔｜Logical 邏輯｜Explicit 明確｜Adaptive 調適｜Reflective 反思。出自圖書資訊學脈絡，目的是把提示工程納入資訊素養教育。">Concise/Logical/Explicit/Adaptive/Reflective</span> 與報告一致；被引 200+ 次、多所大學圖書館指南採用</td><td><span class="badge b-ok">3-0</span></td></tr>
+    <tr><td><b>FTPL 框架</b></td><td>Kang &amp; Won (2026), <i>Applied Sciences</i> 16(9):4198, <span class="mono">DOI: 10.3390/app16094198</span>。四維度（Learner Empowerment／Prompt Optimization／Critical Evaluation／Ethical Responsibility）逐字吻合；<b class="k-warn">但須標注為概念性框架</b>。姊妹實證研究 Kang &amp; Lee 已獲 <i>J. English for Academic Purposes</i>（2026）接受，研究線持續中</td><td><span class="badge b-ok">3-0</span></td></tr>
+    <tr><td><b>CO-STAR</b></td><td>新加坡政府科技局（GovTech）Data Science &amp; AI 團隊創建；Sheila Teo 以之贏得 2023 首屆 GPT-4 Prompt Engineering Competition（400+ 人）。2025 年第三屆 Prompt Royale 逾 2,500 名公務員、114 機構參與——<span class="hl-b">政府實務框架層級</span>，非學術文獻</td><td><span class="badge b-keep">單源</span></td></tr>
+    <tr><td><b>臺灣教育部框架</b></td><td>「臺灣中小學教師與學生AI素養框架」為官方文件：教育部 <span class="hl-g">115 年 6 月 18 日臺教資（一）字第 1152701805 號函</span>發布，載於 pads.moe.edu.tw。內容維度細節本輪未逐字核對 PDF</td><td><span class="badge b-ok">3-0</span></td></tr>
+    <tr><td><b>AILit 機構歸屬</b></td><td>確為歐盟執委會（EC）＋ OECD 聯合倡議，CodeAI（前身 Code.org）與國際專家支援開發</td><td><span class="badge b-ok">3-0</span></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="updates">
+  <h2>四、須更新時效的部分</h2>
+
+  <div class="card">
+    <div class="ct"><span class="badge b-part">U-1</span><h3>AILit Framework 已於 2026-06-17 發布最終版</h3></div>
+    <p>2025-05 僅為<span class="term" data-tip="審閱草案（review draft）&#10;公開徵詢意見用的未定稿。AILit 草案 2025-05 發布，經逾 2,000 名全球利害關係人諮詢後才定版——草案與最終版結構可能不同。">審閱草案</span>；最終版《<b>Empowering Learners for the Age of AI</b>》於 <span class="hl-g">2026-06-17</span> 發布（OECD/European Union 2026, <span class="mono">DOI: 10.1787/65cd27d4-en</span>），並銜接 <span class="term" data-tip="PISA 2029&#10;OECD 國際學生能力評量計畫 2029 週期，將「媒體與人工智慧素養」列為創新評量領域，AILit Framework 是其概念基礎之一。">PISA 2029</span> 創新評量領域。</p>
+    <div class="note n-warn">⚠️ 框架<b>內部結構</b>（四領域名稱、19 vs 22 項能力）的所有具體主張在對抗驗證中<b>全數遭否決（0-3）</b>——網路轉述版本互相矛盾、草案與定版間可能有變動。<b>引用最終版結構前必須直接查閱 DOI 原文</b>，這本身就是一個「二手轉述不可信」的實例。</div>
+  </div>
+
+  <div class="card">
+    <div class="ct"><span class="badge b-new">U-2</span><h3>提示工程 → 脈絡工程：已被正式命名的典範演進</h3></div>
+    <p>原報告結論「從 Prompt 到 Loop」方向正確，但缺了 2025 年後的正式命名：<b>Anthropic 官方（2025-09-29）明確定調「context engineering 是 prompt engineering 的自然演進」</b>；學術端 Mei et al. 的 166 頁綜述（arXiv:2507.13334，分析 1,400+ 篇論文）已將其確立為形式化學科。兩者一致的定位：<span class="hl-g">涵蓋與擴展（subsume），而非取代</span>。</p>
+    <div class="more"><button class="more-tg" type="button">展開：脈絡工程的核心概念與對提問素養的意義<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="more-body"><div><div class="more-inner">
+        <p><b>官方定義</b>：「在 LLM 推論期間<b>策展與維護最佳 token（資訊）集合</b>的一組策略」。核心概念包括 <span class="term" data-tip="Context rot（脈絡腐化）&#10;隨著上下文越塞越長，模型對其中資訊的注意力與回想精度反而衰退的現象。是「不是塞越多越好」的理論依據。">context rot</span>、compaction（壓縮）、just-in-time context（即時脈絡）、sub-agent 架構（子代理分工）。</p>
+        <p><b>學術缺口</b>：Mei et al. 指出「理解-生成不對稱」——先進脈絡工程輔助下模型擅長<b>理解</b>複雜脈絡，但<b>生成</b>同等複雜的長篇輸出仍明顯受限。</p>
+        <p><b>對提問素養的意義</b>：四大維度在 <span class="term" data-tip="Agentic AI（代理式 AI）&#10;能自主規劃、呼叫工具、多步執行任務的 AI 系統（相對於單輪問答的聊天機器人）。2025 年後提示指南的重心已轉向代理式工作流。">agentic AI</span> 時代仍成立，但重心從「教模型怎麼想」移向「<span class="hl-b">給模型對的材料與目標、驗證它的產出</span>」——提問者的角色進一步向「資訊環境的策展人」演化。</p>
+      </div></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="cognition">
+  <h2>五、增補：AI 依賴的認知代價（原報告缺漏的實證線）</h2>
+  <p>原報告強調「認知警覺」「拒絕被動依賴」，但全文<b class="k-warn">沒有引用任何認知科學實證</b>。2025 年以來最重要的兩項研究恰好補上這塊：</p>
+
+  <div class="card">
+    <div class="ct"><span class="badge b-new">N-1</span><h3>MIT Media Lab「Your Brain on ChatGPT」（2025-06）</h3></div>
+    <p>Kosmyna et al.（含 Pattie Maes），<span class="mono">arXiv:2506.08872</span>。以 <span class="term" data-tip="EEG（腦電圖）&#10;以頭皮電極記錄大腦電活動，可衡量寫作時各腦區的神經連結強度與分佈。">EEG</span> 比較三組寫作者：<span class="hl-g">純大腦組神經連結最強、最分散</span>；搜尋引擎組居中；<span class="hl-r">LLM 組連結最弱</span>。作者稱此現象為「<span class="term" data-tip="認知負債（cognitive debt）&#10;此研究提出的概念：依賴 AI 完成認知工作省下的力氣，會以神經參與度下降的形式「欠債」，且交換回無 AI 條件後仍有殘餘效應。">認知負債</span>」。</p>
+    <div class="more"><button class="more-tg" type="button">展開：關鍵發現與引用注意事項<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="more-body"><div><div class="more-inner">
+        <p><b>殘餘效應</b>：第四節條件交換後，由 LLM 轉純大腦寫作者呈現 alpha／beta 頻段連結性<b>降低</b>；反向（純大腦轉 LLM）則呈現較強的枕頂葉與前額葉活化——先依賴 LLM 可能留下神經參與度下降的痕跡。</p>
+        <p><b>引用警語</b>：此研究為<span class="term" data-tip="預印本（preprint）&#10;尚未完成同儕審查的論文版本。可引用但應標注狀態，結論保留不確定性。">預印本</span>且樣本規模有限；媒體轉述常誇大為「ChatGPT 讓你變笨」，嚴謹引用應限縮在「特定寫作任務下神經參與度的組間差異」。</p>
+      </div></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct"><span class="badge b-new">N-2</span><h3>Microsoft Research ＋ CMU：GenAI 與批判性思維（CHI 2025）</h3></div>
+    <p>Lee et al., <span class="mono">DOI: 10.1145/3706598.3713778</span>（同儕審查頂會論文）。對知識工作者的調查發現一組鏡像關係：<span class="hl-r">對 GenAI 的信心越高 → 自陳批判性思維投入越少</span>；<span class="hl-g">對自身能力的信心越高 → 批判性思維投入越多</span>。（注意：<span class="term" data-tip="自陳資料（self-reported）&#10;由受訪者自己回報，非客觀行為測量——可能受記憶與社會期許偏誤影響。">自陳資料</span>，非行為測量。）</p>
+  </div>
+
+  <p>這兩項研究為原報告「AI 是<span class="term" data-tip="認知鷹架（cognitive scaffold）&#10;教育心理學概念：暫時性的支撐結構，幫學習者完成原本做不到的任務，最終目的是拆除鷹架後學習者能獨立完成。與「代筆者」的差別在於是否保留學習者的認知參與。">鷹架</span>而非代筆者」的主張補上了實證地基——<b>提問素養的終極目標不是「更會用 AI」，而是在用 AI 的同時保持自身認知肌肉不萎縮</b>。</p>
+</section>
+
+<section id="tiers">
+  <h2>六、提示框架權威性分級（修訂版）</h2>
+  <p>原報告把學術模型、政府框架、部落格心法、病毒貼文<b class="k-warn">並列同一層級引用</b>——修訂版建立五級分級，引用時應標明等級：</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>層級</th><th>框架</th><th>出處性質</th><th>引用建議</th></tr></thead>
+    <tbody>
+    <tr><td><span class="badge b-ok">A</span></td><td><b>CLEAR</b>（Lo 2023）｜<b>FTPL</b>（Kang &amp; Won 2026，概念性）｜<b>CoT</b>（Wei et al. 2022）</td><td>同儕審查期刊／頂會論文</td><td>可直接學術引用（FTPL 標注概念性）</td></tr>
+    <tr><td><span class="badge b-ok">B</span></td><td>UNESCO 學生/教師框架（2024）｜AILit 最終版（2026）｜臺灣教育部框架（2026）｜Anthropic/OpenAI/Google 官方提示指南</td><td>官方機構一手文件</td><td>權威，但<b>注意版本時效</b></td></tr>
+    <tr><td><span class="badge b-part">C</span></td><td><b>CO-STAR</b>（GovTech Singapore）</td><td>政府實務框架＋競賽傳播</td><td>標注為實務框架，非學理依據</td></tr>
+    <tr><td><span class="badge b-keep">D</span></td><td><b>RISEN</b>（Kyle Balmer）｜CRAFT｜TRACE｜SPECS</td><td>個人品牌／部落格教學心法</td><td>僅作舉例，標明無實證效度</td></tr>
+    <tr><td><span class="badge b-err">E</span></td><td><b>Lyra 4D</b>（Reddit 2025）</td><td>病毒式網路內容</td><td>不應以「方法論」名義引用</td></tr>
+    <tr><td><span class="badge b-keep">?</span></td><td><b>TRUST</b> 模型</td><td>出處無法證實</td><td>標「出處待考」或刪除</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="card">
+    <div class="ct"><span class="badge b-part">5W2H</span><h3>結構化提問的實證定位：任務相依，不是普遍靈藥</h3></div>
+    <p>2026 年最接近的實證（<span class="mono">arXiv:2603.18976</span>，PPS——5W3H 結構化提示框架，60 任務／540 筆輸出／<span class="term" data-tip="LLM-judge&#10;以另一個大型語言模型擔任評分者的自動化評測方法。成本低但有自身偏誤，結論強度低於人類評測。">LLM-judge</span> 三條件對照）：<span class="hl-g">高模糊度任務（商業分析）增益顯著</span>，<span class="hl-r">低模糊度任務（旅遊規劃）效果反轉</span>。</p>
+    <div class="more"><button class="more-tg" type="button">展開：對原報告 5W2H 章節的修訂意義<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="more-body"><div><div class="more-inner">
+        <p><b>好消息</b>：「結構化的價值與任務模糊度成正比」其實<b>強化</b>了原報告的金字塔主張——先定義問題（What/Why），再決定要不要上結構。模糊的大問題值得全套 5W2H；明確的小任務直接問反而更好。</p>
+        <p><b>壞消息</b>：原報告「金字塔思考法與 5W2H 整合」一節的引用來源是 SEO 行銷部落格（hotels.com.tw 為戰國策行銷的內容站），無任何學術支持；該研究也提醒「測量不對稱」——無約束的簡單提示可能虛增評測分數，對一切框架效益數據都應保持懷疑。</p>
+        <p><b>注意</b>：此實證本身也僅是未經同儕審查的預印本、單一研究——是「初步支持」，不是定論。</p>
+      </div></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="conclusion">
+  <h2>七、修訂後的核心結論</h2>
+  <p>四大維度（5W2H 錨定、情境敘事、文詞結構化、思辨拆解）作為<b>教學框架</b>依然成立。修訂版的五項調整：</p>
+  <ol class="list">
+    <li><b>證據紀律</b>：刪除所有無法溯源的量化宣稱（XML 20-40%、CoT 30-40%）；量化數據一律標注<span class="hl-b">原始論文與任務範圍</span>。原報告引用了自己警告過的內容農場數據——這是「批判性評估」最有力的反面教材，值得寫進教材本身。</li>
+    <li><b>來源分級</b>：依 A–E 分級引用；D/E 級框架僅作實務舉例，不作學理依據。</li>
+    <li><b>時效標注</b>：AILit 定版（2026-06-17）、臺灣框架發布（2026-06-18）、Anthropic 文件重構——AI 素養領域的半衰期以「月」計，<span class="hl-y">報告必須標注查證基準日</span>。</li>
+    <li><b>視野擴展</b>：從 prompt engineering 延伸到 context engineering（策展資訊環境）；從「提問技巧」延伸到「認知自我保護」（防<span class="term" data-tip="認知卸載（cognitive offloading）&#10;把記憶、推理等認知工作外包給外部工具的行為。適度卸載可釋放認知資源，過度卸載則可能導致相應能力退化。">認知卸載</span>）。</li>
+    <li><b>世代校準</b>：內建推理鏈的模型改變了「Think step by step」等技巧的邊際效益——提問素養的重心正從「教模型怎麼想」移向「給對材料與目標、驗證產出」。</li>
+  </ol>
+</section>
+
+<section id="method">
+  <h2>八、查證方法與侷限</h2>
+  <p><b>方法</b>：deep-research 多代理工作流——12 項主張拆解為 5 個搜尋角度 → 平行搜尋 → 抓取 <b>25 個來源</b>、抽取 <b>116 條可否證主張</b> → 前 25 條進行三票對抗驗證（每票獨立嘗試反駁）→ <span class="hl-g">20 存活</span>／<span class="hl-r">5 否決</span>。全程 107 個子代理。</p>
+  <div class="more"><button class="more-tg" type="button">展開：驗證等級定義與已知侷限<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+    <div class="more-body"><div><div class="more-inner">
+      <p><b>驗證等級</b>：「三票 3-0」＝三個獨立反駁者皆未能推翻（最高信心）；「單源一手」＝直接抓取一手來源（官方文件、原始貼文、GitHub API）驗證但未經三票程序（中高信心）；「無法證實」＝現有來源不足以裁決。</p>
+      <p><b>侷限</b>：(1) XML、Lyra、TRUST、CO-STAR、5W2H、新進展等項因驗證預算未進入三票程序；(2) AILit 最終版內部結構、臺灣教育部框架 PDF 內文、OECD VET 報告主張、MLA/AILIT 素養量表未完成查證，列為開放問題；(3) SSRN/MDPI 部分頁面回傳 403/410，改以 Crossref API 與鏡像庫交叉驗證；(4) 被否決的 5 條主張全部集中於 AILit 內部結構——反映二手轉述在新框架定版初期特別不可靠。</p>
+    </div></div></div>
+  </div>
+</section>
+
+<section id="sources">
+  <h2>九、主要來源</h2>
+  <h3>官方一手</h3>
+  <ul class="list">
+    <li>UNESCO <a href="https://www.unesco.org/en/articles/ai-competency-framework-students">AI competency framework for students</a>｜<a href="https://www.unesco.org/en/articles/ai-competency-framework-teachers">for teachers</a>（2024）</li>
+    <li>AILit 最終版《Empowering Learners for the Age of AI》：<a href="https://doi.org/10.1787/65cd27d4-en">DOI: 10.1787/65cd27d4-en</a>（OECD/EU, 2026-06-17）｜<a href="https://ailiteracyframework.org/">ailiteracyframework.org</a></li>
+    <li>臺灣教育部框架：<a href="https://pads.moe.edu.tw/download.php">pads.moe.edu.tw</a>（115.6.18 臺教資（一）字第 1152701805 號函）</li>
+    <li>Anthropic <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices">Prompting best practices</a>｜<a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents">Effective context engineering for AI agents</a>（2025-09-29）</li>
+  </ul>
+  <h3>學術文獻</h3>
+  <ul class="list">
+    <li>Wei et al. (2022), Chain-of-Thought Prompting, <a href="https://arxiv.org/abs/2201.11903">arXiv:2201.11903</a>｜<a href="https://jmlr.org/papers/volume24/22-1144/22-1144.pdf">JMLR 正式版</a></li>
+    <li>Lo, L. S. (2023), The CLEAR path, <a href="https://doi.org/10.1016/j.acalib.2023.102720">DOI: 10.1016/j.acalib.2023.102720</a>｜<a href="https://digitalrepository.unm.edu/ulls_fsp/211/">UNM 開放取用版</a></li>
+    <li>Kang &amp; Won (2026), FTPL, <a href="https://doi.org/10.3390/app16094198">DOI: 10.3390/app16094198</a></li>
+    <li>Kosmyna et al. (2025), Your Brain on ChatGPT, <a href="https://arxiv.org/abs/2506.08872">arXiv:2506.08872</a>（預印本）</li>
+    <li>Lee et al. (2025), GenAI 與批判性思維, CHI 2025, <a href="https://dl.acm.org/doi/full/10.1145/3706598.3713778">DOI: 10.1145/3706598.3713778</a></li>
+    <li>Mei et al. (2025), A Survey of Context Engineering, <a href="https://arxiv.org/abs/2507.13334">arXiv:2507.13334</a></li>
+    <li>PPS 5W3H 實證 (2026), <a href="https://arxiv.org/pdf/2603.18976">arXiv:2603.18976</a>（預印本）</li>
+  </ul>
+  <h3>溯源證據（D/E 級來源鑑定）</h3>
+  <ul class="list">
+    <li>Sheila Teo (2023-12-29), <a href="https://towardsdatascience.com/how-i-won-singapores-gpt-4-prompt-engineering-competition-34c195a93d41/">How I Won Singapore's GPT-4 Prompt Engineering Competition</a></li>
+    <li>Lyra 原帖：Reddit r/ChatGPT（u/Prestigious-Fan118, 2025-06-29）｜GitHub: Prestigious-Fan118/Lyra-Prompt-Optimizer-v1</li>
+    <li>「XML 20-40%」流傳源：aipromptlibrary.app（無出處引註，即原報告文獻 22）</li>
+  </ul>
+</section>
+
+<footer class="shell">
+  本頁為《人機協作時代的精準提問力》之對抗查證 companion 報告（v2）。查證基準日 2026-07-13；由多代理對抗查證工作流輔助產生，最終裁決與文字由人機協作完成。同內容 Markdown 版：<span class="mono">人機協作時代的精準提問力_深度對抗查證增補版.md</span>
+</footer>
+</main>
+
+<aside class="toc" id="toc">
+  <h4>目錄</h4>
+  <nav>
+    <a href="#overview">一、查證總覽</a>
+    <a href="#errata">二、重大更正</a>
+    <a href="#confirmed">三、獲得確認</a>
+    <a href="#updates">四、時效更新</a>
+    <a href="#cognition">五、認知代價增補</a>
+    <a href="#tiers">六、框架權威分級</a>
+    <a href="#conclusion">七、修訂結論</a>
+    <a href="#method">八、方法與侷限</a>
+    <a href="#sources">九、主要來源</a>
+  </nav>
+</aside>
+<button class="toc-fab" id="tocFab" title="目錄" aria-label="目錄"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></button>
+<button class="totop" id="totop" title="回頂端" aria-label="回頂端"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg></button>
+
+<script>
+/* theme */
+(function(){
+  const KEY='pq-v2-theme';const saved=localStorage.getItem(KEY);
+  if(saved)document.documentElement.setAttribute('data-theme',saved);
+  document.querySelector('.theme-btn').addEventListener('click',()=>{
+    const cur=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+    document.documentElement.setAttribute('data-theme',cur);localStorage.setItem(KEY,cur);});
+  document.querySelector('.print-btn').addEventListener('click',()=>window.print());
+})();
+/* 展開元件 */
+document.querySelectorAll('.more-tg').forEach(btn=>{
+  btn.addEventListener('click',()=>btn.closest('.more').classList.toggle('open'));
+});
+/* TOC */
+(function(){
+  const toc=document.getElementById('toc'),fab=document.getElementById('tocFab'),top=document.getElementById('totop');
+  let userHid=false;
+  fab.addEventListener('click',()=>{userHid=!toc.classList.contains('collapsed')?true:false;toc.classList.toggle('collapsed');});
+  if(window.innerWidth<980)toc.classList.add('collapsed');
+  const links=[...toc.querySelectorAll('a')];
+  const secs=links.map(a=>document.querySelector(a.getAttribute('href')));
+  function onScroll(){
+    top.classList.toggle('show',window.scrollY>500);
+    let on=0;secs.forEach((s,i)=>{if(s&&s.getBoundingClientRect().top<120)on=i;});
+    links.forEach((a,i)=>a.classList.toggle('on',i===on));
+  }
+  document.addEventListener('scroll',onScroll,{passive:true});onScroll();
+  top.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+})();
+/* 毛玻璃 tooltips（虛底線 hover） */
+(function(){
+  function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+  function setup(){
+    const tip=document.createElement('div');tip.className='tipbubble';document.body.appendChild(tip);
+    let cur=null;
+    function hide(){tip.classList.remove('show');tip.style.display='none';cur=null;}
+    function place(el){const t=el.getAttribute('data-tip');if(!t){hide();return;}
+      cur=el;const parts=String(t).split('\n');
+      tip.innerHTML='<b>'+esc(parts[0])+'</b>'+(parts.length>1?'<br>'+parts.slice(1).map(esc).join('<br>'):'');
+      tip.style.display='block';tip.classList.remove('below','show');
+      const r=el.getBoundingClientRect(),b=tip.getBoundingClientRect();
+      let left=r.left+r.width/2-b.width/2;left=Math.max(8,Math.min(left,window.innerWidth-b.width-8));
+      let topY=r.top-b.height-10;if(topY<6){topY=r.bottom+10;tip.classList.add('below');}
+      tip.style.left=left+'px';tip.style.top=topY+'px';tip.style.setProperty('--ax',(r.left+r.width/2-left)+'px');
+      requestAnimationFrame(()=>{if(cur===el)tip.classList.add('show');});}
+    document.addEventListener('mouseover',e=>{const el=e.target.closest?e.target.closest('[data-tip]'):null;if(el)place(el);});
+    document.addEventListener('mouseout',e=>{const el=e.target.closest?e.target.closest('[data-tip]'):null;if(el&&el===cur)hide();});
+    document.addEventListener('scroll',()=>{if(cur)hide();},true);
+    window.addEventListener('resize',hide);
+  }
+  if(document.body)setup();else document.addEventListener('DOMContentLoaded',setup);
+})();
+</script>
+</body>
+</html>
