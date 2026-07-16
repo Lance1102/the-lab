@@ -92,6 +92,7 @@
 
   /* three concept chips */
   .concepts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:34px 0 6px;}
+  @media(max-width:760px){.concepts{grid-template-columns:1fr;gap:12px;}}
   .concept{
     background:var(--card);border:1px solid var(--hairline);border-radius:var(--radius);
     padding:18px 18px 16px;box-shadow:var(--shadow);position:relative;overflow:hidden;
