@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>額定值 vs 量測值｜IEC 60335-1 / CNS 60335-1 第10節 消耗功率與電流</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EAEDEF;
+    --paper-2:#F5F7F9;
+    --card:#FFFFFF;
+    --ink:#16232C;
+    --ink-soft:#53636D;
+    --ink-faint:#8A98A0;
+    --panel:#0E2830;
+    --panel-2:#143842;
+    --panel-line:rgba(255,255,255,0.10);
+    --amber:#F2A63B;
+    --amber-soft:#F6C078;
+    --amber-glow:rgba(242,166,59,.55);
+    --pass:#24A97C;
+    --pass-soft:#7ed3b3;
+    --fail:#E24E37;
+    --fail-soft:#f0a091;
+    --hairline:#CDD5DB;
+    --shadow:0 1px 2px rgba(16,40,48,.06),0 8px 30px rgba(16,40,48,.08);
+    --radius:14px;
+    font-synthesis:none;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Noto Sans TC","Archivo",system-ui,sans-serif;
+    font-size:17px;
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums;}
+  .en{font-family:"Archivo",sans-serif;font-weight:600;letter-spacing:.01em;}
+
+  .wrap{max-width:1060px;margin:0 auto;padding:0 22px;}
+
+  /* ---------- top document bar ---------- */
+  .docbar{
+    background:var(--panel);
+    color:#cfe0e4;
+    border-bottom:1px solid var(--panel-line);
+  }
+  .docbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:14px;
+    padding-top:11px;padding-bottom:11px;flex-wrap:wrap;}
+  .docbar .std{font-family:"IBM Plex Mono",monospace;font-size:13.5px;letter-spacing:.02em;color:var(--amber-soft);}
+  .docbar .std b{color:#fff;font-weight:600;}
+  .docbar .cl{font-size:13.5px;color:#9fb6bc;}
+
+  /* ---------- hero ---------- */
+  .hero{padding:54px 0 30px;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:9px;
+    font-family:"IBM Plex Mono",monospace;font-size:12.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--ink-soft);margin-bottom:18px;
+  }
+  .eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--amber);
+    box-shadow:0 0 0 4px rgba(242,166,59,.18);}
+  h1{
+    font-family:"Noto Sans TC",sans-serif;font-weight:900;
+    font-size:clamp(30px,5vw,50px);line-height:1.18;letter-spacing:-.01em;margin:0 0 18px;
+  }
+  h1 .amber{color:#b06f10;}
+  .lede{font-size:clamp(17px,2.1vw,20px);color:var(--ink-soft);max-width:60ch;margin:0 0 6px;}
+
+  /* three concept chips */
+  .concepts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:34px 0 6px;}
+  .concept{
+    background:var(--card);border:1px solid var(--hairline);border-radius:var(--radius);
+    padding:18px 18px 16px;box-shadow:var(--shadow);position:relative;overflow:hidden;
+  }
+  .concept::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;}
+  .concept.c1::before{background:var(--amber);}
+  .concept.c2::before{background:var(--panel);}
+  .concept.c3::before{background:var(--pass);}
+  .concept .k{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.1em;color:var(--ink-faint);text-transform:uppercase;}
+  .concept .t{font-weight:700;font-size:19px;margin:4px 0 6px;}
+  .concept .d{font-size:14.5px;line-height:1.7;color:var(--ink-soft);}
+
+  /* ---------- section scaffolding ---------- */
+  section{padding:30px 0;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;flex-wrap:wrap;}
+  .sec-num{font-family:"IBM Plex Mono",monospace;font-size:14px;color:var(--amber);
+    border:1px solid var(--amber);border-radius:6px;padding:1px 8px;flex:none;}
+  .sec-head h2{font-size:clamp(22px,3vw,28px);font-weight:900;margin:0;letter-spacing:-.01em;}
+  .sec-head p{margin:0;color:var(--ink-soft);font-size:15px;}
+
+  /* ---------- calculator ---------- */
+  .calc{
+    background:var(--card);border:1px solid var(--hairline);border-radius:20px;
+    box-shadow:var(--shadow);overflow:hidden;
+  }
+  .calc-grid{display:grid;grid-template-columns:340px 1fr;}
+  @media(max-width:820px){.calc-grid{grid-template-columns:1fr;}}
+
+  .inputs{padding:24px 22px;border-right:1px solid var(--hairline);}
+  @media(max-width:820px){.inputs{border-right:none;border-bottom:1px solid var(--hairline);}}
+  .field{margin-bottom:20px;}
+  .field:last-child{margin-bottom:4px;}
+  .field > label.lab{display:block;font-weight:700;font-size:14.5px;margin-bottom:9px;}
+  .field .hint{font-size:12.5px;color:var(--ink-faint);margin-top:7px;line-height:1.55;}
+
+  /* segmented toggles */
+  .seg{display:flex;background:var(--paper);border:1px solid var(--hairline);border-radius:11px;padding:4px;gap:4px;}
+  .seg.col{flex-direction:column;}
+  .seg button{
+    flex:1;border:none;background:transparent;cursor:pointer;font-family:inherit;
+    font-size:14.5px;font-weight:500;color:var(--ink-soft);padding:9px 8px;border-radius:8px;
+    transition:background .18s,color .18s,box-shadow .18s;line-height:1.3;
+  }
+  .seg button .sub{display:block;font-size:11.5px;color:var(--ink-faint);font-weight:400;margin-top:1px;}
+  .seg button[aria-pressed="true"]{background:var(--panel);color:#fff;box-shadow:0 2px 8px rgba(14,40,48,.28);}
+  .seg button[aria-pressed="true"] .sub{color:var(--amber-soft);}
+  .seg button:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
+
+  .num-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .num-field label{display:block;font-weight:700;font-size:14px;margin-bottom:8px;}
+  .num-in{position:relative;}
+  .num-in input{
+    width:100%;font-family:"IBM Plex Mono",monospace;font-size:20px;font-weight:500;
+    padding:11px 40px 11px 12px;border:1.5px solid var(--hairline);border-radius:10px;
+    background:var(--paper-2);color:var(--ink);
+  }
+  .num-in input:focus{outline:none;border-color:var(--amber);background:#fff;box-shadow:0 0 0 3px rgba(242,166,59,.18);}
+  .num-in .u{position:absolute;right:12px;top:50%;transform:translateY(-50%);
+    font-family:"IBM Plex Mono",monospace;font-size:14px;color:var(--ink-faint);pointer-events:none;}
+  .num-field.rated label{color:#a5680c;}
+  .num-field.meas label{color:var(--panel);}
+
+  .presets{margin-top:2px;}
+  .presets .pl{font-size:12.5px;color:var(--ink-faint);margin-bottom:8px;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    border:1px solid var(--hairline);background:var(--paper-2);border-radius:20px;
+    padding:6px 13px;font-size:13px;cursor:pointer;font-family:inherit;color:var(--ink-soft);
+    transition:.15s;
+  }
+  .chip:hover{border-color:var(--amber);color:var(--ink);background:#fff;}
+  .chip:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
+
+  /* ---------- instrument panel (result) ---------- */
+  .panel{background:var(--panel);color:#eaf2f3;padding:24px 24px 26px;display:flex;flex-direction:column;}
+  .panel .p-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px;flex-wrap:wrap;}
+  .panel .p-cap{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.12em;
+    text-transform:uppercase;color:#7f9aa1;}
+
+  /* verdict readout */
+  .verdict{display:inline-flex;align-items:center;gap:10px;padding:6px 14px;border-radius:30px;
+    font-weight:900;font-size:17px;letter-spacing:.02em;border:1.5px solid;}
+  .verdict .lamp{width:11px;height:11px;border-radius:50%;}
+  .verdict.pass{color:var(--pass-soft);border-color:rgba(36,169,124,.55);background:rgba(36,169,124,.12);}
+  .verdict.pass .lamp{background:var(--pass);box-shadow:0 0 10px 1px var(--pass);}
+  .verdict.fail{color:var(--fail-soft);border-color:rgba(226,78,55,.55);background:rgba(226,78,55,.12);}
+  .verdict.fail .lamp{background:var(--fail);box-shadow:0 0 10px 1px var(--fail);}
+
+  /* big readout digits */
+  .readout{display:flex;align-items:flex-end;gap:22px;margin:14px 0 6px;flex-wrap:wrap;}
+  .ro-block .ro-l{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.1em;
+    text-transform:uppercase;color:#7f9aa1;margin-bottom:2px;}
+  .ro-block .ro-v{font-family:"IBM Plex Mono",monospace;font-weight:600;line-height:1;}
+  .ro-meas .ro-v{font-size:40px;color:var(--amber);text-shadow:0 0 22px var(--amber-glow);}
+  .ro-dev .ro-v{font-size:26px;}
+  .ro-dev.p .ro-v{color:var(--pass-soft);}
+  .ro-dev.f .ro-v{color:var(--fail-soft);}
+  .ro-sep{width:1px;align-self:stretch;background:var(--panel-line);}
+
+  /* ---------- the GAUGE (signature) ---------- */
+  .gauge{margin:20px 0 4px;}
+  .gauge .track-wrap{position:relative;height:96px;}
+  .gauge .scale{position:absolute;left:0;right:0;top:46px;height:8px;border-radius:6px;
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.06);}
+  .gauge .band{position:absolute;top:46px;height:8px;border-radius:6px;
+    background:linear-gradient(90deg,rgba(36,169,124,.35),rgba(36,169,124,.7));
+    box-shadow:0 0 18px rgba(36,169,124,.45);transition:left .5s cubic-bezier(.22,1,.36,1),width .5s cubic-bezier(.22,1,.36,1);}
+  .gauge .band.open::before{content:"◂";position:absolute;left:-16px;top:-6px;color:var(--pass-soft);font-size:14px;}
+  /* rated (target) marker */
+  .gauge .rated{position:absolute;top:30px;width:2px;height:40px;background:var(--amber);
+    box-shadow:0 0 10px var(--amber-glow);transition:left .5s cubic-bezier(.22,1,.36,1);}
+  .gauge .rated .cap{position:absolute;top:-20px;left:50%;transform:translateX(-50%);white-space:nowrap;
+    font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--amber-soft);}
+  /* limit ticks */
+  .gauge .lim{position:absolute;top:40px;width:2px;height:20px;background:rgba(255,255,255,.5);
+    transition:left .5s cubic-bezier(.22,1,.36,1);}
+  .gauge .lim .cap{position:absolute;top:22px;left:50%;transform:translateX(-50%);white-space:nowrap;
+    font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:#9fb6bc;}
+  /* measured needle */
+  .gauge .needle{position:absolute;top:8px;transition:left .55s cubic-bezier(.22,1,.36,1);z-index:3;}
+  .gauge .needle .tri{width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;
+    border-top:12px solid var(--amber);transform:translateX(-8px);filter:drop-shadow(0 0 8px var(--amber-glow));}
+  .gauge .needle .stem{position:absolute;top:11px;left:-1px;width:2px;height:40px;background:var(--amber);opacity:.9;}
+  .gauge .needle.pass .tri{border-top-color:var(--pass);filter:drop-shadow(0 0 8px rgba(36,169,124,.6));}
+  .gauge .needle.pass .stem{background:var(--pass);}
+  .gauge .needle.fail .tri{border-top-color:var(--fail);filter:drop-shadow(0 0 8px rgba(226,78,55,.6));}
+  .gauge .needle.fail .stem{background:var(--fail);}
+  .gauge .needle .val{position:absolute;top:-2px;left:12px;white-space:nowrap;
+    font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;color:#fff;}
+
+  /* basis / reasoning */
+  .basis{margin-top:16px;background:rgba(255,255,255,.05);border:1px solid var(--panel-line);
+    border-radius:12px;padding:15px 16px;font-size:14.5px;line-height:1.75;color:#d7e3e5;}
+  .basis .bl{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:#7f9aa1;margin-bottom:6px;}
+  .basis b{color:#fff;font-weight:600;}
+  .basis .hi-amber{color:var(--amber-soft);font-family:"IBM Plex Mono",monospace;}
+  .basis .hi-pass{color:var(--pass-soft);font-weight:700;}
+  .basis .hi-fail{color:var(--fail-soft);font-weight:700;}
+
+  /* ---------- reverse tool ---------- */
+  .rev{background:var(--card);border:1px solid var(--hairline);border-radius:20px;box-shadow:var(--shadow);
+    padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:center;}
+  @media(max-width:760px){.rev{grid-template-columns:1fr;gap:20px;}}
+  .rev .rleft .lab{font-weight:700;font-size:14.5px;margin-bottom:9px;display:block;}
+  .rev-out{background:var(--paper-2);border:1px solid var(--hairline);border-radius:14px;padding:20px;}
+  .rev-line{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed var(--hairline);}
+  .rev-line:last-child{border-bottom:none;}
+  .rev-line .rl-k{font-size:14px;color:var(--ink-soft);}
+  .rev-line .rl-v{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:19px;}
+  .rev-line .rl-v.amber{color:#a5680c;}
+  .rev-note{margin-top:6px;font-size:13.5px;color:var(--ink-soft);line-height:1.7;background:#fff;
+    border-left:3px solid var(--amber);padding:10px 13px;border-radius:0 8px 8px 0;}
+
+  /* ---------- standard tables ---------- */
+  .tables{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  @media(max-width:820px){.tables{grid-template-columns:1fr;}}
+  .stable{background:var(--card);border:1px solid var(--hairline);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);}
+  .stable .cap{background:var(--panel);color:#fff;padding:13px 18px;font-weight:700;font-size:15.5px;display:flex;justify-content:space-between;align-items:center;}
+  .stable .cap .en{font-size:12px;color:var(--amber-soft);font-weight:500;}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--hairline);vertical-align:middle;}
+  th{background:var(--paper-2);font-size:12px;color:var(--ink-soft);font-weight:700;letter-spacing:.02em;}
+  td .rng{font-family:"IBM Plex Mono",monospace;font-size:13px;}
+  td .dev{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--ink);}
+  tr[data-row]{transition:background .3s;}
+  tr[data-row].active{background:rgba(242,166,59,.16);}
+  tr[data-row].active td:first-child{box-shadow:inset 4px 0 0 var(--amber);}
+  .stable.dim{opacity:.5;}
+  .tbl-note{font-size:12.5px;color:var(--ink-faint);padding:9px 14px;background:var(--paper-2);border-top:1px solid var(--hairline);line-height:1.6;}
+
+  /* ---------- advanced cards ---------- */
+  .adv{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  @media(max-width:900px){.adv{grid-template-columns:1fr;}}
+  .acard{background:var(--card);border:1px solid var(--hairline);border-radius:16px;padding:20px;box-shadow:var(--shadow);}
+  .acard .ah{display:flex;align-items:center;gap:11px;margin-bottom:10px;}
+  .acard .ico{width:34px;height:34px;border-radius:9px;flex:none;display:grid;place-items:center;
+    background:var(--panel);color:var(--amber);font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:15px;}
+  .acard h3{margin:0;font-size:16.5px;font-weight:700;}
+  .acard p{margin:0 0 4px;font-size:14.5px;color:var(--ink-soft);line-height:1.75;}
+  .acard .mini{margin-top:14px;background:var(--paper-2);border:1px solid var(--hairline);border-radius:11px;padding:14px;}
+  .acard .mini .mrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+  .acard .mini label{font-size:13px;color:var(--ink-soft);}
+  .acard .mini input{width:88px;font-family:"IBM Plex Mono",monospace;font-size:16px;padding:7px 9px;
+    border:1.5px solid var(--hairline);border-radius:8px;background:#fff;}
+  .acard .mini input:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 3px rgba(242,166,59,.18);}
+  .acard .mini .mout{margin-top:11px;font-size:14px;font-family:"IBM Plex Mono",monospace;line-height:1.7;}
+  .acard .mini .mout .ok{color:#178a63;font-weight:600;}
+  .acard .mini .mout .warn{color:#c23a25;font-weight:600;}
+
+  /* ---------- load-variation module ---------- */
+  .varybox{background:var(--card);border:1px solid var(--hairline);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;}
+  .vary-top{padding:22px 24px 4px;}
+  .vary-top p{margin:0 0 8px;color:var(--ink-soft);font-size:15px;line-height:1.85;}
+  .chart-panel{background:var(--panel);margin-top:14px;padding:18px 20px 14px;}
+  .chart-panel .cp-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px;}
+  .chart-panel .cp-cap{font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#7f9aa1;}
+  .vbadge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:24px;font-weight:700;font-size:14px;border:1.5px solid;}
+  .vbadge .lamp{width:10px;height:10px;border-radius:50%;}
+  .vbadge.mean{color:#a8d6ff;border-color:rgba(120,180,230,.5);background:rgba(120,180,230,.12);}
+  .vbadge.mean .lamp{background:#7fb4e6;box-shadow:0 0 8px #7fb4e6;}
+  .vbadge.peak{color:var(--amber-soft);border-color:rgba(242,166,59,.5);background:rgba(242,166,59,.12);}
+  .vbadge.peak .lamp{background:var(--amber);box-shadow:0 0 8px var(--amber);}
+  svg.wave{width:100%;height:auto;display:block;}
+  svg.wave text{font-family:"IBM Plex Mono",monospace;}
+  svg.wave .wlab{font-size:11px;font-weight:600;}
+  svg.wave .wtaken{font-size:11.5px;font-weight:700;}
+  svg.wave .wnote{font-size:10.5px;}
+  svg.wave .waxis{font-size:11px;}
+  .vreadout{display:flex;flex-wrap:wrap;gap:22px;margin:12px 4px 2px;}
+  .vreadout .vr .l{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:#7f9aa1;margin-bottom:1px;}
+  .vreadout .vr .v{font-family:"IBM Plex Mono",monospace;font-size:19px;font-weight:600;color:#eaf2f3;}
+  .vreadout .vr.taken .v{color:var(--pass-soft);}
+  .vary-ctrl{padding:18px 24px 6px;}
+  .vary-ctrl .cl-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .vary-ctrl label{font-size:14px;font-weight:700;flex:none;}
+  .vary-ctrl input[type=range]{flex:1;min-width:180px;accent-color:var(--amber);height:6px;}
+  .vary-ctrl input[type=range]:focus-visible{outline:2px solid var(--amber);outline-offset:4px;}
+  .vary-ctrl .pk{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:16px;color:#a5680c;min-width:74px;text-align:right;}
+  .vary-expl{margin:14px 24px 0;padding:14px 16px;border-radius:12px;background:var(--paper-2);border-left:3px solid var(--amber);font-size:14.5px;line-height:1.85;color:var(--ink);}
+  .vary-expl b{color:#a5680c;}
+  .vary-expl .g{color:#178a63;font-weight:700;}
+
+  /* ---------- sticky context toolbar ---------- */
+  .stickybar{position:fixed;top:0;left:0;right:0;z-index:80;
+    background:rgba(14,40,48,.93);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--panel-line);box-shadow:0 6px 24px rgba(14,40,48,.22);
+    transform:translateY(-115%);transition:transform .3s cubic-bezier(.22,1,.36,1);}
+  .stickybar.on{transform:translateY(0);}
+  .stickybar .wrap{display:flex;align-items:center;gap:10px;padding:9px 22px;flex-wrap:wrap;}
+  .stickybar .sb-lab{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;
+    text-transform:uppercase;color:#7f9aa1;flex:none;}
+  .seg.mini{padding:3px;border-radius:9px;background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.14);}
+  .seg.mini button{padding:5px 13px;font-size:13px;font-weight:500;color:#cfe0e4;border-radius:7px;white-space:nowrap;}
+  .seg.mini button[aria-pressed="true"]{background:var(--amber);color:#16232C;box-shadow:none;font-weight:700;}
+  .stickybar .sb-verdict{margin-left:auto;font-weight:800;font-size:14px;padding:4px 14px;border-radius:20px;
+    border:1.5px solid rgba(255,255,255,.22);color:#9fb6bc;}
+  .stickybar .sb-verdict.pass{color:var(--pass-soft);border-color:rgba(36,169,124,.55);background:rgba(36,169,124,.14);}
+  .stickybar .sb-verdict.fail{color:var(--fail-soft);border-color:rgba(226,78,55,.55);background:rgba(226,78,55,.14);}
+  .stickybar .sb-up{font-size:12.5px;color:var(--amber-soft);text-decoration:none;white-space:nowrap;flex:none;}
+  .stickybar .sb-up:hover{text-decoration:underline;}
+  @media(max-width:600px){.stickybar .sb-lab,.stickybar .sb-up{display:none;} .stickybar .sb-verdict{margin-left:auto;}}
+
+  /* ---------- context chip ---------- */
+  .ctx-chip{display:inline-flex;align-items:center;gap:8px;margin-bottom:12px;
+    font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:#a5680c;
+    background:rgba(242,166,59,.14);border:1px solid rgba(242,166,59,.42);border-radius:20px;padding:5px 13px;}
+  .ctx-chip::before{content:"◆";font-size:10px;}
+
+  /* ---------- term tooltip ---------- */
+  .term{
+    border-bottom:1.5px dashed currentColor;cursor:help;
+    text-underline-offset:3px;padding-bottom:.5px;
+  }
+  .term:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:2px;}
+  #tip{
+    position:fixed;z-index:90;max-width:300px;pointer-events:none;
+    background:rgba(8,20,25,.62);
+    -webkit-backdrop-filter:blur(12px) saturate(1.2);
+    backdrop-filter:blur(12px) saturate(1.2);
+    color:#f3f8f9;border:1px solid rgba(255,255,255,.16);
+    border-radius:12px;padding:12px 15px;font-size:13.8px;line-height:1.7;
+    box-shadow:0 12px 40px rgba(0,0,0,.34);
+    opacity:0;transform:translateY(4px) scale(.98);transition:opacity .16s,transform .16s;
+  }
+  #tip.on{opacity:1;transform:translateY(0) scale(1);}
+  #tip .tt{font-weight:700;color:var(--amber-soft);display:block;margin-bottom:3px;font-size:13px;}
+  #tip .te{font-family:"IBM Plex Mono",monospace;font-size:11px;color:#9fb6bc;display:block;margin-bottom:6px;letter-spacing:.02em;}
+
+  /* ---------- footer ---------- */
+  footer{background:var(--panel);color:#9fb6bc;margin-top:40px;padding:34px 0 40px;font-size:13.5px;line-height:1.85;}
+  footer .wrap{display:grid;gap:6px;}
+  footer b{color:#d7e3e5;}
+  footer .disc{margin-top:12px;padding-top:14px;border-top:1px solid var(--panel-line);color:#7f9aa1;font-size:12.5px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;scroll-behavior:auto !important;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ document bar ============ -->
+<div class="docbar">
+  <div class="wrap">
+    <div class="std"><b>IEC 60335-1</b> : 2010 +A2:2016　·　<b>CNS 60335-1</b>（103年）</div>
+    <div class="cl">第 10 節　消耗功率與電流　Power input &amp; current</div>
+  </div>
+</div>
+
+<!-- ============ sticky context toolbar ============ -->
+<div class="stickybar" id="stickybar" aria-hidden="true">
+  <div class="wrap">
+    <span class="sb-lab">目前設定</span>
+    <div class="seg mini" id="sbMetric" role="group" aria-label="判定對象">
+      <button type="button" data-metric="power">功率 W</button>
+      <button type="button" data-metric="current">電流 A</button>
+    </div>
+    <div class="seg mini" id="sbType" role="group" aria-label="電器型式">
+      <button type="button" data-type="heating">電熱</button>
+      <button type="button" data-type="motor">電動</button>
+      <button type="button" data-type="combined">複合型</button>
+    </div>
+    <span class="sb-verdict" id="sbVerdict">—</span>
+    <a class="sb-up" href="#calc">↑ 回判定器</a>
+  </div>
+</div>
+
+<!-- ============ hero ============ -->
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow"><span class="dot"></span>家電安全通則 · 標稱值容許差</span>
+    <h1>你標的功率，和量到的功率，<br>可以差多少才<span class="amber">算合格</span>？</h1>
+    <p class="lede">家電銘板上會標一個
+      <span class="term" tabindex="0" data-term="rated">額定值</span>；實際插電量測又是另一個數字。
+      IEC / CNS 60335-1 第10節用<b>表1、表2</b>規定了兩者之間「最多能差多少」。這頁讓你自己填數字，立刻看到判定結果與依據。</p>
+
+    <div class="concepts">
+      <div class="concept c1">
+        <div class="k">Rated　標稱</div>
+        <div class="t">額定消耗功率 / 電流</div>
+        <div class="d">製造商在銘板上<b>宣告</b>的目標值。是廠商自己訂的，不是量出來的。</div>
+      </div>
+      <div class="concept c2">
+        <div class="k">Measured　實測</div>
+        <div class="t">量測消耗功率 / 電流</div>
+        <div class="d">把電器接上<span class="term" tabindex="0" data-term="ratedvoltage">額定電壓</span>、於<span class="term" tabindex="0" data-term="normal">正常操作</span>下，用儀器量到的<b>真實</b>值。</div>
+      </div>
+      <div class="concept c3">
+        <div class="k">Set　訂定</div>
+        <div class="t">如何用量測值訂額定</div>
+        <div class="d">反過來：手上有量測值時，銘板上的額定值可以<b>合法地</b>訂在哪個範圍。</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ 1. calculator ============ -->
+<section id="calc">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <div>
+        <h2>符合性判定器</h2>
+        <p>填入額定值與量測值，量規會即時顯示允許範圍、量測落點與判定依據。</p>
+      </div>
+    </div>
+
+    <div class="calc">
+      <div class="calc-grid">
+        <!-- inputs -->
+        <div class="inputs">
+          <div class="field">
+            <label class="lab">1 · 判定對象</label>
+            <div class="seg" id="segMetric" role="group" aria-label="判定對象">
+              <button type="button" data-metric="power" aria-pressed="true">消耗功率<span class="sub">Power · W</span></button>
+              <button type="button" data-metric="current" aria-pressed="false">電流<span class="sub">Current · A</span></button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="lab">2 · 電器型式</label>
+            <div class="seg col" id="segType" role="group" aria-label="電器型式">
+              <button type="button" data-type="heating" aria-pressed="true">
+                <span class="term" tabindex="0" data-term="heating" onclick="return false">電熱電器</span>　只有加熱、沒有馬達</button>
+              <button type="button" data-type="motor" aria-pressed="false">
+                <span class="term" tabindex="0" data-term="motor" onclick="return false">電動電器</span>　只有馬達、沒有加熱</button>
+              <button type="button" data-type="combined" aria-pressed="false">
+                <span class="term" tabindex="0" data-term="combined" onclick="return false">複合型電器</span>　同時有加熱與馬達</button>
+            </div>
+            <div id="combinedQ" class="hint" style="display:none;">
+              複合型的<span class="term" tabindex="0" data-term="rule50">50% 規則</span>：電動機的消耗功率是否 &gt; 額定的 50%？
+              <div class="seg" id="segMajor" role="group" aria-label="馬達是否過半" style="margin-top:8px;">
+                <button type="button" data-major="no" aria-pressed="true">否 → 套用電熱容許差</button>
+                <button type="button" data-major="yes" aria-pressed="false">是 → 套用電動容許差</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="lab">3 · 填入數值</label>
+            <div class="num-row">
+              <div class="num-field rated">
+                <label for="inRated"><span class="term" tabindex="0" data-term="rated" onclick="return false">額定值</span></label>
+                <div class="num-in"><input id="inRated" type="number" inputmode="decimal" min="0" step="any" value="1500"><span class="u" id="uRated">W</span></div>
+              </div>
+              <div class="num-field meas">
+                <label for="inMeas">量測值</label>
+                <div class="num-in"><input id="inMeas" type="number" inputmode="decimal" min="0" step="any" value="1555"><span class="u" id="uMeas">W</span></div>
+              </div>
+            </div>
+            <div class="hint">額定值決定「套用表中哪一列」；量測值則拿去和該列算出的上下限比較。</div>
+          </div>
+
+          <div class="field presets">
+            <div class="pl">快速範例：</div>
+            <div class="chips">
+              <button class="chip" data-preset="kettle" type="button">電熱水壺 1500W</button>
+              <button class="chip" data-preset="fan" type="button">電風扇 45W</button>
+              <button class="chip" data-preset="dryer" type="button">吹風機 1200W</button>
+              <button class="chip" data-preset="small" type="button">小電器 20W</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- instrument panel -->
+        <div class="panel">
+          <div class="p-top">
+            <span class="p-cap">Tolerance Gauge · 容差量規</span>
+            <span class="verdict pass" id="verdict"><span class="lamp"></span><span id="verdictText">符合</span></span>
+          </div>
+
+          <div class="readout">
+            <div class="ro-block ro-meas">
+              <div class="ro-l">量測值 Measured</div>
+              <div class="ro-v"><span id="roMeas">1555</span> <span style="font-size:20px" id="roMeasU">W</span></div>
+            </div>
+            <div class="ro-sep"></div>
+            <div class="ro-block ro-dev p" id="roDevBlock">
+              <div class="ro-l">實際偏差 Deviation</div>
+              <div class="ro-v" id="roDev">+3.7%</div>
+            </div>
+          </div>
+
+          <div class="gauge">
+            <div class="track-wrap" id="track">
+              <div class="scale"></div>
+              <div class="band" id="gBand"></div>
+              <div class="lim" id="gLimLo"><span class="cap" id="capLo">下限</span></div>
+              <div class="lim" id="gLimHi"><span class="cap" id="capHi">上限</span></div>
+              <div class="rated" id="gRated"><span class="cap" id="capRated">額定</span></div>
+              <div class="needle pass" id="gNeedle"><div class="tri"></div><div class="stem"></div><span class="val" id="needleVal"></span></div>
+            </div>
+          </div>
+
+          <div class="basis" id="basis">
+            <div class="bl">判定依據 · Basis</div>
+            <div id="basisText"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. reverse ============ -->
+<section id="reverse">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <div>
+        <h2>反過來：用量測值訂定額定值</h2>
+        <p>手上只有量測值時，銘板上的額定值可以合法地訂在哪裡？（沿用上方選的判定對象與電器型式）</p>
+      </div>
+    </div>
+
+    <div class="rev">
+      <div class="rleft">
+        <div class="ctx-chip" id="revCtx">消耗功率 (W) · 電熱電器</div>
+        <label class="lab" for="revMeas">你的量測值</label>
+        <div class="num-in" style="max-width:220px"><input id="revMeas" type="number" inputmode="decimal" min="0" step="any" value="1555" style="width:100%;font-family:'IBM Plex Mono',monospace;font-size:22px;padding:12px 44px 12px 13px;border:1.5px solid var(--hairline);border-radius:10px;background:var(--paper-2);"><span class="u" id="revU" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);font-family:'IBM Plex Mono',monospace;color:var(--ink-faint);">W</span></div>
+        <div class="rev-note" id="revNote"></div>
+      </div>
+      <div class="rev-out">
+        <div class="rev-line">
+          <span class="rl-k">最低可宣告的額定值</span>
+          <span class="rl-v amber" id="revMin">—</span>
+        </div>
+        <div class="rev-line">
+          <span class="rl-k">最高可宣告的額定值</span>
+          <span class="rl-v amber" id="revMax">—</span>
+        </div>
+        <div class="rev-line">
+          <span class="rl-k">最安全的作法</span>
+          <span class="rl-v" id="revSafe" style="color:var(--pass)">額定 = 量測</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. tables ============ -->
+<section id="tables">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <div>
+        <h2>標準原表：表1 與 表2</h2>
+        <p>目前判定對象對應的那一列會<b style="color:#a5680c">亮起</b>。容許差以<b>額定值</b>落在哪個級距來決定。</p>
+      </div>
+    </div>
+
+    <div class="tables">
+      <!-- Table 1 -->
+      <div class="stable" id="tbl-power">
+        <div class="cap">表1　消耗功率容許差 <span class="en">Table 1 · Power input deviation</span></div>
+        <table>
+          <thead><tr><th style="width:40%">電器型式</th><th>額定消耗功率 P (W)</th><th>容許差</th></tr></thead>
+          <tbody>
+            <tr data-row="all"><td>所有電器</td><td><span class="rng">P ≤ 25</span></td><td><span class="dev">+20% ／ 無下限</span></td></tr>
+            <tr data-row="heat-mid"><td>電熱電器 &amp; 複合型</td><td><span class="rng">25 &lt; P ≤ 200</span></td><td><span class="dev">±10%</span></td></tr>
+            <tr data-row="heat-hi"><td>電熱電器 &amp; 複合型</td><td><span class="rng">P &gt; 200</span></td><td><span class="dev">+5% 或 20W（取大者）／ −10%</span></td></tr>
+            <tr data-row="motor-mid"><td>電動電器</td><td><span class="rng">25 &lt; P ≤ 300</span></td><td><span class="dev">+20% ／ 無下限</span></td></tr>
+            <tr data-row="motor-hi"><td>電動電器</td><td><span class="rng">P &gt; 300</span></td><td><span class="dev">+15% 或 60W（取大者）／ 無下限</span></td></tr>
+          </tbody>
+        </table>
+        <div class="tbl-note">「取大者」：上限的絕對值取「百分比」與「固定瓦數」之中較大的一個。</div>
+      </div>
+
+      <!-- Table 2 -->
+      <div class="stable" id="tbl-current">
+        <div class="cap">表2　電流容許差 <span class="en">Table 2 · Current deviation</span></div>
+        <table>
+          <thead><tr><th style="width:40%">電器型式</th><th>額定電流 I (A)</th><th>容許差</th></tr></thead>
+          <tbody>
+            <tr data-row="all"><td>所有電器</td><td><span class="rng">I ≤ 0.2</span></td><td><span class="dev">+20% ／ 無下限</span></td></tr>
+            <tr data-row="heat-mid"><td>電熱電器 &amp; 複合型</td><td><span class="rng">0.2 &lt; I ≤ 1.0</span></td><td><span class="dev">±10%</span></td></tr>
+            <tr data-row="heat-hi"><td>電熱電器 &amp; 複合型</td><td><span class="rng">I &gt; 1.0</span></td><td><span class="dev">+5% 或 0.10A（取大者）／ −10%</span></td></tr>
+            <tr data-row="motor-mid"><td>電動電器</td><td><span class="rng">0.2 &lt; I ≤ 1.5</span></td><td><span class="dev">+20% ／ 無下限</span></td></tr>
+            <tr data-row="motor-hi"><td>電動電器</td><td><span class="rng">I &gt; 1.5</span></td><td><span class="dev">+15% 或 0.30A（取大者）／ 無下限</span></td></tr>
+          </tbody>
+        </table>
+        <div class="tbl-note">相同的判定邏輯，只是把瓦特（W）換成安培（A）。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. advanced ============ -->
+<section id="advanced">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <div>
+        <h2>第10節的其他關鍵規則</h2>
+        <p>判定合格前，這幾條常被忽略的細節同樣屬於標準要求。</p>
+      </div>
+    </div>
+
+    <div class="adv">
+      <div class="acard">
+        <div class="ah"><div class="ico">?</div><h3>為什麼有些類別「沒有下限」</h3></div>
+        <p>安全上真正在意的是電器「用得比標示<b>多</b>」——那可能讓配線與保護元件過載。用得比標示少通常不是安全問題，所以<b>電動類</b>與<b>小功率類（≤25W / ≤0.2A）</b>只設上限。</p>
+        <p><b>電熱類</b>另外設 −10% 下限，是因為加熱輸出必須與標示相符（會牽動溫升等試驗）。</p>
+      </div>
+
+      <div class="acard">
+        <div class="ah"><div class="ico">½</div><h3>複合型電器的 50% 規則</h3></div>
+        <p>複合型電器（有加熱也有馬達）若<b>電動機的消耗功率 &gt; 額定的 50%</b>，就改用「<span class="term" tabindex="0" data-term="motor">電動電器</span>」的容許差（較寬）；否則沿用「<span class="term" tabindex="0" data-term="heating">電熱電器</span>」的容許差。上方判定器的複合型選項已內建此切換。</p>
+        <p style="font-size:13px;color:var(--ink-faint)">備考：有疑慮時，電動機的消耗功率／電流可分開量測。</p>
+      </div>
+
+      <div class="acard">
+        <div class="ah"><div class="ico">V</div><h3>額定電壓範圍：要不要測兩端</h3></div>
+        <p>若電器標示一段<span class="term" tabindex="0" data-term="vrange">額定電壓範圍</span>，且上、下限與<b>平均值</b>相差 &gt; 10%，容許差要在範圍的<b>上限與下限兩端</b>都成立；否則以平均值電壓試驗即可。</p>
+        <div class="mini">
+          <div class="mrow">
+            <label>下限 V<input id="vLo" type="number" inputmode="decimal" value="100"></label>
+            <label>上限 V<input id="vHi" type="number" inputmode="decimal" value="240"></label>
+          </div>
+          <div class="mout" id="vOut"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. 圖解：負載變動取值 ============ -->
+<section id="vary">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <div>
+        <h2>圖解：負載變動時，功率該取哪個值？</h2>
+        <p>很多電器運轉時功率忽高忽低。標準規定「量到的功率」不是隨便挑一個瞬間——拖動滑桿看規則怎麼決定。</p>
+      </div>
+    </div>
+
+    <div class="varybox">
+      <div class="vary-top">
+        <p>想像一台電器<b>連續運轉</b>時的功率變化（下圖畫了數個相同週期，中段框起來的是<span class="term" tabindex="0" data-term="mean">代表性週期</span>，就用它來取值）。標準第10節這樣取「量測值」：</p>
+        <p style="font-size:14px;color:var(--ink-soft)">① 先算整個週期的<b>算術平均值</b>　②看<b>最大瞬間值</b>有沒有超過「平均值的 2 倍」　③再決定取平均、還是取尖峰。</p>
+      </div>
+
+      <div class="chart-panel">
+        <div class="cp-head">
+          <span class="cp-cap">Power over several operating cycles · 連續運轉週期</span>
+          <span class="vbadge peak" id="vBadge"><span class="lamp"></span><span id="vBadgeText">最大值 &gt; 2×平均</span></span>
+        </div>
+        <svg class="wave" id="waveSvg" viewBox="0 0 720 300" role="img" aria-label="功率隨時間變動的示意圖"></svg>
+        <div class="vreadout">
+          <div class="vr"><div class="l">算術平均值 Mean</div><div class="v"><span id="vMean">—</span> W</div></div>
+          <div class="vr"><div class="l">最大瞬間值 Max</div><div class="v"><span id="vMax">—</span> W</div></div>
+          <div class="vr"><div class="l">2 × 平均值 (門檻)</div><div class="v"><span id="vThr">—</span> W</div></div>
+          <div class="vr taken"><div class="l">◆ 取用值 Taken</div><div class="v"><span id="vTaken">—</span> W</div></div>
+        </div>
+      </div>
+
+      <div class="vary-ctrl">
+        <div class="cl-row">
+          <label for="vPeak">尖峰高度</label>
+          <input id="vPeak" type="range" min="500" max="1800" step="20" value="1300">
+          <span class="pk"><span id="vPeakVal">1300</span> W</span>
+        </div>
+        <div class="chips" style="margin-top:12px;">
+          <button class="chip" data-vpreset="640" type="button">平緩範例（無明顯尖峰）</button>
+          <button class="chip" data-vpreset="1300" type="button">尖峰範例（有短暫尖峰）</button>
+        </div>
+      </div>
+
+      <div class="vary-expl" id="vExpl"></div>
+      <div style="padding:4px 24px 22px;font-size:12.5px;color:var(--ink-faint);line-height:1.7;">
+        圖為示意，電流（A）取值方式相同。實際量測須在讀值<b>穩定</b>、所有可同時運作的電路都開啟、供以額定電壓、於正常操作下進行。
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>資料來源　·　<b>CNS 60335-1</b>（103年）「家用和類似用途電器 — 安全 — 第1部：通則」（對應 IEC 60335-1 ed 5.1:2013）</div>
+    <div><b>IEC 60335-1</b>:2010 + A1:2013 + A2:2016（Consolidated）第10節，表1、表2 與第3節用語定義。</div>
+    <div class="disc">本頁為協助理解標準的<b>教育輔助工具</b>，計算依上述版本第10節容許差整理而成。實際符合性判定應以最新版標準全文、量測條件與認證機構之判定為準；電壓、電流均以均方根值計。</div>
+  </div>
+</footer>
+
+<div id="tip" role="tooltip"></div>
+
+<script>
+"use strict";
+
+/* ---------- 術語解釋（虛線 + 毛玻璃 tooltip） ---------- */
+const TERMS = {
+  rated:{t:"額定值（額定消耗功率 / 額定電流）",e:"rated power input / rated current",d:"製造商在銘板上指定、宣告的目標值。是廠商自己訂的，不是量測出來的。（第3.1.4 / 3.1.6條）"},
+  ratedvoltage:{t:"額定電壓",e:"rated voltage",d:"製造商指定電器要連接的輸入電壓，例如 110V、220V。量測必須在此電壓下進行。（第3.1.1條）"},
+  vrange:{t:"額定電壓範圍",e:"rated voltage range",d:"以上、下限表示的一段可用電壓，例如 100–120V。（第3.1.2條）"},
+  normal:{t:"正常操作",e:"normal operation",d:"電器連接至主電源、在正常使用條件下運轉的狀態。量測消耗功率時必須處於此狀態。（第3.1.9條）"},
+  heating:{t:"電熱電器",e:"heating appliance",d:"裝有加熱元件、沒有任何電動機的電器。例如電暖器、電熱水壺、烤箱。（第3.5.6條）"},
+  motor:{t:"電動電器",e:"motor-operated appliance",d:"裝有電動機、沒有任何加熱元件的電器。例如電風扇、果汁機、抽風機。（第3.5.7條）"},
+  combined:{t:"複合型電器",e:"combined appliance",d:"同時具有加熱元件與電動機的電器。例如吹風機、洗碗機、附烘乾的洗衣機。（第3.5.8條）"},
+  rule50:{t:"複合型 50% 規則",e:"combined appliance rule",d:"複合型電器中，若電動機的消耗功率大於額定的 50%，則套用「電動電器」的（較寬）容許差；否則套用「電熱電器」的容許差。"},
+  mean:{t:"算術平均值",e:"arithmetic mean value",d:"取一個代表性運轉週期內的功率／電流平均。用於負載會隨時間變動的電器。"}
+};
+
+const tip=document.getElementById('tip');
+let tipEl=null;
+function showTip(el){
+  const k=el.getAttribute('data-term'); const info=TERMS[k]; if(!info) return;
+  tip.innerHTML='<span class="tt">'+info.t+'</span><span class="te">'+info.e+'</span>'+info.d;
+  tip.classList.add('on'); tipEl=el; positionTip(el);
+}
+function positionTip(el){
+  const r=el.getBoundingClientRect(); const tr=tip.getBoundingClientRect();
+  let left=r.left+r.width/2-tr.width/2;
+  left=Math.max(10,Math.min(left,window.innerWidth-tr.width-10));
+  let top=r.top-tr.height-10;
+  if(top<10) top=r.bottom+10;
+  tip.style.left=left+'px'; tip.style.top=top+'px';
+}
+function hideTip(){tip.classList.remove('on');tipEl=null;}
+document.querySelectorAll('.term').forEach(el=>{
+  el.addEventListener('mouseenter',()=>showTip(el));
+  el.addEventListener('mouseleave',hideTip);
+  el.addEventListener('focus',()=>showTip(el));
+  el.addEventListener('blur',hideTip);
+});
+window.addEventListener('scroll',()=>{if(tipEl)positionTip(tipEl);},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')hideTip();});
+
+/* ---------- 容許差規則引擎 ---------- */
+const RULES={
+  power:{unit:'W',small:25,heatMid:200,heatAbs:20,motorMid:300,motorAbs:60,dec:1},
+  current:{unit:'A',small:0.2,heatMid:1.0,heatAbs:0.10,motorMid:1.5,motorAbs:0.30,dec:3}
+};
+
+/* 依 額定值R + 有效型式 求出該列 */
+function computeRow(metric,effType,R){
+  const r=RULES[metric];
+  if(R<=r.small){
+    return {key:'all',type:'所有電器',band:`${metric==='power'?'P':'I'} ≤ ${r.small}${r.unit}`,
+      upAbs:0.20*R,loAbs:null,upTxt:'+20%',loTxt:'無下限'};
+  }
+  if(effType==='heating'){
+    if(R<=r.heatMid){
+      return {key:'heat-mid',type:'電熱 / 複合型',band:`${r.small} < ${metric==='power'?'P':'I'} ≤ ${r.heatMid}${r.unit}`,
+        upAbs:0.10*R,loAbs:-0.10*R,upTxt:'+10%',loTxt:'−10%'};
+    }
+    const up=Math.max(0.05*R,r.heatAbs);
+    return {key:'heat-hi',type:'電熱 / 複合型',band:`${metric==='power'?'P':'I'} > ${r.heatMid}${r.unit}`,
+      upAbs:up,loAbs:-0.10*R,upTxt:`+5% 或 ${r.heatAbs}${r.unit}（取大者）`,loTxt:'−10%'};
+  }else{ // motor
+    if(R<=r.motorMid){
+      return {key:'motor-mid',type:'電動電器',band:`${r.small} < ${metric==='power'?'P':'I'} ≤ ${r.motorMid}${r.unit}`,
+        upAbs:0.20*R,loAbs:null,upTxt:'+20%',loTxt:'無下限'};
+    }
+    const up=Math.max(0.15*R,r.motorAbs);
+    return {key:'motor-hi',type:'電動電器',band:`${metric==='power'?'P':'I'} > ${r.motorMid}${r.unit}`,
+      upAbs:up,loAbs:null,upTxt:`+15% 或 ${r.motorAbs}${r.unit}（取大者）`,loTxt:'無下限'};
+  }
+}
+
+/* ---------- 狀態 ---------- */
+const S={metric:'power',type:'heating',major:'no'};
+function effType(){ if(S.type==='combined') return S.major==='yes'?'motor':'heating'; return S.type; }
+
+/* ---------- 格式化 ---------- */
+function fmt(v,metric){
+  const d=RULES[metric].dec;
+  if(!isFinite(v)) return '∞';
+  let s=v.toFixed(d);
+  s=s.replace(/\.?0+$/,''); if(s==='-0')s='0';
+  return s;
+}
+const $=id=>document.getElementById(id);
+
+/* ---------- 主判定與畫面更新 ---------- */
+function update(){
+  const metric=S.metric, unit=RULES[metric].unit, et=effType();
+  const R=parseFloat($('inRated').value), M=parseFloat($('inMeas').value);
+  // 單位標籤
+  $('uRated').textContent=unit; $('uMeas').textContent=unit; $('roMeasU').textContent=unit;
+
+  // 表格 highlight
+  highlightTables(metric, (isFinite(R)&&R>0)?computeRow(metric,et,R).key:null);
+
+  if(!isFinite(R)||R<=0||!isFinite(M)||M<0){
+    $('basisText').innerHTML='請在左方填入<b>大於 0 的額定值</b>與<b>量測值</b>，即可得到判定結果。';
+    $('roMeas').textContent='—'; $('roDev').textContent='—';
+    $('sbVerdict').textContent='—'; $('sbVerdict').className='sb-verdict';
+    return;
+  }
+
+  const row=computeRow(metric,et,R);
+  const upLimit=R+row.upAbs;
+  const loLimit=row.loAbs==null?null:R+row.loAbs;
+  const dev=(M-R)/R*100;
+  const eps=1e-9*Math.max(1,R);
+  const overUp = M>upLimit+eps;
+  const underLo = loLimit!=null && M<loLimit-eps;
+  const pass = !overUp && !underLo;
+
+  // readout
+  $('roMeas').textContent=fmt(M,metric);
+  const dv=$('roDev'); dv.textContent=(dev>=0?'+':'−')+Math.abs(dev).toFixed(1)+'%';
+  $('roDevBlock').className='ro-block ro-dev '+(pass?'p':'f');
+
+  // verdict
+  const vv=$('verdict'), vt=$('verdictText');
+  vv.className='verdict '+(pass?'pass':'fail');
+  vt.textContent=pass?'符合':'不符合';
+  const sv=$('sbVerdict'); sv.textContent=pass?'符合':'不符合'; sv.className='sb-verdict '+(pass?'pass':'fail');
+
+  // gauge
+  drawGauge(metric,R,M,upLimit,loLimit,row,pass);
+
+  // basis text
+  const uL=`<span class="hi-amber">${fmt(upLimit,metric)}${unit}</span>`;
+  const lL=loLimit==null?'無下限':`<span class="hi-amber">${fmt(loLimit,metric)}${unit}</span>`;
+  const rowRef=metric==='power'?'表1':'表2';
+  let html=`依額定值 <b>${fmt(R,metric)}${unit}</b>，套用 ${rowRef}『<b>${row.type}</b> · ${row.band}』，容許差 <b>${row.upTxt}${row.loAbs!=null?' / '+row.loTxt:''}</b>。<br>`;
+  html+=`允許範圍：${lL} 　—　 ${uL}。量測值 <b>${fmt(M,metric)}${unit}</b>（偏差 ${dev>=0?'+':'−'}${Math.abs(dev).toFixed(1)}%）`;
+  if(pass){
+    html+=` 落在範圍內 → <span class="hi-pass">符合 ✓</span>。`;
+  }else if(overUp){
+    html+=` <b>超過允許上限 ${fmt(upLimit,metric)}${unit}</b> → <span class="hi-fail">不符合 ✕</span>。（量測值比標示多太多，超出容許差）`;
+  }else{
+    html+=` <b>低於允許下限 ${fmt(loLimit,metric)}${unit}</b> → <span class="hi-fail">不符合 ✕</span>。（電熱類設有 −10% 下限）`;
+  }
+  $('basisText').innerHTML=html;
+}
+
+/* ---------- 量規繪製 ---------- */
+function drawGauge(metric,R,M,upLimit,loLimit,row,pass){
+  const unit=RULES[metric].unit;
+  const hasLo=loLimit!=null;
+  const bandLeftVal = hasLo?loLimit:Math.min(M,R)*0.55;
+  let domMin=Math.min(bandLeftVal,M,R);
+  let domMax=Math.max(upLimit,M,R);
+  const pad=(domMax-domMin)*0.10||domMax*0.1||1;
+  domMin=Math.max(0,domMin-pad); domMax=domMax+pad;
+  const span=domMax-domMin||1;
+  const pos=v=>Math.max(0,Math.min(100,(v-domMin)/span*100));
+
+  const bandStart=hasLo?pos(loLimit):0;
+  const bandEnd=pos(upLimit);
+  const band=$('gBand');
+  band.style.left=bandStart+'%'; band.style.width=(bandEnd-bandStart)+'%';
+  band.classList.toggle('open',!hasLo);
+
+  const rated=$('gRated'); rated.style.left=pos(R)+'%';
+  $('capRated').textContent='額定 '+fmt(R,metric);
+
+  const hi=$('gLimHi'); hi.style.left=pos(upLimit)+'%';
+  $('capHi').textContent='上限 '+fmt(upLimit,metric);
+  const lo=$('gLimLo');
+  if(hasLo){ lo.style.display='block'; lo.style.left=pos(loLimit)+'%'; $('capLo').textContent='下限 '+fmt(loLimit,metric); }
+  else lo.style.display='none';
+
+  const needle=$('gNeedle');
+  needle.style.left=pos(M)+'%';
+  needle.className='needle '+(pass?'pass':'fail');
+  $('needleVal').textContent=fmt(M,metric)+unit;
+}
+
+/* ---------- 表格 highlight ---------- */
+function highlightTables(metric,rowKey){
+  const pT=$('tbl-power'), cT=$('tbl-current');
+  pT.classList.toggle('dim',metric!=='power');
+  cT.classList.toggle('dim',metric!=='current');
+  document.querySelectorAll('tr[data-row]').forEach(tr=>tr.classList.remove('active'));
+  if(!rowKey) return;
+  const host=metric==='power'?pT:cT;
+  const tr=host.querySelector('tr[data-row="'+rowKey+'"]');
+  if(tr) tr.classList.add('active');
+}
+
+/* ---------- 反向工具：用量測值訂額定 ---------- */
+function updateReverse(){
+  const metric=S.metric, unit=RULES[metric].unit, et=effType();
+  $('revU').textContent=unit;
+  const M=parseFloat($('revMeas').value);
+  if(!isFinite(M)||M<=0){
+    $('revMin').textContent='—'; $('revMax').textContent='—';
+    $('revNote').textContent='請填入大於 0 的量測值。';
+    return;
+  }
+  const complies=(R)=>{
+    if(R<=0) return false;
+    const row=computeRow(metric,et,R);
+    const uL=R+row.upAbs; const lL=row.loAbs==null?-Infinity:R+row.loAbs;
+    const eps=1e-9*Math.max(1,R);
+    return M<=uL+eps && M>=lL-eps;
+  };
+  // 掃描找出可行的額定值連續區間
+  const start=M*0.30, end=M*3.0, steps=4000;
+  let lo=null,hi=null;
+  for(let i=0;i<=steps;i++){
+    const R=start+(end-start)*i/steps;
+    if(complies(R)){ if(lo==null)lo=R; hi=R; }
+  }
+  const openTop=complies(M*1e4); // 上限開放（無下限類別，可宣告更高）
+  const hasLoBound=(computeRow(metric,et,M).loAbs!=null);
+
+  $('revMin').textContent = lo!=null? fmt(lo,metric)+unit : '—';
+  $('revMax').textContent = openTop? '無上限' : (hi!=null? fmt(hi,metric)+unit : '—');
+  $('revSafe').textContent='額定 = '+fmt(M,metric)+unit;
+
+  let note;
+  const tL=labelType();
+  if(openTop){
+    note=`<b>${tL}</b>（此類別）<b>沒有下限</b>：只要額定值不低於 <b>${fmt(lo,metric)}${unit}</b>，量測值就不會超出上限。訂得比量測值高一定安全，但通常沒有意義；把額定訂為量測值 <b>${fmt(M,metric)}${unit}</b> 最直接。`;
+  }else{
+    note=`<b>${tL}</b>（此類別）<b>上下限都有</b>：額定值必須落在 <b>${fmt(lo,metric)}${unit}</b> 到 <b>${fmt(hi,metric)}${unit}</b> 之間，量測值才會同時滿足上限與 −10% 下限。訂為量測值 <b>${fmt(M,metric)}${unit}</b> 位於區間中央，最保險。`;
+  }
+  $('revNote').innerHTML=note;
+}
+
+/* ---------- 電壓範圍 mini checker ---------- */
+function updateVoltage(){
+  const lo=parseFloat($('vLo').value), hi=parseFloat($('vHi').value);
+  const out=$('vOut');
+  if(!isFinite(lo)||!isFinite(hi)||lo<=0||hi<=0||hi<lo){ out.innerHTML='<span class="warn">請輸入有效的上、下限（上限 ≥ 下限）。</span>'; return; }
+  const mean=(lo+hi)/2;
+  const dLo=(mean-lo)/mean*100, dHi=(hi-mean)/mean*100;
+  const maxd=Math.max(dLo,dHi);
+  if(maxd>10){
+    out.innerHTML=`平均 ${mean.toFixed(0)}V，兩端與平均相差 ±${maxd.toFixed(1)}% &gt; 10% → <span class="warn">須在上、下限兩端都試驗。</span>`;
+  }else{
+    out.innerHTML=`平均 ${mean.toFixed(0)}V，兩端與平均相差 ±${maxd.toFixed(1)}% ≤ 10% → <span class="ok">以平均值電壓試驗即可。</span>`;
+  }
+}
+
+/* ---------- 情境標籤 ---------- */
+function labelMetric(){return S.metric==='power'?'消耗功率 (W)':'電流 (A)';}
+function labelType(){ if(S.type==='heating')return '電熱電器'; if(S.type==='motor')return '電動電器'; return S.major==='yes'?'複合型 · 電動為主':'複合型 · 電熱為主';}
+function updateContextLabels(){ const c=$('revCtx'); if(c)c.textContent=labelMetric()+'　·　'+labelType(); }
+
+/* ---------- 選項狀態同步（主控制 + 釘住工具列 共用） ---------- */
+function syncSegs(){
+  ['metric','type','major'].forEach(key=>{
+    document.querySelectorAll('button[data-'+key+']').forEach(b=>{
+      b.setAttribute('aria-pressed', b.getAttribute('data-'+key)===S[key]?'true':'false');
+    });
+  });
+  $('combinedQ').style.display = S.type==='combined'?'block':'none';
+}
+function applyChoice(key,val){ S[key]=val; syncSegs(); refreshAll(); }
+document.querySelectorAll('button[data-metric]').forEach(b=>b.addEventListener('click',()=>applyChoice('metric',b.dataset.metric)));
+document.querySelectorAll('button[data-type]').forEach(b=>b.addEventListener('click',()=>applyChoice('type',b.dataset.type)));
+document.querySelectorAll('button[data-major]').forEach(b=>b.addEventListener('click',()=>applyChoice('major',b.dataset.major)));
+
+['inRated','inMeas'].forEach(id=>$(id).addEventListener('input',update));
+$('vLo').addEventListener('input',updateVoltage);
+$('vHi').addEventListener('input',updateVoltage);
+$('revMeas').addEventListener('input',updateReverse);
+$('inMeas').addEventListener('input',()=>{ $('revMeas').value=$('inMeas').value; updateReverse(); });
+
+/* 產品快速範例 */
+const PRESETS={
+  kettle:{metric:'power',type:'heating',major:'no',R:1500,M:1555},
+  fan:{metric:'power',type:'motor',major:'no',R:45,M:52},
+  dryer:{metric:'power',type:'combined',major:'no',R:1200,M:1300},
+  small:{metric:'power',type:'heating',major:'no',R:20,M:23}
+};
+document.querySelectorAll('.chip[data-preset]').forEach(ch=>{
+  ch.addEventListener('click',()=>{
+    const p=PRESETS[ch.dataset.preset]; if(!p)return;
+    S.metric=p.metric;S.type=p.type;S.major=p.major;
+    $('inRated').value=p.R; $('inMeas').value=p.M; $('revMeas').value=p.M;
+    syncSegs(); refreshAll();
+    $('calc').scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+
+/* ---------- 釘住工具列：隨捲動顯示 ---------- */
+const stickybar=$('stickybar');
+function onScroll(){
+  const on = window.scrollY > $('calc').offsetTop + 240;
+  stickybar.classList.toggle('on',on);
+  stickybar.setAttribute('aria-hidden', on?'false':'true');
+  if(tipEl)positionTip(tipEl);
+}
+window.addEventListener('scroll',onScroll,{passive:true});
+
+/* ---------- 負載變動：波形圖引擎 ---------- */
+const V_SEG=[[0.30,240],[0.15,450],[0.06,700],[0.08,null],[0.06,700],[0.10,450],[0.25,240]];
+const Y_MAX=1900;
+function segValueAt(t,peak){ let acc=0; for(const s of V_SEG){ acc+=s[0]; if(t<=acc) return s[1]==null?peak:s[1]; } return V_SEG[V_SEG.length-1][1]; }
+function analyzeWave(peak){
+  const N=600; let sum=0,max=0; const arr=[];
+  for(let i=0;i<N;i++){ const v=segValueAt((i+0.5)/N,peak); arr.push(v); sum+=v; if(v>max)max=v; }
+  const mean=sum/N; const sorted=arr.slice().sort((a,b)=>b-a);
+  const val10=sorted[Math.floor(0.10*N)];   // 有超過10%時間都達到的最大值
+  const varies=max>2*mean;
+  return {mean,max,thr:2*mean,val10,varies,taken:varies?val10:mean};
+}
+function renderWave(){
+  const peak=parseFloat($('vPeak').value); $('vPeakVal').textContent=Math.round(peak);
+  const a=analyzeWave(peak);
+  const NC=3;                                       // 連續顯示 3 個相同週期
+  const W=720,H=300,padL=48,padR=96,padT=24,padB=32;
+  const x0=padL,x1=W-padR,y0=padT,y1=H-padB;
+  const xP=g=>x0+g*(x1-x0), yP=v=>y1-(Math.min(v,Y_MAX)/Y_MAX)*(y1-y0);
+  const N=240*NC,pts=[]; for(let i=0;i<=N;i++){const g=i/N;pts.push([xP(g),yP(segValueAt((g*NC)%1,peak))]);}
+  const line=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+  const area='M'+x0+' '+y1+' '+pts.map(p=>'L'+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ')+' L'+x1+' '+y1+' Z';
+  const hl=(v,color,dash,label,cls)=>{const y=yP(v).toFixed(1);
+    return '<line x1="'+x0+'" y1="'+y+'" x2="'+x1+'" y2="'+y+'" stroke="'+color+'" stroke-width="1.7"'+(dash?' stroke-dasharray="'+dash+'"':'')+'/>'
+      +'<text x="'+(x1+6)+'" y="'+(+y+4).toFixed(1)+'" class="'+cls+'" fill="'+color+'">'+label+'</text>';};
+  const gA=1/NC, gB=2/NC, rx=xP(gA), rw=xP(gB)-xP(gA);   // 中段=代表性週期
+  let s='';
+  s+='<defs><linearGradient id="wg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgba(242,166,59,.40)"/><stop offset="1" stop-color="rgba(242,166,59,.04)"/></linearGradient></defs>';
+  s+='<rect x="'+rx.toFixed(1)+'" y="'+y0+'" width="'+rw.toFixed(1)+'" height="'+(y1-y0)+'" fill="rgba(255,255,255,.055)" stroke="rgba(242,166,59,.55)" stroke-dasharray="4 4" stroke-width="1"/>';
+  s+='<text x="'+(rx+rw/2).toFixed(1)+'" y="'+(y0-9)+'" class="wlab" fill="#f6c078" text-anchor="middle">◀ 代表性週期（取值依據）▶</text>';
+  s+='<line x1="'+x0+'" y1="'+y1+'" x2="'+x1+'" y2="'+y1+'" stroke="rgba(255,255,255,.25)" stroke-width="1"/>';
+  s+='<path d="'+area+'" fill="url(#wg)"/>';
+  s+='<path d="'+line+'" fill="none" stroke="#F2A63B" stroke-width="2.2" stroke-linejoin="round"/>';
+  s+=hl(a.thr,'#e79090','6 5','2×平均','wlab');
+  s+=hl(a.mean,'#a8d6ff','5 5','平均','wlab');
+  s+=hl(a.taken,'#2fc492','0','◆ 取用值','wtaken');
+  if(a.varies){ const sx=xP(gA+0.55/NC),sy=yP(peak);
+    s+='<circle cx="'+sx.toFixed(1)+'" cy="'+sy.toFixed(1)+'" r="4" fill="#F2A63B"/>';
+    s+='<text x="'+sx.toFixed(1)+'" y="'+(sy-9).toFixed(1)+'" class="wnote" fill="#f6c078" text-anchor="middle">瞬間尖峰（時間&lt;10%）→ 忽略</text>';
+  }
+  s+='<text x="'+((x0+x1)/2).toFixed(1)+'" y="'+(H-8)+'" class="waxis" fill="#7f9aa1" text-anchor="middle">時間 →（電器連續運轉；中段為代表性週期）</text>';
+  $('waveSvg').innerHTML=s;
+  $('vMean').textContent=Math.round(a.mean); $('vMax').textContent=Math.round(a.max);
+  $('vThr').textContent=Math.round(a.thr); $('vTaken').textContent=Math.round(a.taken);
+  const badge=$('vBadge'),bt=$('vBadgeText'),ex=$('vExpl');
+  if(a.varies){ badge.className='vbadge peak'; bt.textContent='最大值 > 2×平均';
+    ex.innerHTML='最大瞬間值 <b>'+Math.round(a.max)+' W</b> 超過了平均值的 2 倍（門檻 <b>'+Math.round(a.thr)+' W</b>）。依規定<b>不能只取那個一閃而過的尖峰</b>——它佔不到 10% 的時間。要取「在這個週期中，<b>有超過 10% 時間都達到</b>」的最大值，也就是 <span class="g">'+Math.round(a.taken)+' W</span>（圖中綠線）。';
+  }else{ badge.className='vbadge mean'; bt.textContent='最大值 ≤ 2×平均';
+    ex.innerHTML='最大瞬間值 <b>'+Math.round(a.max)+' W</b> 沒有超過平均的 2 倍（門檻 <b>'+Math.round(a.thr)+' W</b>）。負載雖然變動，但沒有明顯尖峰，依規定直接取整個週期的<b>算術平均值</b> <span class="g">'+Math.round(a.mean)+' W</span> 作為量測消耗功率。';
+  }
+}
+$('vPeak').addEventListener('input',renderWave);
+document.querySelectorAll('.chip[data-vpreset]').forEach(c=>c.addEventListener('click',()=>{ $('vPeak').value=c.dataset.vpreset; renderWave(); }));
+
+function refreshAll(){ update(); updateReverse(); updateContextLabels(); }
+
+/* ---------- 初始 ---------- */
+syncSegs();
+refreshAll();
+updateVoltage();
+renderWave();
+onScroll();
+</script>
+</body>
+</html>
