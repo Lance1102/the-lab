@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>額定值 vs 量測值｜IEC 60335-1 / CNS 60335-1 第10節 消耗功率與電流</title>
+<title>家電銘板健檢 v1.0｜額定值 vs 量測值 — IEC 60335-1 / CNS 60335-1 第10節</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -54,11 +54,25 @@
     color:#cfe0e4;
     border-bottom:1px solid var(--panel-line);
   }
-  .docbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:14px;
-    padding-top:11px;padding-bottom:11px;flex-wrap:wrap;}
-  .docbar .std{font-family:"IBM Plex Mono",monospace;font-size:13.5px;letter-spacing:.02em;color:var(--amber-soft);}
-  .docbar .std b{color:#fff;font-weight:600;}
-  .docbar .cl{font-size:13.5px;color:#9fb6bc;}
+  .docbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:10px 18px;
+    padding-top:10px;padding-bottom:10px;flex-wrap:wrap;}
+  .brand{display:flex;align-items:center;gap:10px;flex:none;}
+  .brand .bmark{width:9px;height:9px;border-radius:50%;background:var(--amber);
+    box-shadow:0 0 0 4px rgba(242,166,59,.20);flex:none;}
+  .brand .bname{font-weight:900;font-size:17px;color:#fff;letter-spacing:.01em;white-space:nowrap;}
+  .brand .bsub{font-size:12.5px;color:#7f9aa1;white-space:nowrap;}
+  .brand .bver{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--amber-soft);
+    border:1px solid rgba(242,166,59,.5);background:rgba(242,166,59,.12);
+    border-radius:20px;padding:1px 9px;white-space:nowrap;flex:none;}
+  .dref{display:flex;flex-direction:column;align-items:flex-end;gap:1px;}
+  .dref .std{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.02em;color:var(--amber-soft);white-space:nowrap;}
+  .dref .std b{color:#fff;font-weight:600;}
+  .dref .cl{font-size:11.5px;color:#7f9aa1;white-space:nowrap;}
+  @media(max-width:780px){
+    .brand .bsub{display:none;}
+    .dref{align-items:flex-start;}
+    .dref .std,.dref .cl{white-space:normal;}
+  }
 
   /* ---------- hero ---------- */
   .hero{padding:54px 0 30px;}
@@ -236,16 +250,19 @@
   .tables{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
   @media(max-width:820px){.tables{grid-template-columns:1fr;}}
   .stable{background:var(--card);border:1px solid var(--hairline);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);}
-  .stable .cap{background:var(--panel);color:#fff;padding:13px 18px;font-weight:700;font-size:15.5px;display:flex;justify-content:space-between;align-items:center;}
-  .stable .cap .en{font-size:12px;color:var(--amber-soft);font-weight:500;}
+  .tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  @media(max-width:820px){ .tscroll table{min-width:540px;} }
+  .stable .cap{background:var(--panel);color:#fff;padding:13px 18px;font-weight:700;font-size:15.5px;
+    display:flex;justify-content:space-between;align-items:baseline;gap:4px 12px;flex-wrap:wrap;}
+  .stable .cap .en{font-size:12px;color:var(--amber-soft);font-weight:500;white-space:nowrap;}
   table{width:100%;border-collapse:collapse;font-size:13.5px;}
   th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--hairline);vertical-align:middle;}
   th{background:var(--paper-2);font-size:12px;color:var(--ink-soft);font-weight:700;letter-spacing:.02em;}
   td .rng{font-family:"IBM Plex Mono",monospace;font-size:13px;}
   td .dev{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--ink);}
-  tr[data-row]{transition:background .3s;}
-  tr[data-row].active{background:rgba(242,166,59,.16);}
-  tr[data-row].active td:first-child{box-shadow:inset 4px 0 0 var(--amber);}
+  tr[data-row],tr[data-t11]{transition:background .3s;}
+  tr[data-row].active,tr[data-t11].active{background:rgba(242,166,59,.16);}
+  tr[data-row].active td:first-child,tr[data-t11].active td:first-child{box-shadow:inset 4px 0 0 var(--amber);}
   .stable.dim{opacity:.5;}
   .tbl-note{font-size:12.5px;color:var(--ink-faint);padding:9px 14px;background:var(--paper-2);border-top:1px solid var(--hairline);line-height:1.6;}
 
@@ -300,6 +317,52 @@
   .vary-expl{margin:14px 24px 0;padding:14px 16px;border-radius:12px;background:var(--paper-2);border-left:3px solid var(--amber);font-size:14.5px;line-height:1.85;color:var(--ink);}
   .vary-expl b{color:#a5680c;}
   .vary-expl .g{color:#178a63;font-weight:700;}
+
+  /* ---------- 用電環境檢核 ---------- */
+  .envbox{background:var(--card);border:1px solid var(--hairline);border-radius:20px;box-shadow:var(--shadow);
+    overflow:hidden;display:grid;grid-template-columns:360px 1fr;}
+  @media(max-width:860px){.envbox{grid-template-columns:1fr;}}
+  .env-inputs{padding:22px;border-right:1px solid var(--hairline);display:grid;gap:16px;align-content:start;}
+  @media(max-width:860px){.env-inputs{border-right:none;border-bottom:1px solid var(--hairline);}}
+  .env-field .lab{display:block;font-weight:700;font-size:14px;margin-bottom:8px;}
+  .env-field .num-in input{width:100%;font-family:"IBM Plex Mono",monospace;font-size:18px;font-weight:500;
+    padding:10px 38px 10px 12px;border:1.5px solid var(--hairline);border-radius:10px;background:var(--paper-2);color:var(--ink);}
+  .env-field .num-in input:focus{outline:none;border-color:var(--amber);background:#fff;box-shadow:0 0 0 3px rgba(242,166,59,.18);}
+  .env-field select{width:100%;font-family:"Noto Sans TC",sans-serif;font-size:14.5px;padding:10px 12px;
+    border:1.5px solid var(--hairline);border-radius:10px;background:var(--paper-2);color:var(--ink);cursor:pointer;}
+  .env-field select:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 3px rgba(242,166,59,.18);}
+  .env-2row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  label.ck{display:flex;gap:9px;align-items:flex-start;font-size:13.5px;color:var(--ink-soft);line-height:1.6;cursor:pointer;}
+  label.ck input{margin-top:4px;accent-color:var(--amber);width:16px;height:16px;flex:none;}
+  .env-panel{padding:22px 24px 24px;display:flex;flex-direction:column;}
+
+  /* 三道關卡 bars */
+  .gates{margin:16px 0 4px;display:grid;gap:9px;}
+  .gate{display:grid;grid-template-columns:82px 1fr 74px;align-items:center;gap:10px;}
+  .gate .gk{font-size:12.5px;color:#9fb6bc;}
+  .gate .gbar{height:14px;background:rgba(255,255,255,.07);border-radius:7px;overflow:hidden;}
+  .gate .gfill{height:100%;border-radius:7px;transition:width .45s cubic-bezier(.22,1,.36,1);}
+  .gate .gfill.amber{background:linear-gradient(90deg,rgba(242,166,59,.55),var(--amber));}
+  .gate .gfill.fail{background:linear-gradient(90deg,rgba(226,78,55,.55),var(--fail));}
+  .gate .gfill.lim{background:rgba(255,255,255,.24);}
+  .gate .gfill.lim.neck{background:linear-gradient(90deg,rgba(242,166,59,.28),rgba(242,166,59,.58));
+    box-shadow:inset 0 0 0 1px rgba(242,166,59,.75);}
+  .gate .gv{font-family:"IBM Plex Mono",monospace;font-size:13px;color:#eaf2f3;text-align:right;}
+  .gate .gv .neck-tag{color:var(--amber-soft);font-size:10px;display:block;line-height:1.2;}
+
+  /* 檢核燈 */
+  .lamps{margin-top:14px;display:grid;gap:7px;}
+  .lrow{display:flex;align-items:center;gap:10px;font-size:13.5px;padding:8px 12px;border-radius:9px;
+    background:rgba(255,255,255,.04);border:1px solid var(--panel-line);}
+  .lrow .dot{width:9px;height:9px;border-radius:50%;flex:none;}
+  .lrow.ok .dot{background:var(--pass);box-shadow:0 0 8px var(--pass);}
+  .lrow.no .dot{background:var(--fail);box-shadow:0 0 8px var(--fail);}
+  .lrow .lk{color:#d7e3e5;font-weight:600;flex:none;}
+  .lrow .lv{color:#9fb6bc;font-family:"IBM Plex Mono",monospace;font-size:12.5px;margin-left:auto;text-align:right;}
+  .env-note{grid-column:1/-1;border-top:1px solid var(--hairline);background:var(--paper-2);padding:16px 22px;
+    font-size:13.5px;line-height:1.85;color:var(--ink-soft);}
+  .env-note b{color:#a5680c;}
+  td.cellhit{background:rgba(242,166,59,.28)!important;font-weight:700;box-shadow:inset 0 0 0 1.5px var(--amber);}
 
   /* ---------- sticky context toolbar ---------- */
   .stickybar{position:fixed;top:0;left:0;right:0;z-index:80;
@@ -363,8 +426,16 @@
 <!-- ============ document bar ============ -->
 <div class="docbar">
   <div class="wrap">
-    <div class="std"><b>IEC 60335-1</b> : 2010 +A2:2016　·　<b>CNS 60335-1</b>（103年）</div>
-    <div class="cl">第 10 節　消耗功率與電流　Power input &amp; current</div>
+    <div class="brand">
+      <span class="bmark"></span>
+      <span class="bname">家電銘板健檢</span>
+      <span class="bver">v1.0</span>
+      <span class="bsub">銘板上的功率／電流，標得對不對？</span>
+    </div>
+    <div class="dref">
+      <span class="std"><b>IEC 60335-1</b>:2010+A2:2016　·　<b>CNS 60335-1</b>（103年）</span>
+      <span class="cl">第10節 消耗功率與電流　·　第25.8條 表11　·　CNS 9827</span>
+    </div>
   </div>
 </div>
 
@@ -697,11 +768,142 @@
   </div>
 </section>
 
+<!-- ============ 6. 用電環境檢核 ============ -->
+<section id="env">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <div>
+        <h2>用電環境檢核：插頭與電源線</h2>
+        <p>第10節只管「標示值與量測值的差」。但實務上，<b>插頭</b>與<b>電源線</b>還會替你的額定值再壓一道天花板。</p>
+      </div>
+    </div>
+
+    <div class="envbox">
+      <div class="env-inputs">
+        <div class="env-2row">
+          <div class="env-field">
+            <label class="lab" for="envV">額定電壓</label>
+            <div class="num-in"><input id="envV" type="number" step="any" value="110"><span class="u">V</span></div>
+            <div class="chips" style="margin-top:8px">
+              <button class="chip" data-envv="110" type="button">110V</button>
+              <button class="chip" data-envv="220" type="button">220V</button>
+            </div>
+          </div>
+          <div class="env-field">
+            <label class="lab" for="envP">額定消耗功率</label>
+            <div class="num-in"><input id="envP" type="number" step="any" value="1500"><span class="u">W</span></div>
+            <div class="chips" style="margin-top:8px"><button class="chip" id="envPull" type="button">← 帶入上方額定值</button></div>
+          </div>
+        </div>
+
+        <div class="env-2row">
+          <div class="env-field">
+            <label class="lab" for="envPF"><span class="term" tabindex="0" data-term="pf">功因 PF</span></label>
+            <div class="num-in"><input id="envPF" type="number" step="0.01" min="0.1" max="1" value="1.00"></div>
+          </div>
+          <div class="env-field">
+            <label class="lab" for="envPlug"><span class="term" tabindex="0" data-term="plug">插頭額定電流</span></label>
+            <div class="num-in"><input id="envPlug" type="number" step="any" value="15"><span class="u">A</span></div>
+          </div>
+        </div>
+        <div class="hint" style="margin-top:-6px">電熱 PF≈1.00；電動／複合型 &lt;1（同瓦數電流更大），實際應以<b>量測電流</b>為準。台灣電源線組插頭常見 <b>125V 15A</b>。</div>
+
+        <div class="env-field">
+          <label class="lab" for="envArea"><span class="term" tabindex="0" data-term="cord9827">電源線截面積</span>（CNS 9827 花線）</label>
+          <select id="envArea">
+            <option value="0.75">0.75 mm²（30/0.18）</option>
+            <option value="1.00">1.00 mm²（40/0.18）</option>
+            <option value="1.25">1.25 mm²（50/0.18）</option>
+            <option value="2.0" selected>2.0 mm²（37/0.26）</option>
+            <option value="3.5">3.5 mm²（45/0.32）</option>
+            <option value="5.5">5.5 mm²（70/0.32）</option>
+          </select>
+        </div>
+
+        <div class="env-field">
+          <label class="lab" for="envIns">絕緣種類（最高容許溫度）</label>
+          <select id="envIns">
+            <option value="60" selected>60°C　PVC、天然橡膠混合物</option>
+            <option value="75">75°C　耐熱PVC、PE、SBR、NNFF(氯丁二烯橡膠)</option>
+            <option value="80">80°C　人造橡膠（丁基橡膠）</option>
+            <option value="90">90°C　EP、XLPE、海巴龍(Hypalon)</option>
+          </select>
+        </div>
+
+        <div class="env-field">
+          <label class="ck"><input type="checkbox" id="env2m">
+            <span>此為<b>攜帶型電器</b>且電源線長 <b>≤ 2m</b>（表11 註b：可採用括號內較小的截面積）</span></label>
+        </div>
+      </div>
+
+      <div class="panel env-panel">
+        <div class="p-top">
+          <span class="p-cap">Plug &amp; cord headroom · 插頭與電線餘裕</span>
+          <span class="verdict pass" id="envVerdict"><span class="lamp"></span><span id="envVerdictText">可行</span></span>
+        </div>
+
+        <div class="readout">
+          <div class="ro-block ro-meas">
+            <div class="ro-l">額定電流 I = P /(V×PF)</div>
+            <div class="ro-v"><span id="envI">13.6</span> <span style="font-size:20px">A</span></div>
+          </div>
+          <div class="ro-sep"></div>
+          <div class="ro-block">
+            <div class="ro-l">此配置最大可標示功率</div>
+            <div class="ro-v" id="envPmax" style="font-size:30px;color:var(--pass-soft)">1650 W</div>
+          </div>
+        </div>
+
+        <div class="gates" id="envGates"></div>
+        <div class="lamps" id="envLamps"></div>
+
+        <div class="basis" style="margin-top:14px"><div class="bl">判定依據 · Basis</div><div id="envBasis"></div></div>
+      </div>
+
+      <div class="env-note">
+        <b>CNS 25.8 的國家差異：</b>IEC 原文只要求「不得低於<span class="term" tabindex="0" data-term="t11">表11</span>」，而 <span class="term" tabindex="0" data-term="deviation25">CNS 第25.8條</span>寫的是「不得低於表11 <b>或 CNS 9827</b> 之規定值」——多開了一條替代路徑。原因是台灣花線規格（1.25、2.0…）與 IEC 表11 標稱值（1.5、2.5…）系列不同；例如 14A 的產品，表11 要 1.5mm²（台灣無此規格），走 CNS 9827 則 1.25mm²(75°C, 14A) 即可。上方兩條路徑<b>各自判定</b>，符合任一即滿足 CNS 25.8；保守作法是兩者皆滿足。
+        <br>※ CNS 9827 安全電流以<b>周圍溫度 35°C 以下</b>為準；超過 35°C 須依 <b>CNS 9831</b> 折減。
+      </div>
+    </div>
+
+    <!-- 參考表 -->
+    <div class="tables" style="margin-top:20px">
+      <div class="stable" id="tbl-cord">
+        <div class="cap">CNS 9827　花線安全電流 <span class="en">Safety current of flexible cords</span></div>
+        <div class="tscroll">
+        <table>
+          <thead><tr>
+            <th>截面積<br>mm²</th><th>根數/直徑</th>
+            <th data-c="60">60°C<br><span style="font-weight:400">PVC・天然橡膠</span></th>
+            <th data-c="75">75°C<br><span style="font-weight:400">耐熱PVC・PE・SBR</span></th>
+            <th data-c="80">80°C<br><span style="font-weight:400">人造橡膠</span></th>
+            <th data-c="90">90°C<br><span style="font-weight:400">EP・XLPE</span></th>
+          </tr></thead>
+          <tbody id="cordBody"></tbody>
+        </table>
+        </div>
+        <div class="tbl-note">安全電流單位：A。周溫 35°C 以下適用。目前選用的線徑與絕緣組合會<b>框起來</b>。</div>
+      </div>
+
+      <div class="stable" id="tbl-t11">
+        <div class="cap">60335-1 表11　導體最小截面積 <span class="en">Table 11 · Min. cross-sectional area</span></div>
+        <table>
+          <thead><tr><th style="width:52%">電器額定電流 I (A)</th><th>標稱截面積 mm²</th></tr></thead>
+          <tbody id="t11Body"></tbody>
+        </table>
+        <div class="tbl-note">註(a) 線長 ≤2m 才可用。　註(b) <b>攜帶型</b>且線長 ≤2m 時，可用括號內的值。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="wrap">
     <div>資料來源　·　<b>CNS 60335-1</b>（103年）「家用和類似用途電器 — 安全 — 第1部：通則」（對應 IEC 60335-1 ed 5.1:2013）</div>
+    <div><b>CNS 9827</b>（90年公布）花線安全電流　·　周溫折減依 <b>CNS 9831</b>　·　導體最小截面積依第 <b>25.8</b> 條 表11</div>
     <div><b>IEC 60335-1</b>:2010 + A1:2013 + A2:2016（Consolidated）第10節，表1、表2 與第3節用語定義。</div>
-    <div class="disc">本頁為協助理解標準的<b>教育輔助工具</b>，計算依上述版本第10節容許差整理而成。實際符合性判定應以最新版標準全文、量測條件與認證機構之判定為準；電壓、電流均以均方根值計。</div>
+    <div class="disc"><b>家電銘板健檢 v1.0</b>　·　本頁為協助理解標準的<b>教育輔助工具</b>，計算依上述版本第10節容許差整理而成。實際符合性判定應以最新版標準全文、量測條件與認證機構之判定為準；電壓、電流均以均方根值計。</div>
   </div>
 </footer>
 
@@ -720,7 +922,12 @@ const TERMS = {
   motor:{t:"電動電器",e:"motor-operated appliance",d:"裝有電動機、沒有任何加熱元件的電器。例如電風扇、果汁機、抽風機。（第3.5.7條）"},
   combined:{t:"複合型電器",e:"combined appliance",d:"同時具有加熱元件與電動機的電器。例如吹風機、洗碗機、附烘乾的洗衣機。（第3.5.8條）"},
   rule50:{t:"複合型 50% 規則",e:"combined appliance rule",d:"複合型電器中，若電動機的消耗功率大於額定的 50%，則套用「電動電器」的（較寬）容許差；否則套用「電熱電器」的容許差。"},
-  mean:{t:"算術平均值",e:"arithmetic mean value",d:"取一個代表性運轉週期內的功率／電流平均。用於負載會隨時間變動的電器。"}
+  mean:{t:"算術平均值",e:"arithmetic mean value",d:"取一個代表性運轉週期內的功率／電流平均。用於負載會隨時間變動的電器。"},
+  pf:{t:"功因（功率因數）",e:"power factor, PF",d:"實際功率與視在功率的比值。純電熱負載約等於 1.00；含電動機的電器會小於 1，代表同樣的瓦數會拉更大的電流。所以電動／複合型不可只用 P÷V 反推電流，必須實際量測。"},
+  plug:{t:"插頭額定電流",e:"plug rated current",d:"插頭本身能安全通過的最大電流。台灣電源線組插頭常見規格為 125V 15A，因此電器的額定電流不得超過 15A——這也讓 110V 電器的額定消耗功率被限制在約 1650W（110V×15A，功因≈1 時）。"},
+  cord9827:{t:"花線安全電流",e:"safety current of flexible cords",d:"CNS 9827 規定各截面積、各絕緣材質的銅導體軟線，在周圍溫度 35°C 以下可安全通過的電流。超過會使導線溫度超出絕緣材質的最高容許溫度。周溫超過 35°C 需依 CNS 9831 折減。"},
+  t11:{t:"導體最小截面積（表11）",e:"minimum cross-sectional area",d:"IEC / CNS 60335-1 第 25.8 條 表11：依電器額定電流，規定電源線導體的最小標稱截面積。CNS 版另加註「或 CNS 9827 之規定值」，屬國家差異。"},
+  deviation25:{t:"CNS 25.8 的國家差異",e:"national deviation",d:"IEC 原文只寫「不得低於表11」；CNS 60335-1 第25.8條寫的是「不得低於表11『或 CNS 9827』之規定值」，等於多開了一條替代路徑。原因是台灣花線規格（0.75／1.0／1.25／2.0／3.5／5.5 mm²）與 IEC 表11 的標稱值（0.5／0.75／1.0／1.5／2.5 mm²）並不相同。"}
 };
 
 const tip=document.getElementById('tip');
@@ -1057,6 +1264,123 @@ function renderWave(){
 $('vPeak').addEventListener('input',renderWave);
 document.querySelectorAll('.chip[data-vpreset]').forEach(c=>c.addEventListener('click',()=>{ $('vPeak').value=c.dataset.vpreset; renderWave(); }));
 
+/* ---------- 用電環境：CNS 9827 花線安全電流（周溫≤35°C） ---------- */
+const CORD=[
+  {a:0.75,s:'30/0.18',c:{60:7 ,75:8 ,80:9 ,90:10}},
+  {a:1.00,s:'40/0.18',c:{60:9 ,75:10,80:11,90:12}},
+  {a:1.25,s:'50/0.18',c:{60:11,75:14,80:15,90:16}},
+  {a:2.0 ,s:'37/0.26',c:{60:15,75:20,80:21,90:23}},
+  {a:3.5 ,s:'45/0.32',c:{60:21,75:26,80:28,90:31}},
+  {a:5.5 ,s:'70/0.32',c:{60:32,75:40,80:43,90:47}}
+];
+/* ---------- 60335-1 第25.8條 表11 導體最小截面積 ---------- */
+const T11=[
+  {max:0.2,base:0   ,alt:null,disp:'細花線 tinsel cord',fn:'a'},
+  {max:3  ,base:0.5 ,alt:null,disp:'0.5',fn:'a'},
+  {max:6  ,base:0.75,alt:null,disp:'0.75'},
+  {max:10 ,base:1.0 ,alt:0.75,disp:'1.0 (0.75)',fn:'b'},
+  {max:16 ,base:1.5 ,alt:1.0 ,disp:'1.5 (1.0)',fn:'b'},
+  {max:25 ,base:2.5 ,alt:null,disp:'2.5'},
+  {max:32 ,base:4   ,alt:null,disp:'4'},
+  {max:40 ,base:6   ,alt:null,disp:'6'},
+  {max:63 ,base:10  ,alt:null,disp:'10'}
+];
+const T11BAND=['I ≤ 0.2','0.2 < I ≤ 3','3 < I ≤ 6','6 < I ≤ 10','10 < I ≤ 16','16 < I ≤ 25','25 < I ≤ 32','32 < I ≤ 40','40 < I ≤ 63'];
+function t11Idx(I){ for(let i=0;i<T11.length;i++) if(I<=T11[i].max) return i; return -1; }
+function t11Req(I,short2m){ const i=t11Idx(I); if(i<0) return null; const r=T11[i]; return (short2m&&r.alt!=null)?r.alt:r.base; }
+function t11MaxI(area,short2m){ let m=0; for(const r of T11){ const req=(short2m&&r.alt!=null)?r.alt:r.base; if(area>=req-1e-9) m=r.max; else break; } return m; }
+function cordSafe(area,ins){ const r=CORD.find(x=>Math.abs(x.a-area)<1e-9); return r?r.c[ins]:null; }
+
+/* 建立兩張參考表 */
+function buildEnvTables(){
+  $('cordBody').innerHTML=CORD.map(r=>'<tr data-a="'+r.a+'"><td><span class="rng">'+r.a.toFixed(2)+'</span></td><td><span class="dev">'+r.s+'</span></td>'
+    +[60,75,80,90].map(c=>'<td data-c="'+c+'"><span class="dev">'+r.c[c]+'</span></td>').join('')+'</tr>').join('');
+  $('t11Body').innerHTML=T11.map((r,i)=>'<tr data-t11="'+i+'"><td><span class="rng">'+T11BAND[i]+'</span></td><td><span class="dev">'+r.disp+(r.fn?' <sup>('+r.fn+')</sup>':'')+'</span></td></tr>').join('');
+}
+
+function updateEnv(){
+  const V=parseFloat($('envV').value), P=parseFloat($('envP').value), PF=parseFloat($('envPF').value);
+  const plugA=parseFloat($('envPlug').value);
+  const area=parseFloat($('envArea').value), ins=parseInt($('envIns').value,10);
+  const short2m=$('env2m').checked;
+  const bad = !isFinite(V)||V<=0||!isFinite(P)||P<=0||!isFinite(PF)||PF<=0||PF>1||!isFinite(plugA)||plugA<=0;
+  if(bad){
+    $('envI').textContent='—'; $('envPmax').textContent='—';
+    $('envGates').innerHTML=''; $('envLamps').innerHTML='';
+    $('envBasis').innerHTML='請填入有效的<b>額定電壓</b>、<b>額定消耗功率</b>、<b>功因（0–1）</b>與<b>插頭額定電流</b>。';
+    $('envVerdictText').textContent='—'; $('envVerdict').className='verdict';
+    return;
+  }
+  const I=P/(V*PF);
+  const safe=cordSafe(area,ins);
+  const req=t11Req(I,short2m);
+  const plugOK = I<=plugA+1e-9;
+  const cnsOK  = safe!=null && I<=safe+1e-9;
+  const t11OK  = req!=null && area>=req-1e-9;
+  const cordOK = cnsOK||t11OK;
+  const overall= plugOK&&cordOK;
+
+  const cordMaxA=Math.max(safe||0, t11MaxI(area,short2m));
+  const limitA=Math.min(plugA,cordMaxA);
+  const pmax=V*limitA*PF;
+  const neck = plugA<=cordMaxA ? 'plug':'cord';
+
+  $('envI').textContent=I.toFixed(2);
+  $('envPmax').textContent=Math.round(pmax)+' W';
+  $('envPmax').style.color = overall? 'var(--pass-soft)':'var(--fail-soft)';
+  $('envVerdictText').textContent = overall?'可行':'不可行';
+  $('envVerdict').className='verdict '+(overall?'pass':'fail');
+
+  /* 三道關卡 */
+  const scale=Math.max(I,plugA,cordMaxA)*1.12;
+  const bar=(k,v,cls,tag)=>'<div class="gate"><span class="gk">'+k+'</span><div class="gbar"><div class="gfill '+cls+'" style="width:'+
+    Math.min(100,v/scale*100).toFixed(1)+'%"></div></div><span class="gv">'+v.toFixed(2)+' A'+(tag?'<span class="neck-tag">'+tag+'</span>':'')+'</span></div>';
+  $('envGates').innerHTML =
+     bar('額定電流', I, overall?'amber':'fail','')
+   + bar('插頭可通過', plugA, 'lim'+(neck==='plug'?' neck':''), neck==='plug'?'瓶頸':'')
+   + bar('電線可通過', cordMaxA, 'lim'+(neck==='cord'?' neck':''), neck==='cord'?'瓶頸':'');
+
+  /* 檢核燈 */
+  const lamp=(ok,k,v)=>'<div class="lrow '+(ok?'ok':'no')+'"><span class="dot"></span><span class="lk">'+k+'</span><span class="lv">'+v+'</span></div>';
+  $('envLamps').innerHTML =
+     lamp(plugOK,'插頭額定電流', I.toFixed(2)+' A '+(plugOK?'≤':'>')+' '+plugA+' A')
+   + lamp(cnsOK ,'CNS 9827 花線安全電流', I.toFixed(2)+' A '+(cnsOK?'≤':'>')+' '+(safe==null?'—':safe+' A')+'（'+area.toFixed(2)+'mm² / '+ins+'°C）')
+   + lamp(t11OK ,'60335-1 表11 最小截面積', area.toFixed(2)+' mm² '+(t11OK?'≥':'<')+' '+(req==null?'超出表11':req+' mm²')+'（I='+I.toFixed(2)+'A'+(short2m?' · ≤2m':'')+'）');
+
+  /* 判定依據 */
+  let h='額定電流 <b>I = '+P+' ÷ ('+V+' × '+PF.toFixed(2)+') = <span class="hi-amber">'+I.toFixed(2)+' A</span></b>。<br>';
+  h+='插頭上限 <span class="hi-amber">'+plugA+' A</span>；此電線可通過 <span class="hi-amber">'+cordMaxA+' A</span>（CNS 9827 安全電流 '+(safe==null?'—':safe+' A')+'，表11 容許至 '+t11MaxI(area,short2m)+' A）。';
+  h+='瓶頸在<b>'+(neck==='plug'?'插頭':'電線')+'</b> → 此配置最大可標示 <b>'+V+'V × '+limitA+'A × '+PF.toFixed(2)+' = <span class="'+(overall?'hi-pass':'hi-fail')+'">'+Math.round(pmax)+' W</span></b>。<br>';
+  if(overall){
+    h+='額定電流未超出任何一道關卡 → <span class="hi-pass">可行 ✓</span>。';
+    if(!(cnsOK&&t11OK)) h+='（註：僅通過'+(cnsOK?'<b>CNS 9827</b>':'<b>表11</b>')+'路徑；依 CNS 25.8「表11 <b>或</b> CNS 9827」擇一即可，但兩者皆滿足較保險。）';
+  }else{
+    const bad=[]; if(!plugOK)bad.push('超過插頭額定 '+plugA+'A'); if(!cordOK)bad.push('電線不足（CNS 9827 與表11 兩條路徑皆未通過）');
+    h+='<span class="hi-fail">不可行 ✕</span>：'+bad.join('；')+'。需降低額定功率、改用更大插頭規格或加大線徑。';
+  }
+  $('envBasis').innerHTML=h;
+
+  /* 參考表 highlight */
+  document.querySelectorAll('#cordBody td').forEach(td=>td.classList.remove('cellhit'));
+  const crow=document.querySelector('#cordBody tr[data-a="'+area+'"]');
+  if(crow){ const cell=crow.querySelector('td[data-c="'+ins+'"]'); if(cell)cell.classList.add('cellhit'); }
+  document.querySelectorAll('#t11Body tr').forEach(tr=>tr.classList.remove('active'));
+  const ti=t11Idx(I); if(ti>=0){ const tr=document.querySelector('#t11Body tr[data-t11="'+ti+'"]'); if(tr)tr.classList.add('active'); }
+}
+
+['envV','envP','envPF','envPlug'].forEach(id=>$(id).addEventListener('input',updateEnv));
+['envArea','envIns'].forEach(id=>$(id).addEventListener('change',updateEnv));
+$('env2m').addEventListener('change',updateEnv);
+document.querySelectorAll('.chip[data-envv]').forEach(c=>c.addEventListener('click',()=>{ $('envV').value=c.dataset.envv; updateEnv(); }));
+$('envPull').addEventListener('click',()=>{
+  const R=parseFloat($('inRated').value);
+  if(!isFinite(R)||R<=0) return;
+  if(S.metric==='power'){ $('envP').value=R; }
+  else { const V=parseFloat($('envV').value)||110, PF=parseFloat($('envPF').value)||1; $('envP').value=Math.round(R*V*PF); }
+  $('envPF').value = (effType()==='motor')?'0.80':'1.00';
+  updateEnv();
+});
+
 function refreshAll(){ update(); updateReverse(); updateContextLabels(); }
 
 /* ---------- 初始 ---------- */
@@ -1064,6 +1388,8 @@ syncSegs();
 refreshAll();
 updateVoltage();
 renderWave();
+buildEnvTables();
+updateEnv();
 onScroll();
 </script>
 </body>
