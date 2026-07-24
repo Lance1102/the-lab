@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全台 CEH 與 ISO 27001【可考證】訓練課程時間表（2026-07-24 之後）</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' rx='3' fill='%232f6f5e'/><path d='M4 8.5l2.4 2.4L12 5.3' stroke='white' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<style>
+:root{
+  --bg:#f6f5f1; --surface:#ffffff; --surface-2:#faf9f6; --ink:#1c1b18; --muted:#6c6a63;
+  --border:#e4e1d8; --border-strong:#d4d0c4; --accent:#2f6f5e; --accent-soft:#e2efe9;
+  --warn:#a15c15; --warn-soft:#f6ecd9;
+  --ceh:#a1402e; --ceh-soft:#f4e5e0;
+  --la:#2f6f5e; --la-soft:#e2efe9;
+  --trans:#4f5f83; --trans-soft:#e6e9f1;
+  --ia:#8a6a1e; --ia-soft:#f3ead4;
+  --sub:#356a7a; --sub-soft:#e0edf1;
+  --shadow:0 1px 2px rgba(30,28,22,.05),0 4px 16px rgba(30,28,22,.06);
+  --mono:"SFMono-Regular",ui-monospace,"Cascadia Mono","Consolas","Noto Sans Mono CJK TC",monospace;
+  --sans:"Segoe UI","PingFang TC","Microsoft JhengHei","Noto Sans TC",system-ui,-apple-system,sans-serif;
+  --radius:14px;
+}
+:root[data-theme="dark"]{
+  --bg:#16171b; --surface:#1e2025; --surface-2:#23262c; --ink:#e9e7e0; --muted:#9a988f;
+  --border:#31343b; --border-strong:#3d4149; --accent:#5ab79e; --accent-soft:#1c322c;
+  --warn:#d29a4e; --warn-soft:#33291a;
+  --ceh:#d98974; --ceh-soft:#33231f; --la:#5ab79e; --la-soft:#1c322c;
+  --trans:#8a99c0; --trans-soft:#20242f; --ia:#c9a856; --ia-soft:#2c2717;
+  --sub:#6fb0c4; --sub-soft:#182a30;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.35);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#16171b; --surface:#1e2025; --surface-2:#23262c; --ink:#e9e7e0; --muted:#9a988f;
+    --border:#31343b; --border-strong:#3d4149; --accent:#5ab79e; --accent-soft:#1c322c;
+    --warn:#d29a4e; --warn-soft:#33291a;
+    --ceh:#d98974; --ceh-soft:#33231f; --la:#5ab79e; --la-soft:#1c322c;
+    --trans:#8a99c0; --trans-soft:#20242f; --ia:#c9a856; --ia-soft:#2c2717;
+    --sub:#6fb0c4; --sub-soft:#182a30;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:clip}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.65;
+  font-size:16px;-webkit-font-smoothing:antialiased;overflow-x:clip}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+.topbar{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.01em}
+.brand svg{flex:0 0 auto}
+.brand small{font-weight:500;color:var(--muted);font-size:12px}
+.theme-btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--border-strong);
+  background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 14px;cursor:pointer;
+  font-family:inherit;font-size:13px;transition:.18s}
+.theme-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+.hero{padding:52px 0 30px}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:center}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:16px}
+.eyebrow::before{content:"";width:26px;height:2px;background:var(--accent)}
+.hero h1{font-size:clamp(1.9rem,3.6vw,2.95rem);line-height:1.16;margin:0 0 18px;letter-spacing:-.01em;font-weight:800}
+.hero h1 .hl{color:var(--accent)}
+.hero p.lead{font-size:1.06rem;color:var(--muted);margin:0 0 22px;max-width:47ch}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px}
+.pill{display:inline-flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--border);
+  border-radius:999px;padding:6px 13px;font-size:13px;color:var(--muted);box-shadow:var(--shadow)}
+.pill b{color:var(--ink)}
+.pill .dot{width:8px;height:8px;border-radius:50%}
+.stat-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:6px;display:grid;grid-template-columns:1fr 1fr;gap:6px;position:relative}
+.stat-panel::before{content:"研究快照";position:absolute;top:-11px;left:16px;background:var(--accent);
+  color:#fff;font-size:11px;letter-spacing:.1em;padding:3px 10px;border-radius:999px;font-weight:700}
+.stat{background:var(--surface-2);border-radius:10px;padding:16px 15px}
+.stat .n{font-size:1.7rem;font-weight:800;line-height:1;font-family:var(--mono);letter-spacing:-.02em}
+.stat .n small{font-size:.8rem;color:var(--muted);font-weight:600;margin-left:3px}
+.stat .l{font-size:12px;color:var(--muted);margin-top:6px}
+.stat.accent .n{color:var(--accent)}
+.verify-note{grid-column:1/-1;background:var(--accent-soft);border-radius:10px;padding:11px 15px;
+  font-size:12.5px;color:var(--ink);display:flex;align-items:center;gap:9px}
+.verify-note svg{flex:0 0 auto;color:var(--accent)}
+
+section{padding:32px 0}
+.sec-head{margin-bottom:20px}
+.sec-head h2{font-size:1.5rem;margin:0 0 6px;letter-spacing:-.01em;display:flex;align-items:center;gap:11px}
+.sec-head h2 .idx{font-family:var(--mono);font-size:.8rem;color:var(--accent);border:1px solid var(--accent);
+  border-radius:6px;padding:2px 8px;font-weight:700}
+.sec-head p{margin:0;color:var(--muted);font-size:.96rem;max-width:78ch}
+
+.controls{position:sticky;top:60px;z-index:30;background:color-mix(in srgb,var(--bg) 92%,transparent);
+  backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:var(--radius);
+  padding:15px 16px;margin-bottom:20px;box-shadow:var(--shadow)}
+.ctrl-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.ctrl-row+.ctrl-row{margin-top:12px;padding-top:12px;border-top:1px dashed var(--border)}
+.ctrl-label{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.05em;flex:0 0 auto;min-width:52px}
+.ctrl-label small{display:block;font-weight:500;color:var(--muted);opacity:.8;letter-spacing:0}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{border:1px solid var(--border-strong);background:var(--surface);color:var(--muted);
+  border-radius:999px;padding:6px 13px;font-size:13px;cursor:pointer;font-family:inherit;transition:.15s;
+  display:inline-flex;align-items:center;gap:6px}
+.chip .cdot{width:9px;height:9px;border-radius:3px}
+.chip:hover{border-color:var(--accent)}
+.chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip.on .cdot{box-shadow:0 0 0 1.5px var(--bg)}
+.search{flex:1;min-width:180px;display:flex;align-items:center;gap:8px;background:var(--surface);
+  border:1px solid var(--border-strong);border-radius:10px;padding:8px 12px}
+.search svg{flex:0 0 auto;color:var(--muted)}
+.search input{border:0;background:transparent;color:var(--ink);font-family:inherit;font-size:14px;width:100%;outline:none}
+.toggle{display:inline-flex;align-items:center;gap:9px;font-size:13px;color:var(--ink);cursor:pointer;user-select:none}
+.toggle input{display:none}
+.toggle .tb{width:38px;height:22px;background:var(--border-strong);border-radius:999px;position:relative;transition:.18s;flex:0 0 auto}
+.toggle .tb::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;background:#fff;border-radius:50%;transition:.18s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.toggle input:checked+.tb{background:var(--accent)}
+.toggle input:checked+.tb::after{transform:translateX(16px)}
+.sortsel{background:var(--surface);border:1px solid var(--border-strong);color:var(--ink);border-radius:10px;padding:7px 11px;font-family:inherit;font-size:13px;cursor:pointer}
+.count-tag{font-size:13px;color:var(--muted);margin-left:auto}
+.count-tag b{color:var(--accent);font-family:var(--mono)}
+
+.tt{display:flex;flex-direction:column;gap:11px}
+.row{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--cat,var(--accent));
+  border-radius:12px;box-shadow:var(--shadow);display:grid;grid-template-columns:132px 1fr auto;gap:20px;padding:16px 20px;align-items:center;transition:.16s}
+.row:hover{border-color:var(--border-strong);transform:translateY(-1px)}
+.row.tbd{border-left-style:dashed;opacity:.94}
+.date-cell{text-align:center}
+.date-cell .mon{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.date-cell .day{font-family:var(--mono);font-size:1.7rem;font-weight:800;line-height:1.05;color:var(--cat)}
+.date-cell .yr{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.date-cell .rng{font-family:var(--mono);font-size:11.5px;color:var(--ink);margin-top:3px;background:var(--cat-soft);border-radius:6px;padding:2px 6px;display:inline-block}
+.date-cell.tbd .day{font-size:1rem;color:var(--warn);padding-top:8px}
+.info .track{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:700;color:var(--cat);background:var(--cat-soft);border-radius:6px;padding:3px 9px;margin-bottom:7px;letter-spacing:.02em}
+.info h3{margin:0 0 5px;font-size:1.05rem;line-height:1.35}
+.info .org{font-size:13px;color:var(--muted);margin-bottom:8px}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:11.5px;color:var(--muted);border:1px solid var(--border);border-radius:6px;padding:2px 8px;display:inline-flex;align-items:center;gap:5px;background:var(--surface-2)}
+.tag svg{flex:0 0 auto;opacity:.7}
+.tag.mode-online{color:var(--trans);border-color:color-mix(in srgb,var(--trans) 40%,transparent)}
+.tag.mode-live{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 40%,transparent)}
+.tag.taf{color:var(--accent);border-color:var(--accent);background:var(--accent-soft);font-weight:600}
+.tag.subsidy{color:var(--sub);border-color:var(--sub);background:var(--sub-soft);font-weight:600}
+.meta-cell{text-align:right;min-width:150px}
+.meta-cell .price{font-family:var(--mono);font-size:1.02rem;font-weight:700}
+.meta-cell .price.tbd{color:var(--warn);font-size:.9rem}
+.meta-cell .price .strike{font-size:.8rem;color:var(--muted);text-decoration:line-through;font-weight:400}
+.meta-cell .sub{font-size:12px;color:var(--muted);margin-top:3px}
+.src-link{display:inline-flex;align-items:center;gap:5px;font-size:12px;margin-top:9px;border:1px solid var(--border-strong);border-radius:7px;padding:4px 10px;color:var(--accent);transition:.15s}
+.src-link:hover{background:var(--accent-soft);text-decoration:none}
+.src-link.secondary{color:var(--warn)}
+.src-links{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end;margin-top:9px}
+.src-links .src-link{margin-top:0}
+.conf-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px}
+.conf-primary{background:var(--accent)}
+.conf-secondary{background:var(--warn)}
+
+.taf-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 24px}
+.card h3{margin:0 0 12px;font-size:1.1rem;display:flex;align-items:center;gap:9px}
+.card h3 svg{color:var(--accent);flex:0 0 auto}
+.roles{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 2px}
+.role-badge{font-size:12px;background:var(--accent-soft);color:var(--accent);border-radius:7px;padding:4px 10px;font-weight:600}
+.quote{border-left:3px solid var(--accent);background:var(--surface-2);padding:10px 14px;margin:12px 0;font-size:13px;color:var(--ink);border-radius:0 8px 8px 0}
+.quote .q-src{display:block;margin-top:5px;font-size:11.5px;color:var(--muted);font-family:var(--mono)}
+.keyfind{background:var(--warn-soft);border:1px solid color-mix(in srgb,var(--warn) 35%,transparent);border-radius:12px;padding:16px 20px;margin-top:16px;display:flex;gap:13px;align-items:flex-start}
+.keyfind svg{flex:0 0 auto;color:var(--warn);margin-top:2px}
+.keyfind b{color:var(--warn)}
+.req-table{width:100%;border-collapse:collapse;font-size:13.3px;margin-top:4px}
+.req-table th,.req-table td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+.req-table th{color:var(--muted);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;background:var(--surface-2)}
+.req-table td:first-child{white-space:nowrap;font-weight:700}
+.req-table .code{font-family:var(--mono);font-size:11px;color:var(--accent);display:inline-block;font-weight:600;margin-top:5px;background:var(--accent-soft);border-radius:6px;padding:2px 7px;line-height:1.5;white-space:nowrap}
+.req-table .code .tip{border-bottom:none;cursor:help}
+.req-wrap{overflow:visible}
+
+.tip{border-bottom:1px dotted currentColor;cursor:help;position:relative}
+.tip:focus{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px}
+.tip::after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 9px);transform:translateX(-50%) translateY(4px);
+  background:rgba(24,24,27,.7);color:#fff;-webkit-backdrop-filter:blur(12px) saturate(1.3);backdrop-filter:blur(12px) saturate(1.3);border:1px solid rgba(255,255,255,.14);font-size:12.5px;line-height:1.5;font-weight:400;letter-spacing:normal;
+  width:max-content;max-width:270px;padding:9px 12px;border-radius:10px;box-shadow:0 12px 34px rgba(0,0,0,.42);
+  opacity:0;pointer-events:none;transition:.16s;z-index:60;text-align:left}
+.tip::before{content:"";position:absolute;left:50%;bottom:calc(100% + 3px);transform:translateX(-50%) translateY(4px);
+  border:6px solid transparent;border-top-color:rgba(24,24,27,.7);opacity:0;transition:.16s;z-index:60}
+.tip:hover::after,.tip:focus::after,.tip:hover::before,.tip:focus::before{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.method-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.caveat-list{list-style:none;margin:0;padding:0}
+.caveat-list li{padding:9px 0 9px 26px;position:relative;font-size:13.6px;border-bottom:1px dashed var(--border);color:var(--muted)}
+.caveat-list li:last-child{border-bottom:0}
+.caveat-list li::before{content:"";position:absolute;left:4px;top:15px;width:7px;height:7px;border-radius:2px;background:var(--warn)}
+.caveat-list li b{color:var(--ink)}
+.src-table{width:100%;border-collapse:collapse;font-size:13px}
+.src-table th,.src-table td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--border)}
+.src-table th{color:var(--muted);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase}
+.src-table td a{word-break:break-all}
+.q-badge{font-size:11px;font-family:var(--mono);border-radius:5px;padding:2px 7px;font-weight:700;white-space:nowrap;display:inline-block}
+.q-primary{background:var(--accent-soft);color:var(--accent)}
+.q-secondary{background:var(--warn-soft);color:var(--warn)}
+
+.toc-fab{position:fixed;right:22px;bottom:22px;z-index:50;width:52px;height:52px;border-radius:50%;background:var(--accent);color:#fff;border:0;cursor:pointer;box-shadow:0 6px 22px rgba(47,111,94,.4);display:flex;align-items:center;justify-content:center;transition:.2s}
+.toc-fab:hover{transform:scale(1.06)}
+.toc-panel{position:fixed;right:22px;bottom:86px;z-index:50;background:var(--surface);border:1px solid var(--border-strong);border-radius:var(--radius);box-shadow:0 12px 40px rgba(0,0,0,.22);padding:12px;width:260px;opacity:0;visibility:hidden;transform:translateY(10px);transition:.2s}
+.toc-panel.open{opacity:1;visibility:visible;transform:translateY(0)}
+.toc-panel .th{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:4px 10px 8px}
+.toc-panel a{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;color:var(--ink);font-size:13.5px;transition:.14s}
+.toc-panel a:hover{background:var(--surface-2);text-decoration:none}
+.toc-panel a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.toc-panel a .n{font-family:var(--mono);font-size:11px;color:var(--muted);width:16px}
+.toc-panel a.active .n{color:var(--accent)}
+
+.auray-link{display:inline-flex;align-items:center;gap:4px;background:var(--sub-soft);color:var(--sub);border:1px solid color-mix(in srgb,var(--sub) 40%,transparent);border-radius:7px;padding:1px 8px;font:inherit;font-weight:700;cursor:pointer;transition:.15s;vertical-align:baseline}
+.auray-link:hover{background:var(--sub);color:#fff}
+.drawer-backdrop{position:fixed;inset:0;z-index:70;background:rgba(20,18,14,.5);backdrop-filter:blur(2px);opacity:0;visibility:hidden;transition:.25s}
+.drawer-backdrop.open{opacity:1;visibility:visible}
+.drawer{position:fixed;top:0;right:0;z-index:71;height:100%;width:min(440px,92vw);background:var(--surface);border-left:1px solid var(--border-strong);box-shadow:-12px 0 40px rgba(0,0,0,.28);transform:translateX(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);overflow-y:auto;overscroll-behavior:contain}
+.drawer.open{transform:translateX(0)}
+@media (prefers-reduced-motion:reduce){.drawer{transition:none}}
+.drawer-head{position:sticky;top:0;background:var(--sub);color:#fff;padding:22px 22px 18px;z-index:1}
+.drawer-head .close{position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:8px;border:0;background:rgba(255,255,255,.15);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.drawer-head .close:hover{background:rgba(255,255,255,.28)}
+.drawer-head .eyebrow2{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;opacity:.85;font-weight:600}
+.drawer-head h3{margin:6px 0 3px;font-size:1.3rem}
+.drawer-head .en{font-size:12.5px;opacity:.85;font-family:var(--mono)}
+.drawer-body{padding:20px 22px 40px}
+.drawer-body h4{margin:20px 0 9px;font-size:.95rem;display:flex;align-items:center;gap:8px;color:var(--ink)}
+.drawer-body h4:first-of-type{margin-top:4px}
+.drawer-body h4 svg{color:var(--sub);flex:0 0 auto}
+.drawer-body>p{margin:0 0 8px;font-size:13.5px;color:var(--muted)}
+.taf-box{background:var(--sub-soft);border:1px solid color-mix(in srgb,var(--sub) 30%,transparent);border-radius:10px;padding:13px 15px;font-size:13px;color:var(--ink)}
+.taf-box .meta{display:flex;flex-wrap:wrap;gap:6px 14px;margin-bottom:9px;font-size:12px;color:var(--muted)}
+.taf-box .meta b{color:var(--ink)}
+.taf-box ul{margin:6px 0 0;padding-left:18px}
+.taf-box li{margin:4px 0;font-size:12.8px}
+.svc-list{list-style:none;margin:0;padding:0}
+.svc-list li{padding:9px 0 9px 24px;position:relative;border-bottom:1px dashed var(--border);font-size:13.3px;color:var(--muted)}
+.svc-list li:last-child{border-bottom:0}
+.svc-list li::before{content:"";position:absolute;left:5px;top:15px;width:7px;height:7px;border-radius:2px;background:var(--sub)}
+.svc-list li b{color:var(--ink)}
+.drawer-links{display:flex;flex-direction:column;gap:8px;margin-top:14px}
+.drawer-links a{display:flex;align-items:center;gap:8px;font-size:13px;border:1px solid var(--border-strong);border-radius:9px;padding:9px 13px;color:var(--sub)}
+.drawer-links a:hover{background:var(--sub-soft);text-decoration:none}
+.disc{font-size:11.5px;color:var(--muted);margin-top:16px;border-top:1px dashed var(--border);padding-top:12px}
+
+.print-btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border-strong);background-color:var(--surface);color:var(--ink);border-radius:10px;padding:7px 13px;font-family:inherit;font-size:13px;cursor:pointer;transition:color .15s;animation:printBreath 3.4s ease-in-out infinite}
+.print-btn:hover{color:var(--accent);animation-duration:1.8s}
+@keyframes printBreath{
+  0%,100%{border-color:var(--border-strong);background-color:var(--surface);box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 0%,transparent)}
+  50%{border-color:color-mix(in srgb,var(--accent) 55%,var(--border-strong));background-color:var(--accent-soft);box-shadow:0 0 10px 1px color-mix(in srgb,var(--accent) 28%,transparent)}
+}
+.print-head{display:none}
+.print-foot{display:none}
+.gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:0 28px;border-top:1px solid var(--border)}
+.gloss-item{display:grid;grid-template-columns:140px 1fr;gap:12px;padding:11px 2px;border-bottom:1px solid var(--border);align-items:baseline}
+.gloss-item .gt{font-weight:700;color:var(--accent);font-size:13.3px;line-height:1.4;font-family:var(--mono);word-break:break-word}
+.gloss-item .gd{font-size:12.8px;color:var(--muted);line-height:1.55}
+@media (max-width:520px){.gloss-item{grid-template-columns:1fr;gap:2px}}
+
+footer{border-top:1px solid var(--border);padding:30px 0 60px;color:var(--muted);font-size:12.5px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center}
+.empty{text-align:center;padding:50px 20px;color:var(--muted)}
+.empty svg{opacity:.4;margin-bottom:12px}
+
+@media (max-width:880px){
+  .hero-grid,.taf-grid,.method-grid{grid-template-columns:1fr}
+  .hero{padding:34px 0 18px}
+  .stat-panel{margin-top:8px}
+  .row{grid-template-columns:96px 1fr;gap:14px}
+  .meta-cell{grid-column:1/-1;text-align:left;border-top:1px dashed var(--border);padding-top:12px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .meta-cell .sub{margin-top:0}
+  .src-link{margin-top:0}
+  .controls{position:static}
+  .count-tag{margin-left:0}
+}
+@media (max-width:520px){
+  .wrap{padding:0 16px}
+  .row{grid-template-columns:1fr}
+  .date-cell{text-align:left;display:flex;align-items:baseline;gap:10px}
+  .toc-fab{right:16px;bottom:16px}
+  .req-table{font-size:11.8px}
+  .req-table th,.req-table td{padding:8px 7px}
+  .req-table td:first-child{white-space:normal}
+  .src-table th,.src-table td{padding:7px 7px}
+}
+@media print{
+  /* 僅列印篩選後的課表，其餘一律不印 */
+  @page{margin:12mm 11mm}
+  @page{@bottom-center{content:"第 " counter(page) " 頁 / 共 " counter(pages) " 頁";font-size:8pt;color:#888}}
+  .topbar,.controls,.toc-fab,.toc-panel,.theme-btn,.src-link,.src-links,.drawer,.drawer-backdrop,
+  header.hero,#taf,#method,#glossary,footer,#emptyState,#timetable>.sec-head{display:none!important}
+  html,body{background:#fff!important;color:#141414;font-size:9.5pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  main.wrap,.wrap{max-width:none;margin:0;padding:0}
+  section{padding:0!important}
+  /* 表格分頁模型：頁首/頁尾每頁重複並自動保留空間 */
+  #timetable{display:table;width:100%;padding:0!important}
+  .print-head{display:table-header-group!important}
+  .tt{display:table-row-group!important;gap:0}
+  .print-foot{display:table-footer-group!important}
+  .print-head .ph-inner{padding:0 0 5pt;border-bottom:1.5pt solid #2f6f5e;margin-bottom:7pt}
+  .print-head .ph-title{font-size:12.5pt;font-weight:800;color:#1b1a17;line-height:1.15}
+  .print-head .ph-filter{font-size:8.5pt;margin-top:2pt;color:#333}
+  .print-head .ph-meta{font-size:7.5pt;margin-top:1pt;color:#666}
+  .print-foot .pf-inner{display:flex;justify-content:space-between;gap:10pt;border-top:.75pt solid #bbb;margin-top:6pt;padding-top:3pt;font-size:7.5pt;color:#777}
+  /* 緊湊現代卡片 */
+  .row{display:grid!important;grid-template-columns:54px 1fr auto!important;gap:9pt!important;align-items:center;
+    border:0;border-bottom:.75pt solid #e4e4e0;border-left:2.5pt solid var(--cat,#888);border-radius:0;
+    box-shadow:none;padding:4.5pt 4pt 4.5pt 8pt;break-inside:avoid;page-break-inside:avoid;transform:none!important;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .row:nth-of-type(even){background:#f6f6f2}
+  .date-cell{text-align:center;padding:0}
+  .date-cell .mon{font-size:6pt;letter-spacing:.05em}
+  .date-cell .day{font-size:12.5pt;line-height:1;color:var(--cat)}
+  .date-cell.tbd .day{font-size:7.5pt;padding-top:2pt}
+  .date-cell .yr{display:none}
+  .date-cell .rng{font-size:6.5pt;padding:0;margin-top:1pt;background:transparent;color:#555}
+  .info{min-width:0}
+  .info .track{font-size:6.5pt;padding:.5pt 4pt;margin-bottom:2pt;font-weight:700}
+  .info h3{font-size:9.5pt;margin:0 0 1pt;line-height:1.2}
+  .info .org{font-size:7.5pt;margin:0 0 2pt;color:#555}
+  .tags{gap:3pt}
+  .tag{font-size:6.5pt;padding:.5pt 4pt;border:.5pt solid #ccc;color:#444;gap:0;background:#fafafa}
+  .tag svg{display:none}
+  .meta-cell{grid-column:auto!important;display:block!important;text-align:right!important;border-top:0!important;padding:0!important;margin:0!important;min-width:0}
+  .meta-cell .price{font-size:9.5pt;font-weight:700}
+  .meta-cell .price .strike{font-size:7pt}
+  .meta-cell .sub{font-size:7pt;margin-top:.5pt;color:#555}
+  .meta-cell .sub:last-of-type{display:none}
+  .tip::after,.tip::before{display:none}
+  a{color:#000;text-decoration:none}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="1.5" y="1.5" width="21" height="21" rx="5" fill="var(--accent)"/><path d="M6.5 12.5l3.2 3.2L17.5 8" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>資安證照課程時間表<br><small>可考證版 · CEH &amp; ISO 27001 LA · 2026 下半年</small></span>
+    </div>
+    <button class="theme-btn" id="themeBtn" aria-label="切換深淺色">
+      <svg id="themeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <span id="themeLabel">深色</span>
+    </button>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">可考證版 · 僅列可取得證照的課程</span>
+      <h1>全台 <span class="hl">CEH</span> 與 <span class="hl">ISO&nbsp;27001</span><br>訓練課程時間表</h1>
+      <p class="lead"><b>可考證版</b>：只保留能取得證照的課程——<b>CEH</b>（EC-Council，含考試 voucher）與 <b>ISO 27001 主導稽核員</b>（CQI/IRCA 國際考照）；已排除 CEH 複習班、內部稽核員、轉版、政府補助等非國際考照課程。開課日均在 2026-07-24 之後。</p>
+      <div class="hero-meta">
+        <span class="pill"><span class="dot" style="background:var(--ceh)"></span><b>CEH</b> 認證（EC-Council 考證）</span>
+        <span class="pill"><span class="dot" style="background:var(--la)"></span><b>ISO 27001 主導稽核員</b>（CQI/IRCA）</span>
+        <span class="pill"><span class="dot" style="background:var(--accent)"></span>含 <b>TAF</b> 資安實驗室能力要求</span>
+      </div>
+    </div>
+    <div class="stat-panel" aria-label="研究快照統計">
+      <div class="stat accent"><div class="n">55<small> 梯</small></div><div class="l">可考證梯次（2026-07-24 後）</div></div>
+      <div class="stat"><div class="n">2<small> 類</small></div><div class="l">CEH ＋ ISO 27001 主導稽核員</div></div>
+      <div class="stat"><div class="n">8<small> 家</small></div><div class="l">訓練／認證機構</div></div>
+      <div class="stat"><div class="n">50<small>/50</small></div><div class="l">兩輪查證 claim 全數通過</div></div>
+      <div class="verify-note">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+        <span>本版<b>僅列能取得證照</b>的課程：CEH＝EC-Council 考證、ISO 27001 主導稽核員＝<span class="tip" data-tip="Chartered Quality Institute / International Register of Certificated Auditors，國際稽核員註冊機構，認可主導稽核員課程。">CQI/IRCA</span> 國際考照。</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section id="timetable">
+    <div class="sec-head">
+      <h2><span class="idx">01</span>互動課程時間表</h2>
+      <p><b>本版僅列可考證課程</b>（CEH 認證＋ISO 27001 主導稽核員）。預設依開課日期排序；「日期待查」（國際驗證機構多為依需求開班）置底。城市可複選；恆逸各班次提供「直達該城市班次」與「課程頁」兩個連結。</p>
+    </div>
+
+    <div class="controls">
+      <div class="ctrl-row">
+        <span class="ctrl-label">證照別</span>
+        <div class="chips" id="catChips">
+          <button class="chip" data-cat="all">全部</button>
+          <button class="chip" data-cat="ceh"><span class="cdot" style="background:var(--ceh)"></span>CEH</button>
+          <button class="chip on" data-cat="la"><span class="cdot" style="background:var(--la)"></span>ISO 27001 主導稽核員</button>
+        </div>
+      </div>
+      <div class="ctrl-row">
+        <span class="ctrl-label">城市<small>可複選</small></span>
+        <div class="chips" id="cityChips">
+          <button class="chip" data-city="all">全部</button>
+          <button class="chip" data-city="台北">台北</button>
+          <button class="chip" data-city="新北">新北</button>
+          <button class="chip" data-city="桃園">桃園</button>
+          <button class="chip" data-city="新竹">新竹</button>
+          <button class="chip on" data-city="台中">台中</button>
+          <button class="chip" data-city="高雄">高雄</button>
+          <button class="chip" data-city="線上">線上／遠距</button>
+          <button class="chip" data-city="其他">其他</button>
+        </div>
+      </div>
+      <div class="ctrl-row">
+        <span class="ctrl-label">形式</span>
+        <div class="chips" id="modeChips">
+          <button class="chip on" data-mode="all">全部</button>
+          <button class="chip" data-mode="實體">實體</button>
+          <button class="chip" data-mode="線上">線上</button>
+          <button class="chip" data-mode="Live遠距">Live 遠距</button>
+        </div>
+        <label class="toggle"><input type="checkbox" id="tafOnly"><span class="tb"></span>僅顯示 <span class="tip" data-tip="標記代表該證照為資安檢測實驗室（ISO/IEC 17025）主管／報告簽署人常見的能力佐證之一；非官方指定的必要證照，詳見第 03 節。">TAF 相關</span></label>
+      </div>
+      <div class="ctrl-row">
+        <div class="search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input type="text" id="searchInput" placeholder="搜尋課名 / 機構 / 班號 / 課程代碼…">
+        </div>
+        <select class="sortsel" id="sortSel">
+          <option value="date">排序：開課日期 ↑</option>
+          <option value="date-desc">排序：開課日期 ↓</option>
+          <option value="cat">排序：證照別</option>
+          <option value="org">排序：機構</option>
+        </select>
+        <button class="print-btn" id="printBtn" type="button" title="列印目前篩選後的課表（僅課表）">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V3h12v6"/><path d="M6 18H4a2 2 0 01-2-2v-4a2 2 0 012-2h16a2 2 0 012 2v4a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          列印課表
+        </button>
+        <span class="count-tag">顯示 <b id="cnt">0</b> 梯</span>
+      </div>
+    </div>
+
+    <div class="print-head" id="printHead" aria-hidden="true"></div>
+    <div class="tt" id="ttList"></div>
+    <div class="print-foot" id="printFoot" aria-hidden="true"><div class="pf-inner"><span id="pfBrand">資安證照課程時間表 · CEH ＋ ISO 27001（2026 下半年）</span><span>研究基準日 2026-07-24 · 報名前請以來源即時複查</span></div></div>
+    <div class="empty" id="emptyState" style="display:none">
+      <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <p>沒有符合條件的梯次，試著放寬篩選。</p>
+    </div>
+  </section>
+
+  <section id="taf">
+    <div class="sec-head">
+      <h2><span class="idx">02</span>TAF 資安實驗室人員能力要求</h2>
+      <p>資安檢測實驗室（ISO/IEC 17025）對實驗室主管與報告簽署人的能力要求，依 TAF 認證文件（TAF-CNLA-A24 認證服務計畫、R07、R08）與 ISO/IEC 17025:2017 §6.2 整理，並附已認證實驗室的業界實務觀點。</p>
+    </div>
+    <div class="taf-grid">
+      <div class="card">
+        <h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5V5a2 2 0 012-2h11l3 3v13.5"/><path d="M8 7h6M8 11h8M8 15h5"/></svg>認證服務計畫 A24 的規定</h3>
+        <p style="margin:0 0 4px;font-size:13.3px;color:var(--muted)"><b style="color:var(--ink)">TAF-CNLA-A24「智慧連網服務系統資安檢測實驗室認證服務計畫」</b>（第 4 版，2019-05-31）點名關鍵角色、要求人員資格含學歷證照，具體門檻交由共通規範與主管機關制度界定。</p>
+        <div class="roles">
+          <span class="role-badge">機構負責人</span>
+          <span class="role-badge">實驗室主管</span>
+          <span class="role-badge">品質負責人</span>
+          <span class="role-badge">報告簽署人</span>
+        </div>
+        <div class="quote">§7 認證實驗室異動：「…<b>機構負責人、實驗室主管、品質負責人或報告簽署人</b>的異動…應於 15 日內提出異動申請。」<span class="q-src">TAF-CNLA-A24(4) §7</span></div>
+        <div class="quote">§4.2 / §4.4：申請前應符合機構/法人證明、實驗室資格、<b>「人員資格（含學歷證照）」</b>等各款所規範的內容。<span class="q-src">TAF-CNLA-A24(4) §4.2、§4.4</span></div>
+      </div>
+      <div class="card">
+        <h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 17l6-10M5 7h.01M19 17h.01"/><circle cx="12" cy="12" r="9"/></svg>具體門檻的來源與證照認定</h3>
+        <p style="margin:0 0 8px;font-size:13.3px;color:var(--muted)">A24 §3／§4.1 將資格門檻指向上位文件：申請資格見服務手冊 <span class="tip" data-tip="TAF-CNLA-A01：實驗室與檢驗機構認證服務手冊，是所有 TAF 實驗室認證的總則。">A01</span> §6.1；共通能力依 <span class="tip" data-tip="TAF-CNLA-R01：ISO/IEC 17025 測試與校正實驗室能力一般要求。">ISO/IEC 17025（R01）</span>；主管與簽署人另依 <span class="tip" data-tip="TAF-CNLA-R07：對實驗室/檢驗機構主管之要求（現行第五版）。">R07</span>／<span class="tip" data-tip="TAF-CNLA-R08：對報告簽署人之要求。">R08</span>；技術門檻再依主管機關的「行動應用App 基本資安檢測基準」或「物聯網資安認驗證制度規章」。</p>
+        <div class="keyfind">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L2 18a2 2 0 001.7 3h16.6a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>
+          <div style="font-size:13.3px">
+            <b>證照認定：</b>官方文件（A24、R07、R08）<b>未逐字硬性列名</b>單一證照，而以「學歷＋證照＋訓練＋授權＋該領域<b>檢測</b>經歷」綜合認定，且須對應所申請之檢測技術類別。惟在資安檢測領域，<b>ISO 27001 與 CEH 為實務主流的能力佐證</b>（見下方業界實務）。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:18px">
+      <h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 11V7a4 4 0 00-8 0v4M5 11h14v10H5z"/></svg>R07／R08 對各角色的能力條款</h3>
+      <div class="req-wrap">
+      <table class="req-table">
+        <thead><tr><th>角色</th><th>規範依據</th><th>能力／資格要求（錨定 ISO/IEC 17025:2017 §6.2）</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>實驗室主管<span class="code">TAF-CNLA-R07(5)</span></td>
+            <td>R07 ＋ §6.2</td>
+            <td>教育／學歷背景、專業資格條件、必要之訓練、技術知識與技能之展現、執行對應檢測領域業務所需之工作/檢測經歷；主管異動應於 <b>15 日內</b>通報 TAF；醫學實驗室主管另訂附加條件。</td>
+          </tr>
+          <tr>
+            <td>報告簽署人<span class="code">TAF-CNLA-R08</span></td>
+            <td>R08 ＋ §6.2</td>
+            <td>須熟悉所簽署項目之<b>試驗原理與執行方法</b>；相關工程／理工科系學歷（一般為專科以上）；<b>該檢測領域相關檢測經歷</b>（年資依領域規範）；完整的實驗室<b>訓練、評估與授權紀錄</b>；經機構管理階層授權，簽署範圍限於獲授權之檢測領域。</td>
+          </tr>
+          <tr>
+            <td>品質負責人<span class="code">ISO/IEC 17025 §6.2</span></td>
+            <td>§6.2</td>
+            <td>品質管理相關訓練，及該檢測領域品質管理之相關經歷。</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      <p style="margin:12px 0 0;font-size:12.8px;color:var(--muted)">說明：R07／R08 為<b>能力框架文件</b>，錨定於 ISO/IEC 17025:2017 §6.2；<b>具體學歷等級與經歷年資由各檢測領域技術規範與主管機關基準訂定</b>（資安檢測依「行動應用App 基本資安檢測基準」「物聯網資安認驗證制度規章」等），非 R07／R08 內的單一通用數值。R07 現行為第五版；引用時應標明版次。</p>
+    </div>
+
+    <div class="keyfind" style="margin-top:18px;background:var(--sub-soft);border-color:color-mix(in srgb,var(--sub) 40%,transparent)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--sub)"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+      <div style="font-size:13.3px">
+        <b style="color:var(--sub)">業界實務（實驗室訪談）：</b>經與已通過認證的資安檢測實驗室 <button type="button" class="auray-link" id="aurayOpen">耀睿科技 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M9 6l6 6-6 6"/></svg></button> 主管訪談確認：TAF 要求資安檢測實驗室「以證照佐證實質資安能力」（主管指出 TAF 防範部分 EMC 等民間實驗室未具資安能力即逕轉資安檢測）。實務上，實驗室的<b>報告簽署人</b>須各具<b>一張管理證照＋一張技術證照</b>——即 <b>ISO 27001 主導稽核員</b>（管理，較易考、建議先考）與 <b>CEH／道德駭客</b>（技術）。此與官方文件「不逐字硬性列名、採 §6.2 綜合能力」並存——<b>制度是框架，資安檢測領域的實務預期證照即為 ISO 27001 與 CEH</b>，這也是本時間表聚焦此二證照的原因。
+      </div>
+    </div>
+  </section>
+
+  <section id="method">
+    <div class="sec-head">
+      <h2><span class="idx">03</span>來源、方法與注意事項</h2>
+      <p>兩輪多代理深研（各 100+ 代理、對抗式查證）＋ TAF 官方文件擷取；本版<b>聚焦可考證課程</b>（CEH 認證、ISO 27001 主導稽核員），已排除複習／內稽／轉版／補助等非國際考照。</p>
+    </div>
+    <div class="method-grid">
+      <div class="card">
+        <h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M5 8l7-5 7 5"/><path d="M5 8v8l7 5 7-5V8"/></svg>使用前務必知道</h3>
+        <ul class="caveat-list">
+          <li><b>「結業證書」≠「IRCA 註冊稽核員」：</b>ISO 27001 主導稽核員課程通過考試僅取得『訓練＋考試』紀錄（Certificate of Achievement，5 年效期）；要正式註冊為 CQI/IRCA 認證稽核員，還需累積實際稽核經歷再向 IRCA 申請。CEH 則內含 voucher，通過 EC-Council 考試即取得證照。</li>
+          <li><b>已實機複查（2026-07-24）：</b>恆逸（CEH 17 梯／ISO 27001 LA 28 梯）與 SGS×TISSA 來源頁所列梯次日期均<b>有效無誤</b>；本表已收錄恆逸<b>完整梯次</b>（台北/新竹/台中/高雄，部分延至 2027/01）。</li>
+          <li><b>來源連結已逐一複查（2026-07-24）：</b>修正恆逸為完整網址（原短網址會導向「頁面不存在」）、移除已失效之 iSpan 頁；其餘連結經實機瀏覽器確認可正常開啟。</li>
+          <li><b>時效性極高：</b>所有梯次為 2026 下半年招生頁／平台快照，可能滿班、加開或異動，<b>報名前請點來源連結即時複查</b>。</li>
+          <li><b>已排除非國際考照課程：</b>CEH 複習班（考試衝刺）、ISO 27001 內部稽核員（結業/能力證書）、轉版（需先具備資格之升級）、政府補助班（結業型）皆不在本版；完整清單見「原始版」。</li>
+          <li><b>國際驗證機構多為「依需求開班」：</b>DNV、TÜV NORD 官方頁未公告固定 2026 日期，須電洽或線上報名，本表標「日期待查」＋課程頁 URL。</li>
+          <li><b>SGS 梯次經 TISSA 合辦：</b>TISSA 招生、SGS 供講師與 IRCA 授證；歸「SGS×TISSA」。</li>
+          <li><b>TAF 門檻為框架：</b>R07／R08 錨定 ISO/IEC 17025 §6.2，具體學歷/年資由各檢測領域規範訂定；官方文件 PDF 位於 TAF 動態文件系統，本表依官方公告頁與 §6.2 整理其要求結構。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007 0l3-3a5 5 0 00-7-7l-1 1"/><path d="M14 11a5 5 0 00-7 0l-3 3a5 5 0 007 7l1-1"/></svg>主要來源</h3>
+        <div style="overflow-x:auto">
+        <table class="src-table">
+          <thead><tr><th>機構／文件</th><th>品質</th><th>連結</th></tr></thead>
+          <tbody>
+            <tr><td>恆逸 CEH v13 / ISO 27001 招生頁</td><td><span class="q-badge q-primary">一手</span></td><td><a href="https://www.uuu.com.tw/Course/Show/2144/EC-Council-CEH%E9%A7%AD%E5%AE%A2%E6%8A%80%E8%A1%93%E5%B0%88%E5%AE%B6%E8%AA%8D%E8%AD%89%E8%AA%B2%E7%A8%8B" target="_blank" rel="noopener">uuu.com.tw</a></td></tr>
+            <tr><td>中興大學 ISO 27001 LA</td><td><span class="q-badge q-primary">一手</span></td><td><a href="https://www2.nchu.edu.tw/news-detail/id/60219" target="_blank" rel="noopener">nchu.edu.tw</a></td></tr>
+            <tr><td>SGS × TISSA ISO 27001 梯次</td><td><span class="q-badge q-primary">一手</span></td><td><a href="https://www.tissa.org.tw/News/Detail/7242" target="_blank" rel="noopener">tissa.org.tw/News/7242</a></td></tr>
+            <tr><td>DNV 台灣 訓練</td><td><span class="q-badge q-primary">一手</span></td><td><a href="https://www.dnv.com/tw/assurance/training/" target="_blank" rel="noopener">dnv.com/tw</a></td></tr>
+            <tr><td>TÜV NORD 台灣 ISO 27001 LA</td><td><span class="q-badge q-primary">一手</span></td><td><a href="https://www.tuvnord.com.tw/web/education/course_in.jsp?ai_id=AI1665556145133" target="_blank" rel="noopener">tuvnord.com.tw</a></td></tr>
+            <tr><td>TAF-CNLA-A24 認證服務計畫（PDF）</td><td><span class="q-badge q-primary">一手</span></td><td><a href="https://accreditation.taftw.org.tw/taf/public/papersManagement/docDownLoad.action?docId=2c90b2c76b134aa9016b1bfd469230c5" target="_blank" rel="noopener">accreditation.taftw.org.tw</a></td></tr>
+            <tr><td>TAF-CNLA-R07(5) 主管要求 公告</td><td><span class="q-badge q-primary">一手</span></td><td><a href="https://www.taftw.org.tw/news/accredited/lab/TSTafNews-000566/" target="_blank" rel="noopener">taftw.org.tw</a></td></tr>
+            <tr><td>業界實務 · 耀睿科技資安檢測實驗室（訪談）</td><td><span class="q-badge q-secondary">實務</span></td><td>實驗室主管訪談（2026-07-17；27001／CEH）</td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="glossary">
+    <div class="sec-head">
+      <h2><span class="idx">04</span>詞彙對照（Glossary）</h2>
+      <p>內文中<span class="tip" data-tip="就是這種效果：名詞加虛底線，滑鼠停留（行動裝置點按）即顯示毛玻璃說明框。">帶虛底線的名詞</span>可滑鼠停留查看說明；下表為完整對照。</p>
+    </div>
+    <div class="gloss-grid" id="glossGrid"></div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>研究基準日 2026-07-24（台灣時間）· 兩輪 Deep Research（207 代理）＋ WDA 平台實機查詢 · 50/50 claim 通過</span>
+    <span>資料為招生頁／平台快照，報名前請以各來源連結即時複查</span>
+  </div>
+</footer>
+
+<div class="drawer-backdrop" id="aurayBackdrop"></div>
+<aside class="drawer" id="aurayDrawer" aria-hidden="true" aria-label="耀睿科技 簡介" role="dialog" aria-modal="true">
+  <div class="drawer-head">
+    <button class="close" id="aurayClose" aria-label="關閉"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M6 18L18 6"/></svg></button>
+    <div class="eyebrow2">業界實務 · 已認證資安檢測實驗室</div>
+    <h3>耀睿科技股份有限公司</h3>
+    <div class="en">Auray Technology Corp. · TAF 認證機構 3977</div>
+  </div>
+  <div class="drawer-body">
+    <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg>公司定位</h4>
+    <p>亞洲首座獲 O-RAN 聯盟批准的第三方測試實驗室，專注 5G O-RAN 測試認證與資通安全服務；2021 年獲國發會認可「5G SA 網路測試」項目。</p>
+    <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>TAF 認證範圍（ISO/IEC 17025）</h4>
+    <div class="taf-box">
+      <div class="meta"><span>認證編號 <b>3977</b></span><span>依據 <b>ISO/IEC 17025:2017・CNS 17025:2018</b></span><span>有效期 <b>2025/06/01–2028/05/31</b></span><span>實驗室主管 <b>蔡志明 Casper Tsai</b></span></div>
+      認可之檢測實驗室服務計畫：
+      <ul>
+        <li>資訊技術安全測試／檢測實驗室認證服務計畫</li>
+        <li>智慧連網服務系統資安檢測實驗室認證服務計畫（TAF-CNLA-A24）</li>
+        <li>商品檢驗指定試驗室認證服務計畫</li>
+      </ul>
+    </div>
+    <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>主要服務項目</h4>
+    <ul class="svc-list">
+      <li><b>OTIC 實驗室檢測</b>：O-RAN Alliance 認證與徽章（Badge）測試</li>
+      <li><b>資安檢測</b>：O-RAN SCAS 資安測試、EN 18031（歐盟 RED 指令合規）</li>
+      <li><b>資安顧問</b>：ISO 27001 資安管理、ISO 27701 隱私、BS 10012 個資</li>
+      <li><b>驗證中心</b>：溫室氣體確證查證（ISO 14065／ISO 17029）、產品碳足跡（ISO 14067）</li>
+      <li><b>RIC 軟體開發支援</b>：VMware RIC SDK 夥伴計畫</li>
+      <li><b>低軌衛星測試</b>：地面設備研發測試</li>
+    </ul>
+    <div class="drawer-links">
+      <a href="https://www.auray.com.tw/" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M8 7h9v9"/></svg>官方網站 auray.com.tw</a>
+      <a href="https://accreditation.taftw.org.tw/taf/public/basic/viewApplyItems.action?unitNo=3977&language=ZH_TW" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M8 7h9v9"/></svg>TAF 認證查詢（unitNo 3977）</a>
+    </div>
+    <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>訪談重點：實驗室人員能力要求</h4>
+    <ul class="svc-list">
+      <li><b>TAF 防弊要求：</b>主管指出 TAF 防範部分民間（如 EMC）實驗室未具資安能力即逕轉資安檢測，故要求人員考取基本證照佐證能力。</li>
+      <li><b>報告簽署人至少 2 名：</b>須受訓、通過考試取得證照；每人各具一張管理證照＋一張技術證照——<b>ISO 27001 主導稽核員</b>（管理，較易考、建議先考）與 <b>CEH／道德駭客</b>（技術）。</li>
+      <li><b>技術能力循序養成：</b>先具 NIST SP 800-115（弱點掃描／滲透測試）與 SBOM 檢測解析能力，再逐步培養 EN 18031／IEC 62443／CRA（歐盟網路韌性法案）檢測與 ISMS 風險評估能力。</li>
+    </ul>
+    <p class="disc">本卡「公司定位、TAF 認證範圍、服務項目」整理自 Auray 官網與 TAF 認證查詢頁（2026-07-24）；「訪談重點」為該實驗室主管於訪談（2026-07-17）中之陳述，屬口述實務參考、非官方文件。</p>
+  </div>
+</aside>
+
+<button class="toc-fab" id="tocFab" aria-label="開啟目錄">
+  <svg id="fabIcon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+</button>
+<nav class="toc-panel" id="tocPanel" aria-label="目錄">
+  <div class="th">目錄</div>
+  <a href="#timetable" data-t="timetable"><span class="n">01</span>互動課程時間表</a>
+  <a href="#taf" data-t="taf"><span class="n">02</span>TAF 實驗室能力要求</a>
+  <a href="#method" data-t="method"><span class="n">03</span>來源、方法與注意</a>
+  <a href="#glossary" data-t="glossary"><span class="n">04</span>詞彙對照</a>
+</nav>
+
+<script>
+const COURSES=[
+  // ===== CEH 認證（EC-Council 考證・含考試 voucher）=====
+  {cat:"ceh",track:"CEH 認證課程",name:"EC-Council CEH v13 駭客技術專家認證",org:"恆逸教育訓練中心（EC-Council ATC）",city:"台北",mode:"實體",start:"2026-07-26",end:"2026-08-23",note:"每週日・班號 2051",hours:"40h",price:"NT$65,000",exam:"含考試 voucher・在家實機考",taf:true,conf:"primary",url:"https://www.uuu.com.tw/Course/Show/2144/EC-Council-CEH%E9%A7%AD%E5%AE%A2%E6%8A%80%E8%A1%93%E5%B0%88%E5%AE%B6%E8%AA%8D%E8%AD%89%E8%AA%B2%E7%A8%8B"},
+  {cat:"ceh",track:"CEH 認證課程",name:"EC-Council CEH v13 駭客技術專家認證",org:"恆逸教育訓練中心（EC-Council ATC）",city:"台中",mode:"實體",start:"2026-07-27",end:"2026-07-31",note:"平日・班號 42662",hours:"40h",price:"NT$65,000",exam:"含考試 voucher・在家實機考",taf:true,conf:"primary",url:"https://www.uuu.com.tw/Course/Show/2144/EC-Council-CEH%E9%A7%AD%E5%AE%A2%E6%8A%80%E8%A1%93%E5%B0%88%E5%AE%B6%E8%AA%8D%E8%AD%89%E8%AA%B2%E7%A8%8B"},
+  {cat:"ceh",track:"CEH 認證課程",name:"EC-Council CEH v13 駭客技術專家認證",org:"恆逸教育訓練中心（EC-Council ATC）",city:"台北",mode:"實體",start:"2026-08-03",end:"2026-08-07",note:"週一至五・班號 2046",hours:"40h",price:"NT$65,000",exam:"含考試 voucher・在家實機考",taf:true,conf:"primary",url:"https://www.uuu.com.tw/Course/Show/2144/EC-Council-CEH%E9%A7%AD%E5%AE%A2%E6%8A%80%E8%A1%93%E5%B0%88%E5%AE%B6%E8%AA%8D%E8%AD%89%E8%AA%B2%E7%A8%8B"},
+  {cat:"ceh",track:"CEH 認證課程",name:"EC-Council CEH v13 駭客技術專家認證",org:"恆逸教育訓練中心（EC-Council ATC）",city:"高雄",mode:"實體",start:"2026-09-07",end:"2026-09-11",note:"平日・班號 72659",hours:"40h",price:"NT$65,000",exam:"含考試 voucher・在家實機考",taf:true,conf:"primary",url:"https://www.uuu.com.tw/Course/Show/2144/EC-Council-CEH%E9%A7%AD%E5%AE%A2%E6%8A%80%E8%A1%93%E5%B0%88%E5%AE%B6%E8%AA%8D%E8%AD%89%E8%AA%B2%E7%A8%8B"},
+  // ===== ISO 27001 主導稽核員（CQI/IRCA 國際考照）=====
+  {cat:"la",track:"ISO 27001 主導稽核員",name:"ISO 27001:2022 資訊安全管理系統主導稽核員",org:"恆逸教育訓練中心（CQI/IRCA）",city:"台北",mode:"實體",start:"2026-08-03",end:"2026-08-07",note:"班號 26S85",hours:"40h",price:"NT$55,000",exam:"含 CQI/IRCA 結訓證書＋測驗",taf:true,conf:"primary",url:"https://www.uuu.com.tw/Course/Show/1600/ISO-27001-2022%E8%B3%87%E8%A8%8A%E5%AE%89%E5%85%A8%E7%AE%A1%E7%90%86%E7%B3%BB%E7%B5%B1%E4%B8%BB%E5%B0%8E%E7%A8%BD%E6%A0%B8%E5%93%A1%E8%A8%93%E7%B7%B4%E8%AA%B2%E7%A8%8B"},
+  {cat:"la",track:"ISO 27001 主導稽核員",name:"ISO 27001:2022 資訊安全管理系統主導稽核員",org:"恆逸教育訓練中心（CQI/IRCA）",city:"台北",mode:"實體",start:"2026-08-10",end:"2026-08-14",note:"班號 26S84",hours:"40h",price:"NT$55,000",exam:"含 CQI/IRCA 結訓證書＋測驗",taf:true,conf:"primary",url:"https://www.uuu.com.tw/Course/Show/1600/ISO-27001-2022%E8%B3%87%E8%A8%8A%E5%AE%89%E5%85%A8%E7%AE%A1%E7%90%86%E7%B3%BB%E7%B5%B1%E4%B8%BB%E5%B0%8E%E7%A8%BD%E6%A0%B8%E5%93%A1%E8%A8%93%E7%B7%B4%E8%AA%B2%E7%A8%8B"},
+  {cat:"la",track:"ISO 27001 主導稽核員",name:"ISO 27001:2022 資訊安全管理系統主導稽核員",org:"恆逸教育訓練中心（CQI/IRCA）",city:"台中",mode:"實體",start:"2026-08-17",end:"2026-08-21",note:"班號 426S16",hours:"40h",price:"NT$55,000",exam:"含 CQI/IRCA 結訓證書＋測驗",taf:true,conf:"primary",url:"https://www.uuu.com.tw/Course/Show/1600/ISO-27001-2022%E8%B3%87%E8%A8%8A%E5%AE%89%E5%85%A8%E7%AE%A1%E7%90%86%E7%B3%BB%E7%B5%B1%E4%B8%BB%E5%B0%8E%E7%A8%BD%E6%A0%B8%E5%93%A1%E8%A8%93%E7%B7%B4%E8%AA%B2%E7%A8%8B"},
+  {cat:"la",track:"ISO 27001 主導稽核員",name:"ISO 27001:2022 資訊安全管理系統主導稽核員",org:"恆逸教育訓練中心（CQI/IRCA）",city:"高雄",mode:"實體",start:"2026-08-17",end:"2026-08-21",note:"班號 726S03",hours:"40h",price:"NT$55,000",exam:"含 CQI/IRCA 結訓證書＋測驗",taf:true,conf:"primary",url:"https://www.uuu.com.tw/Course/Show/1600/ISO-27001-2022%E8%B3%87%E8%A8%8A%E5%AE%89%E5%85%A8%E7%AE%A1%E7%90%86%E7%B3%BB%E7%B5%B1%E4%B8%BB%E5%B0%8E%E7%A8%BD%E6%A0%B8%E5%93%A1%E8%A8%93%E7%B7%B4%E8%AA%B2%E7%A8%8B"},
+  {cat:"la",track:"ISO 27001 主導稽核員",name:"ISO 27001:2022 資訊安全管理系統主導稽核員",org:"恆逸教育訓練中心（CQI/IRCA）",city:"新竹",mode:"實體",start:"2026-08-24",end:"2026-08-28",note:"班號 325T8（形式建議確認）",hours:"40h",price:"NT$55,000",exam:"含 CQI/IRCA 結訓證書＋測驗",taf:true,conf:"primary",url:"https://www.uuu.com.tw/Course/Show/1600/ISO-27001-2022%E8%B3%87%E8%A8%8A%E5%AE%89%E5%85%A8%E7%AE%A1%E7%90%86%E7%B3%BB%E7%B5%B1%E4%B8%BB%E5%B0%8E%E7%A8%BD%E6%A0%B8%E5%93%A1%E8%A8%93%E7%B7%B4%E8%AA%B2%E7%A8%8B"},
+  {cat:"la",track:"ISO 27001 主導稽核員",name:"ISO 27001:2022 資訊安全管理系統主導稽核員",org:"恆逸教育訓練中心（CQI/IRCA）",city:"台北",mode:"實體",start:"2026-09-07",end:"2026-09-15",note:"班號 26S87",hours:"40h",price:"NT$55,000",exam:"含 CQI/IRCA 結訓證書＋測驗",taf:true,conf:"primary",url:"https://www.uuu.com.tw/Course/Show/1600/ISO-27001-2022%E8%B3%87%E8%A8%8A%E5%AE%89%E5%85%A8%E7%AE%A1%E7%90%86%E7%B3%BB%E7%B5%B1%E4%B8%BB%E5%B0%8E%E7%A8%BD%E6%A0%B8%E5%93%A1%E8%A8%93%E7%B7%B4%E8%AA%B2%E7%A8%8B"},
+  {cat:"la",track:"ISO 27001 主導稽核員",name:"ISO/IEC 27001:2022 主導稽核員（大學專班）",org:"國立中興大學 創新產業暨國際學院",city:"台中",mode:"實體",start:"2026-09-07",end:"2026-09-15",note:"實際上課日 9/7·9·11·14·15",hours:"40h",price:"NT$42,000",exam:"含兩次考試費與證書",taf:true,conf:"primary",url:"https://www2.nchu.edu.tw/news-detail/id/60219"},
+  {cat:"la",track:"ISO 27001 主導稽核員",name:"ISO/IEC 27001:2022 資安管理系統主導稽核員（5 天）",org:"SGS 台灣 × 中華民國資訊軟體服務商業同業公會（TISSA）（IRCA 授證）",city:"台中",mode:"實體",start:"2026-08-24",end:"2026-08-28",note:"編號 2549／PR373",hours:"40h",price:"NT$50,350",priceStrike:"NT$53,000",exam:"通過筆試＋持續評量 → IRCA 原廠授證",taf:true,conf:"primary",url:"https://www.tissa.org.tw/News/Detail/7242"},
+  {cat:"la",track:"ISO 27001 主導稽核員",name:"ISO/IEC 27001:2022 資安管理系統主導稽核員（假日班）",org:"SGS 台灣 × 中華民國資訊軟體服務商業同業公會（TISSA）（IRCA 授證）",city:"台中",mode:"實體",start:"2026-10-24",end:"2026-11-01",note:"假日班 10/24-26＋10/31-11/1",hours:"40h",price:"NT$50,350",priceStrike:"NT$53,000",exam:"通過筆試＋持續評量 → IRCA 授證",taf:true,conf:"primary",url:"https://www.tissa.org.tw/News/Detail/7242"},
+  {cat:"la",track:"ISO 27001 主導稽核員",name:"ISO/IEC 27001:2022 資安管理系統主導稽核員（5 天）",org:"SGS 台灣 × 中華民國資訊軟體服務商業同業公會（TISSA）（IRCA 授證）",city:"高雄",mode:"實體",start:"2026-11-23",end:"2026-11-27",note:"高雄場",hours:"40h",price:"NT$50,350",priceStrike:"NT$53,000",exam:"通過筆試＋持續評量 → IRCA 授證",taf:true,conf:"primary",url:"https://www.tissa.org.tw/News/Detail/7242"},
+  {cat:"la",track:"ISO 27001 主導稽核員",name:"ISO/IEC 27001:2022 資安管理系統主導稽核員（假日班）",org:"SGS 台灣 × 中華民國資訊軟體服務商業同業公會（TISSA）（IRCA 授證）",city:"台中",mode:"實體",start:"2026-12-09",end:"2026-12-15",note:"假日班 12/9-11＋12/14-15",hours:"40h",price:"NT$50,350",priceStrike:"NT$53,000",exam:"通過筆試＋持續評量 → IRCA 授證",taf:true,conf:"primary",url:"https://www.tissa.org.tw/News/Detail/7242"},
+  {cat:"la",track:"ISO 27001 主導稽核員",name:"ISO 27001 管理系統稽核員／主導稽核員",org:"BSI 英國標準協會 台灣",city:"台北",mode:"實體",start:null,end:null,note:"CQI/IRCA 認可・2026 具體梯次日期待查",hours:"—",price:"洽機構",exam:"CQI and IRCA Certified",taf:true,conf:"primary",url:"https://www.bsigroup.com/zh-TW/ISO-27001-Information-Security/ISO-27001-training-courses/"},
+  {cat:"la",track:"ISO 27001 主導稽核員",name:"ISO/IEC 27001:2022 主導稽核員（CQI/IRCA 註冊 2586）",org:"TÜV NORD 台灣（北德學苑）",city:"台北",mode:"實體",start:null,end:null,note:"5 天實體・官方頁僅顯示往期・2026 日期待查",hours:"40h",price:"洽機構",exam:"CQI & IRCA 認可",taf:true,conf:"primary",url:"https://www.tuvnord.com.tw/web/education/course_in.jsp?ai_id=AI1665556145133"},
+  {cat:"la",track:"ISO 27001 主導稽核員",name:"ISO 27001 主導稽核員／內稽 訓練",org:"DNV 台灣（Business Assurance）",city:"線上",mode:"線上",start:null,end:null,note:"依需求開班／線上報名・日期待查",hours:"—",price:"洽機構",exam:"依課程",taf:true,conf:"primary",url:"https://www.dnv.com/tw/assurance/training/"},  {cat:"la",track:"ISO 27001 主導稽核員",name:"ISO 27001 資訊安全 訓練課程",org:"TÜV Rheinland 台灣（德國萊因）",city:"線上",mode:"線上",start:null,end:null,note:"官網首頁未列固定課表・需洽學院・日期待查",hours:"—",price:"洽機構",exam:"依課程",taf:true,conf:"secondary",url:"https://www.tuv.com/taiwan/tw/"},
+  {cat:"la",track:"ISO 27001 主導稽核員",name:"ISO/IEC 27001:2022 主導稽核員（PR373・CQI & IRCA 2535）",org:"中華民國電腦稽核協會 CAA × BSI",city:"台北",mode:"實體",start:"2026-09-07",end:"2026-09-11",note:"4.5 天・報名至 8/28",hours:"40h",price:"NT$56,000",exam:"含考試費・CQI & IRCA 認可",taf:true,conf:"primary",url:"https://www.caa.org.tw/coursedetail-37002.html"}
+];
+// 恆逸完整梯次（實機抓取 2026-07-24；台北/新竹/台中/高雄全部班次，dedup 防重複）
+(function(){
+ var CU="https://www.uuu.com.tw/Course/Show/2144/EC-Council-CEH%E9%A7%AD%E5%AE%A2%E6%8A%80%E8%A1%93%E5%B0%88%E5%AE%B6%E8%AA%8D%E8%AD%89%E8%AA%B2%E7%A8%8B";
+ var LU="https://www.uuu.com.tw/Course/Show/1600/ISO-27001-2022%E8%B3%87%E8%A8%8A%E5%AE%89%E5%85%A8%E7%AE%A1%E7%90%86%E7%B3%BB%E7%B5%B1%E4%B8%BB%E5%B0%8E%E7%A8%BD%E6%A0%B8%E5%93%A1%E8%A8%93%E7%B7%B4%E8%AA%B2%E7%A8%8B";
+ var CEH=[["台北","2051","2026-07-26","2026-08-23","每週日"],["台北","2046","2026-08-03","2026-08-07","每週一二三四五"],["台北","2052","2026-08-22","2026-09-19","每週六"],["台北","2047","2026-09-07","2026-09-11","每週一二三四五"],["台北","2053","2026-09-20","2026-11-01","每週日"],["台北","2048","2026-10-12","2026-10-16","每週一二三四五"],["台北","2054","2026-10-31","2026-12-05","每週六"],["台北","2049","2026-11-09","2026-11-13","每週一二三四五"],["台北","2055","2026-11-15","2026-12-13","每週日"],["台北","2050","2026-12-07","2026-12-11","每週一二三四五"],["台北","2056","2026-12-12","2027-01-16","每週六"],["新竹","32658","2026-09-05","2026-09-19","每週六日"],["台中","42662","2026-07-27","2026-07-31","每週一二三四五"],["台中","42661","2026-08-15","2026-08-29","每週六日"],["台中","2053ZT","2026-09-20","2026-11-01","每週日","Live遠距"],["台中","42663","2026-11-23","2026-11-27","每週一二三四五"],["高雄","72659","2026-09-07","2026-09-11","每週一二三四五"]];
+ var LA=[["台北","26S85","2026-08-03","2026-08-07","每週一二三四五"],["台北","26S52","2026-08-03","2026-08-07","每週一二三四五"],["台北","26S84","2026-08-10","2026-08-14","每週一二三四五"],["台北","26S53","2026-08-17","2026-08-21","每週一二三四五"],["台北","26S86","2026-09-02","2026-09-11","每週三四五"],["台北","26S54","2026-09-07","2026-09-11","每週一二三四五"],["台北","26S87","2026-09-07","2026-09-15","每週一二三"],["台北","26S55","2026-09-14","2026-09-18","每週一二三四五"],["台北","26S56","2026-10-19","2026-10-23","每週一二三四五"],["台北","26S57","2026-10-22","2026-10-30","每週三四五"],["台北","26S58","2026-11-02","2026-11-06","每週一二三四五"],["台北","26S59","2026-11-23","2026-11-27","每週一二三四五"],["台北","26S60","2026-12-07","2026-12-11","每週一二三四五"],["台北","26S61","2026-12-21","2026-12-29","每週一二三"],["新竹","325T8","2026-08-24","2026-08-28","每週一二三四五"],["新竹","326S7","2026-10-01","2026-10-07","每週一二三四五"],["新竹","326S8","2026-11-13","2026-11-22","每週五六日"],["新竹","325T9","2026-12-05","2026-12-13","每週五六日"],["新竹","326S9","2026-12-14","2026-12-18","每週一二三四五"],["台中","426S16","2026-08-17","2026-08-21","每週一二三四五"],["台中","426S17","2026-09-14","2026-09-18","每週一二三四五"],["台中","426T9","2026-11-14","2026-11-22","每週五六日"],["台中","426S18","2026-11-23","2026-11-27","每週一二三四五"],["高雄","726S03","2026-08-17","2026-08-21","每週一二三四五"],["高雄","726T8","2026-09-05","2026-09-13","每週五六日"],["高雄","726S04","2026-10-19","2026-10-28","每週一二三"],["高雄","726T9","2026-11-02","2026-11-06","每週一二三四五"],["高雄","726S05","2026-12-14","2026-12-18","每週一二三四五"]];
+ function has(n){return COURSES.some(function(c){return c.note&&c.note.indexOf("班號 "+n)>=0;});}
+ CEH.forEach(function(r){if(!has(r[1]))COURSES.push({cat:"ceh",track:"CEH 認證課程",name:"EC-Council CEH v13 駭客技術專家認證",org:"恆逸教育訓練中心（EC-Council ATC）",city:r[0],mode:r[5]||"實體",start:r[2],end:r[3],note:r[4]+"・班號 "+r[1],hours:"40h",price:"NT$65,000",exam:"含考試 voucher・在家實機考",taf:true,conf:"primary",url:CU});});
+ LA.forEach(function(r){if(!has(r[1]))COURSES.push({cat:"la",track:"ISO 27001 主導稽核員",name:"ISO 27001:2022 資訊安全管理系統主導稽核員",org:"恆逸教育訓練中心（CQI/IRCA）",city:r[0],mode:"實體",start:r[2],end:r[3],note:"班號 "+r[1]+"・"+r[4],hours:"40h",price:"NT$55,000",exam:"含 CQI/IRCA 結訓證書＋測驗",taf:true,conf:"primary",url:LU});});
+})();
+
+const MON=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+const MAINCITY=["台北","新北","桃園","新竹","台中","高雄"];
+const state={cat:"la",cities:new Set(["台中"]),mode:"all",tafOnly:false,q:"",sort:"date"};
+const modeIcon={
+  "實體":'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg>',
+  "線上":'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>',
+  "Live遠距":'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>'
+};
+function matchCity(c,city){
+  if(city==="線上")return c.city==="線上"||c.mode==="線上"||c.mode==="Live遠距";
+  if(city==="其他")return !MAINCITY.includes(c.city)&&c.city!=="線上";
+  return c.city===city;
+}
+function fmtDateCell(c){
+  if(!c.start) return '<div class="date-cell tbd" style="--cat:var(--'+c.cat+');--cat-soft:var(--'+c.cat+'-soft)"><div class="day">日期待查</div></div>';
+  const d=new Date(c.start+"T00:00:00");
+  let rng="";
+  if(c.end&&c.end!==c.start){const e=new Date(c.end+"T00:00:00");rng='<div class="rng">→ '+(e.getMonth()+1)+'/'+e.getDate()+'</div>';}
+  return '<div class="date-cell" style="--cat:var(--'+c.cat+');--cat-soft:var(--'+c.cat+'-soft)">'+
+    '<div class="mon">'+MON[d.getMonth()]+'</div><div class="day">'+d.getDate()+'</div>'+
+    '<div class="yr">'+d.getFullYear()+'</div>'+rng+'</div>';
+}
+function modeTag(m){const cls=m==="線上"?"mode-online":(m==="Live遠距"?"mode-live":"");return '<span class="tag '+cls+'">'+modeIcon[m]+m+'</span>';}
+function render(){
+  let list=COURSES.filter(c=>{
+    if(state.cat!=="all"&&c.cat!==state.cat)return false;
+    if(state.cities.size>0 && ![...state.cities].some(ct=>matchCity(c,ct)))return false;
+    if(state.mode!=="all"&&c.mode!==state.mode)return false;
+    if(state.tafOnly&&!c.taf)return false;
+    if(state.q){const s=(c.name+c.org+c.note+c.track).toLowerCase();if(!s.includes(state.q.toLowerCase()))return false;}
+    return true;
+  });
+  const catOrder={ceh:0,la:1,trans:2,ia:3,sub:4};
+  list.sort((a,b)=>{
+    const aT=!a.start,bT=!b.start;
+    if(aT&&!bT)return 1; if(bT&&!aT)return -1;
+    if(state.sort==="date")return (a.start||"").localeCompare(b.start||"");
+    if(state.sort==="date-desc")return (b.start||"").localeCompare(a.start||"");
+    if(state.sort==="cat"){if(catOrder[a.cat]!==catOrder[b.cat])return catOrder[a.cat]-catOrder[b.cat];return (a.start||"").localeCompare(b.start||"");}
+    if(state.sort==="org"){if(a.org!==b.org)return a.org.localeCompare(b.org,"zh-Hant");return (a.start||"").localeCompare(b.start||"");}
+    return 0;
+  });
+  const el=document.getElementById("ttList");
+  window.__ttList=list;
+  document.getElementById("cnt").textContent=list.length;
+  document.getElementById("emptyState").style.display=list.length?"none":"block";
+  el.innerHTML=list.map(c=>{
+    const tags=[modeTag(c.mode),
+      c.hours&&c.hours!=="—"?'<span class="tag">'+c.hours+'</span>':'',
+      c.cat==="sub"?'<span class="tag subsidy"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>政府補助</span>':'',
+      c.taf?'<span class="tag taf"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>TAF 相關</span>':''
+    ].filter(Boolean).join("");
+    const confLabel=c.conf==="primary"?'<span class="conf-dot conf-primary"></span>官方一手':'<span class="conf-dot conf-secondary"></span>二手/半一手';
+    let priceHtml=c.price;
+    if(c.priceStrike) priceHtml='<span class="strike">'+c.priceStrike+'</span> '+c.price;
+    const _mk=(href,label,extra)=>'<a class="src-link'+(extra||'')+'" href="'+href+'" target="_blank" rel="noopener">'+label+' <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M8 7h9v9"/></svg></a>';
+    const _sm=c.url.match(/uuu\.com\.tw\/Course\/Show\/(\d+)/), _cm=(c.note||"").match(/班號\s*([A-Za-z0-9]+)/);
+    let linksHtml;
+    if(_sm&&_cm){
+      const _reg="https://www.uuu.com.tw/Course/Register?course_pkid="+_sm[1]+"&selected_training_center="+encodeURIComponent(c.city)+"&selected_class_id="+_cm[1];
+      linksHtml=_mk(_reg,"直達"+c.city+"班次")+_mk(c.url,"課程頁");
+    } else {
+      linksHtml=_mk(c.url,"來源頁",(c.conf==="secondary"?" secondary":""));
+    }
+    return '<article class="row'+(!c.start?' tbd':'')+'" style="--cat:var(--'+c.cat+');--cat-soft:var(--'+c.cat+'-soft)">'+
+      fmtDateCell(c)+
+      '<div class="info">'+
+        '<span class="track"><span class="cdot" style="width:8px;height:8px;border-radius:2px;background:var(--'+c.cat+')"></span>'+c.track+'</span>'+
+        '<h3>'+c.name+'</h3>'+
+        '<div class="org">'+c.org+' · '+c.city+(c.note?' · '+c.note:'')+'</div>'+
+        '<div class="tags">'+tags+'</div>'+
+      '</div>'+
+      '<div class="meta-cell">'+
+        '<div class="price'+(c.start?'':' tbd')+'">'+priceHtml+'</div>'+
+        '<div class="sub">'+(c.gov?c.gov+'　·　':'')+c.exam+'</div>'+
+        '<div class="sub" style="margin-top:5px">'+confLabel+'</div>'+
+        '<div class="src-links">'+linksHtml+'</div>'+
+      '</div>'+
+    '</article>';
+  }).join("");
+}
+function bindSingle(id,key){document.getElementById(id).addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;document.querySelectorAll("#"+id+" .chip").forEach(x=>x.classList.remove("on"));b.classList.add("on");state[key]=b.dataset[key];render();});}
+bindSingle("catChips","cat");bindSingle("modeChips","mode");
+// city = multi-select
+document.getElementById("cityChips").addEventListener("click",e=>{
+  const b=e.target.closest(".chip");if(!b)return;
+  const v=b.dataset.city;
+  if(v==="all"){state.cities.clear();}
+  else{if(state.cities.has(v))state.cities.delete(v);else state.cities.add(v);}
+  document.querySelectorAll("#cityChips .chip").forEach(x=>{
+    const cv=x.dataset.city;
+    if(cv==="all")x.classList.toggle("on",state.cities.size===0);
+    else x.classList.toggle("on",state.cities.has(cv));
+  });
+  render();
+});
+document.getElementById("tafOnly").addEventListener("change",e=>{state.tafOnly=e.target.checked;render();});
+document.getElementById("searchInput").addEventListener("input",e=>{state.q=e.target.value;render();});
+document.getElementById("sortSel").addEventListener("change",e=>{state.sort=e.target.value;render();});
+render();
+
+const root=document.documentElement,tBtn=document.getElementById("themeBtn"),tLabel=document.getElementById("themeLabel"),tIcon=document.getElementById("themeIcon");
+const sunP='<circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+const moonP='<path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/>';
+function applyTheme(t){root.setAttribute("data-theme",t);const dark=t==="dark";tLabel.textContent=dark?"淺色":"深色";tIcon.innerHTML=dark?moonP:sunP;try{localStorage.setItem("cert-tt-theme",t);}catch(e){}}
+(function(){let t;try{t=localStorage.getItem("cert-tt-theme");}catch(e){}if(!t)t=matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";applyTheme(t);})();
+tBtn.addEventListener("click",()=>applyTheme(root.getAttribute("data-theme")==="dark"?"light":"dark"));
+
+const fab=document.getElementById("tocFab"),panel=document.getElementById("tocPanel"),fabIcon=document.getElementById("fabIcon");
+let tocOpen=false;try{tocOpen=localStorage.getItem("cert-tt-toc")==="1";}catch(e){}
+function setToc(o){tocOpen=o;panel.classList.toggle("open",o);fabIcon.innerHTML=o?'<path d="M6 6l12 12M6 18L18 6"/>':'<path d="M4 6h16M4 12h16M4 18h16"/>';try{localStorage.setItem("cert-tt-toc",o?"1":"0");}catch(e){}}
+if(innerWidth<=880)tocOpen=false;setToc(tocOpen);
+fab.addEventListener("click",()=>setToc(!tocOpen));
+panel.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{if(innerWidth<=880)setToc(false);}));
+const aOpen=document.getElementById("aurayOpen"),aDrawer=document.getElementById("aurayDrawer"),aBack=document.getElementById("aurayBackdrop"),aClose=document.getElementById("aurayClose");
+function aurayToggle(o){aDrawer.classList.toggle("open",o);aBack.classList.toggle("open",o);aDrawer.setAttribute("aria-hidden",o?"false":"true");document.body.style.overflow=o?"hidden":"";if(o)aClose.focus();}
+if(aOpen){aOpen.addEventListener("click",()=>aurayToggle(true));aClose.addEventListener("click",()=>aurayToggle(false));aBack.addEventListener("click",()=>aurayToggle(false));document.addEventListener("keydown",e=>{if(e.key==="Escape"&&aDrawer.classList.contains("open"))aurayToggle(false);});}
+
+// ===== 詞彙 Glossary + 頁內名詞 tooltip =====
+const GLOSSARY=[
+  {t:"CEH",d:"Certified Ethical Hacker，EC-Council 的道德駭客認證（考試代號 312-50）。",alias:["道德駭客"]},
+  {t:"CEHP",d:"CEH (Practical)，需在實機環境完成滲透測試任務的 CEH 實作認證。"},
+  {t:"EC-Council",d:"國際電子商務顧問委員會，CEH 等資安認證的發證機構。"},
+  {t:"ISO/IEC 27001",d:"資訊安全管理系統（ISMS）國際標準。",alias:["ISO 27001"]},
+  {t:"ISMS",d:"Information Security Management System，資訊安全管理系統。"},
+  {t:"主導稽核員",d:"Lead Auditor（LA），有能力主導第三方 ISMS 稽核的人員資格；常見 5 天課程。"},
+  {t:"內部稽核員",d:"Internal Auditor，執行組織內部 ISMS 稽核的人員。"},
+  {t:"轉版",d:"Transition，由舊版標準（如 27001:2013）升級至新版（2022）的差異訓練。"},
+  {t:"CQI/IRCA",d:"Chartered Quality Institute / International Register of Certificated Auditors，國際稽核員註冊機構，認可主導稽核員課程。",alias:["IRCA"]},
+  {t:"TAF",d:"財團法人全國認證基金會，台灣國家級的認證機構。"},
+  {t:"ISO/IEC 17025",d:"測試與校正實驗室能力的通用要求標準，是 TAF 實驗室認證的母標準。"},
+  {t:"TAF-CNLA-A24",d:"TAF「智慧連網服務系統資安檢測實驗室認證服務計畫」。"},
+  {t:"TAF-CNLA-R07",d:"TAF「對實驗室/檢驗機構主管之要求」（現行第五版）。"},
+  {t:"TAF-CNLA-R08",d:"TAF「對報告簽署人之要求」。"},
+  {t:"報告簽署人",d:"授權簽字人，有權在正式檢測/校正報告上簽名負責的人員。"},
+  {t:"實驗室主管",d:"實驗室技術主管，負責檢測技術與品質，能力依 ISO/IEC 17025 §6.2 認定。"},
+  {t:"產業人才投資方案",d:"勞動部補助在職者進修的方案（俗稱 3 年 7 萬），政府約補助 80% 學費。"},
+  {t:"WDA",d:"勞動部勞動力發展署 Workforce Development Agency，產業人才投資方案主管機關。"},
+  {t:"TISSA",d:"中華民國資訊軟體服務商業同業公會，與 SGS 合辦 ISO 27001 訓練。"},
+  {t:"SGS",d:"台灣檢驗科技公司，國際第三方驗證/檢測機構。"},
+  {t:"DNV",d:"挪威商船級社，國際管理系統驗證機構。"},
+  {t:"Bureau Veritas",d:"立恩威國際驗證，法商第三方驗證機構。",alias:["立恩威"]},
+  {t:"BSI",d:"英國標準協會，ISO 標準與驗證機構。"},
+  {t:"O-RAN",d:"Open RAN，開放式無線接取網路架構。"},
+  {t:"OTIC",d:"Open Testing and Integration Centre，O-RAN 開放測試與整合中心。"},
+  {t:"EN 18031",d:"歐盟無線電設備指令（RED）的資通安全要求標準。"},
+  {t:"Webex",d:"Cisco 的視訊會議平台，線上同步上課/考試使用。"},
+  {t:"零信任",d:"Zero Trust，「永不信任、持續驗證」的資安防禦模型。"},
+  {t:"滲透測試",d:"Penetration Testing，模擬攻擊以找出系統資安弱點。",alias:["滲透"]},
+  {t:"耀睿科技",d:"Auray Technology，通過 TAF 認證的資安檢測實驗室（本表業界實務案例）。",alias:["Auray"]},
+  {t:"voucher",d:"考試憑證碼；課程內含即可登記考試，不需另行購買。"}
+];
+(function(){var g=document.getElementById("glossGrid");if(g)g.innerHTML=GLOSSARY.slice().sort(function(a,b){return a.t.localeCompare(b.t,"zh-Hant");}).map(function(x){return '<div class="gloss-item"><div class="gt">'+x.t+'</div><div class="gd">'+x.d+'</div></div>';}).join("");})();
+(function(){
+  var matchList=[];GLOSSARY.forEach(function(x){[x.t].concat(x.alias||[]).forEach(function(m){matchList.push({m:m,key:x.t,d:x.d});});});
+  matchList.sort(function(a,b){return b.m.length-a.m.length;});
+  var used={};
+  function findB(text,m){var ascii=/^[\x00-\x7F]+$/.test(m),from=0,idx;while((idx=text.indexOf(m,from))>=0){if(!ascii)return idx;var b=text[idx-1],a=text[idx+m.length];if((!b||!/[A-Za-z0-9]/.test(b))&&(!a||!/[A-Za-z0-9]/.test(a)))return idx;from=idx+1;}return -1;}
+  function proc(tn){
+    var text=tn.nodeValue,best=null;
+    for(var i=0;i<matchList.length;i++){var it=matchList[i];if(used[it.key])continue;var idx=findB(text,it.m);if(idx<0)continue;if(!best||idx<best.idx||(idx===best.idx&&it.m.length>best.m.length))best={idx:idx,m:it.m,key:it.key,d:it.d};}
+    if(!best)return;
+    var before=text.slice(0,best.idx),after=text.slice(best.idx+best.m.length);
+    var span=document.createElement("span");span.className="tip";span.tabIndex=0;span.setAttribute("data-tip",best.d);span.textContent=best.m;
+    var frag=document.createDocumentFragment(),bn=before?document.createTextNode(before):null,an=after?document.createTextNode(after):null;
+    if(bn)frag.appendChild(bn);frag.appendChild(span);if(an)frag.appendChild(an);
+    tn.parentNode.replaceChild(frag,tn);used[best.key]=1;
+    if(bn)proc(bn);if(an)proc(an);
+  }
+  function walk(node){var kids=[].slice.call(node.childNodes);for(var i=0;i<kids.length;i++){var k=kids[i];if(k.nodeType===3)proc(k);else if(k.nodeType===1){if(/^(A|BUTTON|SVG|SCRIPT|STYLE)$/.test(k.tagName))continue;if(k.classList&&k.classList.contains("tip"))continue;walk(k);}}}
+  var roots=document.querySelectorAll(".hero p.lead, #timetable>.sec-head p, #taf .sec-head p, #taf .card>p, #taf .quote, #taf .keyfind>div, #taf .req-table td, #method .sec-head p, #method .caveat-list li");
+  [].forEach.call(roots,walk);
+})();
+// ===== 列印篩選後課表 =====
+(function(){
+  var catMap={all:"全部",ceh:"CEH",la:"ISO 主導稽核",trans:"ISO 轉版",ia:"ISO 內部稽核",sub:"政府補助"};
+  function ft(){var p=[];if(state.cat!=="all")p.push("證照別："+catMap[state.cat]);if(state.cities.size)p.push("城市："+[].concat.apply([],[Array.from(state.cities)]).join("、"));if(state.mode!=="all")p.push("形式："+state.mode);if(state.tafOnly)p.push("僅 TAF 相關");if(state.q)p.push("關鍵字："+state.q);return p.length?p.join("　｜　"):"全部（未篩選）";}
+  function subj(){var l=window.__ttList||COURSES;var hasC=l.some(function(c){return c.cat==="ceh";});var hasI=l.some(function(c){return c.cat==="la"||c.cat==="trans"||c.cat==="ia"||c.cat==="sub";});if(hasC&&hasI)return "CEH ＋ ISO 27001";if(hasC)return "CEH";if(hasI)return "ISO 27001";return "CEH ＋ ISO 27001";}
+  function upd(){var s=subj();var h=document.getElementById("printHead");if(h){var now=new Date().toLocaleString("zh-TW",{hour12:false});h.innerHTML='<div class="ph-inner"><div class="ph-title">資安證照課程時間表 — '+s+'（2026 下半年）</div><div class="ph-filter">篩選：'+ft()+'　·　共 '+document.getElementById("cnt").textContent+' 梯</div><div class="ph-meta">研究基準日 2026-07-24　·　列印於 '+now+'　·　資料為快照，報名前請以來源即時複查</div></div>';}var fb=document.getElementById("pfBrand");if(fb)fb.textContent="資安證照課程時間表 · "+s+"（2026 下半年）";}
+  var b=document.getElementById("printBtn");if(b)b.addEventListener("click",function(){upd();window.print();});
+  window.addEventListener("beforeprint",upd);
+})();
+
+const io=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting){panel.querySelectorAll("a").forEach(a=>a.classList.toggle("active",a.dataset.t===en.target.id));}});},{rootMargin:"-45% 0px -50% 0px"});
+document.querySelectorAll("section[id]").forEach(s=>io.observe(s));
+</script>
+</body>
+</html>
