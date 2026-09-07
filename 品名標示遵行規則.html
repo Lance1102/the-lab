@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>商品品名標示遵行規則</title>
+<script>
+(function () {
+  try {
+    var t = localStorage.getItem('bfh-theme');
+    if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', t);
+  } catch (e) { document.documentElement.setAttribute('data-theme', 'light'); }
+})();
+</script>
+<style>
+:root{
+  color-scheme: light;
+  --bg:#f6f8fb; --card:#ffffff; --ink:#16202c; --ink-2:#4a5a6b; --ink-3:#6b7c8d;
+  --line:#dde5ee; --line-2:#c6d2df;
+  --accent:#1f5f96; --accent-soft:#e7f0f8; --accent-solid:#1f5f96;
+  --amber:#8a5a00; --amber-soft:#fdf1d8; --amber-solid:#a86a00;
+  --red:#9a2130; --red-soft:#fbe4e6; --red-solid:#a3242f;
+  --green:#1c6b45; --green-soft:#e0f3e9; --green-solid:#1c6b45;
+  --tip-bg:rgba(17,22,29,.86); --tip-ink:#ffffff;
+  --shadow:0 1px 2px rgba(16,32,48,.06), 0 8px 24px rgba(16,32,48,.07);
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:#12171d; --card:#1b222b; --ink:#e8eef5; --ink-2:#b3c1d0; --ink-3:#8d9dad;
+  --line:#2b353f; --line-2:#3a4652;
+  --accent:#7db6e8; --accent-soft:#1d2b38; --accent-solid:#2a6ea8;
+  --amber:#e5b25c; --amber-soft:#332a17; --amber-solid:#8a5a00;
+  --red:#f0959f; --red-soft:#361c20; --red-solid:#8e2029;
+  --green:#7fd3a6; --green-soft:#162c22; --green-solid:#1c6b45;
+  --tip-bg:rgba(6,10,14,.92); --tip-ink:#f2f6fa;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif;
+  font-size:16px; line-height:1.75; letter-spacing:.01em;
+}
+.wrap{max-width:920px; margin:0 auto; padding:32px 20px 64px}
+h1{font-size:1.75rem; line-height:1.35; margin:0 0 6px}
+h2{font-size:1.18rem; margin:40px 0 6px; padding-bottom:8px; border-bottom:2px solid var(--line)}
+h3{font-size:1rem; margin:22px 0 6px}
+p{margin:10px 0}
+.lede{color:var(--ink-2); margin:0 0 4px}
+.sum{color:var(--ink-2); font-size:.95rem; margin:8px 0 18px}
+
+header.top{display:flex; gap:16px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap}
+.meta{font-size:.86rem; color:var(--ink-3); margin-top:10px}
+.meta b{color:var(--ink-2); font-weight:600}
+.tbtn{
+  flex:0 0 auto; background:var(--card); color:var(--ink-2); border:1px solid var(--line-2);
+  border-radius:999px; padding:7px 14px; font:inherit; font-size:.84rem; cursor:pointer;
+}
+.tbtn:hover{border-color:var(--accent); color:var(--accent)}
+
+.callout{
+  background:var(--amber-soft); border:1px solid var(--amber); border-left-width:5px;
+  border-radius:10px; padding:14px 16px; margin:22px 0;
+}
+.callout .k{display:block; font-weight:700; color:var(--amber); margin-bottom:2px; font-size:.9rem}
+.callout p{margin:4px 0 0; color:var(--ink)}
+.callout q{font-style:normal}
+
+.cards{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:18px 0 4px}
+.card{
+  background:var(--card); border:1px solid var(--line); border-radius:12px;
+  padding:16px 16px 14px; box-shadow:var(--shadow); position:relative;
+}
+.card .n{font-size:.78rem; font-weight:700; color:var(--accent); letter-spacing:.08em}
+.card .t{font-weight:700; margin:4px 0 6px; font-size:1.02rem}
+.card .d{font-size:.92rem; color:var(--ink-2); margin:0}
+
+.legend{display:flex; gap:16px; flex-wrap:wrap; font-size:.86rem; color:var(--ink-2); margin:14px 0 20px}
+.legend span{display:inline-flex; align-items:center; gap:7px}
+.dot{width:11px; height:11px; border-radius:50%; display:inline-block}
+.dot.a{background:var(--accent-solid)} .dot.b{background:var(--amber-solid)}
+.dot.c{background:var(--red-solid)} .dot.d{background:var(--green-solid)}
+
+.rail{position:relative; padding-left:56px; margin:8px 0 8px}
+.rail::before{content:""; position:absolute; left:20px; top:8px; bottom:8px; width:2px; background:var(--line-2)}
+.station{position:relative; margin:0 0 14px}
+.badge{
+  position:absolute; left:-56px; top:14px; width:40px; height:40px; border-radius:50%;
+  background:var(--accent-solid); color:#fff; border:3px solid var(--bg);
+  display:flex; align-items:center; justify-content:center; font-weight:700; font-size:.95rem; z-index:2;
+}
+.node{
+  background:var(--card); border:1px solid var(--line); border-radius:12px;
+  padding:15px 16px; box-shadow:var(--shadow); position:relative; outline:none;
+}
+.node:hover,.node:focus-within{border-color:var(--accent)}
+.node .t{font-weight:700; margin:0 0 4px}
+.node .d{margin:0; font-size:.94rem; color:var(--ink-2)}
+.node .hint{display:block; margin-top:8px; font-size:.78rem; color:var(--ink-3)}
+
+.tip{
+  position:absolute; bottom:calc(100% + 12px); left:50%; transform:translateX(-50%);
+  background:var(--tip-bg); -webkit-backdrop-filter:blur(10px) saturate(1.2);
+  backdrop-filter:blur(10px) saturate(1.2); color:var(--tip-ink); border-radius:10px;
+  padding:12px 14px; width:min(380px,86vw); box-shadow:0 10px 30px rgba(0,0,0,.28);
+  opacity:0; visibility:hidden; transition:.18s ease; pointer-events:none; z-index:30;
+  font-size:.88rem; line-height:1.6; text-align:left;
+}
+.node:hover .tip,.node:focus-within .tip{opacity:1; visibility:visible}
+.tip::after{content:""; position:absolute; top:100%; left:50%; transform:translateX(-50%);
+  border:7px solid transparent; border-top-color:var(--tip-bg)}
+.tip.tip-down{bottom:auto; top:calc(100% + 12px)}
+.tip.tip-down::after{top:auto; bottom:100%; border-top-color:transparent; border-bottom-color:var(--tip-bg)}
+.tip b{color:#ffd79a; font-weight:700}
+.tip .src{display:block; margin-top:7px; padding-top:7px; border-top:1px solid rgba(255,255,255,.22);
+  font-size:.8rem; color:#c9d6e2}
+
+.chip{
+  display:inline-block; font-size:.76rem; font-weight:700; padding:2px 9px; border-radius:999px;
+  margin:0 0 6px; letter-spacing:.02em;
+}
+.chip.b{background:var(--amber-soft); color:var(--amber); border:1px solid var(--amber)}
+.chip.c{background:var(--red-soft); color:var(--red); border:1px solid var(--red)}
+.chip.d{background:var(--green-soft); color:var(--green); border:1px solid var(--green)}
+.chip.a{background:var(--accent-soft); color:var(--accent); border:1px solid var(--accent)}
+
+.risk{border-left:5px solid var(--red-solid)}
+.ok{border-left:5px solid var(--green-solid)}
+.adv{border-left:5px solid var(--amber-solid)}
+
+table{border-collapse:collapse; width:100%; margin:14px 0; font-size:.93rem; background:var(--card);
+  border:1px solid var(--line); border-radius:12px; overflow:hidden}
+th,td{text-align:left; padding:10px 13px; border-bottom:1px solid var(--line); vertical-align:top}
+th{background:var(--accent-soft); color:var(--ink); font-weight:700; font-size:.88rem}
+tr:last-child td{border-bottom:none}
+
+.term{border-bottom:1px dashed var(--accent); cursor:help; position:relative; outline:none}
+.term .tt{
+  position:absolute; bottom:calc(100% + 9px); left:50%; transform:translateX(-50%);
+  background:var(--tip-bg); -webkit-backdrop-filter:blur(8px) saturate(1.2);
+  backdrop-filter:blur(8px) saturate(1.2); color:var(--tip-ink); border-radius:8px;
+  padding:9px 11px; width:min(280px,84vw); box-shadow:0 8px 22px rgba(0,0,0,.26);
+  opacity:0; visibility:hidden; transition:.16s ease; pointer-events:none; z-index:40;
+  font-size:.83rem; line-height:1.55; font-weight:400; text-align:left; letter-spacing:0;
+}
+.term:hover .tt,.term:focus .tt,.term:focus-within .tt{opacity:1; visibility:visible}
+.term .tt::after{content:""; position:absolute; top:100%; left:50%; transform:translateX(-50%);
+  border:6px solid transparent; border-top-color:var(--tip-bg)}
+
+dl.gloss{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:6px 18px 18px; margin:14px 0}
+dl.gloss dt{font-weight:700; margin:14px 0 2px; scroll-margin-top:20px}
+dl.gloss dd{margin:0; color:var(--ink-2); font-size:.93rem}
+
+blockquote{
+  margin:12px 0; padding:12px 16px; background:var(--card);
+  border:1px solid var(--line); border-left:5px solid var(--accent-solid); border-radius:10px;
+  color:var(--ink); font-size:.95rem;
+}
+blockquote .who{display:block; margin-top:8px; font-size:.82rem; color:var(--ink-3)}
+
+footer{margin-top:48px; padding-top:18px; border-top:2px solid var(--line);
+  font-size:.85rem; color:var(--ink-3)}
+footer p{margin:5px 0}
+
+@media (max-width:760px){
+  .cards{grid-template-columns:1fr}
+  .rail{padding-left:44px}
+  .rail::before{left:15px}
+  .badge{left:-44px; width:32px; height:32px; font-size:.85rem; top:12px}
+  .tip,.term .tt{width:min(300px,88vw)}
+  body{font-size:15px}
+}
+@media print{
+  :root,:root[data-theme="dark"]{
+    color-scheme:light;
+    --bg:#fff; --card:#fff; --ink:#000; --ink-2:#333; --ink-3:#555;
+    --line:#bbb; --line-2:#999; --accent:#14507f; --accent-soft:#eef4f9; --accent-solid:#14507f;
+    --amber:#7a4f00; --amber-soft:#fbf3e0; --amber-solid:#7a4f00;
+    --red:#8a1e29; --red-soft:#fbeaec; --red-solid:#8a1e29;
+    --green:#175738; --green-soft:#e9f5ee; --green-solid:#175738;
+    --shadow:none;
+  }
+  .tbtn{display:none}
+  .tip,.term .tt{display:none}
+  .term{border-bottom:1px dotted #666}
+  .node,.card,table,dl.gloss,blockquote{box-shadow:none; break-inside:avoid}
+  h2{break-after:avoid}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <div>
+    <h1>商品品名標示遵行規則</h1>
+    <p class="lede">申請商品驗證登錄、型式認可時，商品中文名稱的訂定與標示原則。</p>
+    <p class="meta">
+      依據：經濟部標準檢驗局 <b>113 年 1 月份電氣商品檢測技術一致性研討會</b>
+      （開會日期 113-01-12，發文 <b>113-03-04　經標檢驗字第11340002290號</b>）<b>議題一</b>、<b>議題八</b>之結論。
+    </p>
+  </div>
+  <button class="tbtn" id="tbtn" type="button" aria-pressed="false">切換深色</button>
+</header>
+
+<div class="callout">
+  <span class="k">先說明本文件的位階</span>
+  <p>會議紀錄載明：<q>本局相關法規法律位階高於檢驗一致性會議，檢驗一致性會議僅係補強與釋示作用。</q>
+  因此本文件整理的是<span class="term" tabindex="0">釋示<span class="tt">主管機關對既有規定所作的說明，用來補充法規未講明之處，本身不是法規。</span></span>，不是法規本身。
+  實際申請時，仍以商品所屬品目之<span class="term" tabindex="0">檢驗規定<span class="tt">標準檢驗局逐品目公告的文件，指定該品目適用哪一版 CNS 標準，以及標示上的要求。</span></span>公告為準。</p>
+</div>
+
+<h2>三句話</h2>
+<p class="sum">以下三條是決議直接載明的內容，其餘章節都是這三條的展開。</p>
+
+<div class="cards">
+  <div class="card">
+    <span class="n">規則一</span>
+    <p class="t">品名可以自訂</p>
+    <p class="d">申請<span class="term" tabindex="0">驗證登錄<span class="tt">應施檢驗商品上市前，向標準檢驗局登記商品符合檢驗規定並取得證書的程序。</span></span>或<span class="term" tabindex="0">型式認可<span class="tt">就商品的「型式」先行取得認可，之後同型式的商品依此辦理後續檢驗。</span></span>，對於商品之品名<b>並無強制規定</b>。</p>
+  </div>
+  <div class="card">
+    <span class="n">規則二</span>
+    <p class="t">證書與標籤可以不同</p>
+    <p class="d">證書登錄的中文名稱與商品標籤上的名稱<b>不必一致</b>；商品中文標籤同意以<span class="term" tabindex="0">別名<span class="tt">商業上使用的商品稱呼，例如加上品牌、系列或賣點的名稱。</span></span>標示。</p>
+  </div>
+  <div class="card">
+    <span class="n">規則三</span>
+    <p class="t">不得混淆或誤解</p>
+    <p class="d">這是唯一的實質限制。名稱仍須依<span class="term" tabindex="0">品目例示表<span class="tt">經濟部 109-02-25 經商字第10902400270號公告「電器及電子商品種類及品目之例示表」，逐項列出品目與其示例名稱。</span></span>與該品目之檢驗規定標示。</p>
+  </div>
+</div>
+
+<h2>訂名的五個步驟</h2>
+<p class="sum">從確認商品歸屬到完成自我檢核，依序五步。將游標移至各步驟或以鍵盤停留其上，可展開該步驟的作業細節與依據。</p>
+
+<div class="legend">
+  <span><i class="dot a"></i>作業步驟</span>
+  <span><i class="dot b"></i>檢查點</span>
+  <span><i class="dot c"></i>風險</span>
+  <span><i class="dot d"></i>通過</span>
+</div>
+
+<div class="rail">
+
+  <div class="station">
+    <div class="badge">1</div>
+    <div class="node" tabindex="0">
+      <p class="t">確認商品屬於哪一個品目</p>
+      <p class="d">先在品目例示表中找到商品的歸屬。品目決定了後面每一件事。</p>
+      <span class="hint">停留可看作業細節</span>
+      <div class="tip tip-down">
+        <b>要做什麼：</b>對照「電器及電子商品種類及品目之例示表」，確認商品歸在哪一個品目名稱之下。<br>
+        <b>要準備什麼：</b>商品的功能說明、結構與用途描述。功能相近的商品可能分屬不同品目。<br>
+        <b>做錯的後果：</b>品目認定錯誤會連帶用錯檢驗標準，名稱訂得再好也無法補救。
+        <span class="src">依據：經濟部 109-02-25 經商字第10902400270號公告</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="station">
+    <div class="badge">2</div>
+    <div class="node" tabindex="0">
+      <p class="t">確認該品目適用的檢驗標準</p>
+      <p class="d">查該品目公告之檢驗規定，確認適用的 <span class="term" tabindex="0">CNS<span class="tt">中華民國國家標準。同一號標準有多個版本，以檢驗規定指定的那一版為準。</span></span> 標準與版本。</p>
+      <span class="hint">停留可看作業細節</span>
+      <div class="tip tip-down">
+        <b>要做什麼：</b>取得該品目現行的檢驗規定公告，確認適用標準編號與版本。<br>
+        <b>為什麼放在訂名之前：</b>名稱之所以會造成誤解，關鍵在於<b>不同名稱可能對應不同的檢驗標準</b>。不先確認標準，就判斷不出名稱會不會誤導。<br>
+        <b>做錯的後果：</b>依錯誤版本完成試驗，報告無法用於登錄。
+        <span class="src">依據：標準檢驗局公告之應施檢驗商品相關檢驗規定</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="station">
+    <div class="badge">3</div>
+    <div class="node" tabindex="0">
+      <p class="t">訂定證書登錄的商品中文名稱</p>
+      <p class="d">無強制規定，可自訂。建議名稱中包含品目字樣，使商品歸屬一望可知。</p>
+      <span class="hint">停留可看作業細節</span>
+      <div class="tip">
+        <b>要做什麼：</b>決定要登錄在證書上的商品中文名稱。<br>
+        <b>可以怎麼做：</b>名稱不必採用公告名稱。若希望保留商業稱呼，可採「品目名稱（商業稱呼）」的形式，例如「行動電源（電霸）」。<br>
+        <b>要注意：</b>此為降低誤解風險的作法，並非強制格式。
+        <span class="src">依據：113 年 1 月份會議議題一結論；括號並列之作法為臺中分局於該次會議提出之意見</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="station">
+    <div class="badge">4</div>
+    <div class="node" tabindex="0">
+      <p class="t">訂定商品標籤與說明書上的名稱</p>
+      <p class="d">可與證書名稱不同，同意直接以別名標示，不必在別名前加註證書登錄名稱。</p>
+      <span class="hint">停留可看作業細節</span>
+      <div class="tip">
+        <b>要做什麼：</b>製作<span style="color:#ffd79a">商品標示樣張</span>，即送審的標籤或說明書版面樣本。<br>
+        <b>放寬了什麼：</b>過去實務上會要求在別名前加註證書登錄的中文名稱，例如「開飲機（○○瞬熱即飲飲水機）」。本次決議同意標籤得<b>單獨以別名標示</b>。<br>
+        <b>條件不變：</b>放寬的是格式，不是「不得混淆或誤解」這項要求。
+        <span class="src">依據：113 年 1 月份會議議題八結論第 2 點</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="station">
+    <div class="badge">5</div>
+    <div class="node" tabindex="0">
+      <p class="t">以三個檢查點自我檢核</p>
+      <p class="d">名稱定案前，逐項確認下方三個檢查點都通過。</p>
+      <span class="hint">停留可看作業細節</span>
+      <div class="tip">
+        <b>要做什麼：</b>就擬定的證書名稱與標籤名稱，各自跑一次下方三個檢查點。<br>
+        <b>為什麼要兩套都檢核：</b>證書與標籤名稱既然可以不同，兩者就各自都可能造成誤解。<br>
+        <b>做錯的後果：</b>審查階段被要求修正名稱，需重製標示樣張並重送。
+        <span class="src">依據：113 年 1 月份會議議題一、議題八結論之「應避免混淆或誤解」</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<h2>三個檢查點</h2>
+<p class="sum">會議紀錄中被提出的疑慮集中在三種情形。三者都通過，名稱即符合決議所要求的條件。</p>
+
+<div class="cards">
+  <div class="card risk">
+    <span class="chip c">風險最高</span>
+    <p class="t">名稱是否指向另一種檢驗標準不同的商品</p>
+    <p class="d">這是決議明白點出的一項。名稱若使人誤認為另一種商品，而該商品適用的是另一套檢驗標準，即屬混淆。</p>
+  </div>
+  <div class="card adv">
+    <span class="chip b">須有依據</span>
+    <p class="t">名稱是否含功能或效能的宣稱</p>
+    <p class="d">安全標準只就商品安全性進行試驗，不驗證功能宣稱。名稱中出現功能字眼，須另有依據。</p>
+  </div>
+  <div class="card adv">
+    <span class="chip b">易被要求修正</span>
+    <p class="t">名稱是否能讓消費者一望即知是什麼商品</p>
+    <p class="d">與商品無關的文字、諧音不雅用語，以及卡通、公仔、人物或特殊造型的名稱，均易生疑義。</p>
+  </div>
+</div>
+
+<h3>檢查點一：名稱指向另一種標準不同的商品</h3>
+<p>會議紀錄舉出兩個實例，兩者形狀相同。</p>
+
+<table>
+  <thead>
+    <tr><th style="width:22%">商品</th><th style="width:34%">名稱情形</th><th>為什麼構成混淆</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>開飲機</td>
+      <td>證書登錄「開飲機」，標籤取名為「○○瞬熱即飲飲水機」</td>
+      <td><b>開飲機與飲水供應機適用之檢驗標準不同。</b>名稱指向飲水機，會使人誤認商品是依另一套標準檢驗。</td>
+    </tr>
+    <tr>
+      <td>洗地機</td>
+      <td>洗地機為複合式產品，其中包含手持式吸塵器</td>
+      <td>手持式吸塵器屬列檢範圍（<b>CNS 60335-2-2</b>），與洗地機是不同結構。名稱須能區分兩者。</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><b>判斷方式：</b>把擬用的名稱交給不知情的人看，問「這是什麼商品」。若答案落在另一個品目上，就要改。</p>
+
+<h3>檢查點二：功能或效能的宣稱</h3>
+
+<blockquote>
+  本局家用電器公告之檢驗規定，「產品名稱（品名）」並無要求，惟須不得造成消費者誤解。若「產品名稱」宣稱含有其他之功能或效能，廠商須確認是否符合相關主管機關之規定，避免涉及廣告不實。
+  <span class="who">出自 110 年 12 月份電氣商品檢測技術一致性研討會會議紀錄之結論。與 113 年 1 月份之結論方向一致，就功能宣稱一節說明得更完整。</span>
+</blockquote>
+
+<p>同一疑慮在 113 年 1 月份會議中亦由高雄分局提出：名稱不宜有強調功能性的字眼，例如<b>「防雷擊延長線」</b>。
+標準僅對商品安全性進行測試，並無該項功能性測試，曾有消費者去信詢問是否有針對防雷擊項目測試。</p>
+
+<p><b>處理方式：</b>名稱中若確需保留功能或效能字眼，該項宣稱須另有依據，並確認符合該功能所涉主管機關之規定。
+取得驗證登錄證書不等於該功能已受驗證。</p>
+
+<h3>檢查點三：名稱是否可辨識</h3>
+<p>下列情形在會議中被列為不宜，屬各分局審查時提出的意見：</p>
+<ul>
+  <li>與商品無關的文字，或不雅字眼及其諧音。</li>
+  <li>卡通造型、公仔造型、人物造型或特殊造型的名稱，<b>可能被歸入玩具類</b>，須個案查詢。</li>
+  <li>名稱無法讓消費者一望即知商品為何。</li>
+</ul>
+
+<h2>建議作法</h2>
+<p class="sum">以下為各分局於會議中提出的審查意見，屬建議，不是決議所定的要求。列出供訂名時參考。</p>
+
+<table>
+  <thead>
+    <tr><th style="width:34%">建議</th><th>說明</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>名稱包含品目字樣，商業稱呼以括號附加</td><td>例如「行動電源（電霸）」、「行動電源（充電寶）」。同一商品在不同地區可能有不同的通俗稱呼，此作法可同時保留兩者。</td></tr>
+    <tr><td>盡量與公告名稱、國家標準名稱一致</td><td>例如採用「家庭用壓力鍋」。若國家標準名稱不易為一般消費者理解，別名與行銷名稱可另以「款式」等欄位標註。</td></tr>
+    <tr><td>證書名稱與標籤名稱一併規劃</td><td>同一系列商品若有多個商業稱呼，宜先訂出一致的命名原則，避免逐案處理時前後不一。</td></tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <span class="k">兩項作法在會議中並未取得一致</span>
+  <p>部分分局建議別名前仍應加註證書登錄之中文名稱，例如「開飲機（○○瞬熱即飲飲水機）」；
+  而議題八之結論則同意商品中文標籤得單獨以別名標示。<b>以結論為準</b>，惟個案審查時仍可能被建議加註，
+  訂名時可將此情形一併納入考量。</p>
+</div>
+
+<h2>詞彙</h2>
+<dl class="gloss">
+  <dt id="g-登錄">商品驗證登錄</dt>
+  <dd>應施檢驗商品上市前，向標準檢驗局登記商品符合檢驗規定並取得證書的程序。</dd>
+
+  <dt id="g-型式">型式認可</dt>
+  <dd>就商品的「型式」先行取得認可，之後同型式的商品依此辦理後續檢驗。</dd>
+
+  <dt id="g-應施">應施檢驗商品</dt>
+  <dd>經主管機關公告、上市前必須完成檢驗程序的商品。</dd>
+
+  <dt id="g-品目">品目</dt>
+  <dd>主管機關將商品分類後的名目。商品歸在哪一個品目，決定它適用哪一套檢驗標準。</dd>
+
+  <dt id="g-例示">品目例示表</dt>
+  <dd>經濟部 109 年 2 月 25 日經商字第10902400270號公告之「電器及電子商品種類及品目之例示表」，逐項列出品目與其示例名稱。</dd>
+
+  <dt id="g-規定">檢驗規定</dt>
+  <dd>標準檢驗局逐品目公告的文件，指定該品目適用哪一版 CNS 標準，以及標示上的要求。</dd>
+
+  <dt id="g-cns">CNS</dt>
+  <dd>中華民國國家標準。同一號標準有多個版本，以檢驗規定所指定的那一版為準。</dd>
+
+  <dt id="g-樣張">商品標示樣張</dt>
+  <dd>申請時送審的標籤或說明書版面樣本。</dd>
+
+  <dt id="g-別名">別名</dt>
+  <dd>商業上使用的商品稱呼，與證書登錄的中文名稱不必相同。</dd>
+
+  <dt id="g-釋示">釋示</dt>
+  <dd>主管機關對既有規定所作的說明，用來補充法規未講明之處，本身不是法規。</dd>
+
+  <dt id="g-一致性">檢測技術一致性研討會</dt>
+  <dd>標準檢驗局召開的會議，就檢驗實務上的認定差異作成一致作法。會議紀錄載明其為補強與釋示作用，位階低於法規。</dd>
+</dl>
+
+<footer>
+  <p>本文件依經濟部標準檢驗局 113 年 1 月份電氣商品檢測技術一致性研討會會議紀錄議題一、議題八之結論編寫，並與該次會議紀錄一併提供。</p>
+  <p>會議紀錄內容以標準檢驗局發布之正本為準。一致性會議之結論屬補強與釋示作用，位階低於法規；申請時仍應確認商品所屬品目之現行檢驗規定。</p>
+  <p>編製：財團法人金屬工業研究發展中心　智慧暨系統研發服務處　電氣安全實驗室　　查證日期：2026-09-07</p>
+</footer>
+
+</div>
+
+<script>
+(function () {
+  var btn = document.getElementById('tbtn');
+  function sync() {
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    btn.textContent = dark ? '切換淺色' : '切換深色';
+    btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+  }
+  btn.addEventListener('click', function () {
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    var next = dark ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('bfh-theme', next); } catch (e) {}
+    sync();
+  });
+  sync();
+})();
+</script>
+</body>
+</html>
