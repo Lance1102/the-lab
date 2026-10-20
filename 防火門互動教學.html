@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>防火門：性能、試驗與驗證｜互動教學</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='7' y='3' width='18' height='26' rx='1.5' fill='%2334465a'/%3E%3Crect x='10' y='6' width='12' height='20' fill='%23b8410f'/%3E%3Ccircle cx='19.5' cy='16' r='1.4' fill='%23fff'/%3E%3C/svg%3E">
+<script>(function(){try{var t=localStorage.getItem('fd-theme');t=t?JSON.parse(t):null;if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t)}catch(e){}})();</script>
+<style>
+:root{
+  --bg:#f4f5f7; --surface:#ffffff; --surface-2:#eceff3; --surface-3:#e2e6ec;
+  --ink:#14181e; --ink-2:#465061; --ink-3:#6b7585; --line:#d6dbe3; --line-2:#c3cad5;
+  --fire:#b8410f; --fire-solid:#b8410f; --fire-soft:#fbe7dc; --fire-ink:#8a2f08;
+  --steel:#34465a; --steel-solid:#34465a; --steel-soft:#e1e7ee;
+  --exit:#0b7a47; --exit-solid:#0b7a47; --exit-soft:#dcf2e6;
+  --warn:#9a5a00; --warn-soft:#fdf0d2;
+  --risk:#b01e1e; --risk-soft:#fbe0e0;
+  --smoke:#5d6470;
+  --tip-bg:rgba(17,22,29,.86);
+  --shadow:0 1px 2px rgba(20,24,30,.06),0 6px 18px rgba(20,24,30,.06);
+  --mono:ui-monospace,'Cascadia Mono',Consolas,'Courier New',monospace;
+  --sans:system-ui,-apple-system,'Segoe UI','Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif;
+  --radius:10px;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#0e1217; --surface:#161b22; --surface-2:#1d242d; --surface-3:#252d38;
+  --ink:#e7eaef; --ink-2:#aab3c0; --ink-3:#8590a0; --line:#2a333e; --line-2:#3a4552;
+  --fire:#f08a5d; --fire-solid:#b8410f; --fire-soft:#3a1f14; --fire-ink:#f6b294;
+  --steel:#9fb4cb; --steel-solid:#3d536b; --steel-soft:#1f2a36;
+  --exit:#4fcf8f; --exit-solid:#0b7a47; --exit-soft:#11291d;
+  --warn:#f2b54a; --warn-soft:#33270f;
+  --risk:#f37b7b; --risk-soft:#3a1717;
+  --smoke:#9aa3b0;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.25);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:clip}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--bg);color:var(--ink);font:15.5px/1.75 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:var(--steel)}
+h1,h2,h3,h4{line-height:1.3;margin:0 0 .5em;letter-spacing:.01em}
+h2{font-size:1.55rem}
+h3{font-size:1.12rem;margin-top:1.4em}
+p{margin:.4em 0 .9em}
+code,.num{font-family:var(--mono);font-size:.92em}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- top bar ---------- */
+.topbar{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--surface) 92%,transparent);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topbar-in{display:flex;align-items:center;gap:16px;padding:10px 20px;max-width:1440px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;white-space:nowrap}
+.brand svg{flex:none}
+.brand small{font-weight:500;color:var(--ink-3);margin-left:4px}
+.progress{flex:1;display:flex;align-items:center;gap:10px;min-width:120px}
+.progress-track{flex:1;height:6px;background:var(--surface-3);border-radius:6px;overflow:hidden;max-width:360px}
+.progress-fill{height:100%;width:0;background:var(--exit);transition:width .3s}
+.progress-txt{font-size:.85rem;color:var(--ink-2);white-space:nowrap}
+.icon-btn{border:1px solid var(--line-2);background:var(--surface);color:var(--ink);border-radius:8px;
+  padding:6px 10px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:.85rem}
+.icon-btn:hover{border-color:var(--steel)}
+.icon-btn:focus-visible,button:focus-visible,[tabindex]:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--fire);outline-offset:2px}
+
+/* ---------- shell ---------- */
+.shell{display:grid;grid-template-columns:248px minmax(0,1fr);gap:28px;max-width:1440px;margin:0 auto;padding:0 20px}
+.modnav{position:sticky;top:62px;align-self:start;max-height:calc(100vh - 74px);overflow:auto;padding:22px 0 30px}
+.modnav h4{font-size:.75rem;letter-spacing:.12em;color:var(--ink-3);margin:0 0 10px 10px;font-weight:600}
+.modnav ol{list-style:none;margin:0;padding:0;position:relative}
+.modnav ol::before{content:"";position:absolute;left:21px;top:8px;bottom:8px;width:2px;background:var(--line)}
+.modnav li a{display:flex;gap:10px;align-items:flex-start;padding:7px 10px;border-radius:8px;text-decoration:none;color:var(--ink-2);font-size:.9rem;line-height:1.45;position:relative}
+.modnav li a:hover{background:var(--surface-2);color:var(--ink)}
+.modnav li a.active{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.modnav .dot{flex:none;width:24px;height:24px;border-radius:50%;background:var(--surface);border:2px solid var(--line-2);
+  display:grid;place-items:center;font:600 .7rem/1 var(--mono);color:var(--ink-3);z-index:1}
+.modnav a.active .dot{border-color:var(--fire);color:var(--fire)}
+.modnav a.done .dot{background:var(--exit-solid);border-color:var(--exit-solid);color:#fff}
+main{min-width:0;padding:26px 0 80px}
+
+/* ---------- hero ---------- */
+.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:32px;align-items:center;
+  background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:34px 34px 30px;box-shadow:var(--shadow)}
+.eyebrow{font:600 .78rem/1 var(--sans);letter-spacing:.16em;color:var(--fire);text-transform:uppercase;margin-bottom:14px}
+.hero h1{font-size:clamp(1.7rem,3.2vw,2.45rem);margin-bottom:.35em}
+.hero .lede{color:var(--ink-2);font-size:1.04rem;max-width:36em}
+.meta-row{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 0}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;padding:3px 10px;border-radius:999px;
+  background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line);white-space:nowrap}
+.chip.fire{background:var(--fire-soft);color:var(--fire-ink);border-color:transparent}
+.chip.ok{background:var(--exit-soft);color:var(--exit);border-color:transparent}
+.chip.warn{background:var(--warn-soft);color:var(--warn);border-color:transparent}
+.chip.risk{background:var(--risk-soft);color:var(--risk);border-color:transparent}
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:22px}
+.stat{border-top:2px solid var(--ink);padding-top:8px}
+.stat b{display:block;font:700 1.45rem/1.1 var(--mono);color:var(--ink)}
+.stat span{font-size:.78rem;color:var(--ink-3);line-height:1.4;display:block;margin-top:4px}
+
+/* door anatomy figure */
+.anatomy{position:relative;width:100%;max-width:520px;justify-self:center}
+.anatomy-canvas{position:relative}
+.anatomy svg{width:100%;height:auto;display:block}
+.anatomy .hotspot{position:absolute;transform:translate(-50%,-50%);width:26px;height:26px;border-radius:50%;
+  background:var(--fire-solid);color:#fff;font:700 .72rem/26px var(--mono);text-align:center;cursor:help;
+  box-shadow:0 0 0 4px color-mix(in srgb,var(--fire-solid) 25%,transparent)}
+.hotspot:hover,.hotspot:focus{box-shadow:0 0 0 7px color-mix(in srgb,var(--fire-solid) 30%,transparent)}
+.anatomy-cap{font-size:.8rem;color:var(--ink-3);text-align:center;margin-top:6px}
+
+/* ---------- glass tooltips ---------- */
+.node{position:relative}
+.node:hover,.node:focus,.node:focus-within{z-index:60}
+.tip{position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(calc(-50% + var(--dx,0px)));
+  background:var(--tip-bg);-webkit-backdrop-filter:blur(10px) saturate(1.2);backdrop-filter:blur(10px) saturate(1.2);
+  color:#fff;border-radius:10px;padding:12px 14px;width:min(340px,86vw);box-shadow:0 10px 30px rgba(0,0,0,.25);
+  opacity:0;visibility:hidden;transition:.18s ease;pointer-events:none;z-index:40;font:400 .85rem/1.6 var(--sans);text-align:left}
+.tip b{color:#ffd9c4}
+.tip::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);border:7px solid transparent;border-top-color:var(--tip-bg)}
+.node:hover>.tip,.node:focus-within>.tip,.node:focus>.tip{opacity:1;visibility:visible}
+.tip-down{bottom:auto;top:calc(100% + 12px)}
+.tip-down::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:var(--tip-bg)}
+.tip-left{left:auto;right:-8px;transform:translateX(var(--dx,0px))}
+.tip-left::after{left:auto;right:14px;transform:none}
+.tip-right{left:-8px;transform:translateX(var(--dx,0px))}
+.tip-right::after{left:14px;transform:none}
+.term{border-bottom:1px dashed currentColor;cursor:help;position:relative;white-space:nowrap}
+.term .tt{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(calc(-50% + var(--dx,0px)));width:min(260px,80vw);white-space:normal;
+  background:var(--tip-bg);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:#fff;padding:8px 11px;border-radius:8px;
+  font:400 .8rem/1.55 var(--sans);opacity:0;visibility:hidden;transition:.15s;pointer-events:none;z-index:45;box-shadow:0 8px 24px rgba(0,0,0,.22)}
+.term:hover .tt,.term:focus .tt{opacity:1;visibility:visible}
+
+/* ---------- module section ---------- */
+.module{margin-top:30px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:30px 34px 26px;box-shadow:var(--shadow);scroll-margin-top:76px}
+.mod-head{display:flex;align-items:flex-start;gap:16px;margin-bottom:14px}
+.mod-no{flex:none;font:700 .8rem/1 var(--mono);color:var(--fire);border:1.5px solid var(--fire);border-radius:6px;padding:6px 7px;margin-top:4px}
+.mod-head h2{margin:0}
+.summary{font-size:1rem;color:var(--ink-2);border-left:3px solid var(--steel);padding:2px 0 2px 14px;margin:6px 0 18px}
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.card{background:var(--surface-2);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px}
+.card h4{font-size:.98rem;margin:0 0 6px}
+.card p:last-child{margin-bottom:0}
+.card .k{font:700 1.35rem/1.2 var(--mono);color:var(--fire)}
+.src{font-size:.75rem;color:var(--ink-3);margin-top:6px}
+.lv{display:inline-block;font:600 .68rem/1 var(--sans);padding:3px 6px;border-radius:4px;vertical-align:1px;margin-left:4px;letter-spacing:.04em}
+.lv-off{background:var(--exit-soft);color:var(--exit)}
+.lv-crs{background:var(--steel-soft);color:var(--steel)}
+.lv-sec{background:var(--warn-soft);color:var(--warn)}
+.lv-tbd{background:var(--risk-soft);color:var(--risk)}
+.callout{border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin:14px 0;background:var(--surface)}
+.callout.warn{border-color:color-mix(in srgb,var(--warn) 45%,var(--line));background:var(--warn-soft)}
+.callout.risk{border-color:color-mix(in srgb,var(--risk) 45%,var(--line));background:var(--risk-soft)}
+.callout.ok{border-color:color-mix(in srgb,var(--exit) 45%,var(--line));background:var(--exit-soft)}
+.callout h4{margin:0 0 4px;font-size:.95rem}
+.keypoints{margin:22px 0 0;padding:16px 18px;border:1px dashed var(--line-2);border-radius:var(--radius)}
+.keypoints h4{font-size:.8rem;letter-spacing:.12em;color:var(--ink-3);margin:0 0 6px}
+.keypoints ul{margin:0;padding-left:1.2em}
+.mod-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:20px;padding-top:16px;border-top:1px solid var(--line);flex-wrap:wrap}
+.btn{border:1px solid var(--line-2);background:var(--surface);color:var(--ink);border-radius:8px;padding:8px 14px;font:inherit;font-size:.9rem;cursor:pointer}
+.btn:hover{border-color:var(--steel)}
+.btn.primary{background:var(--steel-solid);border-color:var(--steel-solid);color:#fff}
+.btn.done{background:var(--exit-solid);border-color:var(--exit-solid);color:#fff}
+.btn.small{padding:4px 10px;font-size:.82rem}
+
+/* tables */
+.tbl-wrap{overflow-x:auto;margin:12px 0;border:1px solid var(--line);border-radius:var(--radius)}
+table{border-collapse:collapse;width:100%;font-size:.88rem;background:var(--surface)}
+th,td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:var(--surface-2);font-weight:600;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+td.c,th.c{text-align:center}
+
+/* ---------- widgets ---------- */
+.widget{border:1px solid var(--line-2);border-radius:12px;background:var(--surface);margin:18px 0;overflow:hidden}
+.widget-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px;background:var(--surface-2);border-bottom:1px solid var(--line)}
+.widget-head b{font-size:.92rem}
+.widget-head .chip{font-size:.72rem}
+.widget-body{padding:16px}
+.controls{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;margin-bottom:12px}
+.controls label{font-size:.86rem;color:var(--ink-2);display:inline-flex;align-items:center;gap:6px;white-space:nowrap;flex-wrap:wrap}
+input[type=number],input[type=text],select{font:inherit;font-size:.9rem;padding:5px 8px;border:1px solid var(--line-2);border-radius:6px;background:var(--surface);color:var(--ink);width:7.5em}
+input[type=text]{width:12em}
+input[type=range]{accent-color:var(--fire);width:min(320px,100%)}
+input[type=checkbox],input[type=radio]{accent-color:var(--steel-solid)}
+.seg{display:inline-flex;border:1px solid var(--line-2);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:var(--surface);color:var(--ink-2);padding:6px 12px;font:inherit;font-size:.85rem;cursor:pointer;border-right:1px solid var(--line)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--steel-solid);color:#fff}
+.readout{font:600 .95rem/1.5 var(--mono);color:var(--ink)}
+.result{border-radius:8px;padding:10px 14px;font-size:.9rem;margin-top:10px;border:1px solid var(--line)}
+.result.pass{background:var(--exit-soft);border-color:transparent;color:var(--exit)}
+.result.fail{background:var(--risk-soft);border-color:transparent;color:var(--risk)}
+.result.info{background:var(--steel-soft);border-color:transparent;color:var(--steel)}
+.checklist{list-style:none;margin:8px 0 0;padding:0}
+.checklist li{display:flex;gap:10px;align-items:flex-start;padding:6px 0;border-bottom:1px dashed var(--line);font-size:.88rem}
+.checklist li:last-child{border-bottom:0}
+.mark{flex:none;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font:700 .7rem/1 var(--mono);color:#fff;margin-top:2px}
+.mark.y{background:var(--exit-solid)} .mark.n{background:var(--risk)} .mark.q{background:var(--ink-3)}
+svg text{font-family:var(--sans)}
+.svg-wrap{overflow-x:auto}
+.svg-wrap svg{display:block;width:100%;height:auto;min-width:520px}
+
+/* spot-game door drawings */
+.sv-wall{fill:var(--surface-3)} .sv-floor{stroke:var(--ink-3);stroke-width:2}
+.sv-frame{fill:none;stroke:var(--steel);stroke-width:4} .sv-leaf{fill:var(--steel-soft);stroke:var(--steel);stroke-width:2}
+.sv-dark{fill:var(--ink-3);opacity:.35} .sv-hw{fill:var(--ink-2)} .sv-hwl{stroke:var(--ink-2);stroke-width:2}
+.sv-bad{fill:var(--risk)} .sv-badline{fill:none;stroke:var(--risk);stroke-width:2.5} .sv-good{fill:var(--exit)}
+.sv-mark{fill:var(--fire)} .sv-ink{fill:var(--ink-3)}
+.sv-t{font-size:10px;fill:var(--ink-2)} .sv-tw{font-size:8px;fill:#fff;font-weight:700}
+/* compartment sim */
+#cLeaf1{transform-box:view-box;transform-origin:240px 112px}
+#cLeaf2{transform-box:view-box;transform-origin:500px 112px}
+.room{fill:var(--surface-2);stroke:var(--ink-2);stroke-width:2}
+.room.burn{fill:var(--fire-soft)}
+.smoke{fill:var(--smoke);opacity:0;transition:opacity .9s ease}
+.smoke.on{opacity:.55}
+.door-leaf{stroke:var(--fire);stroke-width:5;stroke-linecap:round;transition:transform .5s}
+.door-gap{stroke:var(--surface);stroke-width:7}
+.stair-label{font-size:13px;fill:var(--exit);font-weight:700}
+
+/* flow rail */
+.rail{position:relative;margin:10px 0 4px;padding-left:0;list-style:none}
+.rail::before{content:"";position:absolute;left:17px;top:6px;bottom:6px;width:2px;background:var(--line-2)}
+.rail>li{position:relative;margin:0 0 12px 44px}
+.rail .badge{position:absolute;left:-44px;top:10px;width:36px;height:36px;border-radius:50%;background:var(--surface);border:2px solid var(--steel);
+  display:grid;place-items:center;font:700 .8rem/1 var(--mono);color:var(--steel);z-index:1}
+.rail .badge.chk{border-color:var(--warn);color:var(--warn)}
+.rail .badge.go{border-color:var(--exit);color:var(--exit)}
+.rail .badge.stop{border-color:var(--risk);color:var(--risk)}
+.rail .step{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:10px 14px;cursor:help;outline:none}
+.rail .step:hover,.rail .step:focus{border-color:var(--steel)}
+.rail .step b{display:block;font-size:.93rem}
+.rail .step span{font-size:.83rem;color:var(--ink-2)}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 10px;font-size:.78rem;color:var(--ink-3)}
+.route{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.route .path{border:2px solid var(--line);border-radius:12px;padding:14px 16px;transition:.25s;opacity:.55}
+.route .path.on{opacity:1;border-color:var(--steel);box-shadow:var(--shadow)}
+.route .path h4{margin:0 0 6px}
+
+/* spot game */
+.spot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.spot{border:1px solid var(--line);border-radius:10px;background:var(--surface-2);padding:10px;text-align:center;cursor:pointer;font:inherit;color:var(--ink)}
+.spot svg{width:100%;height:auto;max-height:150px}
+.spot .cap{font-size:.84rem;margin-top:4px;display:block}
+.spot .verdict{display:block;font-size:.8rem;margin-top:6px;min-height:2.6em;color:var(--ink-3)}
+.spot[data-state="right"]{border-color:var(--exit);background:var(--exit-soft)}
+.spot[data-state="wrong"]{border-color:var(--risk);background:var(--risk-soft)}
+
+/* timeline */
+.timeline{position:relative;margin:10px 0;padding-left:0;list-style:none}
+.timeline::before{content:"";position:absolute;left:96px;top:4px;bottom:4px;width:2px;background:var(--line-2)}
+.timeline li{display:grid;grid-template-columns:84px 1fr;gap:28px;margin-bottom:14px;position:relative}
+.timeline li::before{content:"";position:absolute;left:91px;top:9px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--fire)}
+.timeline .when{font:600 .85rem/1.5 var(--mono);color:var(--ink-2);text-align:right}
+.timeline .what{font-size:.9rem}
+.timeline details summary{cursor:pointer;font-weight:600}
+.timeline details p{margin:.3em 0;color:var(--ink-2);font-size:.86rem}
+
+/* quiz */
+.quiz-q{border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:12px;background:var(--surface)}
+.quiz-q .qt{font-weight:600;margin-bottom:8px}
+.quiz-q .qt small{color:var(--ink-3);font-weight:500;margin-right:6px;font-family:var(--mono)}
+.quiz-opt{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);border-radius:8px;padding:8px 12px;margin:6px 0;font:inherit;font-size:.9rem;cursor:pointer}
+.quiz-opt:hover:not([disabled]){border-color:var(--steel)}
+.quiz-opt.right{background:var(--exit-soft);border-color:var(--exit);color:var(--exit)}
+.quiz-opt.wrong{background:var(--risk-soft);border-color:var(--risk);color:var(--risk)}
+.quiz-exp{font-size:.86rem;color:var(--ink-2);margin-top:8px;display:none;border-top:1px dashed var(--line);padding-top:8px}
+.quiz-q.answered .quiz-exp{display:block}
+.score{font:700 1.1rem/1 var(--mono)}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 12px}
+.tabs button{border:1px solid var(--line-2);background:var(--surface);color:var(--ink-2);border-radius:999px;padding:5px 12px;font:inherit;font-size:.83rem;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+
+/* law trigger + drawer */
+.law{color:var(--steel);border-bottom:1px dashed var(--steel);cursor:pointer;background:none;border-top:0;border-left:0;border-right:0;padding:0;font:inherit}
+.law::after{content:" \2197";font-size:.8em}
+.backdrop{position:fixed;inset:0;background:rgba(10,14,20,.38);opacity:0;visibility:hidden;transition:.2s;z-index:80}
+.backdrop.open{opacity:1;visibility:visible}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(460px,92vw);background:var(--surface);border-left:1px solid var(--line);z-index:90;
+  transform:translateX(100%);transition:transform .25s ease,visibility .25s;visibility:hidden;display:flex;flex-direction:column;box-shadow:-10px 0 30px rgba(0,0,0,.15)}
+.drawer.open{transform:none;visibility:visible}
+.drawer header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:18px 20px 12px;border-bottom:1px solid var(--line)}
+.drawer header h3{margin:0;font-size:1.05rem}
+.drawer .dmeta{font-size:.78rem;color:var(--ink-3);margin-top:4px}
+.drawer .dbody{padding:16px 20px 30px;overflow:auto;font-size:.92rem}
+.drawer .dbody blockquote{margin:10px 0;padding:10px 14px;background:var(--surface-2);border-left:3px solid var(--steel);border-radius:0 8px 8px 0;font-size:.88rem}
+.drawer .dbody .hl{background:var(--warn-soft);outline:2px solid var(--warn);border-radius:4px}
+
+/* glossary */
+.glossary dl{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:0;margin:0;border-top:1px solid var(--line)}
+.glossary dt,.glossary dd{margin:0;padding:10px 12px;border-bottom:1px solid var(--line);font-size:.9rem}
+.glossary dt{font-weight:600}
+.glossary dd small{color:var(--ink-3)}
+.glossary :target{background:var(--warn-soft)}
+footer.page-foot{max-width:1440px;margin:0 auto;padding:26px 20px 50px;color:var(--ink-3);font-size:.82rem;border-top:1px solid var(--line)}
+
+/* ---------- responsive ---------- */
+@media (max-width:1080px){
+  .shell{grid-template-columns:1fr;gap:0}
+  .modnav{position:sticky;top:53px;z-index:40;max-height:none;overflow-x:auto;scrollbar-width:none;overflow-y:hidden;padding:8px 0;background:var(--bg);border-bottom:1px solid var(--line);margin:0 -20px;padding-left:12px}
+  .modnav h4{display:none}
+  .modnav ol{display:flex;gap:4px;white-space:nowrap}
+  .modnav ol::before{display:none}
+  .modnav li a{padding:5px 10px;font-size:.82rem;align-items:center}
+  .modnav li a .lbl-long{display:none}
+  .modnav .dot{width:20px;height:20px;font-size:.62rem}
+  .module{scroll-margin-top:110px}
+}
+@media (max-width:760px){
+  body{font-size:15px}
+  .topbar-in{padding:8px 14px;gap:10px}
+  .brand small,.brand-sub,.progress-txt{display:none}
+  .progress{min-width:60px}
+  .shell{padding:0 14px}
+  .modnav{margin:0 -14px}
+  .hero{grid-template-columns:1fr;padding:22px 18px}
+  .stat-row{grid-template-columns:repeat(2,1fr)}
+  .module{padding:22px 18px 18px}
+  .grid-2,.grid-3,.route{grid-template-columns:1fr}
+  .glossary dl{grid-template-columns:1fr}
+  .glossary dt{border-bottom:0;padding-bottom:0}
+  .timeline::before{left:8px}
+  .timeline li{grid-template-columns:1fr;gap:2px;padding-left:28px}
+  .timeline li::before{left:3px}
+  .timeline .when{text-align:left}
+  .tip{width:min(300px,84vw)}
+}
+
+/* ---------- print ---------- */
+@media print{
+  :root,:root[data-theme="dark"]{--bg:#fff;--surface:#fff;--surface-2:#f4f5f7;--surface-3:#eceff3;--ink:#000;--ink-2:#333;--ink-3:#555;--line:#ccc;--line-2:#bbb;
+    --fire:#a33a0d;--fire-soft:#fbe7dc;--fire-ink:#7a2a06;--steel:#2b3a4b;--steel-soft:#e6ebf1;--exit:#0b6b3f;--exit-soft:#e3f4ea;--warn:#7a4800;--warn-soft:#fdf3dc;--risk:#9c1a1a;--risk-soft:#fbe6e6;color-scheme:light}
+  body{font-size:11pt;background:#fff}
+  .topbar,.modnav,.drawer,.backdrop,.mod-foot,.icon-btn,.widget .controls,.hotspot,.anatomy-cap,#qReset{display:none!important}
+  .shell{display:block;padding:0}
+  .module,.hero{box-shadow:none;break-inside:auto;border:1px solid #ccc;margin-top:14pt}
+  .tip,.term .tt{display:none!important}
+  .term{border-bottom:none}
+  .quiz-q .quiz-exp{display:block}
+  .svg-wrap svg{min-width:0}
+  a{color:#000;text-decoration:none}
+}
+
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <svg width="22" height="26" viewBox="0 0 22 26" aria-hidden="true"><rect x="1" y="1" width="20" height="24" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><rect x="4.5" y="4.5" width="13" height="20" fill="#b8410f"/><circle cx="14.5" cy="14" r="1.3" fill="#fff"/></svg>
+      防火門<span class="brand-sub">　性能・試驗・驗證</span> <small>互動教學</small>
+    </div>
+    <div class="progress" aria-label="學習進度">
+      <div class="progress-track"><div class="progress-fill"></div></div>
+      <span class="progress-txt">0 / 12 單元</span>
+    </div>
+    <button class="icon-btn" id="themeBtn" type="button" aria-pressed="false" title="切換深淺色">
+      <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 1.5v11a5.5 5.5 0 0 1 0-11z" fill="currentColor"/></svg>
+      <span id="themeLbl">深色</span>
+    </button>
+  </div>
+</header>
+
+<div class="shell">
+<nav class="modnav" aria-label="課程單元">
+  <h4>課程單元</h4>
+  <ol>
+    <li><a href="#m1"><span class="dot">1</span><span>為什麼要區劃<span class="lbl-long">：火與煙的去向</span></span></a></li>
+    <li><a href="#m2"><span class="dot">2</span><span>法規<span class="lbl-long">：哪裡需要防火門</span></span></a></li>
+    <li><a href="#m3"><span class="dot">3</span><span>四項性能<span class="lbl-long">與判定準則</span></span></a></li>
+    <li><a href="#m4"><span class="dot">4</span><span>試驗爐<span class="lbl-long">與試驗程序</span></span></a></li>
+    <li><a href="#m5"><span class="dot">5</span><span>遮煙性<span class="lbl-long">：實驗室與現場</span></span></a></li>
+    <li><a href="#m6"><span class="dot">6</span><span>主管與驗證<span class="lbl-long">登錄</span></span></a></li>
+    <li><a href="#m7"><span class="dot">7</span><span>同型式判定</span></a></li>
+    <li><a href="#m8"><span class="dot">8</span><span>國際對照</span></a></li>
+    <li><a href="#m9"><span class="dot">9</span><span>使用階段<span class="lbl-long">：常開常關與維護</span></span></a></li>
+    <li><a href="#m10"><span class="dot">10</span><span>事故案例</span></a></li>
+    <li><a href="#m11"><span class="dot">11</span><span>產業<span class="lbl-long">與未來</span></span></a></li>
+    <li><a href="#m12"><span class="dot">12</span><span>綜合測驗</span></a></li>
+  </ol>
+</nav>
+
+<main id="top">
+
+<!-- ================= HERO ================= -->
+<section class="hero" aria-labelledby="h-title">
+  <div>
+    <div class="eyebrow">Fire Door Assemblies · Taiwan</div>
+    <h1 id="h-title">防火門：性能、試驗、驗證與同型式評估</h1>
+    <p class="lede">一樘防火門從法規要求、實驗室燒爐、BSMI 驗證登錄、同型式判定，到裝上建築物之後的使用與維護——本課程以 12 個單元串起整條鏈，每個單元附互動元件與查證過的條號。</p>
+    <div class="meta-row">
+      <span class="chip fire">依據課程：蔡匡忠教授，115/10/19</span>
+      <span class="chip">查證日期 2026-10-20</span>
+      <span class="chip ok">條文以官方正本為準</span>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><b>3 m×3 m</b><span>BSMI 與內政部的防火性能分界</span></div>
+      <div class="stat"><b>140/180</b><span>阻熱判定：平均／任一點溫升 K</span></div>
+      <div class="stat"><b>25 m³/h</b><span>CNS 15038 遮煙判定（每樘）</span></div>
+      <div class="stat"><b>115/9/1</b><span>識別號碼加流水號生效</span></div>
+    </div>
+  </div>
+  <figure class="anatomy" aria-label="防火門組件剖析圖">
+    <div class="anatomy-canvas">
+    <svg viewBox="0 0 400 460" role="img" aria-label="防火門各組件位置">
+      <rect x="0" y="0" width="400" height="430" style="fill:var(--surface-2)"/>
+      <rect x="92" y="22" width="216" height="408" style="fill:none;stroke:var(--fire);stroke-dasharray:5 4;stroke-width:1.5"/>
+      <text x="300" y="16" text-anchor="end" style="fill:var(--fire-ink);font-size:11px">周邊 15 cm 不燃材料</text>
+      <rect x="110" y="40" width="180" height="390" style="fill:var(--steel-solid)"/>
+      <rect x="122" y="52" width="156" height="378" style="fill:var(--steel-soft);stroke:var(--steel);stroke-width:1.5"/>
+      <rect x="170" y="90" width="60" height="110" style="fill:var(--surface);stroke:var(--steel);stroke-width:3"/>
+      <path d="M176 196 L226 96 M176 166 L212 96 M190 196 L226 126 M176 136 L196 96 M206 196 L226 156" style="stroke:var(--line-2);stroke-width:1"/>
+      <rect x="140" y="58" width="70" height="12" style="fill:var(--ink-2)"/>
+      <path d="M210 64 L262 50" style="stroke:var(--ink-2);stroke-width:3"/>
+      <rect x="116" y="80" width="8" height="24" style="fill:var(--ink-2)"/>
+      <rect x="116" y="230" width="8" height="24" style="fill:var(--ink-2)"/>
+      <rect x="116" y="380" width="8" height="24" style="fill:var(--ink-2)"/>
+      <rect x="140" y="250" width="120" height="10" rx="4" style="fill:var(--ink-2)"/>
+      <rect x="252" y="244" width="14" height="22" style="fill:var(--ink-2)"/>
+      <rect x="130" y="300" width="30" height="18" rx="2" style="fill:var(--fire-solid)"/>
+      <polygon points="230,330 278,330 278,424 230,424" style="fill:var(--surface)"/>
+      <rect x="232" y="330" width="4" height="94" style="fill:var(--steel)"/>
+      <rect x="272" y="330" width="4" height="94" style="fill:var(--steel)"/>
+      <rect x="237" y="330" width="34" height="94" style="fill:var(--warn-soft)"/>
+      <path d="M240 340 l6 6 m4 -6 l6 6 m4 -6 l6 6 M240 360 l6 6 m4 -6 l6 6 m4 -6 l6 6 M240 380 l6 6 m4 -6 l6 6 m4 -6 l6 6 M240 400 l6 6 m4 -6 l6 6 m4 -6 l6 6" style="stroke:var(--warn);stroke-width:1.2"/>
+      <rect x="122" y="420" width="156" height="6" style="fill:var(--ink-3)"/>
+      <line x1="0" y1="430" x2="400" y2="430" style="stroke:var(--ink-2);stroke-width:2"/>
+    </svg>
+    <span class="hotspot node" tabindex="0" style="left:28.5%;top:32.6%">1<span class="tip tip-right"><b>門樘（Door frame）</b><br>固定在牆上的框，是試體的一部分。安裝時以砂漿灌實，灌漿不實或改用發泡劑，受火時整組門會從周邊失效。依據：CNS 11227-1；同型式判定原則第 7 點。</span></span>
+    <span class="hotspot node" tabindex="0" style="left:43.7%;top:13.9%">2<span class="tip tip-down"><b>閉門器（自行關閉裝置）</b><br>常關式與常開式都必須有「開啟後可自行關閉之裝置」。換廠牌要有第三方驗證；力量不能為了好推而調小。依據：第 76 條第 3、4 款；同型式第 5 點第 1 款第 4 目。</span></span>
+    <span class="hotspot node" tabindex="0" style="left:30.5%;top:50%">3<span class="tip tip-right"><b>鉸鏈（制動機件之一）</b><br>數量只增不減；表面安裝鉸鏈換廠牌需第三方驗證，換供應商則型式不得改變。鉸鏈不在「可移除免判定」之列。依據：同型式第 5 點。</span></span>
+    <span class="hotspot node" tabindex="0" style="left:50%;top:31.5%">4<span class="tip tip-down"><b>鑲嵌防火玻璃</b><br>縮小或減少數量免試驗（厚度不得減少）；換廠牌型號或改固定方法須補試驗；玻璃面積超過門扇 60% 不得變更。依據：同型式判定原則第 6 點。</span></span>
+    <span class="hotspot node" tabindex="0" style="left:50%;top:55.4%">5<span class="tip"><b>推桿與門鎖</b><br>往避難方向必須免鑰匙即可開啟——刷卡、磁扣也算鑰匙。門鎖廠牌、種類、鎖匣大小與鎖舌材質不變時，鎖栓數量與把手外觀可變。依據：第 76 條；同型式第 5 點第 1 款第 6 目。</span></span>
+    <span class="hotspot node" tabindex="0" style="left:36.2%;top:67.2%">6<span class="tip tip-right"><b>商品檢驗標識</b><br>R 字軌＋識別號碼，含防火性能等級如 f(60A)。115/9/1 起輸入或出廠者須加流水號，可在 BSMI 網站逐樘查詢。依據：商品檢驗標識使用辦法第 3 條；BSMI 115/3/16 公告。</span></span>
+    <span class="hotspot node" tabindex="0" style="left:63.5%;top:82.2%">7<span class="tip tip-left"><b>表面材與中心材（剖面）</b><br>兩片鋼板（表面材）之間填中心材，如陶瓷棉、岩棉、珍珠岩板。表面材不屬於「門扇結構」；中心材替換有 115 年新規。依據：同型式判定原則第 2、9、10 點。</span></span>
+    <span class="hotspot node" tabindex="0" style="left:50%;top:92.2%">8<span class="tip"><b>門縫與下降壓條</b><br>同型式門的間隙不得大於 (a+b)/2 + 2 mm。現場遮煙失敗最常見的原因是門縫過大、下降壓條壓不到地。依據：同型式第 4 點第 2 款；建研所現場實測。</span></span>
+    <span class="hotspot node" tabindex="0" style="left:75%;top:21.7%">9<span class="tip tip-left"><b>周邊 15 cm 牆體</b><br>防火門窗周邊 15 cm 範圍內的牆壁應以不燃材料建造；實驗室的支撐構造條件就是現場安裝條件的上限。依據：第 76 條第 1 款。</span></span>
+    </div>
+    <figcaption class="anatomy-cap">將游標移到編號上（行動裝置請點選）查看各組件的規定</figcaption>
+  </figure>
+</section>
+
+<!-- ================= M1 ================= -->
+<section class="module" id="m1" data-mod>
+  <div class="mod-head"><span class="mod-no">M1</span><h2>為什麼要區劃：火與煙的去向</h2></div>
+  <p class="summary">防火門不是單獨存在的產品，而是<span class="term" data-g="compart">防火區劃</span>上的開口補丁。區劃的目的有兩個：把火煙關在起火區劃內，或把火煙擋在避難空間外。</p>
+  <div class="grid-2">
+    <div class="card"><h4>策略一：關在裡面</h4><p>起火的居室、住戶、廚房自成一區，火與煙、毒性氣體不竄到其他空間。面積區劃（第 79 條）、分戶牆（第 86 條第 1 款）屬此類。</p></div>
+    <div class="card"><h4>策略二：擋在外面</h4><p>安全梯、昇降機間、避難走廊是人員逃生的路徑，必須維持無煙。<span class="term" data-g="vert">垂直區劃</span>（第 79 條之 2）、安全梯出入口（第 97 條）屬此類。</p></div>
+  </div>
+  <div class="grid-2">
+    <div class="card"><h4>煙比火更早致命</h4><p>一氧化碳與血紅素的親和力約為氧的 250 倍，氰化氫致死劑量約為一氧化碳的 1/25；能見度低於 13 m（不熟悉環境者）就難以安全避難。100 °C 的梯間煙柱約產生 2.3 Pa/m 的壓差，15 m 高就有約 35 Pa——與遮煙試驗的 10／25／50 Pa 同一量級。</p></div>
+    <div class="card"><h4><span class="term" data-g="smokewall">防煙區劃</span> ≠ 防火區劃</h4><p>防煙壁是自天花板下垂 ≥ 50 cm 的不燃垂壁（地下通道 ≥ 80 cm），每 500 m² 一區、不要求時效、下方開放；防火區劃是 1 h 牆加防火門、每 1,500 m² 一區。前者屬消防法系（設置標準第 188 條），後者屬建築法系（第 79 條）。</p></div>
+  </div>
+  <div class="widget" id="w-compart">
+    <div class="widget-head"><b>互動：煙往哪裡走</b><span class="chip">改變門的狀態後按「模擬起火」</span></div>
+    <div class="widget-body">
+      <div class="controls">
+        <label>起火戶大門 <span class="seg" data-seg="d1"><button type="button" data-v="closed" aria-pressed="true">關閉</button><button type="button" data-v="open" aria-pressed="false">開啟</button><button type="button" data-v="stopped" aria-pressed="false">門止頂住</button></span></label>
+        <label>安全梯防火門 <span class="seg" data-seg="d2"><button type="button" data-v="closed" aria-pressed="true">關閉</button><button type="button" data-v="open" aria-pressed="false">開啟</button><button type="button" data-v="stopped" aria-pressed="false">門止頂住</button></span></label>
+        <label>管道間貫穿部 <span class="seg" data-seg="seal"><button type="button" data-v="true" aria-pressed="true">已填塞</button><button type="button" data-v="false" aria-pressed="false">未填塞</button></span></label>
+        <button class="btn primary" id="cFire" type="button">模擬起火</button>
+      </div>
+      <div class="svg-wrap">
+        <svg viewBox="0 0 720 280" role="img" aria-label="起火戶、走廊、安全梯平面示意">
+          <rect id="cRoomA" class="room" x="20" y="40" width="220" height="200"/>
+          <rect class="room" x="240" y="40" width="260" height="200"/>
+          <rect class="room" x="500" y="40" width="200" height="200"/>
+          <rect x="420" y="40" width="60" height="46" style="fill:var(--surface-3);stroke:var(--ink-2);stroke-width:2"/>
+          <text x="450" y="68" text-anchor="middle" style="font-size:12px;fill:var(--ink-2)">管道間</text>
+          <g style="stroke:var(--line-2);stroke-width:2"><line x1="540" y1="200" x2="660" y2="200"/><line x1="540" y1="180" x2="660" y2="180"/><line x1="540" y1="160" x2="660" y2="160"/><line x1="540" y1="140" x2="660" y2="140"/><line x1="540" y1="120" x2="660" y2="120"/></g>
+          <rect id="sA" class="smoke" x="22" y="42" width="216" height="196"/>
+          <rect id="sCorr" class="smoke" x="242" y="42" width="256" height="196"/>
+          <rect id="sStair" class="smoke" x="502" y="42" width="196" height="196"/>
+          <g id="sUp" class="smoke"><path d="M450 40 L450 10" style="stroke:var(--smoke);stroke-width:12"/><path d="M438 16 L450 2 L462 16 Z"/><text x="470" y="18" style="font-size:12px">竄往上層</text></g>
+          <text x="130" y="66" text-anchor="middle" style="font-size:14px;font-weight:700;fill:var(--ink)">起火戶</text>
+          <text x="330" y="66" text-anchor="middle" style="font-size:14px;font-weight:700;fill:var(--ink)">走廊</text>
+          <text x="600" y="66" text-anchor="middle" class="stair-label">安全梯（避難路徑）</text>
+          <path d="M120 200 c-14 -22 8 -30 2 -52 c16 12 26 30 18 52 z M132 200 c-4 -10 4 -14 4 -24 c8 8 10 16 6 24 z" style="fill:var(--fire)"/>
+          <line class="door-gap" x1="240" y1="112" x2="240" y2="172"/>
+          <line class="door-gap" x1="500" y1="112" x2="500" y2="172"/>
+          <line id="cLeaf1" class="door-leaf" x1="240" y1="112" x2="240" y2="172"/>
+          <line id="cLeaf2" class="door-leaf" x1="500" y1="112" x2="500" y2="172"/>
+          <text x="246" y="192" style="font-size:11px;fill:var(--ink-3)">門 1</text>
+          <text x="506" y="192" style="font-size:11px;fill:var(--ink-3)">門 2</text>
+        </svg>
+      </div>
+      <div class="result info" id="cOut">按「模擬起火」觀察煙的走向。</div>
+    </div>
+  </div>
+  <div class="callout risk">
+    <h4>課程開場案例：新竹「晴空匯」火警（2024-05-26）</h4>
+    <p>28 層集合住宅火警，二名消防員殉職。新竹市府稽查發現：起火處防火區劃失效，多處管道間貫穿通道未確實<span class="term" data-g="pen">防火填塞</span>，濃煙經貫穿開口外竄；同次稽查另查獲常閉式防火門未關閉、地下室防火門規格不符。門再好，牆上有洞，煙就繞過去——試試上方模擬的「未填塞」。</p>
+  </div>
+  <div class="keypoints"><h4>本單元重點</h4><ul>
+    <li>防火門是區劃系統的一部分：門、牆、樓板、貫穿部填塞、天花板上方空間缺一不可，煙走最弱的路。</li>
+    <li>近年重大火災的死者多半不在起火處，而在被煙灌入的樓梯間與走廊——「擋在外面」的區劃最常被破壞。</li>
+    <li>實驗室證明的是「門關著時」的性能；門被打開、被頂住，性能歸零。</li>
+  </ul></div>
+  <div class="mod-foot"><button class="btn mark-done" type="button">標記本單元完成</button><button class="btn next-mod" type="button" data-target="m2">下一單元：法規</button></div>
+</section>
+
+<!-- ================= M2 ================= -->
+<section class="module" id="m2" data-mod>
+  <div class="mod-head"><span class="mod-no">M2</span><h2>法規：哪裡需要防火門、要幾小時</h2></div>
+  <p class="summary">不是每一扇門都要是防火門。只有開在法定區劃線上、或條文點名的開口才需要；而且<span class="term" data-g="frr">防火時效</span>、<span class="term" data-g="ins">阻熱性</span>、<span class="term" data-g="smk">遮煙性能</span>的要求依位置而不同。</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>情境</th><th>條文</th><th class="c">時效</th><th class="c">阻熱</th><th class="c">遮煙</th><th>標識常見對應</th></tr></thead>
+    <tbody>
+      <tr><td>防火構造面積區劃（每 1,500 m²）</td><td><button class="law" type="button" data-law="art79" data-art="1">第 79 條第 1 項</button></td><td class="c">1 h</td><td class="c">1 h</td><td class="c">—</td><td>f(60A)</td></tr>
+      <tr><td>11 層以上區劃（100／200／500 m²）</td><td>第 83 條</td><td class="c">1 h</td><td class="c">1 h</td><td class="c">—</td><td>f(60A)</td></tr>
+      <tr><td>垂直區劃：挑空、樓梯間、管道間</td><td>第 79 條之 2</td><td class="c">1 h</td><td class="c">—</td><td class="c">維修門要</td><td>f(60B) 以上</td></tr>
+      <tr><td>昇降機道（或併同區劃之昇降機間出入口）</td><td>第 79 條之 2、242、203 條</td><td class="c">1 h</td><td class="c">—</td><td class="c">要</td><td>f(60B)＋遮煙認可</td></tr>
+      <tr><td>集合住宅分戶牆（住宅大門）</td><td><button class="law" type="button" data-law="art86" data-art="1">第 86 條第 1 款</button></td><td class="c">1 h</td><td class="c">—</td><td class="c">—</td><td>f(60B) 以上</td></tr>
+      <tr><td>室內安全梯出入口</td><td><button class="law" type="button" data-law="art97" data-art="1">第 97 條</button></td><td class="c">1 h</td><td class="c">0.5 h</td><td class="c">要</td><td>f(60/30A)＋遮煙認可</td></tr>
+      <tr><td>戶外安全梯、特別安全梯（室內→排煙室）</td><td><button class="law" type="button" data-law="art97" data-art="2">第 97 條</button></td><td class="c">1 h</td><td class="c">0.5 h</td><td class="c">—</td><td>f(60/30A)</td></tr>
+      <tr><td>長照、護理之家等機構的二區劃出入口</td><td>第 99 條之 1</td><td class="c">1 h</td><td class="c">—</td><td class="c">要</td><td>雙向免鑰匙</td></tr>
+      <tr><td>地下建築物緩衝區連接出入口</td><td>第 181 條</td><td class="c">1 h</td><td class="c">1 h</td><td class="c">—</td><td>唯一強制常開式</td></tr>
+      <tr><td>地下中央管理室、高層防災中心</td><td>第 182、259 條</td><td class="c">2 h</td><td class="c">—</td><td class="c">—</td><td>f(120B) 以上</td></tr>
+      <tr><td>一般分間牆上的房門、會議室門</td><td><button class="law" type="button" data-law="art86" data-art="2">第 86 條第 2 款但書</button></td><td class="c" colspan="3">不要求防火門</td><td>—</td></tr>
+    </tbody>
+  </table></div>
+  <p class="src">條文欄依建築技術規則設計施工編（115/2/23 版）；「標識常見對應」為依代碼規則推得，非法定對照。</p>
+  <div class="callout warn">
+    <h4>課程投影片的「79-1、79-2、79-3」</h4>
+    <p>投影片引的三段文字正確，但它們是<b>第 79 條第 1、2、3 項</b>。法規另有獨立的第 79 條之 1（特殊用途自成區劃）、之 2（垂直區劃、昇降機道遮煙）、之 3（樓地板連續完整），內容不同，引用時請寫「第 79 條第 X 項」。</p>
+  </div>
+  <h3>第 76 條：防火門裝在建築物上長什麼樣才合法</h3>
+  <p><button class="law" type="button" data-law="art76">第 76 條全文</button>規定的是構造與使用條件，<b>不在 BSMI 驗證登錄的試驗範圍內</b>。取得證書的門，仍要逐款對照本條。</p>
+  <div class="widget" id="w-art76">
+    <div class="widget-head"><b>互動：第 76 條檢核器</b><span class="chip">輸入門的條件，逐款判定</span></div>
+    <div class="widget-body">
+      <div class="controls">
+        <label>門扇寬 <input type="number" id="a76w" value="90" min="40" max="400"> cm</label>
+        <label>門扇高 <input type="number" id="a76h" value="210" min="100" max="400"> cm</label>
+        <label>型式 <select id="a76type"><option value="closed">常時關閉式</option><option value="open">常時開放式</option></select></label>
+      </div>
+      <div class="controls">
+        <label><input type="checkbox" id="a76wall" checked> 周邊 15 cm 為不燃材料</label>
+        <label><input type="checkbox" id="a76nokey" checked> 往避難方向免鑰匙開啟</label>
+        <label><input type="checkbox" id="a76self" checked> 有自行關閉裝置</label>
+        <label><input type="checkbox" id="a76dir" checked> 朝避難方向開啟</label>
+        <label><input type="checkbox" id="a76exc"> 住宅／宿舍寢室／旅館客房／病房連接走廊</label>
+      </div>
+      <div class="controls" id="a76closedgrp">
+        <label><input type="checkbox" id="a76stop"> 裝有門止</label>
+        <label><input type="checkbox" id="a76sign" checked> 標示「常時關閉式防火門」</label>
+      </div>
+      <div class="controls">
+        <label class="grp-open"><input type="checkbox" id="a76auto" checked> 煙感應器連動自動關閉（常開式適用）</label>
+      </div>
+      <ul class="checklist" id="a76list"></ul>
+      <div class="result" id="a76out"></div>
+      <p class="src">提示：把寬改成 140、高 230，常時關閉式會因單一門扇面積 3.22 m² &gt; 3 m² 而不合格——這一目在課程投影片中被省略，也常與 BSMI 的「3 m × 3 m」混淆。</p>
+    </div>
+  </div>
+  <div class="keypoints"><h4>本單元重點</h4><ul>
+    <li>先找區劃線，再談防火門：第 86 條第 2 款明文「分間牆上之門窗，不在此限」。</li>
+    <li>阻熱性只在條文明寫時才要求（面積區劃 1 h、安全梯 0.5 h）；垂直區劃與分戶門只寫時效。</li>
+    <li>遮煙性能自 103/7/1 施行，適用室內安全梯、昇降機道／昇降機間、管道間維修門、長照機構區劃等。</li>
+    <li>常關式單扇不得超過 3 m²；這是建築法規的使用限制，與 BSMI 的商品檢驗範圍是兩回事。</li>
+  </ul></div>
+  <div class="mod-foot"><button class="btn mark-done" type="button">標記本單元完成</button><button class="btn next-mod" type="button" data-target="m3">下一單元：四項性能</button></div>
+</section>
+
+<!-- ================= M3 ================= -->
+<section class="module" id="m3" data-mod>
+  <div class="mod-head"><span class="mod-no">M3</span><h2>四項性能與判定準則</h2></div>
+  <p class="summary">一樘防火門燒到第幾分鐘算失敗？遮焰看「火有沒有過來」，阻熱看「背面燙不燙」，遮煙另做一套試驗，構造穩定對防火門不單獨判定。</p>
+  <div class="grid-2">
+    <div class="card"><h4><span class="term" data-g="int">遮焰性</span> Integrity（E）</h4>
+      <p>任一發生即失效：</p>
+      <ul class="checklist">
+        <li><span class="mark n">1</span><span><span class="term" data-g="cotton">棉墊</span>著火：貼近縫隙施放最長 <b>30 s</b>，發光或起焰才算（只焦黑不算）</span></li>
+        <li><span class="mark n">2</span><span><span class="term" data-g="gap">間隙規</span>：<b>6 mm</b> 可穿入並沿縫移動 <b>150 mm</b>，或 <b>25 mm</b> 可穿入</span></li>
+        <li><span class="mark n">3</span><span><span class="term" data-g="unexp">非曝火面</span>持續火焰 <b>&gt;10 s</b></span></li>
+      </ul>
+    </div>
+    <div class="card"><h4>阻熱性 Insulation（I）</h4>
+      <p>以試驗開始時非曝火面平均溫度為基準：</p>
+      <ul class="checklist">
+        <li><span class="mark n">a</span><span>平均溫升 <b>&gt;140 K</b> 即失效</span></li>
+        <li><span class="mark n">b</span><span>任一點（含移動式熱電偶）溫升 <b>&gt;180 K</b> 即失效</span></li>
+        <li><span class="mark q">i</span><span>CNS 11227-1：5 點固定熱電偶（門扇中心＋四等分中心）同時判平均與最大</span></li>
+      </ul>
+    </div>
+    <div class="card"><h4>遮煙性 Smoke control</h4><p>不在耐火試驗內判定，另依 CNS 15038 於室溫與中溫、10–25–50 Pa 量漏氣量。見 M5。</p></div>
+    <div class="card"><h4><span class="term" data-g="stab">構造穩定性</span></h4><p>承重構件以撓度判定；防火門是非承重構件，<b>不單獨判定</b>，CNS 11227-1 也已不以變形量判定。門的「構造失穩」會以遮焰失效呈現：翹曲開縫、鎖舌脫出、五金熔落。</p></div>
+  </div>
+  <div class="widget" id="w-insul">
+    <div class="widget-head"><b>互動：阻熱判定計算</b><span class="chip">輸入某一時點的非曝火面讀值</span></div>
+    <div class="widget-body">
+      <div class="controls">
+        <label>初始平均溫度 <input type="number" id="inT0" value="22" step="0.1"> °C</label>
+        <label>此刻 5 點平均 <input type="number" id="inAvg" value="148" step="0.1"> °C</label>
+        <label>此刻最高單點 <input type="number" id="inMax" value="205" step="0.1"> °C</label>
+      </div>
+      <ul class="checklist" id="inList"></ul>
+      <div class="result" id="inOut"></div>
+    </div>
+  </div>
+  <div class="callout">
+    <h4>骨牌效應：阻熱時間永遠不會大於遮焰時間</h4>
+    <p>遮焰失效時，阻熱自動視為失效（ISO 834-1 12.2）。例：第 52 分鐘 6 mm 間隙規穿縫，當時平均溫升只有 90 K，阻熱時間最多仍只能記 52 分鐘。結果以完整分鐘數表示。</p>
+  </div>
+  <div class="callout">
+    <h4><span class="term" data-g="decision">判定規則</span>與量測不確定度</h4>
+    <p>耐火結果是「完整分鐘數」，不是溫度值。ISO 834-1 已限定主要不確定度來源（爐溫 ±15 °C、非曝火面 ±4 °C、壓力 ±2 Pa），判定採簡單接受：完整分鐘數 ≥ 要求時效即合格，不自行加保護帶，也不給「有條件合格」。140 K、180 K 是「超過」才失效，恰好等於不算失效；記錄器取樣沒有對齊 t = 0，結果最多會少記 1 分鐘。</p>
+  </div>
+  <div class="callout warn">
+    <h4>與課程說法的比對</h4>
+    <p>課程說遮焰性「以棉花塊著火與否或量測熱氣溫度評估」——標準的遮焰判定只有棉墊、間隙規、持續火焰三項，沒有熱氣溫度判定。課程稱 140／180 為「我國規定」，數值正確，但它就是 ISO 834-1 的國際通用值。</p>
+  </div>
+  <div class="keypoints"><h4>本單元重點</h4><ul>
+    <li>易錯：「棉墊 10 秒」是錯的——10 s 是持續火焰門檻，棉墊施放上限 30 s。</li>
+    <li>A 類＝具阻熱、B 類＝不具阻熱（無背溫要求）；以 A 類試驗但部分背溫點失敗者可降級為 B 類。</li>
+    <li>不要把 EN 1634-1 的 I1／I2 點位（距門緣 25 mm）套進 CNS 11227-1 判定，也不要用舊 CNS 11227 的變形量限值退件。</li>
+  </ul></div>
+  <div class="mod-foot"><button class="btn mark-done" type="button">標記本單元完成</button><button class="btn next-mod" type="button" data-target="m4">下一單元：試驗爐</button></div>
+</section>
+
+<!-- ================= M4 ================= -->
+<section class="module" id="m4" data-mod>
+  <div class="mod-head"><span class="mod-no">M4</span><h2>試驗爐與試驗程序</h2></div>
+  <p class="summary">防火門的耐火試驗＝<button class="law" type="button" data-law="cns11227">CNS 11227-1</button> 的試體、安裝與量測配置 ＋ <button class="law" type="button" data-law="cns12514">CNS 12514-1</button> 的爐溫、爐壓與判定通則。</p>
+  <div class="grid-3">
+    <div class="card"><h4>CNS 12514-1</h4><p class="k">2024</p><p>113/10/24 修訂版；對應 ISO 834-1。通則：爐、升溫、爐壓、儀器、判定。名稱是「構造構件」，課程投影片誤植為「構建」。</p></div>
+    <div class="card"><h4>CNS 11227-1</h4><p class="k">2016</p><p>105/11/10 制定、107/12/12 勘誤、110/12/7 確認；母本 ISO 3008:2007。BSMI 指定的檢驗標準。</p></div>
+    <div class="card"><h4>版次差異</h4><p class="k">ISO 2025</p><p>ISO 834-1、ISO 3008-1 已出 2025 版。CNS 沒有、新版 ISO 才有的要求屬版次差異，仍依 CNS 現行版判定。</p></div>
+  </div>
+  <div class="widget" id="w-iso834">
+    <div class="widget-head"><b>互動：<span class="term" data-g="iso834">標準升溫曲線</span></b><span class="chip">拖曳時間軸</span></div>
+    <div class="widget-body">
+      <div class="controls">
+        <label>t <input type="range" id="isoT" min="0" max="240" value="60"></label>
+        <button class="btn small" type="button" data-iso="30">30 min</button>
+        <button class="btn small" type="button" data-iso="60">60 min</button>
+        <button class="btn small" type="button" data-iso="120">120 min</button>
+        <button class="btn small" type="button" data-iso="180">180 min</button>
+      </div>
+      <div class="svg-wrap"><svg viewBox="0 0 660 320" role="img" aria-label="ISO 834 標準升溫曲線"></svg></div>
+      <div class="readout" id="isoOut"></div>
+      <p class="src">許可差以曲線下面積的百分比偏差 dₑ 判定：10–30 min 由 15% 遞減，60 min 後 2.5%。舊 CNS 曲線 1 h 為 925 °C，與現行 945 °C 不是同一把尺。</p>
+    </div>
+  </div>
+  <div class="widget" id="w-press">
+    <div class="widget-head"><b>互動：爐壓梯度與<span class="term" data-g="npp">中性壓力面</span></b>
+      <span class="seg"><button type="button" data-grad="8" aria-pressed="true">ISO／CNS 8 Pa/m</button><button type="button" data-grad="8.5" aria-pressed="false">EN 8.5 Pa/m</button></span></div>
+    <div class="widget-body">
+      <div class="controls"><label>門高 <input type="range" id="prH" min="2.0" max="3.0" step="0.05" value="2.2"></label></div>
+      <div class="svg-wrap"><svg viewBox="0 0 520 330" role="img" aria-label="爐壓沿高度分布"></svg></div>
+      <div class="result info" id="prOut"></div>
+    </div>
+  </div>
+  <div class="callout warn">
+    <h4>課程的爐壓說法要怎麼讀</h4>
+    <p>課程說「零壓力面距爐底 50 cm、每升高 1 m 壓力須增加 8 Pa」。數值與 ISO 834-1 一致，但有兩點要修正：基準是<span class="term" data-g="nfl">假想樓板面</span>（門底所在的樓板面），不是爐膛底部；8 Pa/m 是熱浮力造成、評估時「可假設」的梯度，不是控制目標。實驗室實際控制的是中性面位置、試體頂端 ≤20 Pa，以及 5 min ±5 Pa、10 min ±3 Pa 的許可差。</p>
+  </div>
+  <h3>試驗程序（每一站都可展開說明）</h3>
+  <div class="legend"><span class="chip">一般步驟</span><span class="chip warn">檢查點</span><span class="chip ok">判定</span></div>
+  <ol class="rail">
+    <li><span class="badge">1</span><div class="step node" tabindex="0"><b>送樣與查核</b><span>整組門：門扇＋門樘＋五金＋封條</span><span class="tip tip-down"><b>做什麼</b>：核對樣品與申請圖說、材料與五金清單一致。<br><b>為何重要</b>：驗證的是整組，現場換掉任一非原型式零件就不再是通過試驗的型式。<br><b>依據</b>：CNS 11227-1；第 76 條序文「組件包括門窗扇、門窗樘、開關五金、嵌裝玻璃」。</span></div></li>
+    <li><span class="badge chk">2</span><div class="step node" tabindex="0"><b>養護（狀態調節）</b><span>門樘回填砂漿</span><span class="tip"><b>做什麼</b>：門樘回填砂漿須達氣乾（24 h 秤重差 ≤0.1%）且強度達設定值，不一定要 28 天。<br><b>出錯後果</b>：含水過高，背溫與爆裂行為失真。<br><b>依據</b>：CNS 11227-1 附錄 A；BSMI 110 年一致性會議決議。</span></div></li>
+    <li><span class="badge">3</span><div class="step node" tabindex="0"><b>安裝於支撐構造</b><span>柔性或剛性牆</span><span class="tip"><b>做什麼</b>：把門裝入試驗框的<span>支撐構造</span>。<br><b>影響範圍</b>：柔性支撐構造通過者可用於剛性牆，剛性通過者僅限剛性。<br><b>依據</b>：同型式判定原則第 10 點第 4 款。</span></div></li>
+    <li><span class="badge chk">4</span><div class="step node" tabindex="0"><b>量間隙、決定加熱面</b><span>間隙取申報範圍中間值至最大值</span><span class="tip"><b>做什麼</b>：實測門縫須落在申報範圍的中間值到最大值之間；不對稱的門兩面都要試，或證明哪面較嚴。<br><b>依據</b>：CNS 11227-1 7.4.2；BSMI 實務稱「單扇雙面」。</span></div></li>
+    <li><span class="badge">5</span><div class="step node" tabindex="0"><b>佈設熱電偶</b><span>5 點固定＋門樘點＋移動式</span><span class="tip"><b>做什麼</b>：門扇中心＋四等分中心共 5 點判平均與最大溫升；門樘另依 9.3 量測；移動式熱電偶追熱點。<br><b>依據</b>：CNS 11227-1 9.1.2.5、9.2.1、9.3。</span></div></li>
+    <li><span class="badge">6</span><div class="step node" tabindex="0"><b>點火、控溫控壓</b><span>ISO 834 曲線；中性面 500 mm</span><span class="tip"><b>做什麼</b>：板式溫度計距試體 100±50 mm，依標準曲線升溫；10 min 後任一爐溫計偏離 ≤100 °C；頂端 ≤20 Pa。<br><b>依據</b>：CNS 12514-1（ISO 834-1 6.1、6.2、8.1）。</span></div></li>
+    <li><span class="badge chk">7</span><div class="step node" tabindex="0"><b>觀察與記錄</b><span>棉墊、間隙規、火焰、冒煙、變形</span><span class="tip"><b>做什麼</b>：記錄失效現象的時間與位置；變形仍要量測，但不作判定基準；冒煙只記錄不判定。<br><b>依據</b>：ISO 834-1 9.4。BSMI 自 109 年起要求指定試驗室每月送耐火試驗全程錄影備查。</span></div></li>
+    <li><span class="badge go">8</span><div class="step node" tabindex="0"><b>判定與報告</b><span>遮焰／阻熱分鐘數；A 或 B</span><span class="tip"><b>做什麼</b>：以完整分鐘數記遮焰與阻熱時間；提前終止或偏離要加註；報告載明直接適用範圍。<br><b>下一步</b>：報告用於驗證登錄或同型式判定（M6、M7）。</span></div></li>
+  </ol>
+  <div class="keypoints"><h4>本單元重點</h4><ul>
+    <li>背三個溫度：30 min ≈ 842 °C、60 min ≈ 945 °C、120 min ≈ 1049 °C。</li>
+    <li>門底到 0.5 m 處於負壓、以上為正壓——遮焰失效常先出現在門扇上緣與鎖側上段。</li>
+    <li>爐溫用<span class="term" data-g="plate">板式溫度計</span>，它和裸熱電偶讀值不同，是為了跨爐再現性。</li>
+  </ul></div>
+  <div class="mod-foot"><button class="btn mark-done" type="button">標記本單元完成</button><button class="btn next-mod" type="button" data-target="m5">下一單元：遮煙性</button></div>
+</section>
+
+<!-- ================= M5 ================= -->
+<section class="module" id="m5" data-mod>
+  <div class="mod-head"><span class="mod-no">M5</span><h2>遮煙性：實驗室與現場</h2></div>
+  <p class="summary">遮煙與防火是兩套試驗、兩條路：防火性能看 CNS 11227-1，遮煙性能看 <button class="law" type="button" data-law="cns15038">CNS 15038</button>；遮煙性能不分尺寸，一律要內政部認可。</p>
+  <div class="grid-2">
+    <div class="card"><h4>實驗室：CNS 15038</h4>
+      <ol class="checklist">
+        <li><span class="mark q">1</span><span>先封住門縫，量測試艙本身洩漏 Qb</span></li>
+        <li><span class="mark q">2</span><span>拆封量總洩漏 Qt，門的漏氣＝Qt − Qb</span></li>
+        <li><span class="mark q">3</span><span>10、25、50 Pa 各 2 分鐘、兩循環；兩面都測</span></li>
+        <li><span class="mark q">4</span><span>室溫與中溫各一次，換算為標準狀態</span></li>
+        <li><span class="mark y">O</span><span>判定：每樘門組 <b>≤ 25 m³/h</b>（以 25 Pa 為基準）</span></li>
+      </ol>
+      <p class="src">2006 舊版為 12 m³/(h·m²)；判定值依學術文獻轉述，標準本文未取得。</p>
+    </div>
+    <div class="card"><h4>現場：建研所技術指引（111 年）</h4>
+      <p>《建築用門現場遮煙性能測試技術指引》以可攜式設備在現場量測。只測室溫（中溫由實驗室把關），判定看 25 Pa、≤25 m³/h。用途是內政部指定評定機構對認可產品的後市場追蹤查核，不是法規、也不是 BSMI 市場監督。</p>
+      <p><b>實證：</b>工地實測 20 樘，只有 13 樘通過；失敗主因是門縫過大與<span class="term" data-g="drop">下降壓條</span>壓不到地——遮煙性能壞在安裝與維護。</p>
+    </div>
+  </div>
+  <div class="callout warn">
+    <h4>課程說法比對：現場測試的壓差</h4>
+    <p>課程說現場指引「壓差仍為 10–25–50 Pa」；指引作者群發表的論文版只量 10 與 25 Pa（理由：一般火災壓差約 10–15 Pa，現場塑膠布測試艙撐不住長時間 50 Pa）。指引正式版本內容待查證，但兩種說法的判定都看 25 Pa。</p>
+  </div>
+  <h3>哪些門依法要遮煙</h3>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>位置</th><th>條文</th></tr></thead>
+    <tbody>
+      <tr><td>昇降機道（或併同區劃之昇降機間出入口）</td><td>第 79 條之 2、第 203 條</td></tr>
+      <tr><td>管道間維修門（1 h＋遮煙）</td><td>第 79 條之 2</td></tr>
+      <tr><td>室內安全梯出入口</td><td>第 97 條第 1 款第 2 目</td></tr>
+      <tr><td>長照、護理之家等機構二區劃之出入口</td><td>第 99 條之 1</td></tr>
+      <tr><td>防空避難設備直接面向戶外之開口</td><td>第 144 條</td></tr>
+      <tr><td>高層建築物昇降機間出入口</td><td>第 242 條</td></tr>
+    </tbody>
+  </table></div>
+  <p class="src">易錯：現行第 97 條特別安全梯入口條文沒寫遮煙，但《原有合法建築物公共安全改善辦法》第 23 條對既有建築有此要求。</p>
+  <div class="keypoints"><h4>本單元重點</h4><ul>
+    <li>判定單位是「每樘門 m³/h」，不是每 m²、也不是每 m 縫長。</li>
+    <li>國外遮煙報告（EN Sa／S200、UL 1784）壓差、溫度、單位都不同，不能直接代替 CNS 15038。</li>
+    <li>工地查核以「認可通知書＋摘要本」為準，只有試驗報告不算數。</li>
+  </ul></div>
+  <div class="mod-foot"><button class="btn mark-done" type="button">標記本單元完成</button><button class="btn next-mod" type="button" data-target="m6">下一單元：主管與驗證</button></div>
+</section>
+
+<!-- ================= M6 ================= -->
+<section class="module" id="m6" data-mod>
+  <div class="mod-head"><span class="mod-no">M6</span><h2>主管機關分流與驗證登錄</h2></div>
+  <p class="summary">防火性能以「高 3 m 乘寬 3 m 以下」為界：以內歸 BSMI <span class="term" data-g="vr">驗證登錄</span>，超出或防火捲門走內政部<button class="law" type="button" data-law="moi">新技術認可</button>；遮煙性能另走內政部。</p>
+  <div class="widget" id="w-route">
+    <div class="widget-head"><b>互動：這樘門歸誰管</b><span class="chip">高、寬須同時 ≤ 3 m</span></div>
+    <div class="widget-body">
+      <div class="controls">
+        <label>寬 <input type="number" id="rtW" value="1.2" step="0.1" min="0.5" max="8"> m</label>
+        <label>高 <input type="number" id="rtH" value="2.1" step="0.1" min="1" max="8"> m</label>
+        <label><input type="checkbox" id="rtSmoke"> 需具遮煙性能</label>
+        <label><input type="checkbox" id="rtRoll"> 防火捲門</label>
+      </div>
+      <div class="route">
+        <div class="path" id="rtBsmi"><h4>經濟部標準檢驗局</h4><p>驗證登錄：型式試驗（模式二）＋工廠檢查（模式七），CNS 11227-1。證書由 BSMI 本局或分局核發，效期 3 年。</p></div>
+        <div class="path" id="rtMoi"><h4>內政部國土管理署</h4><p>新技術新工法新設備及新材料認可：指定試驗機構試驗 → 評定機構評定 → 認可通知書（最長 3 年）。</p></div>
+      </div>
+      <div class="result info" id="rtOut"></div>
+    </div>
+  </div>
+  <h3>驗證登錄流程（115 年起的現制）</h3>
+  <ol class="rail">
+    <li><span class="badge">1</span><div class="step node" tabindex="0"><b>型式試驗（模式二）</b><span>向 BSMI 認可之指定試驗室申請</span><span class="tip tip-down"><b>做什麼</b>：送代表樣品依 CNS 11227-1 試驗，取得型式試驗報告。<br><b>誰能做</b>：成大（TAF 0761）、建研所（0268）、台灣建築中心（0985）、中科院青園（1401）。<br><b>依據</b>：BSMI 113/12/24 公告第七點。</span></div></li>
+    <li><span class="badge chk">2</span><div class="step node" tabindex="0"><b>工廠檢查（模式七）</b><span>113/12/24 新增，115/1/1 全面適用</span><span class="tip"><b>查什麼</b>：設備、原料與型式試驗報告的相符性、製程、檢測、產銷紀錄、標識使用、現場取樣比對原型式。<br><b>效期</b>：初次報告 1 年，其後每年至少 1 次；不符合依商品檢驗法第 42 條第 6 款廢止登錄。</span></div></li>
+    <li><span class="badge">3</span><div class="step node" tabindex="0"><b>符合型式聲明（模式三）</b><span>產品與型式試驗樣品一致</span><span class="tip"><b>易錯</b>：模式三是符合型式聲明，不是工廠品管。模式七的申請人仍須符合模式三。<br><b>依據</b>：商品驗證登錄辦法第 3 條第 2 項。</span></div></li>
+    <li><span class="badge go">4</span><div class="step node" tabindex="0"><b>驗證登錄（RPC 證書）</b><span>BSMI 本局或分局；14 個工作天</span><span class="tip"><b>效期</b>：自發證日起 3 年，延展須在屆滿前 3 個月內申請、以一次為限。<br><b>注意</b>：110/1/1 起已無委託驗證機構，課程 p16 的說法為舊制。</span></div></li>
+    <li><span class="badge">5</span><div class="step node" tabindex="0"><b>自印商品檢驗標識</b><span>不易變質材質、永久固定於本體</span><span class="tip"><b>位置</b>：商品明顯處，鄰近銘版、商標或廠牌。<br><b>依據</b>：商品檢驗標識使用辦法第 5、8 條。</span></div></li>
+    <li><span class="badge chk">6</span><div class="step node" tabindex="0"><b>每批申請流水號（115/9/1 起）</b><span>出廠或輸入前</span><span class="tip"><b>查核機率</b>：事前申請千分之一、事後補申請千分之五；抽中且已安裝者須現場拆除送破壞性查核，不得以他門替代。<br><b>依據</b>：<span>BSMI 115/5/19 作業程序</span>。</span></div></li>
+  </ol>
+  <p><button class="law" type="button" data-law="bsmi113">BSMI 113/12/24 公告</button>　<button class="law" type="button" data-law="serial">流水號作業程序</button></p>
+  <div class="widget" id="w-mark">
+    <div class="widget-head"><b>互動：標識解碼</b><span class="chip">輸入防火性能等級</span></div>
+    <div class="widget-body">
+      <div class="controls">
+        <label>等級 <input type="text" id="mkIn" value="f(60/30A)"></label>
+        <button class="btn small" type="button" data-mk="f(60A)">f(60A)</button>
+        <button class="btn small" type="button" data-mk="f(60/30A)">f(60/30A)</button>
+        <button class="btn small" type="button" data-mk="f(60B)">f(60B)</button>
+        <button class="btn small" type="button" data-mk="f(120A)">f(120A)</button>
+      </div>
+      <div class="result" id="mkOut"></div>
+      <p class="src">出處：BSMI 2004 年〈建築用防火門驗證登錄檢驗標識範例〉第七點（配合營建署 93/8/3 函刪除甲、乙種防火門用語）。課程 p14 的「R31001／001-0-f(60A)」為 115/9/1 前格式（R＋申請人代碼＋型式代碼-系列-等級）；其後須含流水號。</p>
+    </div>
+  </div>
+  <h3>其他防火構件歸誰管、依什麼標準</h3>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>構件</th><th>主管</th><th>試驗標準</th><th>注意</th></tr></thead>
+    <tbody>
+      <tr><td>建築用防火門（≤3 m×3 m，含玻璃防火門）</td><td>BSMI 驗證登錄</td><td>CNS 11227-1</td><td>玻璃門整樘依 CNS 11227-1；CNS 14815 明文排除門</td></tr>
+      <tr><td>防火捲門（含附設小門）</td><td>內政部認可</td><td>CNS 11227-1</td><td>舊 CNS 14803 已於 105/11/10 廢止</td></tr>
+      <tr><td>防火固定窗、鑲嵌玻璃構件</td><td>內政部認可</td><td>CNS 14815（對應 ISO 3009）</td><td>可開啟式防火窗尚無明確公開試驗路徑</td></tr>
+      <tr><td>防火電梯門（升降機乘場門）</td><td>內政部認可</td><td>CNS 11227-2（對應 ISO 3008-2）</td><td>只從乘場側受火，並量測洩漏率</td></tr>
+    </tbody>
+  </table></div>
+  <p class="src">玻璃本身沒有防火等級，系統才有：夾絲、強化、硼矽酸、陶瓷玻璃通常只到 B 類；要 A 類需膨脹層膠合或凝膠型。四家指定試驗室的 TAF 認可範圍均以 CNS 11227-1 列防火捲門；其中兩家對 CNS 11227-1 註記「附錄C除外」或「衝擊試驗除外」。</p>
+  <div class="callout"><h4>讀一份型式試驗報告，先看三件事</h4><p>（1）「廠商申報」與「實驗室實測」兩欄是否一致；（2）加熱面、支撐構造、間隙三者——它們決定報告能涵蓋多大範圍；（3）阻熱時間不可能大於遮焰時間，提前終止記「≥ 終止時間」，不等於通過下一級。以 A 類試驗、部分背溫點失敗而降級為 B 類的報告，不能把表面安裝五金判給 A 類門。</p></div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>違規情形</th><th>商品檢驗法</th><th>處分</th></tr></thead>
+    <tbody>
+      <tr><td>工廠檢查不符、限期換證未完成</td><td>第 42 條第 6、9 款</td><td>廢止驗證登錄</td></tr>
+      <tr><td>標示不實</td><td>第 59 條</td><td>15 萬～150 萬元</td></tr>
+      <tr><td>未符合檢驗規定之商品運出廠場或進入市場</td><td>第 60 條</td><td>20 萬～200 萬元</td></tr>
+      <tr><td>致損害消費者生命、身體、健康</td><td>第 61 條</td><td>75 萬～750 萬元</td></tr>
+    </tbody>
+  </table></div>
+  <div class="keypoints"><h4>本單元重點</h4><ul>
+    <li>BSMI 公告品名只涵蓋「建築用防火門」，防火捲門、防火窗不在內，走內政部認可。</li>
+    <li><span class="term" data-g="taf">TAF</span> 認證 ≠ BSMI <span class="term" data-g="lab">指定試驗室</span>；課程名單漏了中科院青園，「台災、台灣防火基金會」查無對應。</li>
+    <li>115 年三個新制：1/1 工廠檢查全面上路、8/10 流水號作業程序生效、9/1 起識別號碼含<span class="term" data-g="serial">流水號</span>。</li>
+  </ul></div>
+  <div class="mod-foot"><button class="btn mark-done" type="button">標記本單元完成</button><button class="btn next-mod" type="button" data-target="m7">下一單元：同型式判定</button></div>
+</section>
+
+<!-- ================= M7 ================= -->
+<section class="module" id="m7" data-mod>
+  <div class="mod-head"><span class="mod-no">M7</span><h2>同型式判定</h2></div>
+  <p class="summary">通過型式試驗的那一樘是<span class="term" data-g="proto">原型式</span>。改了尺度、五金、玻璃、門樘、表面材或<span class="term" data-g="core">中心材</span>之後，哪些可以直接比照、哪些要補試驗——依<button class="law" type="button" data-law="sametype">建築用防火門同型式判定原則</button>逐點判定。</p>
+  <div class="grid-3">
+    <div class="card"><h4>型式四要素</h4><p><span class="term" data-g="leafstr">門扇結構</span>、門扇數量、開啟方式、耐火性。任一改變（且非原則列舉之變更）即非同型式。</p></div>
+    <div class="card"><h4>三條基本原則</h4><p>耐火性不得低於原型式；具相同或<span class="term" data-g="similar">相似門扇結構</span>；門扇數量與開啟方式不變。</p></div>
+    <div class="card"><h4>分水嶺</h4><p>五金是否為<span class="term" data-g="surf">表面安裝</span>（螺絲不貫穿、不破壞門扇結構）；<span class="term" data-g="brake">制動機件</span>數量只增不減。</p></div>
+  </div>
+  <div class="widget" id="w-same">
+    <div class="widget-head"><b>互動：同型式判定精靈</b><span class="chip">依 115/1/30 現行版</span></div>
+    <div class="widget-body">
+      <div class="controls"><label>變更項目 <select id="stSel" style="width:min(520px,100%)"></select></label></div>
+      <div id="stOut"></div>
+      <details><summary>展開完整判定表</summary>
+        <div class="tbl-wrap"><table id="stTable"><thead><tr><th>變更項目</th><th>判定</th><th>條件</th><th>條號</th></tr></thead><tbody></tbody></table></div>
+      </details>
+    </div>
+  </div>
+  <h3>四個版本的演進</h3>
+  <ul class="timeline">
+    <li><span class="when">91/10/15</span><div class="what"><details><summary>訂定（5 點）</summary><p>供試驗室判定；除列舉變更外「其餘均須與原型式相同」。</p></details></div></li>
+    <li><span class="when">107/10/19</span><div class="what"><details><summary>第一次修正（10 點）</summary><p>配合 CNS 11227-1 第 13 章重寫；新增名詞定義、大小尺度兩點試驗；縮減下限寬 50%／高 75% 適用所有門。</p></details></div></li>
+    <li><span class="when">113/3/5</span><div class="what"><details><summary>第二次修正（11 點）— 課程 p17 的修正總說明</summary><p>相似門扇結構審查程序、表面安裝定義、縮減下限只留給具阻熱性金屬門、間隙改 (a+b)/2+2 mm、五金拆 8 目、試驗得用任何尺度並限縮適用範圍、表面材獨立成點、耐燃材料第二來源、受理單位擴大為 BSMI 認可指定試驗室。</p></details></div></li>
+    <li><span class="when">115/1/30</span><div class="what"><details open><summary>修正第 2、10 點 — 課程 p18（中心材）</summary><p>核准替換之中心材列為相似門扇結構；鋼製防火推開門單一板材中心材可換不同廠牌規格，須補試驗且有效槽口深度變形不大於變更前。115/2/1 起型式試驗報告須登載中心材 CNS 14164 數據（容積密度、彎曲破壞載重、耐燃性、含水率、總氯離子）＋FTIR。</p></details></div></li>
+  </ul>
+  <div class="callout risk">
+    <h4>官方網頁也會錯</h4>
+    <p>BSMI「法規檢視」頁仍寫第 2 點第 3 款「屬第三目者」，並殘留 107 年版第 5 點第 4 款（自願性產品驗證證書判定五金）。行政院公報 115/1/30 版與經濟部主管法規共用系統現行條文均為「屬第四目者」，且該款 113 年已刪除——判定與報告引用以行政院公報為準。</p>
+  </div>
+  <div class="grid-2">
+    <div class="card"><h4>為什麼「只縮不放」：<span class="term" data-g="exap">擴展應用</span></h4><p>CNS 11227-1（ISO 3008）第 13 章沒有尺寸放大條款，所以同型式判定只能縮。歐洲 EN 1634-1 附錄 B 用「超時」換放大（推開門高寬 +15%、面積 +20%），另依 EN 15269 系列出 EXAP 報告。EN 的放大條款不能當成 CNS 的直接適用範圍，EN EXAP 也不能替代 BSMI 同型式判定。</p></div>
+    <div class="card"><h4>一致性會議決議要追到最後一次</h4><p>BSMI 以「防火門檢測驗證一致性會議」逐案補充解釋，但決議會被後面的決議改寫——例如拼接實木（112-2 可判同型式，113-1 改為分別取證）。會議不能創設原則沒有的東西；「試驗無效」與「不合格」是兩回事；授權只授試驗報告，不授同型式判定報告。</p></div>
+  </div>
+  <div class="keypoints"><h4>本單元重點</h4><ul>
+    <li>尺度只縮不放；要做系列尺寸，就做最大＋小尺度（180×75 cm）兩點試驗。</li>
+    <li>補試的試體條件各不相同：非表面安裝五金要相同或相似結構；表面安裝五金不要求；門樘要相同或較高耐火性；中心材要相同或較高阻熱時效；一般耐燃材料第二來源要用原型式。</li>
+    <li>中心材厚度公差 ±1 mm（珍珠岩複合板 46、48、50 mm），實測超出即判不同結構。</li>
+  </ul></div>
+  <div class="mod-foot"><button class="btn mark-done" type="button">標記本單元完成</button><button class="btn next-mod" type="button" data-target="m8">下一單元：國際對照</button></div>
+</section>
+
+<!-- ================= M8 ================= -->
+<section class="module" id="m8" data-mod>
+  <div class="mod-head"><span class="mod-no">M8</span><h2>國際對照：看懂國外標示</h2></div>
+  <p class="summary">讀任何防火門標示，先拆五個維度：遮焰、阻熱、遮煙、自閉耐久、噴水衝擊。我國 f( ) 只表達前兩項。</p>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>維度</th><th>我國</th><th>歐盟</th><th>美國</th><th>英國</th><th>日本</th><th>中國</th></tr></thead>
+    <tbody>
+      <tr><td>遮焰</td><td>f(<b>60</b>…)</td><td>E</td><td>小時數</td><td>FD30／60</td><td>遮炎 20／60 分</td><td>完整性</td></tr>
+      <tr><td>阻熱</td><td>A／B</td><td>I1／I2</td><td>30 分溫升（選擇性）</td><td>不分級</td><td>遮熱性（選擇性）</td><td>A／B／C 類</td></tr>
+      <tr><td>遮煙</td><td>CNS 15038</td><td>Sa／S200</td><td>S</td><td>S</td><td>遮煙性能</td><td>強制</td></tr>
+      <tr><td>自閉耐久</td><td>無分級</td><td>C0–C5</td><td>年度檢查</td><td>—</td><td>定期檢查</td><td>強制</td></tr>
+      <tr><td>噴水衝擊</td><td>無</td><td>無</td><td><b>有</b></td><td>無</td><td>無</td><td>有（≥60 min）</td></tr>
+    </tbody>
+  </table></div>
+  <div class="tabs" data-for="intlTbl" role="tablist">
+    <button type="button" data-f="all" aria-selected="true">全部</button>
+    <button type="button" data-f="eu" aria-selected="false">歐盟</button>
+    <button type="button" data-f="us" aria-selected="false">美國</button>
+    <button type="button" data-f="uk" aria-selected="false">英國</button>
+    <button type="button" data-f="jp" aria-selected="false">日本</button>
+    <button type="button" data-f="cn" aria-selected="false">中國</button>
+  </div>
+  <div class="tbl-wrap"><table id="intlTbl">
+    <thead><tr><th>標示</th><th>意義</th><th>最接近我國</th></tr></thead>
+    <tbody>
+      <tr data-g="eu"><td><span class="term" data-g="ei">EI2 60</span></td><td>遮焰＋阻熱 60 分鐘；門扇平均 ≤140 K、最高 ≤180 K（距門緣 100 mm 內不計），門框 ≤360 K</td><td>f(60A)</td></tr>
+      <tr data-g="eu"><td>EI1 60</td><td>同上但測點距門緣 25 mm、門框 ≤180 K，比 EI2 嚴</td><td>f(60A)</td></tr>
+      <tr data-g="eu"><td>E 60</td><td>只保證遮焰 60 分鐘</td><td>f(60B)</td></tr>
+      <tr data-g="eu"><td>EI2 30／E 60</td><td>同一試驗得到兩個時間：遮焰 60、阻熱 30</td><td>f(60/30A)</td></tr>
+      <tr data-g="eu"><td>Sa／S200</td><td>Sa：室溫 ≤25 Pa、≤3 m³/h 每公尺門縫；S200：室溫＋200 °C、≤50 Pa、單扇 20／雙扇 30 m³/h</td><td>具遮煙性（單位不同）</td></tr>
+      <tr data-g="eu"><td>C5</td><td>自閉機構 200,000 次開關循環（C1＝500 次）</td><td>無對應</td></tr>
+      <tr data-g="us"><td>1-1/2 HR</td><td>90 分鐘防火門，用於 2 小時牆；正壓試驗後須通過噴水衝擊</td><td>f(90B) 近似</td></tr>
+      <tr data-g="us"><td>30 MIN – 250 °F MAX</td><td>前 30 分鐘背火面溫升上限；不是阻熱時間</td><td>不能當作 A 類</td></tr>
+      <tr data-g="us"><td>S 標示</td><td>UL 1784：常溫與 400 °F 漏氣 ≤3.0 cfm/ft²</td><td>具遮煙性</td></tr>
+      <tr data-g="uk"><td><span class="term" data-g="fd">FD60</span>／FD60S</td><td>遮焰 60 分鐘，不含阻熱；S＝常溫 25 Pa 漏煙 ≤3 m³/h/m</td><td>f(60B)，不是 f(60A)</td></tr>
+      <tr data-g="jp"><td>特定防火設備</td><td>遮炎 1 小時（舊甲種）；不要求阻熱</td><td>f(60B)</td></tr>
+      <tr data-g="jp"><td>防火設備</td><td>遮炎 20 分鐘（舊乙種）</td><td>f(20B) 近似</td></tr>
+      <tr data-g="cn"><td>A1.0（乙級）</td><td>完整性 ≥60 min 且隔熱性 ≥60 min（GB 12955-2024）</td><td>f(60A)</td></tr>
+      <tr data-g="cn"><td>C1.0</td><td>完整性 60 min，不要求隔熱</td><td>f(60B)</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout warn"><h4>正壓不是美國獨有</h4><p>ISO／EN／CNS 的中性面在 500 mm，比 UL 10C 的 40 in（1016 mm）更低、正壓區更大。美國在 1997–2000 年才由 UL 10B 負壓改為正壓。噴水衝擊則只有美國（與 2026 年起的中國）強制。</p></div>
+  <div class="keypoints"><h4>本單元重點</h4><ul>
+    <li>英國 FD 與日本防火設備都只看遮焰，對應的是 f(60B)。</li>
+    <li>「對應」只是性能意義近似，不是互認；國外分級不能取代 CNS 11227-1 試驗申請驗證登錄。</li>
+    <li>外銷歐盟：外門 2019-11-01 起須 CE（EN 16034）；內門至今無調和標準。</li>
+  </ul></div>
+  <div class="mod-foot"><button class="btn mark-done" type="button">標記本單元完成</button><button class="btn next-mod" type="button" data-target="m9">下一單元：使用階段</button></div>
+</section>
+
+<!-- ================= M9 ================= -->
+<section class="module" id="m9" data-mod>
+  <div class="mod-head"><span class="mod-no">M9</span><h2>使用階段：常開常關、五金與維護</h2></div>
+  <p class="summary">課程結論：「常關式防火門之管理是可能破口」。合格證書證明的是出廠那一刻；門裝上建築物之後，靠設計選型、五金與檢查維持。</p>
+  <div class="grid-2">
+    <div class="card"><h4><span class="term" data-g="nc">常時關閉式</span>（第 76 條第 3 款）</h4><p>免鑰匙開啟＋自閉＋單扇 ≤3 m²＋不得裝<span class="term" data-g="stop">門止</span>＋標示。弱點：人會把它頂開。</p></div>
+    <div class="card"><h4><span class="term" data-g="no">常時開放式</span>（第 76 條第 4 款）</h4><p>平時以<span class="term" data-g="holder">電磁釋放器</span>吸住，火災時煙感連動釋放並自閉。弱點：連動壞了平時看不出來，須定期實際觸發測試。</p></div>
+  </div>
+  <div class="callout"><h4>兩個 fail-safe 方向相反卻不衝突</h4><p>常開式的電磁釋放器「斷電 → 門關上」；門禁鎖「斷電 → 鎖打開」。目標都是「門關著、人推得開」。預期會被頂住的位置，改設常開式並確實連動，比貼「請隨手關門」更可靠。</p></div>
+  <div class="widget" id="w-spot">
+    <div class="widget-head"><b>互動：錯誤樣態找碴</b><span class="chip">點選每個情境</span></div>
+    <div class="widget-body"><div class="spot-grid"></div><div class="result info" id="spOut">已檢視 0 / 8 個情境。</div></div>
+  </div>
+  <div class="callout warn">
+    <h4>電磁鎖：照片是違規，但「一律拆除」不成立</h4>
+    <p>課程 p8 的照片（往避難方向受阻）屬錯誤樣態。函釋的判斷點是：往避難方向平時須免用任何形式之鑰匙即可開啟——刷卡、磁扣也算鑰匙；加門禁至少要同時具備手動斷電解除與火警連動自動解除（營建署 107-03-19 函），兩項具備仍屬個案認定（109 年函），臺北市 113 年訴願決定對長照機構仍維持裁罰。</p>
+  </div>
+  <h3>使用階段由誰檢查</h3>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>線</th><th>誰</th><th>頻率</th><th>看什麼</th></tr></thead>
+    <tbody>
+      <tr><td>建管：<span class="term" data-g="psi">公安申報</span></td><td>專業檢查機構簽證</td><td>1–4 年</td><td>常關自閉與標示、常開連動、捲門下無堆物、朝避難方向且無阻塞——看功能，不比對驗證型式</td></tr>
+      <tr><td>消防：防火管理</td><td>防火管理人</td><td>每月自行檢查</td><td>防火避難設施</td></tr>
+      <tr><td>公寓大廈管理</td><td>管理委員會</td><td>隨時</td><td>制止違規使用</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout risk"><h4>制度缺口</h4><p>現行 H-2 集合住宅公安申報不檢查防火區劃（只列直通樓梯、安全梯、避難層出入口、昇降設備、避雷設備、緊急供電）。修正草案擬增列「防火區劃（共用部分）」，截至 2026-10-20 尚未發布——這正是晴空匯案後被指出的缺口。</p></div>
+  <div class="keypoints"><h4>本單元重點</h4><ul>
+    <li>五金沒有自己的防火時效，只能隨門組件整組驗證；換五金要回到同型式判定。</li>
+    <li>臺灣沒有通用的法定門縫值，基準是不大於原型式：(a+b)/2 + 2 mm；雙扇門靠<span class="term" data-g="coord">順位器</span>確保關門順序。</li>
+    <li>檢查要「操作」不能只「看」：放手看門會不會完全關上、閂鎖會不會扣住、常開式觸發後會不會釋放。</li>
+  </ul></div>
+  <div class="mod-foot"><button class="btn mark-done" type="button">標記本單元完成</button><button class="btn next-mod" type="button" data-target="m10">下一單元：事故案例</button></div>
+</section>
+
+<!-- ================= M10 ================= -->
+<section class="module" id="m10" data-mod>
+  <div class="mod-head"><span class="mod-no">M10</span><h2>事故案例：門在火場裡發生了什麼</h2></div>
+  <p class="summary">把重大火災中防火門與區劃的角色排成時間軸，歸納出六種失效樣態。只列公開事實與官方調查結論。</p>
+  <ul class="timeline">
+    <li><span class="when">2025-11-26</span><div class="what"><details><summary>香港宏福苑（168 死）</summary><p>維修期間樓梯窗被拆、加開開口，光井通樓梯（聽證證供）。</p></details></div></li>
+    <li><span class="when">2024-10-03</span><div class="what"><details><summary>屏東安泰醫院（9 死）</summary><p>違建在 RC 區劃牆開一般鋼板門、管道貫穿未填塞、安全門開啟，煙直入安全梯（屏東地檢署）。</p></details></div></li>
+    <li><span class="when">2024-05-26</span><div class="what"><details open><summary>新竹晴空匯（2 名消防員殉職）— 課程 p4</summary><p>管道間貫穿未防火填塞、起火處區劃失效；常閉式防火門未關、地下室防火門規格不符。國土管理署認為設計規範已具備，關鍵在竣工查驗；監察院指出集合住宅公安檢查項目未含防火區劃與管道間。</p></details></div></li>
+    <li><span class="when">2022-01-09</span><div class="what"><details><summary>美國紐約 Twin Parks（17 死）</summary><p>起火戶自閉門未關回；15 樓樓梯門開啟。</p></details></div></li>
+    <li><span class="when">2021-10-14</span><div class="what"><details><summary>高雄城中城（46 死）</summary><p>三座安全梯各層防火門缺失、損壞、被管線穿過、關不上；1 樓與 7 樓全數無門，煙沿樓梯間灌入 7–11 樓住宅層。</p></details></div></li>
+    <li><span class="when">2020-04-26</span><div class="what"><details><summary>臺北錢櫃 KTV 林森店（6 死）</summary><p>施工期間安全門未關、電梯施工樓板開孔；消防系統被關閉。</p></details></div></li>
+    <li><span class="when">2018-08-13</span><div class="what"><details><summary>新北臺北醫院護理之家（15 死）</summary><p>起火房門未關（或被病床卡住）；寢室隔間未到頂。</p></details></div></li>
+    <li><span class="when">2018-04-28</span><div class="what"><details><summary>桃園敬鵬工廠（8 死，含 6 名消防員）</summary><p>防火間隔被違建連通；外牆可燃風管破壞防火性能。</p></details></div></li>
+    <li><span class="when">2017-06-14</span><div class="what"><details><summary>英國 Grenfell Tower（72 死）</summary><p>閉門器缺失或被拆；住戶大門（GRP 複合門）30 分鐘級爐測約 15 分鐘失效。英國住宅部報告指出業界過度以書面評估取代實際試驗。</p></details></div></li>
+  </ul>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>#</th><th>失效樣態</th><th>典型表現</th><th>與實驗室的關係</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>門不在</td><td>拆除、缺扇、改成欄柵鐵門</td><td>建管與使用管理</td></tr>
+      <tr><td>2</td><td>門被打開</td><td>被頂住、施工期間開啟、逃生後未關</td><td>選型（常開式）</td></tr>
+      <tr><td>3</td><td>門關不上</td><td>閉門器壞或被拆、管線穿過門口、雜物</td><td>五金與型式涵蓋範圍</td></tr>
+      <tr><td>4</td><td>區劃被繞過</td><td>貫穿未填塞、樓板開孔、隔間未到頂</td><td>建管與施工</td></tr>
+      <tr><td>5</td><td>門本身不合格</td><td>時效不足、安裝品與送測樣品不同、以書面評估代替試驗</td><td><b>實驗室的直接責任範圍</b></td></tr>
+      <tr><td>6</td><td>制度沒看見</td><td>公安申報未涵蓋、停歇業免申報</td><td>制度</td></tr>
+    </tbody>
+  </table></div>
+  <div class="keypoints"><h4>本單元重點</h4><ul>
+    <li>近十年臺灣重大火災中，「門被打開或關不上」出現頻率最高。</li>
+    <li>唯一屬於「產品不合格」的大型案例是 Grenfell，教訓是安裝品須與送測品一致、書面評估不能取代對重大變更的試驗——這正是同型式判定的邊界問題。</li>
+    <li>易錯：安泰醫院火災是 2024 年；敬鵬大火在桃園平鎮。</li>
+  </ul></div>
+  <div class="mod-foot"><button class="btn mark-done" type="button">標記本單元完成</button><button class="btn next-mod" type="button" data-target="m11">下一單元：產業與未來</button></div>
+</section>
+
+<!-- ================= M11 ================= -->
+<section class="module" id="m11" data-mod>
+  <div class="mod-head"><span class="mod-no">M11</span><h2>產業與未來</h2></div>
+  <p class="summary">課程說「防火門是傳產，產業鏈廠商超過百間，合作又競爭」——以 BSMI 驗證登錄資料實查，數字站得住。</p>
+  <div class="stat-row">
+    <div class="stat"><b>729</b><span>有效驗證登錄證書（2026-10-20 實查）</span></div>
+    <div class="stat"><b>125</b><span>證書名義人（≠ 生產廠場）</span></div>
+    <div class="stat"><b>81.5%</b><span>鋼製防火門占比</span></div>
+    <div class="stat"><b>81.9%</b><span>f(60A) 等級占比</span></div>
+  </div>
+  <p class="src">僅計 BSMI 範圍（3 m × 3 m 以下防火門）；防火捲門與大型門走內政部認可，不在統計內。同一工廠可替多家名義人代工。</p>
+  <h3>制度六年內連續收緊</h3>
+  <ul class="timeline">
+    <li><span class="when">109 年</span><div class="what">試驗報告事件：BSMI 查核 257 份報告，訂定專案市場檢查；要求指定試驗室每月送耐火試驗全程錄影備查。</div></li>
+    <li><span class="when">113/12/24</span><div class="what">檢驗方式改為型式試驗＋工廠檢查。</div></li>
+    <li><span class="when">115/1/30</span><div class="what">同型式判定原則開放鋼製推開門中心材替換；中心材數據登載型式試驗報告。</div></li>
+    <li><span class="when">115/9/1</span><div class="what">識別號碼加流水號，每批申報尺度、數量與安裝地點。</div></li>
+  </ul>
+  <h3>課程點名的未來項目</h3>
+  <div class="grid-2">
+    <div class="card"><h4>隧道防火門 <span class="chip ok">已實施</span> <span class="chip warn">研發中</span></h4><p>公路隧道避難連絡通道門扉要求 2 h 防火時效＋1 h 隔熱＋防煙、自動關閉、不可上鎖，99 年起即入部頒規範。「未來」指的是 RWS（60 min 達 1,350 °C）、HCM 等更嚴苛曲線與壓力疲勞，以及國產驗證能量。</p></div>
+    <div class="card"><h4>智慧 AI 防災與門鎖 <span class="chip warn">商品化中</span></h4><p>使用面：避難側免鑰匙＋火警連動解鎖。產品面：換鎖要落在同型式判定範圍。管理面：建研所實測活動扇無法自動關閉 16.28%、門縫 &gt;4 mm 占 83.72%——IoT 監測門狀態的需求從這裡來，但臺灣尚無法定檢查頻率。</p></div>
+  </div>
+  <div class="keypoints"><h4>本單元重點</h4><ul>
+    <li>已實施的數位化是 BSMI 流水號：抽中連已安裝的門都要拆。</li>
+    <li>隧道曲線易錯：EN 1363-2 只有 HC 曲線；RWS 與 HCM 分屬荷、法文件。</li>
+  </ul></div>
+  <div class="mod-foot"><button class="btn mark-done" type="button">標記本單元完成</button><button class="btn next-mod" type="button" data-target="m12">下一單元：綜合測驗</button></div>
+</section>
+
+<!-- ================= M12 QUIZ ================= -->
+<section class="module" id="m12" data-mod>
+  <div class="mod-head"><span class="mod-no">M12</span><h2>綜合測驗</h2></div>
+  <p class="summary">32 題四選一，涵蓋 M1–M11。作答後立即顯示詳解與對應單元；作答紀錄保存在本機瀏覽器。</p>
+  <div id="quiz">
+    <div class="controls"><span>得分 <span class="score" id="qScore">0 / 0</span></span><span class="src" id="qDone"></span><button class="btn small" id="qReset" type="button">清除作答</button></div>
+    <div id="quizBox"></div>
+  </div>
+  <div class="mod-foot"><button class="btn mark-done" type="button">標記本單元完成</button><a class="btn" href="#glossary">詞彙表</a></div>
+</section>
+
+<!-- ================= GLOSSARY ================= -->
+<section class="module glossary" id="glossary">
+  <div class="mod-head"><span class="mod-no">G</span><h2>詞彙表</h2></div>
+  <p class="summary">內文中帶虛底線的術語，滑鼠移上即可看到定義；完整清單與依據如下。</p>
+  <dl id="glossList"></dl>
+</section>
+
+</main>
+</div>
+
+<footer class="page-foot">
+  <p><b>查證結論（2026-10-20）</b>：本頁內容以課程講義為主軸，逐項比對法規資料庫、行政院公報、BSMI 公告與標準文獻。與課程不同之處：第 79 條引文為第 1–3 項而非第 79 條之 1–3；第 76 條另有常關式單扇 ≤3 m² 及捲門附設小門兩目；爐壓零壓面之基準為假想樓板面，8 Pa/m 為評估用梯度，另有頂端 ≤20 Pa 上限；遮焰判定為棉墊、間隙規、持續火焰三項；CNS 12514-1 現行為 2024 版；110/1/1 起防火門驗證登錄由 BSMI 本局或分局辦理，已無委託驗證機構；指定試驗室含中科院青園；115/9/1 起識別號碼含流水號；遮煙性能不分尺寸須經內政部認可；門禁電磁鎖須避難方向免鑰匙並具手動斷電與火警連動解除。CNS 11227-1、12514-1、15038 標準本文未取得之細節（門樘限值原文、遮煙判定壓差原文等），引用前請以標準本文核對。</p>
+  <p>課程：蔡匡忠，〈防火門性能、測試、驗證及同型式評估〉，金屬工業研究發展中心，115 年 10 月 19 日。</p>
+</footer>
+
+<div class="backdrop" id="backdrop"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="dTitle">
+  <header><div><h3 id="dTitle"></h3><div class="dmeta" id="dMeta"></div></div><button class="icon-btn" id="dClose" type="button" aria-label="關閉">關閉</button></header>
+  <div class="dbody" id="dBody"></div>
+</aside>
+
+<script>
+/* Data for the fire-door teaching page. Canonical sources: ../../wiki/ (verified 2026-10-20). */
+(function(){
+function door(o){
+  o=o||{};
+  var s='<svg viewBox="0 0 160 124" role="img" aria-label="'+(o.label||'')+'">';
+  s+='<rect class="sv-wall" x="0" y="0" width="160" height="112"/><line class="sv-floor" x1="0" y1="112" x2="160" y2="112"/>';
+  s+='<rect class="sv-frame" x="50" y="14" width="60" height="98"/>';
+  if(o.open){
+    s+='<rect class="sv-dark" x="53" y="17" width="54" height="95"/>';
+    s+='<polygon class="sv-leaf" points="53,17 80,24 80,106 53,112"/>';
+    if(o.closer!==false)s+='<rect class="sv-hw" x="56" y="21" width="16" height="5"/>';
+  }else{
+    s+='<rect class="sv-leaf" x="53" y="17" width="54" height="95"/>';
+    s+='<rect class="sv-hw" x="58" y="64" width="44" height="4" rx="2"/>';
+    if(o.closer!==false)s+='<rect class="sv-hw" x="58" y="20" width="24" height="6"/><line class="sv-hwl" x1="82" y1="23" x2="104" y2="16"/>';
+  }
+  s+=(o.extra||'')+'</svg>';
+  return s;
+}
+var X={
+  wedge:'<polygon class="sv-bad" points="76,112 92,112 92,104"/><text class="sv-t" x="96" y="108">門止</text>',
+  maglock:'<rect class="sv-bad" x="92" y="14" width="16" height="7"/><rect class="sv-bad" x="118" y="56" width="9" height="14" rx="1"/><text class="sv-t" x="112" y="86">刷卡鎖</text>',
+  holder:'<rect class="sv-good" x="40" y="58" width="9" height="9"/><circle class="sv-good" cx="80" cy="7" r="5"/><text class="sv-t" x="88" y="10">偵煙器</text><text class="sv-t" x="6" y="78">釋放器</text>',
+  clutter:'<rect class="sv-bad" x="56" y="90" width="22" height="22"/><rect class="sv-bad" x="80" y="96" width="26" height="16"/><rect class="sv-bad" x="66" y="76" width="14" height="14"/>',
+  noCloser:'<rect class="sv-badline" x="58" y="20" width="24" height="6"/><line class="sv-badline" x1="56" y1="17" x2="84" y2="29"/><line class="sv-badline" x1="84" y1="17" x2="56" y2="29"/>',
+  threshold:'<rect class="sv-bad" x="50" y="105" width="60" height="7"/><text class="sv-t" x="114" y="110">門檻</text>',
+  sign:'<rect class="sv-good" x="64" y="40" width="32" height="14" rx="2"/><text class="sv-tw" x="80" y="50" text-anchor="middle">常閉</text><rect class="sv-mark" x="96" y="86" width="9" height="12"/>',
+  rope:'<path class="sv-badline" d="M80 70 C 60 72, 30 74, 12 72"/><rect class="sv-ink" x="6" y="60" width="8" height="40"/>'
+};
+
+window.FD_DATA={
+  pressGradient:8,
+  pressGradientEN:8.5,
+  neutralPlane:0.5,
+  insulAvg:140,
+  insulMax:180,
+  iso834Band:100,
+  sizeRule:function(w,h){return w<=3&&h<=3},
+
+  spots:[
+    {cap:'常時關閉式：門關妥、閉門器正常、有標示',bad:false,svg:door({label:'常關式關妥',extra:X.sign}),
+     why:'符合第 76 條第 3 款：免鑰匙開啟、可自行關閉、不設門止、門上標示「常時關閉式防火門」。'},
+    {cap:'常關式門底塞了門止',bad:true,svg:door({open:true,label:'門止頂住',extra:X.wedge}),
+     why:'第 76 條第 3 款第 3 目明文不得裝設門止；用木楔、滅火器頂住效果相同，屬違反建築法第 77 條維護義務。'},
+    {cap:'加裝刷卡磁力鎖，看不到斷電解除裝置',bad:true,svg:door({label:'刷卡磁力鎖',extra:X.maglock}),
+     why:'刷卡、磁扣也算「鑰匙」。往避難方向須免鑰匙即可開啟；加門禁至少要同時具備手動斷電解除與火警連動自動解除（營建署 107-03-19 函），即使兩項具備仍屬個案認定。'},
+    {cap:'常時開放式：電磁釋放器吸住，偵煙器連動',bad:false,svg:door({open:true,label:'常開式連動',extra:X.holder}),
+     why:'符合第 76 條第 4 款：平時開啟，火災時由煙感應器連動釋放並自行關閉。注意要定期實際觸發測試，連動壞了平時看不出來。'},
+    {cap:'門前堆放雜物',bad:true,svg:door({label:'堆物',extra:X.clutter}),
+     why:'門無法開啟或關閉，阻礙避難並使區劃失效；公安檢查報告書列為檢查項目，防火管理人每月自行檢查也應發現。'},
+    {cap:'閉門器被拆除',bad:true,svg:door({closer:false,label:'閉門器被拆',extra:X.noCloser}),
+     why:'常關式與常開式都必須有「開啟後可自行關閉之裝置」；拆掉閉門器，門就只是一片關不上的板。Grenfell 調查也發現大量住戶門缺閉門器。'},
+    {cap:'室內安全梯出入口事後加了門檻',bad:true,svg:door({label:'加門檻',extra:X.threshold}),
+     why:'第 97 條規定安全梯出入口防火門不得設置門檻（避免避難絆倒）。事後加門檻或墊高地坪是常見違規。'},
+    {cap:'用繩子把門綁在扶手上',bad:true,svg:door({open:true,label:'繩子綁住',extra:X.rope}),
+     why:'效果等同門止，火災時門無法自行關閉，梯間會成為煙囪。'}
+  ],
+
+  sameType:[
+    {item:'門扇尺度、骨架排列間距放大',need:'na',rule:'不得大於原型式；要放大須另做較大尺度的型式試驗。',ref:'第 4 點第 1 款'},
+    {item:'門扇尺度縮減（一般防火門）',need:'no',rule:'免試驗；但制動機件數量不得減少，制動機件間距依比例縮減（門鎖得裝於適合操作的位置）。',ref:'第 4 點第 1 款第 1 目、第 5 點第 2、3 款'},
+    {item:'門扇尺度縮減（具阻熱性之金屬防火門）',need:'cond',rule:'免試驗但有下限：單一門扇縮減後不得小於通過試驗門扇寬度 50% 及高度 75%。113 年起只剩此門種保留下限（107 年版適用所有門）。',ref:'第 4 點第 1 款第 1 目'},
+    {item:'同結構、只有尺度不同的系列',need:'yes',rule:'兩點試驗：做最大尺度與小尺度（單一門扇高 180 cm、寬 75 cm），通過後可涵蓋兩者之間。',ref:'第 4 點第 1 款第 2 目'},
+    {item:'門扇與門樘間隙',need:'cond',rule:'不得大於原型式主要間隙允許最大值 (a+b)/2 + 2 mm（a＝最大測量間隙，b＝平均測量間隙）。',ref:'第 4 點第 2 款'},
+    {item:'木質門扇厚度、密度或骨架尺度增加',need:'cond',rule:'只增不減，增加重量不得超過變更前門扇總重量 25%。',ref:'第 4 點第 4、5 款'},
+    {item:'木質門扇結構之接合數量、尺度、位置、方向',need:'na',rule:'不得變更。',ref:'第 4 點第 6 款'},
+    {item:'非表面安裝五金替代（嵌入式鎖、隱藏式關門器、下降壓條）',need:'yes',rule:'在其他相同或相似門扇結構、且相同或較低阻熱性（或較高遮焰性）之防火門上通過試驗；必要時限縮門扇尺度與重量。',ref:'第 5 點第 1 款第 1 目'},
+    {item:'表面安裝五金替代（一般）',need:'yes',rule:'在其他相同、較低阻熱性或較高遮焰性之防火門上通過試驗，不要求門扇結構相同。',ref:'第 5 點第 1 款第 2 目'},
+    {item:'表面安裝之取手、把手、門扣',need:'no',rule:'免同型式判定，逕向 BSMI 或所屬分局申請驗證登錄核備（固定元件不得貫穿門扇結構）。',ref:'第 5 點第 1 款第 3 目'},
+    {item:'表面安裝之關門器、鉸鏈換廠牌',need:'cond',rule:'得以書面審查：耐火性不低於原型式，並經第三方驗證機構驗證；另附驗證證書、試驗報告、安裝說明書與彩色型錄。',ref:'第 5 點第 1 款第 4 目、第 11 點'},
+    {item:'鉸鏈換供應商或製造商',need:'cond',rule:'金屬門：鉸鏈型式不變即可；木質門：型式、尺度及固定位置均不變。',ref:'第 5 點第 1 款第 5 目'},
+    {item:'門鎖鎖栓數量、把手與面板顏色形狀',need:'cond',rule:'免試驗，但廠牌、種類、鎖匣大小及鎖匣鎖舌材質不得改變。',ref:'第 5 點第 1 款第 6 目'},
+    {item:'移除表面安裝五金、下降壓條、貓眼、輔助鎖等',need:'no',rule:'免同型式判定；移除下降壓條時，門扇與樓板間隙仍須符合第 4 點第 2 款。鉸鏈不在可移除之列。',ref:'第 5 點第 1 款第 7 目'},
+    {item:'制動機件（門鎖、門閂、鉸鏈、關門器等）數量減少',need:'na',rule:'除經試驗通過外不得減少；增加時不得破壞門扇結構及耐火性。',ref:'第 5 點第 2 款'},
+    {item:'鑲嵌玻璃縮小或減少數量',need:'cond',rule:'免試驗；玻璃不得增大、厚度不得減少，位置得變更。',ref:'第 6 點第 1 款'},
+    {item:'鑲嵌玻璃換廠牌型號或改變邊緣固定方法',need:'yes',rule:'以相同或相似門扇結構之防火門通過試驗，並依試驗條件限定適用門扇尺度。',ref:'第 6 點第 3 款'},
+    {item:'玻璃面積超過門扇面積 60%',need:'na',rule:'不得變更（此時玻璃視為門扇結構）。',ref:'第 6 點第 4 款'},
+    {item:'金屬門樘斷面增厚（配合支撐構造）',need:'cond',rule:'材料厚度最大增加 25% 免試驗；超過或改材質、斷面形狀，須以相同或較高耐火性之防火門通過試驗。',ref:'第 7 點第 2、3 款'},
+    {item:'無門檻改為加門檻',need:'cond',rule:'門檻斷面尺度及材質與原門樘上橫料相同者免試驗；反之「移除門檻」須補試驗。',ref:'第 7 點第 4 款'},
+    {item:'金屬防火門改用木質門樘',need:'na',rule:'不得依木質門試驗結果變更（反方向：木質門改金屬門樘可，原防煙條應保留）。',ref:'第 7 點第 6 款'},
+    {item:'黏貼裝飾板或木質合板',need:'cond',rule:'厚度 1.5 mm 以下免試驗，只能貼在符合阻熱性標準之門扇表面；超過 1.5 mm 須以黏貼最大厚度者通過試驗。',ref:'第 8 點第 1 款'},
+    {item:'表面材規格或固定方式變更',need:'yes',rule:'以相同或相似門扇結構之防火門通過試驗；同材質厚度範圍須以最大及最小厚度兩點試驗。',ref:'第 9 點第 1、2 款'},
+    {item:'表面材朝內壓花改平板',need:'no',rule:'壓花深度、面積得減小，亦得免試驗變更成平板。',ref:'第 9 點第 3 款'},
+    {item:'替代漆',need:'cond',rule:'預料漆層不影響耐火性者免試驗；漆層有助耐火性者（如膨脹漆）不得變更。',ref:'第 10 點第 1 款'},
+    {item:'支撐構造（柔性 / 剛性）',need:'cond',rule:'柔性支撐構造通過者可用於剛性；剛性通過者僅限剛性。',ref:'第 10 點第 4 款'},
+    {item:'門擋條、門扇封邊規格或固定方式',need:'yes',rule:'以相同或相似門扇結構之防火門通過試驗，所屬配件整組替代。',ref:'第 10 點第 5 款'},
+    {item:'鋼製防火推開門：單一板材中心材換不同廠牌規格（115 新規）',need:'yes',rule:'以「僅變更中心材」或相似門扇結構、且相同或較高阻熱時效之防火門通過試驗；變更後有效槽口深度變形程度不得大於變更前。報告已登載中心材 CNS 14164 數據者走第 2 目比對。',ref:'第 10 點第 6 款第 1、2 目（115/1/30）'},
+    {item:'其他耐燃填充材第二來源（同材質、規格、同等以上耐燃等級）',need:'yes',rule:'應以原型式防火門通過試驗；申請變更之耐燃材料已取得 BSMI 驗證登錄、型式認可或監視查驗證明者，得以書面審查替代。',ref:'第 10 點第 6 款第 3 目及但書'}
+  ],
+
+  laws:{
+    art76:{title:'建築技術規則設計施工編 第 76 條',meta:'法規命令｜92/8/19 修正、93/1/1 施行，其後未再修正｜時效風險：低',
+      plain:'規定防火門裝在建築物上的構造條件。這些要求不在 BSMI 驗證登錄的試驗範圍內，取得證書的門仍要逐款對照。',
+      quotes:[
+        {id:'1',label:'第 1 款',text:'防火門窗周邊十五公分範圍內之牆壁應以不燃材料建造。'},
+        {id:'2',label:'第 2 款',text:'防火門之門扇寬度應在七十五公分以上，高度應在一百八十公分以上。'},
+        {id:'3',label:'第 3 款 常時關閉式',text:'（一）免用鑰匙即可開啟，並應裝設經開啟後可自行關閉之裝置。（二）單一門扇面積不得超過三平方公尺。（三）不得裝設門止。（四）門扇或門樘上應標示常時關閉式防火門等文字。'},
+        {id:'4',label:'第 4 款 常時開放式',text:'（一）可隨時關閉，並應裝設利用煙感應器連動或其他方法控制之自動關閉裝置，使能於火災發生時自動關閉。（二）關閉後免用鑰匙即可開啟，並應裝設經開啟後可自行關閉之裝置。（三）採用防火捲門者，應附設門扇寬度在七十五公分以上，高度在一百八十公分以上之防火門。'},
+        {id:'5',label:'第 5 款',text:'防火門應朝避難方向開啟。但供住宅使用及宿舍寢室、旅館客房、醫院病房等連接走廊者，不在此限。'}],
+      note:'課程 p7 以「…」略去第 3 款第 2 目（單扇 3 m² 上限）與第 4 款第 3 目（捲門附設小門）。門禁鎖：營建署 102 年函釋「往避難方向平時應免用任何形式之鑰匙即可開啟」，107-03-19 函要求手動斷電解除＋火警連動解除兩項並設。',
+      url:'https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=D0070115&flno=76',urlLabel:'全國法規資料庫 第 76 條'},
+    art79:{title:'建築技術規則設計施工編 第 79 條（面積區劃）',meta:'法規命令｜93/1/1 施行之架構｜時效風險：低',
+      plain:'課程投影片標為「79-1、79-2、79-3」的三段文字，其實是第 79 條第 1、2、3 項；法規另有獨立的第 79 條之 1、之 2、之 3，內容不同。',
+      quotes:[
+        {id:'1',label:'第 1 項',text:'防火構造建築物總樓地板面積在一、五○○平方公尺以上者，應按每一、五○○平方公尺，以具有一小時以上防火時效之牆壁、防火門窗等防火設備與該處防火構造之樓地板區劃分隔。防火設備並應具有一小時以上之阻熱性。'},
+        {id:'2',label:'第 2 項',text:'前項應予區劃範圍內，如備有效自動滅火設備者，得免計算其有效範圍樓地面板面積之二分之一。'},
+        {id:'3',label:'第 3 項',text:'防火區劃之牆壁，應突出建築物外牆面五十公分以上。但與其交接處之外牆面長度有九十公分以上，且該外牆構造具有與防火區劃之牆壁同等以上防火時效者，得免突出。'}],
+      note:'第 79 條之 1＝特殊用途自成區劃；第 79 條之 2＝垂直區劃（昇降機道防火設備須具遮煙性能、管道間維修門 1 h＋遮煙）；第 79 條之 3＝樓地板連續完整並突出外牆 50 cm。',
+      url:'https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=D0070115&flno=79',urlLabel:'全國法規資料庫 第 79 條'},
+    art97:{title:'建築技術規則設計施工編 第 97 條（安全梯）',meta:'法規命令｜遮煙要求 103/7/1 施行｜時效風險：低',
+      plain:'室內安全梯出入口的防火門要求最完整：1 小時防火時效、半小時阻熱、具遮煙性能、不得設門檻、寬度不小於 90 cm。',
+      quotes:[
+        {id:'1',label:'第 1 款第 2 目（室內安全梯）',text:'進入安全梯之出入口，應裝設具有一小時以上防火時效及半小時以上阻熱性且具有遮煙性能之防火門，並不得設置門檻；其寬度不得小於九十公分。'},
+        {id:'2',label:'第 2 款第 3 目（戶外安全梯）',text:'出入口應裝設具有一小時以上防火時效且具有半小時以上阻熱性之防火門，並不得設置門檻，其寬度不得小於九十公分。但以室外走廊連接安全梯者，其出入口得免裝設防火門。'},
+        {id:'3',label:'第 3 款第 3 目（特別安全梯）',text:'樓梯間及排煙室或陽臺之出入口應裝設具有一小時以上防火時效及半小時以上阻熱性之防火門，自陽臺或排煙室進入樓梯間之出入口應裝設具有半小時以上防火時效之防火門。'}],
+      note:'對應 BSMI 標識常見為 f(60/30A)；遮煙性能另須取得內政部認可，BSMI 驗證登錄不涵蓋。',
+      url:'https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=D0070115&flno=97',urlLabel:'全國法規資料庫 第 97 條'},
+    art86:{title:'建築技術規則設計施工編 第 86 條（分戶牆、分間牆）',meta:'法規命令｜110/1/19 修正、110/7/1 施行｜時效風險：低',
+      plain:'回答「是不是每一扇門都要是防火門」的關鍵條文：分間牆應以不燃材料建造，但分間牆上之門窗不在此限。',
+      quotes:[
+        {id:'1',label:'第 1 款',text:'連棟式或集合住宅之分戶牆，應以具有一小時以上防火時效之牆壁及防火門窗等防火設備與該處之樓板或屋頂形成區劃分隔。'},
+        {id:'2',label:'第 2 款（要旨）',text:'特定類組建築物防火區劃內之分間牆應以不燃材料建造，但其分間牆上之門窗，不在此限。'},
+        {id:'3',label:'第 3 款（要旨）',text:'護理之家、老人福利機構、長照機構等寢室分間牆上之門窗應為不燃材料製造或具半小時以上防火時效，得不受第 76 條第 3 款及第 4 款限制。'}],
+      url:'https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=D0070115&flno=86',urlLabel:'全國法規資料庫 第 86 條'},
+    art85:{title:'建築技術規則設計施工編 第 85 條（貫穿部）',meta:'法規命令｜時效風險：低',
+      plain:'區劃不只是牆和門。管線穿過區劃牆或樓板的地方，必須與貫穿部位合成 1 小時防火時效的構造，晴空匯案的失效點正在這裡。',
+      quotes:[{text:'貫穿防火區劃牆壁或樓地板之風管，應在貫穿部位任一側之風管內裝設防火閘門或閘板，其與貫穿部位合成之構造，並應具有一小時以上之防火時效。貫穿防火區劃牆壁或樓地板之電力管線、通訊管線及給排水管線或管線匣，與貫穿部位合成之構造，應具有一小時以上之防火時效。'}],
+      url:'https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=D0070115&flno=85',urlLabel:'全國法規資料庫 第 85 條'},
+    bsmi113:{title:'應施檢驗建築用防火門商品之相關檢驗規定',meta:'BSMI 公告｜113/12/24 經標檢政字第 11330026040 號｜時效風險：中（公告類，常有修正）',
+      plain:'BSMI 管防火門的直接依據。品名範圍、檢驗標準、檢驗方式都在這份公告。',
+      quotes:[
+        {label:'品名',text:'建築用防火門（限檢驗尺度高 3 公尺乘寬 3 公尺以下）'},
+        {label:'檢驗標準',text:'CNS 11227-1（105 年版）'},
+        {label:'檢驗方式',text:'驗證登錄（型式試驗模式加工廠檢查模式）＝模式二＋模式七；修正前模式自 115 年 1 月 1 日起停止適用。'},
+        {label:'受理',text:'型式試驗：本局認可之指定試驗室；工廠檢查：本局或所屬分局、本局認可之工廠檢查機構；驗證登錄：本局或所屬分局。審查期限 14 個工作天。'}],
+      note:'110/1/1 起已廢止防火門委託驗證（109/9/2 經標三字第 10930003290 號公告），課程 p16「委託驗證機構」為舊制。115/9/1 起識別號碼加流水號（115/3/16 公告）。',
+      url:'https://www.bsmi.gov.tw/wSite/public/Data/f1745568944316.pdf',urlLabel:'BSMI 113/12/24 公告'},
+    serial:{title:'防火門檢驗標識流水號申請及監督作業程序',meta:'BSMI 令｜115/5/19 經標檢政字第 11530007030 號，115/8/10 生效｜時效風險：中',
+      plain:'115/9/1 起輸入或運出廠場的防火門，報驗義務人須先申請流水號，BSMI 以機率抽查。',
+      quotes:[
+        {label:'第三點',text:'申請應填報驗義務人資料、證書號碼、防火門型式、尺度及數量、銷售配送或安裝地點、監督查核地點。'},
+        {label:'第四點',text:'出廠或輸入前申請者以千分之一機率查核；未於出廠前申請者以千分之五機率查核；抽中不符合者其後逐次查核。'},
+        {label:'第七點',text:'已安裝於建築物之防火門經抽中取樣者，報驗義務人應配合現場拆除，不得以其他防火門替代。'}],
+      note:'113/9/10 草案曾寫千分之五／百分之五、60 日，已被定案取代。',
+      url:'https://www.bsmi.gov.tw/wSite/public/Data/f1779180080091.PDF',urlLabel:'BSMI 115/5/19 作業程序'},
+    sametype:{title:'建築用防火門同型式判定原則',meta:'BSMI 令（行政規則，11 點）｜現行：115/1/30 經標檢政字第 11530001100 號修正第 2、10 點｜時效風險：中',
+      plain:'一扇已通過型式試驗的防火門，改了尺度、五金、玻璃、門樘、裝飾板、表面材或中心材之後，哪些可以直接比照、哪些要補試驗。',
+      quotes:[
+        {label:'沿革',text:'91/10/15 訂定（5 點）；107/10/19 第一次修正（10 點）；113/3/5 第二次修正（11 點；課程 p17 的 11 項修正總說明屬此次）；115/1/30 修正第 2、10 點（中心材）。'},
+        {label:'第 3 點 基本原則',text:'耐火性不得低於原型式；應與原型式具相同或相似門扇結構；門扇數量及開啟方式不應改變。'},
+        {label:'第 11 點 受理',text:'由原型式試驗申請者，向本局認可指定試驗室提出，附技術文件、原型式試驗報告、與原型式變更對照表並註明符合之條款。'}],
+      note:'BSMI 網站「法規檢視」頁有兩處與行政院公報不一致（第 2 點第 3 款「第三目／第四目」、殘留 107 年版第 5 點第 4 款），判定與報告引用以行政院公報為準。',
+      url:'https://gazette.nat.gov.tw/EG_FileManager/eguploadpub/eg032021/ch04/type2/gov31/num24/Eg.pdf',urlLabel:'行政院公報 115/1/30'},
+    moi:{title:'建築新技術新工法新設備及新材料認可',meta:'法源：建築技術規則總則編第 4 條；認可申請要點 110/4/13 修正｜時效風險：中',
+      plain:'不在 BSMI 範圍內、或法規要求「經中央主管建築機關認可」的防火構材走這條路：試驗、評定、認可三段，取得認可通知書（最長 3 年）。',
+      quotes:[
+        {label:'適用',text:'超過 3 m × 3 m 的防火門、防火捲門、防火窗、防火電梯門；以及任何尺寸的「遮煙性能」。'},
+        {label:'流程',text:'指定試驗機構試驗（報告 3 年內有效），再經評定專業機構評定，最後由國土管理署或受委託評定機構認可，發給認可通知書；延續須在期滿前 3 個月內申請。'}],
+      note:'課程寫「認可書」，官方文書名為「認可通知書」；工地查核另需「摘要本」。認可只就所提文件與試驗內容，現場構件須與摘要本一致。'},
+    cns11227:{title:'CNS 11227-1 耐火性能試驗法－第 1 部：門及捲門組件',meta:'國家標準｜105/11/10 制定、107/12/12 勘誤、110/12/7 確認｜母本 ISO 3008:2007',
+      plain:'BSMI 對建築用防火門的檢驗標準。門的試體、安裝、熱電偶配置在本標準；爐溫、爐壓與判定通則引用 CNS 12514-1。',
+      quotes:[
+        {label:'阻熱熱電偶',text:'5 點固定熱電偶：門扇中心＋試體 4 等分各部分中心，同時判定平均溫升與最大溫升（9.1.2.5、9.2.1）；另以移動式熱電偶追熱點。'},
+        {label:'試驗間隙',text:'實測間隙須落在申報範圍的中間值到最大值之間（7.4.2），確保在較嚴苛狀態下試驗。'},
+        {label:'與舊版差異',text:'非加熱面溫度上限改為溫升 140 K／180 K；變形量不再作為判定基準（公會提案說明，載於 BSMI 114 年第 2 次一致性會議紀錄，BSMI 未提異議）。'}],
+      note:'ISO 已演進到 ISO 3008-1:2025，CNS 沒有的新要求屬版次差異，不能拿來退件。第 11 章門樘限值原文未取得，引用前應查標準本文。'},
+    cns12514:{title:'CNS 12514-1 建築物構造構件耐火試驗法－第 1 部：一般要求事項',meta:'國家標準｜現行 113/10/24 修訂版（2024）｜對應 ISO 834-1',
+      plain:'所有構件耐火試驗共用的通則：升溫曲線、許可差、爐壓、板式溫度計、判定通則。',
+      quotes:[
+        {label:'升溫曲線',text:'T = 345 log10(8t + 1) + 20'},
+        {label:'爐壓（垂直構件，依 ISO 834-1 6.2）',text:'於假想樓板面上方 500 mm 建立零壓；試體頂端壓力不得大於 20 Pa，必要時調整中性面；評估時可假設平均梯度 8 Pa/m；許可差 5 min ±5 Pa、10 min ±3 Pa。'}],
+      note:'課程寫「距爐底 50 公分」「每公尺須增加 8 Pa」：數值與 ISO 834-1 一致，但基準是假想樓板面，且 8 Pa/m 是評估用假設梯度而非控制目標。EN 1363-1 取 8.5 Pa/m。CNS 12514-1 本文未取得，條號以 CNS 原文為準。'},
+    cns15038:{title:'CNS 15038 建築用門遮煙性試驗法',meta:'國家標準｜99/11/18 修訂、110/12/7 確認｜參照 ISO 5925-1',
+      plain:'測門在室溫與中溫、壓差 10–25–50 Pa 下的漏氣量。判定以每樘門組計，換算為標準狀態後不大於 25 m³/h。',
+      quotes:[
+        {label:'程序',text:'先封縫量測試艙本身洩漏（Qb）；拆封量總洩漏（Qt）；10、25、50 Pa 各 2 分鐘、兩循環；兩面都測；換算為標準狀態。'},
+        {label:'判定',text:'每樘門組 ≤ 25 m³/h（室溫與中溫），以 25 Pa 為基準。2006 舊版為 12 m³/(h·m²)。'}],
+      note:'判定值依 Hung et al.（Fire 2022）轉述，標準本文未取得。國外 EN／UL 遮煙報告不能直接代替 CNS 15038 報告。'}
+  },
+
+  glossary:[
+    {k:'compart',t:'防火區劃',en:'Fire compartment',d:'以具防火時效的牆、樓板與防火門窗圍成的空間，把火煙限制在一定範圍內。',src:'建築技術規則設計施工編第 79～86 條'},
+    {k:'vert',t:'垂直區劃',en:'Vertical compartmentation',d:'把樓梯間、昇降機道、管道間、挑空等上下貫通的空間獨立區劃，防止火煙沿垂直方向竄升。',src:'第 79 條之 2'},
+    {k:'pen',t:'防火填塞',en:'Firestopping',d:'管線穿過區劃牆或樓板後，以耐火材料封堵縫隙，使貫穿部位與牆板合成 1 小時防火時效。',src:'第 85 條'},
+    {k:'frr',t:'防火時效',en:'Fire resistance rating',d:'構件或防火設備遭受火災時可耐火的時間；防火門的防火時效即其遮焰時間。',src:'第 1 條第 31 款'},
+    {k:'int',t:'遮焰性',en:'Integrity (E)',d:'阻止火焰與熱氣穿過構件的能力；以棉墊、間隙規、持續火焰三項判定。',src:'ISO 834-1 10.2.2'},
+    {k:'ins',t:'阻熱性',en:'Insulation (I)',d:'一面受火時，非加熱面溫度在一定時間內不超過規定值的能力：平均溫升 ≤140 K、任一點 ≤180 K。',src:'第 1 條第 32 款；ISO 834-1 10.2.3'},
+    {k:'smk',t:'遮煙性能',en:'Smoke control',d:'在常溫及中溫標準試驗條件下，門兩側形成火災壓差時，漏煙通氣量不超過規定值的能力。',src:'第 1 條第 45 款；CNS 15038'},
+    {k:'stab',t:'構造穩定性',en:'Stability / Loadbearing',d:'構件在火災中不發生有害變形或破壞脫落；防火門屬非承重構件，不單獨判定。',src:'ISO 834-1 10.2.1'},
+    {k:'unexp',t:'非曝火面',en:'Unexposed face',d:'試驗時背對火源的一面；阻熱性熱電偶貼在這一面。曝火面則是朝向爐內的一面。',src:'ISO 834-1'},
+    {k:'cotton',t:'棉墊',en:'Cotton pad',d:'100 mm 見方、20 mm 厚的純棉墊，貼近縫隙施放最長 30 秒，發光或起焰即判遮焰失效。',src:'ISO 834-1 5.5.5.1、8.4.1'},
+    {k:'gap',t:'間隙規',en:'Gap gauge',d:'直徑 6 mm 與 25 mm 的不鏽鋼棒；6 mm 可穿入並沿縫移動 150 mm、或 25 mm 可穿入，即判遮焰失效。',src:'ISO 834-1 5.5.5.2、8.4.2'},
+    {k:'plate',t:'板式溫度計',en:'Plate thermometer',d:'以鎳合金板包覆熱電偶的爐溫計，近似量測試體表面接受的熱曝露，提高不同試驗爐間的再現性。',src:'ISO 834-1 5.5.1.1'},
+    {k:'npp',t:'中性壓力面',en:'Neutral pressure plane',d:'爐內外壓力相等的高度；門試驗設於假想樓板面上方 500 mm，以下為負壓、以上為正壓。',src:'ISO 834-1 3.9、6.2.2'},
+    {k:'nfl',t:'假想樓板面',en:'Notional floor level',d:'構件在實際使用時假設的樓板高度；對門而言即門底所在的完成樓板面，不是爐膛底部。',src:'ISO 834-1 3.10'},
+    {k:'iso834',t:'標準升溫曲線',en:'ISO 834 curve',d:'T = 345 log10(8t+1) + 20；30 分鐘約 842 °C、60 分鐘約 945 °C、120 分鐘約 1049 °C。',src:'CNS 12514-1；ISO 834-1 6.1.1'},
+    {k:'support',t:'支撐構造',en:'Supporting construction',d:'試驗時安裝門的牆體。柔性（輕隔間）通過者可用於剛性牆，剛性通過者僅限剛性牆。',src:'同型式判定原則第 10 點第 4 款'},
+    {k:'vr',t:'驗證登錄',en:'Registration of Product Certification',d:'商品檢驗方式之一；防火門現制為型式試驗（模式二）加工廠檢查（模式七），由 BSMI 本局或分局發證，效期 3 年。',src:'商品檢驗法第 5 條；BSMI 113/12/24 公告'},
+    {k:'tt',t:'型式試驗',en:'Type test',d:'以代表樣品在 BSMI 認可之指定試驗室依 CNS 11227-1 試驗，證明該型式的防火性能。',src:'商品驗證登錄辦法第 3 條'},
+    {k:'fi',t:'工廠檢查',en:'Factory inspection',d:'檢查生產廠場的設備、原料、製程、產銷紀錄及產品與原型式的一致性；初次報告效期 1 年，其後每年至少 1 次。',src:'BSMI 113/12/24 公告；114/5/12 說明會'},
+    {k:'lab',t:'指定試驗室',en:'Designated laboratory',d:'經 TAF 認證後，再經 BSMI 書面審查與實地評鑑認可、可出具型式試驗報告的試驗室；現行防火門為成大、建研所、台灣建築中心、中科院青園四家。',src:'商品檢驗指定試驗室認可管理辦法'},
+    {k:'taf',t:'TAF',en:'Taiwan Accreditation Foundation',d:'財團法人全國認證基金會，依 ISO/IEC 17025 認證試驗室。TAF 認證不等於 BSMI 指定。',src:'TAF'},
+    {k:'serial',t:'流水號',en:'Serial number',d:'115/9/1 起防火門識別號碼為「R＋流水號＋指定代碼」，每批出廠或輸入前申請，可逐樘追溯。',src:'BSMI 115/3/16 公告；115/5/19 作業程序'},
+    {k:'mark',t:'防火性能等級',en:'Fire rating code',d:'標識中的 f(60A)：數字為防火時效分鐘數，A 表示具阻熱性、B 表示不具；f(60/30A) 斜線後為阻熱時間。',src:'BSMI 2004〈標識範例〉第七點'},
+    {k:'proto',t:'原型式',en:'Prototype',d:'實際通過型式試驗的那一樘門；同型式判定都以它為比較基準。',src:'同型式判定原則'},
+    {k:'same',t:'同型式判定',en:'Same-type determination',d:'判斷變更後的防火門是否仍屬原型式涵蓋範圍、是否需補試驗的程序；由原型式試驗申請者向 BSMI 認可指定試驗室提出。',src:'同型式判定原則第 11 點'},
+    {k:'leafstr',t:'門扇結構',en:'Leaf construction',d:'門扇兩表面材之間（不含表面材）的組構件規格、接合方式，以及門扇骨架的規格與斷面形狀。',src:'同型式判定原則第 2 點第 2 款'},
+    {k:'similar',t:'相似門扇結構',en:'Similar leaf construction',d:'因五金或玻璃補強、尺度變更致骨架數量不同、中心材經核准替換等原因，部分結構不同但經試驗確認不影響耐火性者。',src:'同型式判定原則第 2 點第 3 款'},
+    {k:'core',t:'中心材',en:'Core material',d:'填在門扇內部的耐燃材料，如陶瓷棉、岩棉、珍珠岩板、硫酸鎂板；115 年起鋼製推開門單一板材中心材可依規定換不同廠牌。',src:'同型式判定原則第 10 點第 6 款'},
+    {k:'surf',t:'表面安裝',en:'Surface-mounted',d:'除以螺絲或螺栓局部固定（不得貫穿）外，未破壞門扇結構的安裝方式；是五金替換判定的分水嶺。',src:'同型式判定原則第 2 點第 5 款'},
+    {k:'brake',t:'制動機件',en:'Securing hardware',d:'門鎖、門閂、防撬栓、關門器、斜形鎖舌、鉸鏈等使門保持關閉的機件；數量只增不減。',src:'同型式判定原則第 5 點第 2 款'},
+    {k:'frame',t:'門樘',en:'Door frame',d:'固定在牆上、承接門扇的框；是試體的一部分，回填砂漿的養護屬試體狀態調節。',src:'CNS 11227-1'},
+    {k:'nc',t:'常時關閉式',en:'Normally closed',d:'平時保持關閉的防火門：免鑰匙開啟、可自行關閉、單扇 ≤3 m²、不得裝門止、須標示。',src:'第 76 條第 3 款'},
+    {k:'no',t:'常時開放式',en:'Normally open (hold-open)',d:'平時開啟、火災時由煙感應器連動自動關閉的防火門；關閉後免鑰匙開啟並可自行關閉。',src:'第 76 條第 4 款'},
+    {k:'stop',t:'門止',en:'Door stop / hold-open device',d:'把門固定在開啟位置的裝置。常時關閉式防火門不得裝設。',src:'第 76 條第 3 款第 3 目'},
+    {k:'holder',t:'電磁釋放器',en:'Electromagnetic door holder',d:'常開式防火門平時以電磁力吸住門扇，火警或斷電時釋放，由閉門器關門（斷電即關的 fail-safe）。',src:'第 76 條第 4 款（自動關閉裝置）'},
+    {k:'coord',t:'順位器',en:'Door coordinator',d:'雙扇門的關門順序裝置，確保被動扇先關、主動扇後關，否則門扇會互卡關不密。',src:'五金配置實務'},
+    {k:'drop',t:'下降壓條',en:'Automatic drop seal',d:'嵌在門扇底部、關門時自動下降壓住地面的密封條；現場遮煙失敗常因壓不到地。',src:'同型式判定原則第 5 點第 1 款；建研所現場遮煙研究'},
+    {k:'approval',t:'認可通知書',en:'Approval notice',d:'內政部新技術新工法新設備及新材料認可的文書，效期最長 3 年；工地查核另需「摘要本」。',src:'認可申請要點第 10、11 點'},
+    {k:'cns15038',t:'CNS 15038',en:'Smoke leakage test for doors',d:'建築用門遮煙性試驗法：室溫與中溫、10–25–50 Pa 量漏氣量，每樘門組 ≤25 m³/h。',src:'CNS 15038:2010'},
+    {k:'psi',t:'公安申報',en:'Public safety inspection',d:'建築物公共安全檢查簽證及申報，由專業機構檢查、1 至 4 年一次；現行 H-2 集合住宅不檢查防火區劃。',src:'建築物公共安全檢查簽證及申報辦法'},
+    {k:'smokewall',t:'防煙區劃',en:'Smoke compartment',d:'以防煙壁（自天花板下垂 50 cm 以上之不燃垂壁）每 500 m² 劃分，限制煙的水平擴散並配合排煙設備；不要求防火時效。',src:'各類場所消防安全設備設置標準第 188 條'},
+    {k:'decision',t:'判定規則',en:'Decision rule',d:'報告符合性聲明時如何考量量測不確定度；耐火試驗採簡單接受，完整分鐘數達到要求即合格。',src:'ISO/IEC 17025:2017 7.8.6；ILAC-G8'},
+    {k:'exap',t:'擴展應用',en:'Extended application (EXAP)',d:'以專家判斷將試驗結果延伸到未試驗的尺寸或構造變化；歐洲依 EN 15269 系列，與臺灣同型式判定原則是不同制度。',src:'EN 15269 系列；EN 1634-1 附錄 B'},
+    {k:'ei',t:'EI2 60',en:'EN 13501-2 class',d:'歐盟分級：E＝遮焰、I＝阻熱（I1 比 I2 嚴）、數字為分鐘；另有 Sa/S200 遮煙、C0～C5 自閉耐久。',src:'EN 13501-2'},
+    {k:'fd',t:'FD60',en:'UK fire door rating',d:'英國標示，數字只代表遮焰分鐘數、不含阻熱，最接近我國 f(60B)。S 表示另具遮煙。',src:'BS 476-22'}
+  ],
+
+  quiz:[
+    {m:'M1',q:'新竹晴空匯火警（2024-05-26）中，市府稽查認定起火處防火區劃失效的直接原因是？',o:['防火門未取得 BSMI 驗證登錄','管道間多處貫穿通道未確實加入防火填塞','防火門阻熱性不足','排煙機未取得型式認可'],a:1,e:'新竹市府 113-06-04 新聞稿：起火處防火區劃失效，多處貫穿通道未確實防火填塞，濃煙經貫穿開口外竄；同次稽查另查獲常閉式防火門未關閉、地下室防火門規格不符。'},
+    {m:'M2',q:'以下哪一個位置，建築技術規則「沒有」要求裝設防火門？',o:['集合住宅分戶牆上的住宅大門','高層建築物防災中心出入口','辦公樓防火區劃內，一般分間牆上的會議室門','高層建築物昇降機間出入口'],a:2,e:'一般辦公（G-2）不在第 86 條第 2 款列舉類組內，分間牆本身沒有特別要求；即使是列舉類組，該款也明定「分間牆上之門窗，不在此限」——前提是該門不在第 79、83 條等防火區劃線上。住宅大門屬第 86 條第 1 款分戶區劃（1 h）、防災中心屬第 259 條（2 h）、高層昇降機間屬第 242 條（1 h＋遮煙）。'},
+    {m:'M2',q:'課程投影片 p6 標為「79-3」的條文（防火區劃之牆壁應突出外牆面 50 cm 以上），正確出處是？',o:['第 79 條之 3','第 79 條第 3 項','第 79 條之 2 第 3 項','第 85 條第 1 項'],a:1,e:'課程引文出自第 79 條第 3 項。真正的第 79 條之 3 講的是「樓地板」應為連續完整面並突出外牆 50 cm，兩者不同。'},
+    {m:'M2',q:'某走廊單扇防火門 1.2 m 寬、2.6 m 高，已取得 BSMI 驗證登錄。依第 76 條，這樘門可以怎麼使用？',o:['可當常時關閉式使用，因為在 3 m × 3 m 以內','不能當常時關閉式，單一門扇面積 3.12 m² 超過 3 m²；應設計為常時開放式並以煙感連動自動關閉','不能取得 BSMI 驗證，應改向國土管理署申請','只要加貼「常時關閉式防火門」標示即可'],a:1,e:'第 76 條第 3 款第 2 目：常時關閉式單一門扇面積不得超過 3 m²。BSMI 的「高 3 m 乘寬 3 m 以下」是商品檢驗的適用範圍，與建築法規的使用限制是兩回事。'},
+    {m:'M2',q:'依建築技術規則第 97 條，進入室內安全梯的出入口防火門，最低要求是？',o:['1 小時防火時效，無其他要求','1 小時防火時效＋1 小時阻熱性','1 小時防火時效＋半小時阻熱性＋遮煙性能，不得設門檻，寬度 ≥ 90 cm','半小時防火時效＋遮煙性能'],a:2,e:'第 97 條第 1 款第 2 目（遮煙要求自 103 年 7 月 1 日施行）。BSMI 標識常見對應 f(60/30A)，遮煙另需內政部認可。'},
+    {m:'M3',q:'耐火試驗中用棉墊判定遮焰性，下列敘述何者正確？',o:['棉墊施放 10 秒內著火才算失效','棉墊只要焦黑就判定遮焰失效','棉墊施放最長 30 秒，發光或有焰才算著火；10 秒是非曝火面持續火焰的門檻','任何溫度下都必須使用棉墊'],a:2,e:'ISO 834-1 8.4.1：棉墊施放 30 s 或至著火為止，著火定義為發光（glowing）或有焰（flaming），只焦黑不算。未符合阻熱基準的部位，開口附近非曝火面溫度超過 300 °C 時不再使用棉墊（改以間隙規與持續火焰判定）。'},
+    {m:'M3',q:'某防火門試驗在第 52 分鐘發生 6 mm 間隙規可沿縫移動 150 mm，當時背溫平均溫升只有 90 K。阻熱性時間最多可記多少？',o:['60 分鐘（背溫未超標）','52 分鐘（遮焰失效時阻熱自動視為失效）','不需記錄阻熱性','依移動式熱電偶另行判定，可超過 52 分鐘'],a:1,e:'ISO 834-1 12.2：遮焰失效時阻熱自動視為不符合，所以阻熱時間不可能超過遮焰時間。結果以完整分鐘數表示。'},
+    {m:'M3',q:'依 CNS 11227-1，防火門非曝火面判定「平均上升溫度」的固定熱電偶如何配置？',o:['門樘四角各 1 點，共 4 點','5 點：門扇中心 1 點，其餘在試體 4 等分各部分的中心；最大上升溫度也用這 5 點判定','只用移動式熱電偶追蹤熱點','距門扇邊 25 mm 處繞一圈'],a:1,e:'CNS 11227-1 9.1.2.5 與 9.2.1。距邊 25 mm 是 EN 1634-1 I1 追加程序的做法，不適用 CNS。'},
+    {m:'M4',q:'依標準升溫曲線 T = 345 log₁₀(8t+1) + 20，加熱 60 分鐘時爐內平均溫度約為？',o:['約 842 °C','約 925 °C','約 945 °C','約 1049 °C'],a:2,e:'代入 t = 60 得約 945 °C。842 °C 是 30 分鐘、1049 °C 是 120 分鐘；925 °C 是舊 CNS 11227／CNS 12514 舊曲線 1 小時的溫度，不是同一條曲線。'},
+    {m:'M4',q:'關於垂直構件（防火門）試驗的爐壓，下列哪一項最符合 ISO 834-1:1999 6.2？',o:['零壓力面固定在爐膛底部上方 50 cm，每公尺須增加 8 Pa','零壓力面設在假想樓板面上方 500 mm，且試體頂端壓力不得大於 20 Pa，必要時調整中性面','試體頂端壓力須維持 20 Pa 以上','整個試體高度維持 10 Pa 正壓'],a:1,e:'8 Pa/m 只是評估時可假設的平均梯度（EN 1363-1 取 8.5 Pa/m），不是控制要求；基準面是假想樓板面，不是爐膛底。'},
+    {m:'M5',q:'依 CNS 15038:2010，建築用門遮煙性試驗的合格判定為何？',o:['壓差 20 Pa 時洩漏量 ≤ 12 m³/(h·m²)','換算為標準狀態後，每樘門組洩漏量 ≤ 25 m³/h（室溫與中溫）','壓差 25 Pa 時洩漏量 ≤ 3 m³/(h·m) 縫隙長','壓差 24.9 Pa 時洩漏量 ≤ 3.0 cfm/ft²'],a:1,e:'判定壓差以 25 Pa 為基準（依 Hung et al. 2022 轉述，標準原文未見）。A 是 2006 舊版的面積基準；C 是歐盟 Sa；D 是美國 UL 1784 限值。'},
+    {m:'M5',q:'一樘 2.5 m × 2.2 m、需具遮煙性能的鋼製防火門要用在高層建築昇降機間出入口，除了 BSMI 驗證登錄之外還需要什麼？',o:['不用，BSMI 驗證登錄已包含遮煙性能','只要 CNS 11227-1 型式試驗報告加上同型式判定報告','CNS 15038 遮煙試驗報告，經內政部指定評定機構評定合格後取得新技術認可','只要向 BSMI 申請同型式判定即可'],a:2,e:'BSMI 驗證登錄只涵蓋防火性能（遮焰、阻熱）。遮煙性能不分尺寸，都須經內政部指定評定機構評定並取得認可通知書。'},
+    {m:'M5',q:'臺科大團隊以現場遮煙測試法在工地測了 20 樘門，結果與主要失敗原因為何？',o:['20 樘全數通過','13 樘通過；失敗主因是門縫過大、氣密條無法填滿，以及自動下降條壓不到地面','10 樘通過；失敗主因是門鎖與鉸鏈漏氣','5 樘通過；失敗主因是門扇本體材料漏氣'],a:1,e:'Hung et al.（Fire 2022）：漏氣主要來自門扇下緣，鎖、鉸鏈、上緣與側縫漏量很小——遮煙性能壞在安裝與維護。'},
+    {m:'M6',q:'依 BSMI 113/12/24 公告，建築用防火門現行驗證登錄的符合性評鑑模式是？',o:['模式二（型式試驗）＋模式三（符合型式聲明）','模式二（型式試驗）＋模式七（工廠檢查）','模式四（完全品質管理制度）','型式認可逐批檢驗'],a:1,e:'舊模式（模式二＋三）自 115/1/1 起停止適用。模式三是「符合型式聲明」，不是工廠品管；依商品驗證登錄辦法第 3 條第 2 項，模式七的申請人仍須符合模式三。'},
+    {m:'M6',q:'某廠商要申請一樘高 3.2 m、寬 2.0 m 的防火門，主管與程序為何？',o:['仍屬 BSMI 驗證登錄，因為寬度未超過 3 m','屬 BSMI 驗證登錄，但要加做大型爐試驗','不屬 BSMI 應施檢驗範圍，改走內政部國土管理署的新技術新工法新設備及新材料認可','免檢驗，也不需任何主管機關認可'],a:2,e:'BSMI 公告品名限「檢驗尺度高 3 公尺乘寬 3 公尺以下」，高、寬須同時不超過 3 m；任一邊超過即改依內政部認可程序。'},
+    {m:'M6',q:'防火門標識中的「f(60/30A)」代表什麼？',o:['60 分鐘遮煙、30 分鐘阻熱','60 分鐘防火時效、30 分鐘阻熱性','防火時效介於 30 至 60 分鐘、A 級','60 分鐘防火時效、30 分鐘遮焰性、不具阻熱'],a:1,e:'依 BSMI 2004 年〈建築用防火門驗證登錄檢驗標識範例〉第七點：數字＝防火時效（分鐘），A＝具阻熱性能，B＝不具阻熱性能，斜線後的數字為阻熱時間。'},
+    {m:'M6',q:'自 115 年 9 月 1 日起，報驗義務人若在「出廠前」申請檢驗標識流水號，BSMI 以多少機率實施監督查核？',o:['百分之五','千分之五','千分之一','每批必查'],a:2,e:'115/5/19 作業程序第四點：出廠或輸入前申請者千分之一、事後補申請者千分之五；抽中不符合者其後逐次查核。113/9/10 草案的千分之五／百分之五已被定案取代。'},
+    {m:'M6',q:'關於防火門驗證登錄證書，下列敘述何者正確？',o:['由 BSMI 委託的民間驗證機構核發，效期 5 年','由 BSMI 本局或所屬分局核發，效期自發證日起 3 年，延展以一次為限','由 TAF 核發，效期 3 年','由指定試驗室直接核發，與型式試驗報告同一份'],a:1,e:'110/1/1 起廢止防火門委託驗證；113/12/24 公告第九點規定驗證登錄受理地點為 BSMI 本局或所屬分局。課程 p16 的「委託驗證機構」是舊制。'},
+    {m:'M7',q:'依現行同型式判定原則，哪一種防火門的單一門扇縮減後，仍不得小於通過試驗門扇寬度 50% 及高度 75%？',o:['所有防火門','具阻熱性之金屬防火門','木質防火門','不具阻熱性（B 種）之鋼製防火門'],a:1,e:'第 4 點第 1 款第 1 目：113 年起只有具阻熱性之金屬防火門保留下限。107 年版曾對所有防火門適用，是常見的舊觀念。'},
+    {m:'M7',q:'同型式防火門門扇與門樘之間隙，現行原則規定的上限計算式為何（a＝最大測量間隙，b＝平均測量間隙）？',o:['介於原型式最小值與最大值之間','(a+b)/2 + 2 mm','a + 2 mm','(a+b)/2 + 1 cm'],a:1,e:'第 4 點第 2 款。選項一是 107 年版的寫法；1 cm 是門扇高寬尺度公差（第 4 點第 3 款）。'},
+    {m:'M7',q:'欲替換一款表面安裝之關門器，且不想隨防火門再做耐火試驗，依現行原則應符合哪個條件？',o:['向 BSMI 分局申請核備即可','以 BSMI 自願性產品驗證證書作為判定依據','耐火性不低於原型式，並經第三方驗證機構驗證','在原型式防火門上重做耐火試驗'],a:2,e:'第 5 點第 1 款第 4 目。核備只適用於取手、把手、門扣。「自願性產品驗證證書」是 107 年版條款，113 年已刪除（BSMI 網頁仍殘留）。'},
+    {m:'M7',q:'115/1/30 修正後，鋼製防火推開門的單一耐燃板材中心材換成不同廠牌規格，下列哪一項不是第 10 點第 6 款第 1 目的要件？',o:['以只換中心材、或相似門扇結構之防火門通過試驗','試驗用門之阻熱時效相同或較高','變更後有效槽口深度變形程度不大於變更前','必須以原型式防火門通過試驗'],a:3,e:'「以原型式防火門通過試驗」是第 3 目（非鋼製推開門或非中心材）的要求，也是 113 年版舊規定。'},
+    {m:'M8',q:'英國防火門標示 FD60，最接近我國哪一種等級？',o:['f(60A)','f(60/30A)','f(60B)','f(120A)'],a:2,e:'英國 FD 的數字只代表遮焰性分鐘數，不含阻熱，所以對應無阻熱的 f(60B)。日本「特定防火設備」同理。'},
+    {m:'M8',q:'下列哪一個體系的防火門試驗，強制要求耐火試驗後實施噴水衝擊試驗？',o:['ISO 3008-1','EN 1634-1','美國 NFPA 252／UL 10C','我國 CNS 11227-1'],a:2,e:'NFPA 252 要求耐火試驗後立即噴水衝擊（20 分鐘門可免）。ISO、EN、CNS 都沒有；中國 GB 12955-2024 自 2026-05-01 起也要求 ≥60 min 的部分門種做噴水試驗。'},
+    {m:'M9',q:'大樓想在梯間常時關閉式防火門加裝刷卡門禁磁力鎖。依營建署 107 年函釋，哪一項做法較符合要求？',o:['只要上班時間不上鎖就可以','避難方向一側設手動斷電解除裝置，並設與消防警報連動、自動解除門禁的裝置，兩者同時具備','改用不需實體鑰匙的感應卡即可，因為第 76 條只禁止鑰匙','防火門一律不得加裝任何鎖具'],a:1,e:'兩項措施須同時具備；102 年函釋已說明磁扣、感應卡也視為「鑰匙」。即使兩項具備，109 年函仍表示屬個案認定。'},
+    {m:'M9',q:'依現行（111-12-28 版）《建築物公共安全檢查簽證及申報辦法》，H-2 集合住宅的公安申報檢查項目是否包含「防火區劃」？',o:['包含，所有類組都檢查防火區劃','不包含；H-2 只檢查直通樓梯、安全梯、避難層出入口、昇降設備、避雷設備、緊急供電系統','只有 16 層以上的 H-2 才檢查','包含，但只檢查防火鐵捲門'],a:1,e:'附表二備註二只列 6 項。修正草案擬增列「防火區劃（共用部分）」，截至 2026-10-20 尚未發布——這正是晴空匯案後監察院指出的缺口。'},
+    {m:'M10',q:'下列關於重大火災案例的敘述，何者正確？',o:['屏東安泰醫院火災發生於 2014 年','敬鵬大火發生於彰化','城中城大火 7 樓三座安全梯全數無防火門','Grenfell 火災中防火門全數符合 30 分鐘要求'],a:2,e:'城中城行政調查報告逐層表：1 樓與 7 樓三座梯皆無防火門。安泰醫院火災是 2024-10-03；敬鵬大火在桃園平鎮；Grenfell 調查發現住戶門 30 分鐘級爐測約 15 分鐘失效、大量閉門器缺失。'},
+    {m:'M1',q:'依各類場所消防安全設備設置標準第 188 條，一般樓層的防煙壁應自天花板下垂多少以上？',o:['30 cm','50 cm','80 cm','100 cm'],a:1,e:'防煙壁為不燃材料垂壁，自天花板下垂 50 cm 以上；地下建築物之地下通道為 80 cm。防煙區劃每 500 m²，不要求防火時效——與防火區劃（1 h 牆＋防火門、每 1,500 m²）是不同法系的兩套東西。'},
+    {m:'M3',q:'某防火門試驗第 61 分鐘時，非曝火面平均溫升恰好為 140 K，其餘條件均未失效。依 ISO 834-1，此時阻熱性是否已失效？',o:['已失效，達到 140 K 即失效','未失效，判定條件是「超過」140 K','須依量測不確定度加保護帶後再判','改以移動式熱電偶重新判定'],a:1,e:'ISO 834-1 10.2.3 的判定是溫升「超過」140 K（平均）或 180 K（任一點）才失效，恰好等於不算失效。判定規則採簡單接受，不自行加保護帶。'},
+    {m:'M6',q:'讀到一份舊函寫「防火捲門應依 CNS 14803 與附設小門合併測試」，現在應如何理解？',o:['仍依 CNS 14803 試驗','CNS 14803 已於 105/11/10 廢止，現依 CNS 11227-1 試驗，捲門與附設小門仍一起送測','改依 CNS 14815 試驗','防火捲門改歸 BSMI 驗證登錄'],a:1,e:'CNS 14803 被 CNS 11227-1（門及捲門組件）取代；四家指定試驗室的 TAF 認可範圍都以 CNS 11227-1 列防火捲門。防火捲門仍走內政部認可，不在 BSMI 公告品名內。'},
+    {m:'M7',q:'為什麼 BSMI 同型式判定原則規定門扇尺度「只能縮、不能放」？',o:['因為放大會讓門太重','CNS 11227-1（ISO 3008）第 13 章直接適用範圍沒有尺寸放大條款','因為 EN 1634-1 也禁止放大','因為內政部另有規定'],a:1,e:'EN 1634-1 附錄 B 以「超時」換取放大（推開門高寬 +15%、面積 +20%），但 CNS 11227-1 沒有這種條款。EN 的放大規則不能當成 CNS 的直接適用範圍。'},
+    {m:'M11',q:'交通部公路隧道消防安全設備設置規範對避難連絡通道門扉的要求，下列何者正確？',o:['1 小時防火時效、30 分鐘隔熱性，可上鎖','2 小時以上防火時效及 1 小時以上隔熱性，能自動關閉且不能上鎖','須通過 RWS 曲線 120 分鐘試驗','只需防煙，不要求防火時效'],a:1,e:'隧道防火門不是新東西：此要求自 99 年部頒規範即存在。規範未指定 RWS 曲線；「未來」指的是更嚴苛曲線、壓力疲勞與國產驗證能量。'}
+  ]
+};
+})();
+
+</script>
+<script>
+(function(){
+'use strict';
+var D = window.FD_DATA || {};
+var $ = function(s,r){return (r||document).querySelector(s)};
+var $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var store = {
+  get:function(k,d){try{var v=localStorage.getItem('fd-'+k);return v===null?d:JSON.parse(v)}catch(e){return d}},
+  set:function(k,v){try{localStorage.setItem('fd-'+k,JSON.stringify(v))}catch(e){}}
+};
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+var STYLE_ATTR={fill:1,stroke:1,opacity:1};
+function svgEl(tag,attrs,parent){var e=document.createElementNS('http://www.w3.org/2000/svg',tag);
+  for(var k in attrs){var v=attrs[k];if(STYLE_ATTR[k]&&String(v).indexOf('var(')===0)e.style.setProperty(k,v);else e.setAttribute(k,v)}
+  if(parent)parent.appendChild(e);return e}
+
+/* ---------- glossary: term tooltips + list (single source: D.glossary) ---------- */
+(function(){
+  var G={};(D.glossary||[]).forEach(function(g){G[g.k]=g});
+  $$('.term[data-g]').forEach(function(el){var g=G[el.dataset.g];if(!g)return;el.setAttribute('tabindex','0');
+    var tt=document.createElement('span');tt.className='tt';tt.textContent=g.d;el.appendChild(tt)});
+  var dl=$('#glossList');if(!dl)return;
+  dl.innerHTML=(D.glossary||[]).map(function(g){return '<dt id="g-'+g.k+'">'+esc(g.t)+(g.en?' <small>'+esc(g.en)+'</small>':'')+'</dt><dd>'+esc(g.d)+(g.src?'<br><small>依據：'+esc(g.src)+'</small>':'')+'</dd>'}).join('');
+})();
+
+/* ---------- keep tooltips inside the viewport ---------- */
+function fitTip(t){if(!t)return;t.style.setProperty('--dx','0px');var r=t.getBoundingClientRect(),vw=document.documentElement.clientWidth,dx=0;
+  if(r.right>vw-8)dx=vw-8-r.right;if(r.left+dx<8)dx=8-r.left;t.style.setProperty('--dx',dx+'px')}
+['mouseover','focusin'].forEach(function(ev){document.addEventListener(ev,function(e){var n=e.target.closest&&e.target.closest('.node,.term');if(n)fitTip(n.querySelector(':scope>.tip,:scope>.tt'))})});
+
+/* ---------- theme ---------- */
+var tbtn=$('#themeBtn');
+function syncTheme(){var dark=document.documentElement.getAttribute('data-theme')==='dark';tbtn.setAttribute('aria-pressed',dark?'true':'false');$('#themeLbl').textContent=dark?'淺色':'深色'}
+tbtn.addEventListener('click',function(){var dark=document.documentElement.getAttribute('data-theme')==='dark';document.documentElement.setAttribute('data-theme',dark?'light':'dark');store.set('theme',dark?'light':'dark');syncTheme()});
+syncTheme();
+
+/* ---------- progress + nav ---------- */
+var mods=$$('section.module[data-mod]');
+var done=store.get('done',{});
+function renderProgress(){
+  var n=0;mods.forEach(function(m){var id=m.id,ok=!!done[id];if(ok)n++;
+    var a=$('.modnav a[href="#'+id+'"]');if(a)a.classList.toggle('done',ok);
+    var b=$('.mark-done',m);if(b){b.classList.toggle('done',ok);b.textContent=ok?'已完成本單元':'標記本單元完成';b.setAttribute('aria-pressed',ok?'true':'false')}
+  });
+  $('.progress-fill').style.width=(mods.length?n/mods.length*100:0)+'%';
+  $('.progress-txt').textContent=n+' / '+mods.length+' 單元';
+}
+mods.forEach(function(m){var b=$('.mark-done',m);if(b)b.addEventListener('click',function(){done[m.id]=!done[m.id];store.set('done',done);renderProgress()})});
+$$('.next-mod').forEach(function(b){b.addEventListener('click',function(){var t=document.getElementById(b.dataset.target);if(t)t.scrollIntoView({behavior:'smooth'})})});
+renderProgress();
+var navLinks=$$('.modnav a');
+if('IntersectionObserver' in window){
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){navLinks.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id)});
+    var act=$('.modnav a.active');if(act&&window.innerWidth<=1080){var nav=$('.modnav');nav.scrollTo({left:act.offsetLeft-40,behavior:'smooth'})}}})},{rootMargin:'-30% 0px -60% 0px'});
+  $$('section[id]').forEach(function(s){io.observe(s)});
+}
+
+/* ---------- drawer (law / source) ---------- */
+var drawer=$('#drawer'),backdrop=$('#backdrop'),lastFocus=null;
+function openDrawer(key,hl){
+  var L=(D.laws||{})[key];if(!L)return;
+  lastFocus=document.activeElement;
+  $('#dTitle').textContent=L.title;
+  $('#dMeta').textContent=L.meta||'';
+  var h='';
+  if(L.plain)h+='<p>'+L.plain+'</p>';
+  (L.quotes||[]).forEach(function(q){h+='<blockquote'+(q.id?' data-qid="'+esc(q.id)+'"':'')+'>'+(q.label?'<b>'+q.label+'</b><br>':'')+q.text+'</blockquote>'});
+  if(L.note)h+='<details open><summary>補充說明</summary><p>'+L.note+'</p></details>';
+  if(L.url)h+='<p class="src">正本：<a href="'+esc(L.url)+'" target="_blank" rel="noopener">'+esc(L.urlLabel||L.url)+'</a><br>查證日期 2026-10-20；引用前請確認現行版本。</p>';
+  $('#dBody').innerHTML=h;
+  drawer.classList.add('open');backdrop.classList.add('open');drawer.setAttribute('aria-hidden','false');
+  setTimeout(function(){$('#dClose').focus()},40);
+  if(hl){var t=$('[data-qid="'+hl+'"]',drawer);if(t){t.classList.add('hl');setTimeout(function(){t.scrollIntoView({block:'center'})},260)}}
+}
+function closeDrawer(){drawer.classList.remove('open');backdrop.classList.remove('open');drawer.setAttribute('aria-hidden','true');if(lastFocus)lastFocus.focus()}
+document.addEventListener('click',function(e){var t=e.target.closest('[data-law]');if(t){e.preventDefault();openDrawer(t.dataset.law,t.dataset.art)}});
+$('#dClose').addEventListener('click',closeDrawer);backdrop.addEventListener('click',closeDrawer);
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'&&drawer.classList.contains('open'))closeDrawer();
+  if(e.key==='Tab'&&drawer.classList.contains('open')){var f=$$('button,a[href],summary,[tabindex]:not([tabindex="-1"])',drawer);if(!f.length)return;var first=f[0],last=f[f.length-1];
+    if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}
+});
+
+/* ---------- W1 compartment smoke sim ---------- */
+(function(){
+  var root=$('#w-compart');if(!root)return;
+  var st={d1:'closed',d2:'closed',seal:true};
+  function seg(name){$$('[data-seg="'+name+'"] button',root).forEach(function(b){b.addEventListener('click',function(){st[name]=b.dataset.v==='true'?true:b.dataset.v==='false'?false:b.dataset.v;$$('[data-seg="'+name+'"] button',root).forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});reset()})})}
+  seg('d1');seg('d2');seg('seal');
+  var timers=[];
+  function reset(){timers.forEach(clearTimeout);timers=[];$$('.smoke',root).forEach(function(s){s.classList.remove('on')});$('#cRoomA',root).classList.remove('burn');
+    $('#cLeaf1',root).style.transform=st.d1==='closed'?'':'rotate(-70deg)';$('#cLeaf2',root).style.transform=st.d2==='closed'?'':'rotate(-70deg)';
+    $('#cOut',root).className='result info';$('#cOut',root).textContent='按「模擬起火」觀察煙的走向。'}
+  function on(id,ms){timers.push(setTimeout(function(){$('#'+id,root).classList.add('on')},ms))}
+  $('#cFire',root).addEventListener('click',function(){
+    reset();$('#cRoomA',root).classList.add('burn');on('sA',200);
+    var corr=st.d1!=='closed',stair=corr&&st.d2!=='closed',up=!st.seal;
+    if(corr)on('sCorr',1300);
+    if(stair)on('sStair',2400);
+    if(up)on('sUp',1800);
+    timers.push(setTimeout(function(){
+      var o=$('#cOut',root),msg;
+      if(!corr&&!up){o.className='result pass';msg='煙被限制在起火戶內。走廊與安全梯維持可避難狀態——這就是區劃的目的。'}
+      else{o.className='result fail';msg=[];
+        if(corr)msg.push('起火戶門'+(st.d1==='stopped'?'被門止頂住':'開著')+'，煙進入走廊');
+        if(stair)msg.push('安全梯防火門'+(st.d2==='stopped'?'被門止頂住':'開著')+'，梯間成為煙囪，上層住戶的避難路徑被煙占據');
+        if(corr&&!stair)msg.push('安全梯防火門關閉，梯間仍可用於避難');
+        if(up)msg.push('貫穿部未防火填塞，煙繞過防火門由管道間竄往上層（課程 p4 案例的失效型態）');
+        msg=msg.join('；')+'。'}
+      o.textContent=msg},2900));
+  });
+  reset();
+})();
+
+/* ---------- W2 Art.76 checker ---------- */
+(function(){
+  var root=$('#w-art76');if(!root)return;
+  function v(id){var e=$('#'+id,root);return e.type==='checkbox'?e.checked:e.value}
+  function row(ok,txt,ref){return '<li><span class="mark '+(ok===null?'q':ok?'y':'n')+'">'+(ok===null?'?':ok?'O':'X')+'</span><span>'+txt+(ref?' <span class="src">'+ref+'</span>':'')+'</span></li>'}
+  function run(){
+    var w=+v('a76w'),h=+v('a76h'),type=v('a76type'),h2='';
+    $('.grp-open',root).hidden=type!=='open';
+    $('#a76closedgrp',root).hidden=type!=='closed';
+    h2+=row(w>=75,'門扇寬度 '+w+' cm（應 ≥ 75 cm）','第 76 條第 2 款');
+    h2+=row(h>=180,'門扇高度 '+h+' cm（應 ≥ 180 cm）','第 76 條第 2 款');
+    h2+=row(v('a76wall'),'門窗周邊 15 cm 範圍內牆壁為不燃材料','第 76 條第 1 款');
+    h2+=row(v('a76nokey'),(type==='open'?'關閉後':'')+'免用鑰匙即可開啟',type==='open'?'第 76 條第 4 款':'第 76 條第 3 款');
+    h2+=row(v('a76self'),'裝設經開啟後可自行關閉之裝置',type==='open'?'第 76 條第 4 款':'第 76 條第 3 款');
+    if(type==='closed'){
+      var area=w*h/10000;
+      h2+=row(area<=3,'單一門扇面積 '+area.toFixed(2)+' m²（常時關閉式應 ≤ 3 m²）','第 76 條第 3 款第 2 目');
+      h2+=row(!v('a76stop'),v('a76stop')?'裝有門止（不得裝設）':'未裝設門止','第 76 條第 3 款');
+      h2+=row(v('a76sign'),'門扇或門樘上標示「常時關閉式防火門」等文字','第 76 條第 3 款');
+    }else{
+      h2+=row(v('a76auto'),'裝設利用煙感應器連動或其他方法控制之自動關閉裝置','第 76 條第 4 款');
+    }
+    var exc=v('a76exc');
+    h2+=row(v('a76dir')||exc,v('a76dir')?'朝避難方向開啟':(exc?'未朝避難方向開啟，但屬住宅／宿舍寢室／旅館客房／醫院病房連接走廊之例外':'未朝避難方向開啟'),'第 76 條第 5 款');
+    $('#a76list',root).innerHTML=h2;
+    var fails=$$('#a76list .mark.n',root).length,o=$('#a76out',root);
+    o.className='result '+(fails?'fail':'pass');
+    o.textContent=fails?('有 '+fails+' 項不符第 76 條構造規定。'):'各項均符合第 76 條構造規定（構造面；防火時效另依試驗與驗證登錄證明）。';
+  }
+  $$('input,select',root).forEach(function(e){e.addEventListener('input',run);e.addEventListener('change',run)});
+  run();
+})();
+
+/* ---------- W3 ISO 834 curve ---------- */
+(function(){
+  var root=$('#w-iso834');if(!root)return;
+  var svg=$('svg',root),W=660,H=320,L=56,R=20,T=18,B=40,tMax=240,yMax=1200;
+  function X(t){return L+(W-L-R)*t/tMax}function Y(T_){return T+(H-T-B)*(1-T_/yMax)}
+  function f(t){return 345*Math.log10(8*t+1)+20}
+  var g=svgEl('g',{},svg);
+  for(var y=0;y<=yMax;y+=200){svgEl('line',{x1:L,x2:W-R,y1:Y(y),y2:Y(y),stroke:'var(--line)','stroke-width':1},g);var tx=svgEl('text',{x:L-8,y:Y(y)+4,'text-anchor':'end','font-size':11,fill:'var(--ink-3)'},g);tx.textContent=y}
+  for(var t=0;t<=tMax;t+=30){svgEl('line',{x1:X(t),x2:X(t),y1:T,y2:H-B,stroke:'var(--line)','stroke-width':1,'stroke-dasharray':t%60?'2 4':''},g);var tx2=svgEl('text',{x:X(t),y:H-B+18,'text-anchor':'middle','font-size':11,fill:'var(--ink-3)'},g);tx2.textContent=t}
+  var xl=svgEl('text',{x:(W+L)/2,y:H-4,'text-anchor':'middle','font-size':12,fill:'var(--ink-2)'},g);xl.textContent='加熱時間 t（分鐘）';
+  var yl=svgEl('text',{x:14,y:(H)/2,'text-anchor':'middle','font-size':12,fill:'var(--ink-2)',transform:'rotate(-90 14 '+(H/2)+')'},g);yl.textContent='爐內平均溫度 T（℃）';
+  var band=D.iso834Band;
+  if(band){var up='',lo='';for(var i=10;i<=tMax;i+=2){var v=f(i);up+=(up?'L':'M')+X(i).toFixed(1)+' '+Y(v+band).toFixed(1);lo='L'+X(i).toFixed(1)+' '+Y(v-band).toFixed(1)+lo}
+    svgEl('path',{d:up+lo+'Z',fill:'var(--fire)',opacity:.10},g);
+    var bl=svgEl('text',{x:X(150),y:Y(f(150)-band)+16,'font-size':11,fill:'var(--fire-ink)','text-anchor':'middle'},g);bl.textContent='10 min 後任一爐內溫度計須在曲線 ±'+band+' °C 內'}
+  var dp='';for(var j=0;j<=tMax;j+=1)dp+=(j?'L':'M')+X(j).toFixed(1)+' '+Y(f(j)).toFixed(1);
+  svgEl('path',{d:dp,fill:'none',stroke:'var(--fire)','stroke-width':2.5},g);
+  var vline=svgEl('line',{y1:T,y2:H-B,stroke:'var(--steel)','stroke-width':1.5,'stroke-dasharray':'4 3'},g);
+  var dot=svgEl('circle',{r:5,fill:'var(--fire)',stroke:'var(--surface)','stroke-width':2},g);
+  var sl=$('#isoT',root),out=$('#isoOut',root);
+  function upd(){var t=+sl.value,v=f(t);vline.setAttribute('x1',X(t));vline.setAttribute('x2',X(t));dot.setAttribute('cx',X(t));dot.setAttribute('cy',Y(v));
+    out.innerHTML='t = <b>'+t+'</b> min，T = 345·log<sub>10</sub>(8×'+t+'+1)+20 = <b>'+v.toFixed(0)+' ℃</b>'+(t?'　（升溫 '+(v-20).toFixed(0)+' K）':'')}
+  sl.addEventListener('input',upd);$$('[data-iso]',root).forEach(function(b){b.addEventListener('click',function(){sl.value=b.dataset.iso;upd()})});upd();
+})();
+
+/* ---------- W4 furnace pressure ---------- */
+(function(){
+  var root=$('#w-press');if(!root)return;
+  var G=D.pressGradient||8,N0=D.neutralPlane||0.5,N=N0,LIMIT=20;
+  var svg=$('svg',root),hIn=$('#prH',root),out=$('#prOut',root);
+  $$('[data-grad]',root).forEach(function(b){b.addEventListener('click',function(){G=+b.dataset.grad;$$('[data-grad]',root).forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});draw()})});
+  function draw(){
+    var Hd=+hIn.value;svg.innerHTML='';var W=520,Hs=330,base=300,scale=90,x0=170,dw=130;
+    N=Math.max(N0,Hd-LIMIT/G);
+    svgEl('rect',{x:20,y:base-3.4*scale,width:110,height:3.4*scale,fill:'var(--fire-soft)',stroke:'var(--fire)'},svg);
+    var ft=svgEl('text',{x:75,y:base-3.4*scale+20,'text-anchor':'middle','font-size':12,fill:'var(--fire-ink)'},svg);ft.textContent='爐內（曝火側）';
+    svgEl('line',{x1:10,x2:W-10,y1:base,y2:base,stroke:'var(--ink-2)','stroke-width':2},svg);
+    var fl=svgEl('text',{x:12,y:base+18,'font-size':11,fill:'var(--ink-3)'},svg);fl.textContent='0 m';
+    svgEl('rect',{x:x0,y:base-Hd*scale,width:dw,height:Hd*scale,fill:'var(--steel-soft)',stroke:'var(--steel)','stroke-width':2},svg);
+    var dl=svgEl('text',{x:x0+dw/2,y:base-Hd*scale/2,'text-anchor':'middle','font-size':12,fill:'var(--steel)'},svg);dl.textContent='試體（門）';
+    var yN=base-N*scale;svgEl('line',{x1:20,x2:W-10,y1:yN,y2:yN,stroke:'var(--exit)','stroke-width':1.5,'stroke-dasharray':'6 4'},svg);
+    var nl=svgEl('text',{x:W-12,y:yN-6,'text-anchor':'end','font-size':11,fill:'var(--exit)'},svg);nl.textContent='中性壓力面 '+N.toFixed(2)+' m（0 Pa）';
+    var fl2=svgEl('text',{x:x0+dw/2,y:base+18,'text-anchor':'middle','font-size':11,fill:'var(--ink-3)'},svg);fl2.textContent='假想樓板面＝門底';
+    for(var h=0.25;h<=Hd+0.001;h+=0.25){var p=G*(h-N),y=base-h*scale,len=Math.min(Math.abs(p)*5,150);
+      if(Math.abs(p)<0.01)continue;var x1=x0+dw+8,x2=x1+len*(p>0?1:0.6);
+      svgEl('line',{x1:x1,x2:x2,y1:y,y2:y,stroke:p>0?'var(--fire)':'var(--steel)','stroke-width':2},svg);
+      svgEl('path',{d:p>0?('M'+x2+' '+y+'l-7 -4v8z'):('M'+x1+' '+y+'l7 -4v8z'),fill:p>0?'var(--fire)':'var(--steel)'},svg);
+      var lt=svgEl('text',{x:x2+8,y:y+4,'font-size':10.5,fill:'var(--ink-2)'},svg);lt.textContent=(p>0?'+':'')+p.toFixed(1)+' Pa'}
+    var top=G*(Hd-N),moved=N>N0+0.001;
+    out.innerHTML='門高 <b>'+Hd.toFixed(2)+' m</b>、梯度 '+G+' Pa/m：門頂爐壓約 <b>+'+top.toFixed(1)+' Pa</b>（= '+G+' × ('+Hd.toFixed(2)+' − '+N.toFixed(2)+')）。'+
+      (moved?'若中性面維持 0.50 m，頂端將達 '+(G*(Hd-N0)).toFixed(1)+' Pa，超過 20 Pa 上限，故中性面須上移至 '+N.toFixed(2)+' m。':'中性面維持在假想樓板面上 0.50 m，頂端未超過 20 Pa。')+
+      ' 中性面以下為負壓（爐外空氣被吸入），以上為正壓（熱氣被推出）——遮焰失效常先出現在門扇上緣與鎖側上段。';
+  }
+  hIn.addEventListener('input',draw);draw();
+})();
+
+/* ---------- W5 insulation calculator ---------- */
+(function(){
+  var root=$('#w-insul');if(!root)return;
+  var A=D.insulAvg||140,M=D.insulMax||180;
+  function run(){var t0=+$('#inT0',root).value,av=+$('#inAvg',root).value,mx=+$('#inMax',root).value;
+    var dA=av-t0,dM=mx-t0,okA=dA<=A,okM=dM<=M,o=$('#inOut',root);
+    $('#inList',root).innerHTML='<li><span class="mark '+(okA?'y':'n')+'">'+(okA?'O':'X')+'</span><span>平均溫升 '+dA.toFixed(1)+' K（限值 '+A+' K）</span></li><li><span class="mark '+(okM?'y':'n')+'">'+(okM?'O':'X')+'</span><span>任一點最高溫升 '+dM.toFixed(1)+' K（限值 '+M+' K，含移動式熱電偶）</span></li>';
+    o.className='result '+(okA&&okM?'pass':'fail');
+    o.textContent=okA&&okM?'此時點仍維持阻熱性。':'阻熱性在此時點已失效；阻熱時間以先達任一限值的時刻計。'}
+  $$('input',root).forEach(function(e){e.addEventListener('input',run)});run();
+})();
+
+/* ---------- W6 marking decoder ---------- */
+(function(){
+  var root=$('#w-mark');if(!root)return;
+  var inp=$('#mkIn',root),out=$('#mkOut',root);
+  function run(){var s=inp.value.trim().replace(/\s/g,''),m=s.match(/^f?\(?(\d+)(?:\/(\d+))?([AaBb])\)?$/);
+    if(!m){out.className='result fail';out.textContent='格式無法辨識。範例：f(60A)、f(60/30A)、f(60B)';return}
+    var fr=+m[1],ins=m[2]?+m[2]:null,cls=m[3].toUpperCase(),t;
+    if(cls==='B'){t='防火時效（遮焰）'+fr+' 分鐘；不具阻熱性能（B）。'+(ins?' 注意：B 類不應另標阻熱時間，標示有誤。':'')}
+    else{var iv=ins===null?fr:ins;t='防火時效（遮焰）'+fr+' 分鐘；具阻熱性能（A），阻熱 '+iv+' 分鐘。'+(ins!==null&&ins>fr?' 注意：阻熱時間不可能大於防火時效，標示有誤。':'')}
+    out.className='result info';out.textContent=t}
+  inp.addEventListener('input',run);$$('[data-mk]',root).forEach(function(b){b.addEventListener('click',function(){inp.value=b.dataset.mk;run()})});run();
+})();
+
+/* ---------- W7 authority router ---------- */
+(function(){
+  var root=$('#w-route');if(!root)return;
+  var rule=D.sizeRule||function(w,h){return w<=3&&h<=3};
+  function run(){var w=+$('#rtW',root).value,h=+$('#rtH',root).value,sm=$('#rtSmoke',root).checked,roll=$('#rtRoll',root).checked,b=rule(w,h)&&!roll;
+    $('#rtBsmi',root).classList.toggle('on',b);$('#rtMoi',root).classList.toggle('on',!b||sm);
+    var t='門 '+w+' m × '+h+' m'+(roll?'（防火捲門）':'')+'：防火性能由'+(b?'經濟部標準檢驗局驗證登錄（CNS 11227-1）':'內政部國土管理署新技術認可（試驗、評定後發給認可通知書）');
+    if(sm)t+='；遮煙性能另須 CNS 15038 報告，經內政部指定評定機構評定並取得認可（不分尺寸）';
+    $('#rtOut',root).textContent=t+'。';}
+  $$('input',root).forEach(function(e){e.addEventListener('input',run);e.addEventListener('change',run)});run();
+})();
+
+/* ---------- W8 same-type wizard ---------- */
+(function(){
+  var root=$('#w-same');if(!root)return;var S=D.sameType||[];
+  var sel=$('#stSel',root),out=$('#stOut',root);
+  S.forEach(function(s,i){var o=document.createElement('option');o.value=i;o.textContent=s.item;sel.appendChild(o)});
+  var tagTxt={no:['ok','免補試驗'],cond:['warn','有條件'],yes:['risk','需補試驗'],na:['','不屬同型式']};
+  function run(){var s=S[+sel.value];if(!s)return;var tg=tagTxt[s.need]||tagTxt.cond;
+    out.innerHTML='<div class="callout '+(s.need==='no'?'ok':s.need==='yes'?'risk':'warn')+'"><h4>'+esc(s.item)+' <span class="chip '+tg[0]+'">'+tg[1]+'</span></h4><p>'+s.rule+'</p>'+(s.ref?'<div class="src">依據：'+s.ref+'</div>':'')+'</div>'}
+  sel.addEventListener('change',run);run();
+  var tb=$('#stTable tbody',root);if(tb){tb.innerHTML=S.map(function(s){var tg=tagTxt[s.need]||tagTxt.cond;return '<tr><td>'+esc(s.item)+'</td><td><span class="chip '+tg[0]+'">'+tg[1]+'</span></td><td>'+s.rule+'</td><td class="src">'+(s.ref||'')+'</td></tr>'}).join('')}
+})();
+
+/* ---------- W9 spot game ---------- */
+(function(){
+  var root=$('#w-spot');if(!root)return;var S=D.spots||[],g=$('.spot-grid',root),score=0,seen=0;
+  S.forEach(function(s,i){var b=document.createElement('button');b.className='spot';b.type='button';
+    b.innerHTML=s.svg+'<span class="cap">'+esc(s.cap)+'</span><span class="verdict">點選判斷：合規或違規？</span>';
+    b.addEventListener('click',function(){if(b.dataset.state)return;seen++;var vEl=$('.verdict',b);
+      vEl.innerHTML=(s.bad?'<b>違規。</b>':'<b>合規。</b>')+s.why;b.dataset.state=s.bad?'wrong':'right';
+      $('#spOut',root).textContent='已檢視 '+seen+' / '+S.length+' 個情境。'});g.appendChild(b)});
+})();
+
+/* ---------- tabs (intl) ---------- */
+$$('.tabs[data-for]').forEach(function(tb){var tgt=document.getElementById(tb.dataset.for);
+  $$('button',tb).forEach(function(b){b.addEventListener('click',function(){$$('button',tb).forEach(function(x){x.setAttribute('aria-selected',x===b?'true':'false')});
+    var f=b.dataset.f;$$('tbody tr',tgt).forEach(function(r){r.hidden=f!=='all'&&r.dataset.g!==f})})})});
+
+/* ---------- quiz ---------- */
+(function(){
+  var root=$('#quiz');if(!root)return;var Q=D.quiz||[],ans=store.get('quiz',{});
+  var box=$('#quizBox',root);
+  function score(){var n=0,c=0;Q.forEach(function(q,i){if(ans[i]!=null){n++;if(ans[i]===q.a)c++}});$('#qScore',root).textContent=c+' / '+Q.length;$('#qDone',root).textContent='已作答 '+n+' 題'}
+  Q.forEach(function(q,i){var d=document.createElement('div');d.className='quiz-q';
+    d.innerHTML='<div class="qt"><small>Q'+(i+1)+'</small>'+q.q+'</div>'+q.o.map(function(o,j){return '<button type="button" class="quiz-opt" data-j="'+j+'">'+String.fromCharCode(65+j)+'. '+o+'</button>'}).join('')+'<div class="quiz-exp">'+q.e+(q.m?' <span class="src">（單元 '+q.m+'）</span>':'')+'</div>';
+    function mark(j){d.classList.add('answered');$$('.quiz-opt',d).forEach(function(b,k){b.disabled=true;if(k===q.a)b.classList.add('right');else if(k===j)b.classList.add('wrong')})}
+    $$('.quiz-opt',d).forEach(function(b){b.addEventListener('click',function(){var j=+b.dataset.j;ans[i]=j;store.set('quiz',ans);mark(j);score()})});
+    if(ans[i]!=null)mark(ans[i]);box.appendChild(d)});
+  $('#qReset',root).addEventListener('click',function(){ans={};store.set('quiz',ans);box.innerHTML='';Q.length=Q.length;location.hash='#quiz';location.reload()});
+  score();
+})();
+})();
+
+</script>
+</body>
+</html>
