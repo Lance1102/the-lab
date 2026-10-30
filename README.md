@@ -6,7 +6,7 @@
 ## [BSMI RoHS 合規深度互動指南](https://lance1102.github.io/the-lab/RoHS_step-by-step.html)
 > 從零開始，帶您走完台灣RoHS標示的每一步
 
-## [RoHS互動指南-全球資訊升級版](2026-10-30_1500_臺灣RoHS含有標示_互動教學.html)
+## [RoHS互動指南-全球資訊升級版](https://lance1102.github.io/the-lab/2026-10-30_1500_臺灣RoHS含有標示_互動教學.html)
 > 從零開始，帶您走完台灣RoHS標示的每一步，並也了解世界上各大經濟體怎麼規定
 
 ## [濾(淨)水器 BSMI 深度合規檢核系統](https://lance1102.github.io/the-lab/Water_Filter_BSMI_Rules.html)
