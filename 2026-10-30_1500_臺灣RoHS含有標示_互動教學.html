@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<!--
+  臺灣 RoHS 含有標示：互動教學
+  設計規範：round-table:RT-beginner-friendly-html (round-table 1.13.0)
+  版面語彙沿用：60335 手持充電式捕蚊拍開發合規指南（成電太順版，2026-10-21）
+  建置：_src/build_guide.py（資料 data.json、術語 glossary.json）；請勿手改本檔
+  建置時間：2026-10-30 15:20
+-->
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="round-table:RT-beginner-friendly-html (round-table 1.13.0)">
+<meta name="design-system" content="round-table:RT-beginner-friendly-html (round-table 1.13.0)">
+<meta name="description" content="臺灣 RoHS（CNS 15663 第 5 節含有標示）互動教學：要不要做、怎麼準備佐證、怎麼拆單元與填表、怎麼申請，以及主要經濟體 RoHS 要求比較。查證基準日 2026-10-30。">
+<title>臺灣 RoHS 含有標示：互動教學</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231E6B4F'/%3E%3Cpath d='M9 22c0-8 6-13 15-13-1 9-6 15-14 15' fill='%23F2F7F3'/%3E%3Cpath d='M9 24l8-8' stroke='%231E6B4F' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+<script>(function(){try{var t=localStorage.getItem('rohs-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}})();</script>
+<style>
+:root{
+  --bg:#EEF3F0; --surface:#F9FBFA; --surface-2:#E2EAE5; --ink:#15211C; --ink-2:#4A5A52; --rule:#C5D1CA;
+  --hv:#1E6B4F; --hv-ink:#FFFFFF; --hv-soft:#DCEFE5;
+  --amb:#D99A00; --amb-ink:#15211C; --amb-soft:#FFF1C6;
+  --arc:#2C49C2; --arc-soft:#E2E7FA; --arc-solid:#2C49C2;
+  --pass:#1E7349; --pass-soft:#DCEFE3; --pass-solid:#1E7349;
+  --fail:#AE2C22; --fail-soft:#F7DFDB; --fail-solid:#AE2C22;
+  --warn:#7D5200; --warn-soft:#FBEDC9;
+  --grid:rgba(21,33,28,.06); --glass:rgba(17,22,29,.84);
+  --f-num:"Bahnschrift","DIN Alternate","Segoe UI","Microsoft JhengHei",sans-serif;
+  --f-text:system-ui,"Microsoft JhengHei","PingFang TC","Noto Sans TC",sans-serif;
+  --radius-s:4px; --radius-m:8px; --hdr:56px; --sh:52px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0F1613; --surface:#16201B; --surface-2:#1E2A24; --ink:#E3ECE7; --ink-2:#A2B2AA; --rule:#2B3A33;
+  --hv:#5CC498; --hv-ink:#0F1613; --hv-soft:#173226; --amb:#F5C518; --amb-ink:#0F1613; --amb-soft:#3A3011;
+  --arc:#93A5FF; --arc-soft:#222B48; --arc-solid:#3B57D6; --pass:#62C792; --pass-soft:#15301F; --pass-solid:#21804F;
+  --fail:#FF8F83; --fail-soft:#3B1D1A; --fail-solid:#B8362B; --warn:#F2C35B; --warn-soft:#33290F; --grid:rgba(227,236,231,.05); --glass:rgba(5,8,12,.88); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1613; --surface:#16201B; --surface-2:#1E2A24; --ink:#E3ECE7; --ink-2:#A2B2AA; --rule:#2B3A33;
+  --hv:#5CC498; --hv-ink:#0F1613; --hv-soft:#173226; --amb:#F5C518; --amb-ink:#0F1613; --amb-soft:#3A3011;
+  --arc:#93A5FF; --arc-soft:#222B48; --arc-solid:#3B57D6; --pass:#62C792; --pass-soft:#15301F; --pass-solid:#21804F;
+  --fail:#FF8F83; --fail-soft:#3B1D1A; --fail-solid:#B8362B; --warn:#F2C35B; --warn-soft:#33290F; --grid:rgba(227,236,231,.05); --glass:rgba(5,8,12,.88); color-scheme:dark}
+*{box-sizing:border-box}
+html,body{overflow-x:clip}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-text);font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased}
+svg{max-width:100%}
+a{color:var(--arc)}
+:focus-visible{outline:2px solid var(--arc);outline-offset:2px;border-radius:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:24px}
+@media (max-width:640px){.wrap{padding-inline:16px}}
+p{margin:0 0 14px}
+h3{font-size:18px;margin:28px 0 10px;line-height:1.45}
+.muted{color:var(--ink-2)} .small{font-size:14px}
+.num{font-family:var(--f-num);font-variant-numeric:tabular-nums}
+
+.topbar{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule)}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:54px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;min-width:0}
+.brand svg{flex:none}
+.theme-btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--rule);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;font-size:14px;cursor:pointer}
+.crumb{font-size:13px;color:var(--ink-2);white-space:nowrap}
+.crumb b{color:var(--ink)}
+.progress-line{position:absolute;left:0;bottom:-1px;height:2px;background:var(--hv);width:0}
+@media (max-width:760px){.crumb{display:none}#themeLbl{display:none}}
+
+.hero{padding-block:36px 40px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:36px;align-items:start}
+@media (max-width:960px){.hero-grid{grid-template-columns:1fr}}
+.status{display:inline-flex;flex-wrap:wrap;align-items:center;gap:8px;background:var(--hv-soft);color:var(--hv);font-weight:700;border-radius:999px;padding:4px 14px 4px 10px;font-size:14px;margin-bottom:16px}
+.status .dot{width:9px;height:9px;border-radius:50%;background:var(--hv)}
+@media (max-width:640px){.status{border-radius:10px;padding:8px 12px;display:flex}}
+.hero h1{font-family:var(--f-num);font-size:clamp(28px,3.8vw,44px);line-height:1.2;margin:0 0 12px;font-weight:700}
+.hero .lede{font-size:17px;color:var(--ink-2);max-width:40em;margin:0 0 22px}
+.keynums{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:2px solid var(--ink);border-bottom:1px solid var(--rule);margin:0 0 8px}
+.keynums > div{padding:10px 12px 10px 0}
+.keynums > div + div{padding-left:12px;border-left:1px solid var(--rule)}
+.keynums b{display:block;font-family:var(--f-num);font-size:25px;line-height:1.15}
+.keynums .k{display:block;font-size:13.5px;line-height:1.4}
+.keynums .c{display:block;font-size:12.5px;color:var(--ink-2)}
+@media (max-width:640px){.keynums{grid-template-columns:repeat(2,minmax(0,1fr))}.keynums > div{border-left:0!important;padding-left:0!important;border-bottom:1px solid var(--rule)}.keynums > div:last-child{grid-column:1/3;border-bottom:0}}
+.keynote{font-size:13.5px;color:var(--ink-2);margin:0 0 22px}
+.paths{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media (max-width:700px){.paths{grid-template-columns:1fr}}
+.path{display:block;text-align:left;font:inherit;border:1px solid var(--rule);background:var(--surface);color:var(--ink);border-radius:var(--radius-m);padding:10px 12px;cursor:pointer;line-height:1.5}
+.path:hover{border-color:var(--ink)}
+.path[aria-pressed="true"]{border-color:var(--hv);background:var(--hv-soft)}
+.path b{display:block;font-size:15px}
+.path span{font-size:13px;color:var(--ink-2)}
+.path-steps{margin:10px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.path-steps a{display:inline-block;font-size:14px;padding:3px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--rule);color:var(--ink);text-decoration:none}
+.path-steps .sep{color:var(--ink-2);font-size:13px}
+.start h2{font-size:17px;margin:0 0 8px}
+.client-card{background:var(--surface);border:1px solid var(--rule);border-top:4px solid var(--hv);border-radius:var(--radius-m);padding:18px 20px}
+.client-card h2{font-size:18px;margin:0 0 4px;line-height:1.4}
+.client-card .csub{font-size:13.5px;color:var(--ink-2);margin-bottom:12px}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0 4px}
+.vs > div{border:1px solid var(--rule);border-radius:var(--radius-s);padding:10px 12px;background:var(--bg)}
+.vs b{display:block;font-size:15px}
+.vs .t{font-size:13px;color:var(--ink-2)}
+.vs .yes{border-color:var(--hv);background:var(--hv-soft)}
+.todo{margin-top:16px;background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius-m);padding:14px 18px}
+.todo h2{font-size:16px;margin:0;display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.todo h2 .num{font-size:14px;color:var(--ink-2)}
+
+main section{padding-block:52px;border-top:1px solid var(--rule);scroll-margin-top:calc(var(--hdr) + 8px)}
+.act{padding-block:28px 0;border-top:3px solid var(--ink)}
+.act + section{border-top:0;padding-top:20px}
+.act h2{font-family:var(--f-num);font-size:15px;margin:0;color:var(--ink-2);font-weight:700;letter-spacing:.04em}
+.act p{margin:2px 0 0;font-size:15px;color:var(--ink-2)}
+.sticky-h{position:sticky;top:var(--hdr);z-index:15;background:var(--bg);font-family:var(--f-num);font-size:clamp(23px,2.6vw,30px);line-height:1.3;font-weight:700;margin:0 0 6px;padding:10px 0 8px;border-bottom:1px solid transparent;transition:font-size .15s,padding .15s}
+.sticky-h .no{color:var(--ink-2);margin-right:.4em}
+.sticky-h.stuck{border-bottom-color:var(--ink);font-size:clamp(18px,1.9vw,22px);padding:8px 0 7px;box-shadow:0 8px 10px -10px rgba(0,0,0,.25)}
+@media (max-width:640px){.sticky-h.stuck{font-size:16px;padding:6px 0 5px}}
+.sec-head{margin-bottom:22px;max-width:48em}
+.sec-head p{margin:0;color:var(--ink-2);font-size:16.5px}
+.sec-head .lead{color:var(--ink);font-weight:700;margin-top:10px}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;align-items:start}
+.split-38{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:32px;align-items:start}
+.split-tb{grid-template-columns:minmax(0,1.4fr) minmax(0,.6fr)}
+@media (max-width:900px){.split,.split-38,.split-tb{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius-m);padding:20px}
+.callout{font-size:15.5px;border-left:3px solid var(--warn);background:var(--warn-soft);padding:10px 14px;border-radius:0 var(--radius-s) var(--radius-s) 0;margin:12px 0}
+.callout.info{border-left-color:var(--arc);background:var(--arc-soft)}
+.callout.ok{border-left-color:var(--hv);background:var(--hv-soft)}
+.callout.bad{border-left-color:var(--fail);background:var(--fail-soft)}
+.callout b:first-child{margin-right:4px}
+.chip{display:inline-block;font-size:12.5px;line-height:1.5;padding:1px 8px;border-radius:999px;border:1px solid transparent;white-space:nowrap;font-weight:700}
+.c-check{color:var(--amb-ink);background:var(--amb);border-color:var(--amb)}
+.c-deadline{color:#fff;background:var(--fail-solid)}
+.c-done{color:#fff;background:var(--pass-solid)}
+.c-hv{color:var(--hv-ink);background:var(--hv)}
+.c-rel{color:var(--arc);background:var(--arc-soft)}
+.c-tag{color:var(--fail);background:var(--fail-soft)}
+.c-ok{color:var(--pass);background:var(--pass-soft)}
+.c-warn{color:var(--warn);background:var(--warn-soft)}
+.c-mute{color:var(--ink-2);border-color:var(--rule)}
+.c-ask{color:var(--arc);border-color:var(--arc);border-style:dashed}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13.5px;color:var(--ink-2);margin:6px 0 14px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--rule);border-radius:var(--radius-m);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--rule)}
+th{font-size:14px;background:var(--surface-2);font-weight:700}
+tr:last-child td{border-bottom:0}
+
+/* node glass tip */
+.node{position:relative;outline:none}
+.tip{position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%);background:var(--glass);-webkit-backdrop-filter:blur(10px) saturate(1.2);backdrop-filter:blur(10px) saturate(1.2);color:#fff;border-radius:10px;padding:12px 14px;width:min(340px,86vw);box-shadow:0 10px 30px rgba(0,0,0,.25);opacity:0;visibility:hidden;transition:opacity .18s ease,visibility .18s;pointer-events:none;z-index:50;font-size:13.5px;line-height:1.6;text-align:left;font-weight:400}
+.tip::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);border:7px solid transparent;border-top-color:var(--glass)}
+.tip.tip-down{bottom:auto;top:calc(100% + 12px)}
+.tip.tip-down::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:var(--glass)}
+.tip dl{display:grid;grid-template-columns:3.6em 1fr;gap:3px 8px;margin:0}
+.tip dt{color:#7FE0B4;font-weight:700}
+.tip dd{margin:0}
+.tip .tt-h{font-weight:700;font-size:14.5px;margin-bottom:6px}
+.node:hover .tip,.node:focus-within .tip,.node:focus .tip{opacity:1;visibility:visible}
+
+/* flow (decision rail) */
+.route{position:relative}
+.route::before{content:"";position:absolute;left:17px;top:8px;bottom:8px;width:3px;background:var(--rule);border-radius:2px}
+.rstep{position:relative;margin-left:44px;margin-bottom:12px}
+.rstep .badge{position:absolute;left:-44px;top:10px;width:36px;height:36px;border-radius:50%;background:var(--surface);border:2px solid var(--ink);display:grid;place-items:center;font-family:var(--f-num);font-weight:700;z-index:2}
+.rstep.dec .badge{border-radius:6px;transform:rotate(45deg);width:30px;height:30px;left:-41px;top:13px;background:var(--amb-soft);border-color:var(--amb)}
+.rstep.dec .badge span{transform:rotate(-45deg)}
+.rstep.end .badge{background:var(--hv);border-color:var(--hv);color:var(--hv-ink)}
+.rstep.stop .badge{background:var(--surface-2);border-color:var(--ink-2);color:var(--ink-2)}
+.rcard{background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius-m);padding:12px 16px;cursor:help}
+.rcard:hover{border-color:var(--ink)}
+.rcard b{font-size:16px}
+.rcard .s{display:block;font-size:14px;color:var(--ink-2)}
+.branch{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.branch span{font-size:13px;border-radius:999px;padding:1px 10px;border:1px solid var(--rule);background:var(--bg)}
+.branch .y{border-color:var(--hv);color:var(--hv);font-weight:700}
+.branch .n{color:var(--ink-2)}
+
+/* substances */
+.subs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+@media (max-width:1000px){.subs{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:560px){.subs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.sub{background:var(--surface);border:1px solid var(--rule);border-top:4px solid var(--hv);border-radius:var(--radius-m);padding:12px 14px;cursor:help}
+.sub.cd{border-top-color:var(--fail)}
+.sub .sym{font-family:var(--f-num);font-size:30px;font-weight:700;line-height:1}
+.sub .nm{font-weight:700;margin:4px 0 2px}
+.sub .lim{font-family:var(--f-num);font-size:18px}
+.sub .ppm{font-size:12.5px;color:var(--ink-2)}
+.ppmbar{height:8px;background:var(--surface-2);border-radius:4px;margin:8px 0 6px;overflow:hidden}
+.ppmbar i{display:block;height:100%;background:var(--hv)}
+.sub.cd .ppmbar i{background:var(--fail)}
+.sub .where{font-size:13px;color:var(--ink-2);line-height:1.5}
+
+/* cable + dilution */
+.cable{display:block;width:100%;height:auto;max-height:260px}
+.cable .ly{cursor:pointer;outline:none;transition:opacity .2s}
+.cable .ly:hover,.cable .ly:focus-visible,.cable .ly.on{opacity:1}
+.cable.sel .ly:not(.on){opacity:.35}
+.cable text{font-family:var(--f-text);font-size:13px;fill:var(--ink)}
+.cable .lead{stroke:var(--ink-2);stroke-width:1;fill:none}
+.field{margin-bottom:14px}
+.field > label,.field > .lb{display:flex;justify-content:space-between;font-weight:700;font-size:15px;margin-bottom:4px;gap:8px}
+.field output{font-family:var(--f-num)}
+.field input[type=range]{width:100%;accent-color:var(--hv)}
+.field .hint{font-size:13px;color:var(--ink-2)}
+.readout{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--rule)}
+.readout > div{padding:10px 16px 10px 0;border-bottom:1px solid var(--rule)}
+.readout .k{font-size:13.5px;color:var(--ink-2)}
+.readout .v{font-family:var(--f-num);font-size:22px;font-weight:700;line-height:1.25}
+.readout .s{font-size:13px}
+.ok{color:var(--pass)} .ng{color:var(--fail)}
+
+/* evidence matrix */
+.mtx{display:grid;grid-template-columns:auto 1fr 1fr;gap:6px;align-items:stretch}
+.mtx .ax{font-size:13px;color:var(--ink-2);display:flex;align-items:center;justify-content:center;text-align:center;padding:4px}
+.mtx button{font:inherit;text-align:left;border:1px solid var(--rule);background:var(--surface);color:var(--ink);border-radius:var(--radius-s);padding:10px 12px;cursor:pointer;line-height:1.5}
+.mtx button b{display:block}
+.mtx button span{font-size:13px;color:var(--ink-2)}
+.mtx button[aria-pressed="true"]{border-color:var(--hv);background:var(--hv-soft)}
+.mtx .r1{border-left:4px solid var(--pass)} .mtx .r2{border-left:4px solid var(--amb)} .mtx .r3{border-left:4px solid var(--fail)}
+.ladder{list-style:none;margin:0;padding:0}
+.ladder li{padding:10px 0;border-bottom:1px solid var(--rule)}
+.ladder .bar{height:10px;background:var(--surface-2);border-radius:5px;margin:6px 0 4px;overflow:hidden}
+.ladder .bar i{display:block;height:100%;background:var(--hv);border-radius:5px}
+.ladder .x{font-size:14px;color:var(--ink-2)}
+
+/* xrf zones */
+.xrf{position:relative;height:46px;border-radius:var(--radius-s);overflow:hidden;display:flex;margin:12px 0 4px}
+.xrf .z1{background:var(--pass-soft)} .xrf .z2{background:var(--amb-soft)} .xrf .z3{background:var(--fail-soft)}
+.xrf > div{display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.xrf .pin{position:absolute;top:0;bottom:0;width:3px;background:var(--ink);transform:translateX(-1px)}
+.xrf-leg{display:flex;justify-content:space-between;font-family:var(--f-num);font-size:12.5px;color:var(--ink-2)}
+.xrf-verdict{margin-top:10px;font-size:15.5px}
+
+/* unit examples */
+.ex-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.ex-tabs button{font:inherit;font-size:14px;border:1px solid var(--rule);background:var(--surface);color:var(--ink);border-radius:999px;padding:3px 12px;cursor:pointer}
+.ex-tabs button[aria-pressed="true"]{background:var(--hv);border-color:var(--hv);color:var(--hv-ink)}
+.units{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+.unit{background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius-s);padding:10px 12px}
+.unit b{display:block}
+.unit .r{font-size:13px;color:var(--ink-2)}
+.unit .risk{margin-top:4px}
+
+/* table builder */
+.tb-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.tb-tools button{font:inherit;font-size:14px;border:1px solid var(--rule);background:var(--surface);color:var(--ink);border-radius:var(--radius-s);padding:4px 12px;cursor:pointer}
+.mock{overflow-x:auto;background:#fff;color:#111;border:1px solid #888;border-radius:2px;padding:14px;font-family:"Microsoft JhengHei","PingFang TC",sans-serif}
+.mock h4{text-align:center;margin:0 0 6px;font-size:16px}
+.mock .meta{font-size:13.5px;margin-bottom:6px}
+.mock table{font-size:13.5px;border:1px solid #333}
+.mock th,.mock td{border:1px solid #333;text-align:center;padding:6px 4px;vertical-align:middle;background:#fff;color:#111}
+.mock td.unit-n{text-align:left;padding-left:8px;white-space:nowrap}
+.mock button.cell{font:inherit;font-size:13px;width:100%;min-width:3.6em;border:1px dashed #bbb;background:#fafafa;color:#111;border-radius:2px;cursor:pointer;padding:2px}
+.mock button.cell.over{background:#fde7e4;border-color:#c0392b}
+.mock button.cell.ex{background:#fff6d6;border-color:#c99a00}
+.mock .notes{font-size:13px;margin-top:8px;line-height:1.6}
+.label-mock{display:block;width:100%;max-width:360px;height:auto}
+.label-mock rect{fill:#fff;stroke:#111;stroke-width:1.5}
+.label-mock text{font-family:"Microsoft JhengHei",sans-serif;fill:#111}
+
+/* sop rail */
+.sop{position:relative;list-style:none;margin:0;padding:0}
+.sop::before{content:"";position:absolute;left:17px;top:6px;bottom:6px;width:3px;background:var(--rule)}
+.sop li{position:relative;margin:0 0 8px 44px}
+.sop .badge{position:absolute;left:-44px;top:8px;width:36px;height:36px;border-radius:50%;background:var(--surface);border:2px solid var(--ink);display:grid;place-items:center;font-family:var(--f-num);font-weight:700;font-size:14px;z-index:2}
+.sop li.check .badge{background:var(--amb);border-color:var(--amb);color:var(--amb-ink)}
+.sop li.deadline .badge{background:var(--fail-solid);border-color:var(--fail-solid);color:#fff}
+.sop li.done .badge{background:var(--pass-solid);border-color:var(--pass-solid);color:#fff}
+.sop .rcard{display:flex;justify-content:space-between;gap:10px;align-items:baseline;padding:10px 14px}
+
+/* faq */
+.faq details{border-bottom:1px solid var(--rule);padding:10px 0}
+.faq summary{cursor:pointer;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+.faq summary::after{content:"+";font-family:var(--f-num);color:var(--ink-2)}
+.faq details[open] summary::after{content:"−"}
+.faq details p{margin:8px 0 0}
+.mist{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px}
+@media (max-width:800px){.mist{grid-template-columns:1fr}}
+.mist li{padding:12px 0;border-top:1px solid var(--rule)}
+.mist .w{color:var(--fail);font-weight:700}
+.mist .r{color:var(--pass);font-weight:700}
+
+/* world */
+.mk{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 12px}
+.mk label{position:relative;border:1px solid var(--rule);border-radius:999px;padding:3px 12px;cursor:pointer;font-size:14px;background:var(--surface)}
+.mk label:has(input:checked){border-color:var(--hv);background:var(--hv-soft);font-weight:700}
+.mk input{position:absolute;opacity:0;pointer-events:none}
+.mk label:has(input:focus-visible){outline:2px solid var(--arc);outline-offset:2px}
+.need{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:800px){.need{grid-template-columns:1fr}}
+.need > div{background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius-m);padding:12px 14px}
+.need h4{margin:0 0 6px;font-size:15px}
+.need ul{margin:0;padding-left:1.1em;font-size:14.5px}
+.subgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;margin-top:4px}
+.subgrid span{font-size:12.5px;text-align:center;border-radius:4px;padding:3px 0;background:var(--surface-2);color:var(--ink-2)}
+.subgrid span.on{background:var(--hv);color:var(--hv-ink);font-weight:700}
+.cmp td,.cmp th{font-size:14px}
+.cmp td:first-child{white-space:nowrap;font-weight:700}
+.cmp tr.hide{display:none}
+.mode{display:inline-block;white-space:nowrap;font-size:12px;font-weight:700;border-radius:999px;padding:0 8px}
+.mode.d{background:var(--hv-soft);color:var(--hv)} .mode.p{background:var(--fail-soft);color:var(--fail)} .mode.m{background:var(--amb-soft);color:var(--warn)}
+
+/* timeline */
+.tl-filter{display:flex;flex-direction:column;gap:8px;margin:0 0 10px}
+.fr{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.fr .fl{font-size:13.5px;color:var(--ink-2);width:4.5em;flex:none}
+.fb{font:inherit;font-size:13.5px;border:1px solid var(--rule);background:var(--surface);color:var(--ink);border-radius:999px;padding:2px 10px;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.fb .ct{font-family:var(--f-num);font-size:12.5px;color:var(--ink-2)}
+.fb[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.fb[aria-pressed="true"] .ct{color:var(--bg)}
+.fb:disabled{opacity:.45;border-style:dashed;cursor:not-allowed}
+.tl-meta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:13.5px;color:var(--ink-2);margin-bottom:6px}
+.tl-meta button{font:inherit;font-size:13.5px;border:0;background:none;color:var(--arc);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.tl-meta button:disabled{color:var(--ink-2);text-decoration:none;cursor:default}
+.tl{position:relative;margin:10px 0 0;padding:0;list-style:none}
+.tl li.ev{display:grid;grid-template-columns:7.6em 18px 1fr;gap:0 12px;align-items:start;margin-bottom:12px}
+.tl li.ev.leaving{pointer-events:none}
+.tl li[hidden]{display:none}
+.tl li .d{font-family:var(--f-num);font-weight:700;text-align:right;line-height:1.5}
+.tl li .n{position:relative;height:100%}
+.tl li .n::before{content:"";position:absolute;left:8px;top:6px;bottom:-22px;width:2px;background:var(--rule)}
+.tl li .n::after{content:"";position:absolute;left:3px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--ink-2)}
+.tl li.key .n::after{background:var(--hv);border-color:var(--ink)}
+.tl li.future .d{color:var(--arc)}
+.tl .card{background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius-s);padding:8px 12px}
+.tl .card b{display:block;line-height:1.45}
+.tl .card .x{font-size:14px;color:var(--ink-2)}
+.tl .card .tags{margin-top:4px;display:flex;gap:6px;flex-wrap:wrap}
+.tl li.today{display:grid;grid-template-columns:7.6em 18px 1fr;gap:0 12px;margin:0 0 12px}
+.tl li.today .d{color:var(--arc);font-family:var(--f-num);font-weight:700;text-align:right}
+.tl li.today .bar{grid-column:2/4;border-top:2px dashed var(--arc);margin-top:12px;position:relative}
+.tl li.today .bar span{position:absolute;right:0;top:-12px;background:var(--bg);color:var(--arc);font-size:13px;font-weight:700;padding:0 6px}
+.tl li.empty{color:var(--ink-2);font-size:14px;padding:10px 0}
+@media (max-width:560px){.tl li.ev,.tl li.today{grid-template-columns:5.8em 14px 1fr;gap:0 8px}.tl li .d{font-size:13.5px}}
+
+/* checklist */
+.check{list-style:none;margin:0;padding:0}
+.check li{border-bottom:1px solid var(--rule)}
+.check label{display:flex;gap:10px;padding:10px 0;cursor:pointer;line-height:1.55}
+.check input{margin-top:5px;accent-color:var(--pass-solid);width:16px;height:16px;flex:none}
+.check li:has(input:checked) .txt{color:var(--ink-2);text-decoration:line-through;text-decoration-color:var(--rule)}
+.check .src{display:block;font-size:13px;color:var(--ink-2)}
+
+/* terms */
+.term{border-bottom:1px dashed var(--ink-2);cursor:help}
+svg .term{text-decoration:underline dashed;text-underline-offset:3px}
+#gtip{position:fixed;z-index:90;max-width:320px;background:var(--glass);-webkit-backdrop-filter:blur(10px) saturate(1.2);backdrop-filter:blur(10px) saturate(1.2);color:#fff;font-size:13.5px;line-height:1.6;padding:10px 12px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.25);pointer-events:none;opacity:0;visibility:hidden;transition:opacity .15s}
+#gtip.on{opacity:1;visibility:visible}
+#gtip b{display:block;margin-bottom:2px}
+#gtip .en{color:#C9D3E0;font-size:12.5px}
+#gtip::after{content:"";position:absolute;left:var(--ax,50%);transform:translateX(-50%);border:7px solid transparent}
+#gtip.up::after{top:100%;border-top-color:var(--glass)}
+#gtip.dn::after{bottom:100%;border-bottom-color:var(--glass)}
+.gl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 32px;margin:0}
+@media (max-width:800px){.gl{grid-template-columns:1fr}}
+.gl > div{padding:12px 0;border-top:1px solid var(--rule);scroll-margin-top:calc(var(--hdr) + var(--sh) + 12px)}
+.gl dt{font-weight:700}
+.gl dt .en{font-weight:400;color:var(--ink-2);font-size:13.5px;margin-left:6px}
+.gl dd{margin:2px 0 0}
+.gl .b{font-size:13px;color:var(--ink-2)}
+.gl > div.flash{animation:flash 1.4s ease}
+@keyframes flash{from{background:var(--amb-soft)}to{background:transparent}}
+
+/* toc */
+.toc{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:40;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.toc-panel{width:260px;max-height:min(72vh,620px);overflow:auto;background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius-m);padding:12px 6px 12px 12px;box-shadow:0 10px 30px rgba(0,0,0,.12)}
+.toc-panel .g{display:block;font-size:12.5px;color:var(--ink-2);margin:10px 0 2px 4px;font-weight:700}
+.toc-panel .g:first-child{margin-top:0}
+.toc-nav{position:relative}
+.toc-nav ol{list-style:none;margin:0;padding:0}
+.toc-nav a{position:relative;z-index:1;display:block;padding:4px 8px;border-radius:var(--radius-s);text-decoration:none;color:var(--ink);font-size:14px;line-height:1.45}
+.toc-nav a[aria-current="true"]{color:var(--hv);font-weight:700}
+.nav-ind{position:absolute;left:0;top:0;z-index:0;pointer-events:none;background:var(--hv-soft);border-left:2px solid var(--hv);border-radius:var(--radius-s);transition:transform .7s cubic-bezier(.22,1,.36,1),width .7s cubic-bezier(.22,1,.36,1),height .7s cubic-bezier(.22,1,.36,1)}
+.nav-ind.no-anim{transition:none}
+.toc-fab{width:46px;height:46px;border-radius:50%;border:1px solid var(--ink);background:var(--ink);color:var(--bg);display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.18)}
+.toc-fab:hover{background:var(--hv);border-color:var(--hv)}
+
+footer{border-top:2px solid var(--ink);padding-block:28px 72px;font-size:14px;color:var(--ink-2)}
+footer dl{display:grid;grid-template-columns:8em 1fr;gap:6px 16px;margin:0}
+footer dt{font-weight:700;color:var(--ink)}
+footer dd{margin:0}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.toc-nav .nav-ind{transition:transform .7s cubic-bezier(.22,1,.36,1),width .7s cubic-bezier(.22,1,.36,1),height .7s cubic-bezier(.22,1,.36,1)!important}.toc-nav .nav-ind.no-anim{transition:none!important}}
+@media print{
+  :root,:root[data-theme="dark"]{--bg:#fff;--surface:#fff;--surface-2:#f1f3f2;--ink:#15211C;--ink-2:#4A5A52;--rule:#C5D1CA;--hv:#1E6B4F;--hv-ink:#fff;--hv-soft:#DCEFE5;--amb:#D99A00;--amb-ink:#15211C;--amb-soft:#FFF1C6;--arc:#2C49C2;--arc-soft:#E2E7FA;--arc-solid:#2C49C2;--pass:#1E7349;--pass-soft:#DCEFE3;--pass-solid:#1E7349;--fail:#AE2C22;--fail-soft:#F7DFDB;--fail-solid:#AE2C22;--warn:#7D5200;--warn-soft:#FBEDC9;color-scheme:light}
+  .topbar,.toc,.theme-btn,.paths,.tl-filter,.tl-meta button,#gtip,.tip,.tb-tools,.ex-tabs{display:none!important}
+  body{font-size:11pt}
+  main section{padding-block:18pt}
+  .sticky-h{position:static;box-shadow:none;border:0}
+  .panel,.tbl-wrap,.tl li,.client-card,.keynums,.sub,.unit,.sop li,.rstep,.need > div{break-inside:avoid}
+  .tl li[hidden]{display:grid!important}
+  .faq details > *{display:block}
+  .cmp tr.hide{display:table-row}
+  a{color:inherit;text-decoration:none}
+  .term{border-bottom:0}
+}
+</style>
+</head>
+<body>
+<header class="topbar" id="hdr">
+  <div class="wrap">
+    <div class="brand">
+      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="5" fill="var(--hv)"/><path d="M6.5 16.5c0-6 4.5-9.8 11.2-9.8-.7 6.8-4.5 11.3-10.5 11.3" fill="var(--hv-ink)"/><path d="M6.5 18l6-6" stroke="var(--hv)" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <span>臺灣 RoHS 含有標示 互動教學</span>
+    </div>
+    <span class="crumb" id="crumb"></span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-pressed="false" aria-label="切換深淺色">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><span id="themeLbl">深色</span>
+    </button>
+  </div>
+  <div class="progress-line" id="prog"></div>
+</header>
+
+<main>
+<div class="wrap hero" id="top">
+  <div class="hero-grid">
+    <div>
+      <div class="status"><span class="dot"></span>臺灣 RoHS 的義務是「誠實標示」，不是「禁止使用」</div>
+      <h1>臺灣 RoHS 含有標示：從判斷到申請的互動教學</h1>
+      <p class="lede">應施檢驗的電機電子商品，若檢驗標準列有 CNS 15663 第 5 節，就要在商品上揭露六種限用物質的含有情況。本頁依序說明：要不要做、怎麼準備佐證、怎麼拆單元與填表、怎麼申請，最後比較主要經濟體的要求。</p>
+      <div class="keynums">
+        <div><b>6 種</b><span class="k">限用物質</span><span class="c">鉛、汞、鎘、六價鉻、PBB、PBDE</span></div>
+        <div><b>0.1 / 0.01</b><span class="k">基準值 wt%</span><span class="c">鎘為 0.01，其餘 0.1</span></div>
+        <div><b>≥ 4 個</b><span class="k">單元</span><span class="c">繁體中文命名</span></div>
+        <div><b>3 份</b><span class="k">申請文件</span><span class="c">聲明書、標識位置圖、樣張</span></div>
+        <div><b>28 天</b><span class="k">備查佐證</span><span class="c">工作天，依聲明書範本</span></div>
+      </div>
+      <p class="keynote">判斷是否「超出」的單位是均勻材料（例如電線的外皮），不是整個零件，也不是整台商品。</p>
+      <div class="start">
+        <h2>依需求從這裡開始</h2>
+        <div class="paths" id="paths">
+          <button class="path" type="button" data-p="0" aria-pressed="false"><b>第一次接觸</b><span>先搞懂制度與名詞</span></button>
+          <button class="path" type="button" data-p="1" aria-pressed="false"><b>準備送件</b><span>佐證、拆單元、填表、申請</span></button>
+          <button class="path" type="button" data-p="2" aria-pressed="false"><b>品管與採購</b><span>供應鏈證據與檢測</span></button>
+          <button class="path" type="button" data-p="3" aria-pressed="false"><b>要外銷</b><span>各國要求與比較</span></button>
+        </div>
+        <ul class="path-steps" id="pathSteps"></ul>
+      </div>
+    </div>
+    <aside>
+      <div class="client-card">
+        <h2>同樣叫 RoHS，做法不同</h2>
+        <div class="csub">臺灣與歐盟的根本差異</div>
+        <div class="vs">
+          <div class="yes"><b>臺灣：揭露</b><span class="t">超出基準值可以賣，但要在含有情況表填「超出」，並在標識加註 RoHS(Pb) 這類字樣。</span></div>
+          <div><b>歐盟：禁止</b><span class="t">超出且不屬豁免就不能上市；另外多管 4 種鄰苯二甲酸酯。</span></div>
+        </div>
+        <p class="small muted" style="margin:8px 0 0">日本 J-Moss 與臺灣同屬揭露制；中國是揭露加目錄品項禁止；韓國、印度、歐亞經濟聯盟、中東採禁止制。</p>
+      </div>
+      <div class="todo">
+        <h2>上市前要完成的 6 件事 <span class="num" id="todoCnt">0 / 6</span></h2>
+        <ul class="check" id="todo"></ul>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div class="act wrap"><h2>第一部　認識制度</h2><p>臺灣 RoHS 管什麼、誰要做、什麼時候開始。</p></div>
+
+<section id="s-what" data-act="認識制度">
+  <div class="wrap">
+    <h2 class="sticky-h"><span class="no">1</span>臺灣 RoHS 是什麼</h2>
+    <div class="sec-head"><p>一句話：像食品的成分標示，把產品每個主要部分是否含有限用物質、含量是否超過基準值，用一張固定格式的表告訴消費者。</p></div>
+    <div class="split">
+      <div class="panel">
+        <h3 style="margin-top:0">依據</h3>
+        <p>國家標準 CNS 15663「電機電子類設備降低限用化學物質含量指引」（102 年版）第 5 節「含有標示」。經濟部標準檢驗局（BSMI）把它列入各品目的檢驗標準，成為應施檢驗商品的義務。</p>
+        <h3>三種結果</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>情況</th><th>表內寫法</th><th>標識加註</th></tr></thead>
+          <tbody>
+            <tr><td>未超出基準值</td><td><b>○</b></td><td>RoHS</td></tr>
+            <tr><td>超出，但屬排除項目</td><td><b>－</b></td><td>RoHS</td></tr>
+            <tr><td>超出，且不屬排除項目</td><td><b>超出0.1 wt %</b>（鎘為超出0.01 wt %）</td><td>RoHS(Pb) 等，括號內寫超出的物質</td></tr>
+          </tbody></table></div>
+      </div>
+      <div>
+        <div class="callout ok"><b>可以賣嗎？</b>可以。如實標示「超出」並在標識加註，仍可上市；違規的是漏標或標示不實。屬排除項目者，即使含量超出也標「－」。</div>
+        <div class="callout"><b>另外注意</b>含量若達到環境部毒性化學物質的管制濃度，仍須遵守環保法規；外銷則依各國規定，多數國家是禁止制（見第 13 節）。</div>
+        <div class="callout info"><b>排除項目</b>依 CNS 15663 附錄 D（D.1～D.37），參照歐盟早期 RoHS 清單。歐盟後來新增的豁免不會自動適用，要等 CNS 修訂。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s-who" data-act="認識制度">
+  <div class="wrap">
+    <h2 class="sticky-h"><span class="no">2</span>我的商品要不要做</h2>
+    <div class="sec-head"><p>照順序回答下面的問題。移到各站可看說明與依據。</p></div>
+    <div class="split-38">
+      <div class="route">
+        <div class="rstep dec node" tabindex="0"><span class="badge"><span>?</span></span>
+          <div class="rcard"><b>商品是應施檢驗商品嗎？</b><span class="s">查 BSMI 商品檢驗業務申辦服務系統的品目資料，或線上申請品目查詢。</span><div class="branch"><span class="y">是 ↓</span><span class="n">否：不適用本制度</span></div></div>
+          <div class="tip tip-down"><div class="tt-h">判斷：是否應施檢驗</div><dl><dt>做什麼</dt><dd>以貨品號列與品名查品目，確認檢驗方式與檢驗標準。</dd><dt>出錯</dt><dd>以為不必檢驗而直接輸入或出廠，屬未經檢驗商品。</dd><dt>依據</dt><dd>商品檢驗法；BSMI 品目查詢</dd></dl></div>
+        </div>
+        <div class="rstep dec node" tabindex="0"><span class="badge"><span>?</span></span>
+          <div class="rcard"><b>檢驗標準有列 CNS 15663 第 5 節嗎？</b><span class="s">看該品目公告的檢驗標準欄，通常寫「CNS 15663 第 5 節（102 年版）－含有標示」。</span><div class="branch"><span class="y">有 ↓</span><span class="n">沒有：目前不需含有標示</span></div></div>
+          <div class="tip"><div class="tt-h">判斷：是否列入</div><dl><dt>說明</dt><dd>BSMI 分批把品目納入；同一類商品不同品項，生效日可能不同。</dd><dt>依據</dt><dd>各品目檢驗規定公告</dd></dl></div>
+        </div>
+        <div class="rstep node" tabindex="0"><span class="badge">1</span>
+          <div class="rcard"><b>準備佐證與含有情況表</b><span class="s">第 4～9 節：供應鏈資料、檢測、拆單元、填表。</span></div>
+          <div class="tip"><div class="tt-h">準備</div><dl><dt>做什麼</dt><dd>蒐集測試報告或品管措施資料，作為聲明的依據。</dd><dt>依據</dt><dd>BSMI RoHS 問答集</dd></dl></div>
+        </div>
+        <div class="rstep node" tabindex="0"><span class="badge">2</span>
+          <div class="rcard"><b>隨檢驗申請一併送件</b><span class="s">型式認可、驗證登錄或符合性聲明都要附聲明書、標識位置圖與樣張。</span></div>
+          <div class="tip"><div class="tt-h">送件</div><dl><dt>文件</dt><dd>07_01 聲明書、07_02 標籤及標識位置圖、07_03 樣張及標示位置。</dd><dt>依據</dt><dd>BSMI 106-03-08 一致性研討會紀錄</dd></dl></div>
+        </div>
+        <div class="rstep end node" tabindex="0"><span class="badge">3</span>
+          <div class="rcard"><b>上市後保存佐證、隨時可提出</b><span class="s">換料或換供應商時，重新評估並更新表格。</span></div>
+          <div class="tip"><div class="tt-h">後市場</div><dl><dt>要求</dt><dd>BSMI 要求時於限期內提出佐證資料；聲明書範本載明為 28 個工作天。</dd><dt>出錯</dt><dd>拿不出佐證或標示不實，依商品檢驗法處罰。</dd><dt>依據</dt><dd>商品檢驗法第 49 條第 2 項、第 59、60 條</dd></dl></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3 style="margin-top:0">常見已納入的商品類別</h3>
+        <ul style="margin:0;padding-left:1.2em">
+          <li>資訊類：電腦、螢幕、印表機、鍵盤、滑鼠等</li>
+          <li>影音類：電視、音響、播放器等</li>
+          <li>家電類：電毯、開飲機、電風扇等</li>
+          <li>電動機與電動工具類</li>
+          <li>照明燈具、LED 燈管</li>
+          <li>新近列入：手持充電式捕蚊拍、放置型鋰儲能裝置、30 kW 以下電動車充電設備（115-07-01）</li>
+        </ul>
+        <div class="callout info"><b>零組件</b>單獨販售的零組件本身不適用；電源供應器等獨立品目則依其品目規定。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s-time" data-act="認識制度">
+  <div class="wrap">
+    <h2 class="sticky-h"><span class="no">3</span>時間軸：臺灣與各國</h2>
+    <div class="sec-head"><p>臺灣分批納入的日期，以及外銷常遇到的國際日期。可依地區與類型複選。</p></div>
+    <div class="tl-filter" id="tlFilter"></div>
+    <div class="tl-meta"><span id="tlCount"></span><button type="button" id="tlClear">清除篩選</button><span>同一列取聯集、兩列之間取交集、未選視為全部。已發生與接下來依瀏覽器日期自動判斷；事件內容查證至 2026-10-30。</span></div>
+    <ol class="tl" id="tl"></ol>
+  </div>
+</section>
+
+<div class="act wrap"><h2>第二部　準備佐證</h2><p>六種物質、均勻材料、供應鏈證據與檢測。</p></div>
+
+<section id="s-subs" data-act="準備佐證">
+  <div class="wrap">
+    <h2 class="sticky-h"><span class="no">4</span>六種限用物質與常見藏身處</h2>
+    <div class="sec-head"><p>移到卡片看用途與高風險材料。長條代表基準值大小（鎘只有其他五種的十分之一）。</p></div>
+    <div class="subs" id="subs"></div>
+    <p class="small muted" style="margin-top:10px">ppm＝百萬分之一，1,000 ppm＝0.1 wt%。歐盟、中國、韓國等另管 4 種鄰苯二甲酸酯，臺灣 CNS 15663 目前不含。</p>
+  </div>
+</section>
+
+<section id="s-homog" data-act="準備佐證">
+  <div class="wrap">
+    <h2 class="sticky-h"><span class="no">5</span>均勻材料：一層一層算</h2>
+    <div class="sec-head"><p>點選電線剖面的每一層，再用右邊的試算看看：為什麼不能用整條電線的重量平均。</p></div>
+    <div class="split">
+      <div class="panel">
+        <svg class="cable" id="cable" viewBox="0 0 520 240" role="img" aria-label="電線剖面"></svg>
+        <div id="cableNote" class="callout info" style="margin-bottom:0"><b>點選一層</b>每一層都是一種均勻材料，基準值分別套用。</div>
+      </div>
+      <div class="panel">
+        <h3 style="margin-top:0">稀釋試算</h3>
+        <div class="field"><label for="jPb">外皮 PVC 含鉛量 <output id="jPbO"></output></label><input type="range" id="jPb" min="0" max="5000" step="100" value="2400"></div>
+        <div class="field"><label for="jW">外皮重量占整條電線 <output id="jWO"></output></label><input type="range" id="jW" min="5" max="60" step="5" value="30"><span class="hint">其餘為銅芯、絕緣層，假設不含鉛</span></div>
+        <div class="readout" id="dilOut"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s-evid" data-act="準備佐證">
+  <div class="wrap">
+    <h2 class="sticky-h"><span class="no">6</span>向供應商要什麼證據</h2>
+    <div class="sec-head"><p>BSMI 要求聲明內容有佐證，二擇一：ISO/IEC 17025 認證實驗室依 IEC 62321（CNS 15050）出具的測試報告，或品管措施。實務上依材料風險與供應商可信度決定要哪一種。</p></div>
+    <div class="split">
+      <div>
+        <h3 style="margin-top:0">點選格子：該要哪一種證據</h3>
+        <div class="mtx" id="mtx">
+          <span></span><span class="ax">供應商可信度高</span><span class="ax">供應商可信度低或未知</span>
+          <span class="ax">材料風險低</span>
+          <button type="button" class="r1" data-c="0" aria-pressed="false"><b>符合聲明</b><span>例：純金屬結構件、玻璃</span></button>
+          <button type="button" class="r2" data-c="1" aria-pressed="false"><b>材料宣告</b><span>要求列出成分與含量</span></button>
+          <span class="ax">材料風險高</span>
+          <button type="button" class="r2" data-c="2" aria-pressed="false"><b>材料宣告＋抽測</b><span>例：焊料、黃銅、PVC 線材</span></button>
+          <button type="button" class="r3" data-c="3" aria-pressed="false"><b>檢測報告</b><span>依 IEC 62321，對應料號</span></button>
+        </div>
+        <div class="callout" id="mtxNote" style="margin-top:12px"></div>
+      </div>
+      <div>
+        <h3 style="margin-top:0">三種證據的證明力</h3>
+        <ul class="ladder" id="ladder"></ul>
+        <div class="callout info"><b>品管措施</b>BSMI 舉例 EN 50581、QC 080000；歐盟現行調和標準為 EN IEC 63000:2018（取代 EN 50581）。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s-xrf" data-act="準備佐證">
+  <div class="wrap">
+    <h2 class="sticky-h"><span class="no">7</span>檢測：XRF 篩選怎麼看</h2>
+    <div class="sec-head"><p>XRF 能快速掃描。鉛、汞、鎘分三區（合格、需確認、超出）；總鉻與總溴分不出化學形態，只有合格與需確認兩區。拖動滑桿看讀值落在哪一區。</p></div>
+    <div class="split">
+      <div class="panel">
+        <div class="field"><span class="lb">物質</span>
+          <div class="mk" id="xrfSub"><label><input type="radio" name="xs" value="pb" checked>鉛（塑膠）</label><label><input type="radio" name="xs" value="cd">鎘（塑膠）</label><label><input type="radio" name="xs" value="cr">總鉻</label><label><input type="radio" name="xs" value="br">總溴</label></div></div>
+        <div class="field"><label for="xrfV">XRF 讀值 <output id="xrfVO"></output></label><input type="range" id="xrfV" min="0" max="2000" step="10" value="500"></div>
+        <div class="xrf" id="xrfBar"><div class="z1"></div><div class="z2"></div><div class="z3"></div><span class="pin" id="xrfPin"></span></div>
+        <div class="xrf-leg" id="xrfLeg"></div>
+        <div class="xrf-verdict" id="xrfVerdict"></div>
+      </div>
+      <div>
+        <div class="callout"><b>示意值</b>區間邊界依物質、基材與儀器而定，常見寫法約為基準值的 0.7 倍與 1.3 倍再加減量測誤差。實際判定以實驗室報告為準。</div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>IEC 62321 部分</th><th>測什麼</th></tr></thead>
+          <tbody>
+            <tr><td>-3-1</td><td>XRF 篩選：鉛、汞、鎘、總鉻、總溴（2026 年第 2 版新增總磷、總氯、總錫、總銻）</td></tr>
+            <tr><td>-4</td><td>汞</td></tr>
+            <tr><td>-5</td><td>鉛、鎘、鉻（化學分析）</td></tr>
+            <tr><td>-6</td><td>PBB、PBDE</td></tr>
+            <tr><td>-7-1／-7-2</td><td>六價鉻（金屬鍍層／聚合物與電子件）</td></tr>
+            <tr><td>-8</td><td>鄰苯二甲酸酯</td></tr>
+          </tbody></table></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="act wrap"><h2>第三部　拆單元與填表</h2><p>把產品分成單元、逐格判斷、套用正確的表格與備考。</p></div>
+
+<section id="s-unit" data-act="拆單元與填表">
+  <div class="wrap">
+    <h2 class="sticky-h"><span class="no">8</span>拆單元：範例</h2>
+    <div class="sec-head"><p>單元是構成設備本體的零組件。原則上 4 個以上，名稱用繁體中文（或中英並列），合起來要能代表整台產品。以下範例供參考，實際劃分由業者依產品結構決定。</p></div>
+    <div class="ex-tabs" id="exTabs"></div>
+    <div class="units" id="units"></div>
+    <p class="small muted" style="margin-top:10px">紅色標記為常見高風險材料，佐證要特別完整。</p>
+  </div>
+</section>
+
+<section id="s-table" data-act="拆單元與填表">
+  <div class="wrap">
+    <h2 class="sticky-h"><span class="no">9</span>填表：含有情況表產生器</h2>
+    <div class="sec-head"><p>點選表格中的格子切換「○、超出、－」。下方會自動套用表 1 或表 2 的備考原文，並顯示標識該加註的字樣。表格樣式與表內文字不可更改，補充說明寫在表格外。</p></div>
+    <div class="tb-tools"><button type="button" id="tbAll">全部設為 ○</button><button type="button" id="tbDemo">示範：焊料屬排除項目</button><button type="button" id="tbOver">示範：外殼鉛超出</button></div>
+    <div class="split split-tb">
+      <div class="mock" id="mock"></div>
+      <div>
+        <div class="callout info" id="tbWhich"></div>
+        <h3>商品檢驗標識示意</h3>
+        <svg class="label-mock" id="labelMock" viewBox="0 0 360 120" role="img" aria-label="商品檢驗標識示意"></svg>
+        <p class="small muted">標識與 RoHS 字樣須永久標示於本體明顯處；含有情況表可擇一放在本體、包裝、標貼或說明書（第 10 節）。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s-where" data-act="拆單元與填表">
+  <div class="wrap">
+    <h2 class="sticky-h"><span class="no">10</span>標示位置</h2>
+    <div class="sec-head"><p>含有情況表四擇一，也可以用網頁揭露；商品檢驗標識與 RoHS 字樣一律在本體。</p></div>
+    <div class="need" id="where"></div>
+    <div class="callout" style="margin-top:12px"><b>網頁揭露</b>網址要寫在本體、包裝、標貼或說明書其中一處，並簡述用途（例如「RoHS 含有情況」）；網址無法直接開到該型號頁面時，要寫明點選步驟。樣張夾頁放在說明書內時，須不易脫離。</div>
+  </div>
+</section>
+
+<div class="act wrap"><h2>第四部　申請與上市後</h2><p>送件文件、後市場、常見錯誤與問答。</p></div>
+
+<section id="s-apply" data-act="申請與上市後">
+  <div class="wrap">
+    <h2 class="sticky-h"><span class="no">11</span>申請與上市後</h2>
+    <div class="sec-head"><p>RoHS 含有標示隨商品檢驗一起送件，不必另附指定試驗室報告；佐證自行保存。</p></div>
+    <div class="split">
+      <ol class="sop" id="sop"></ol>
+      <div>
+        <h3 style="margin-top:0">罰則（商品檢驗法）</h3>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>情形</th><th>罰鍰</th><th>條次</th></tr></thead>
+          <tbody id="fines"></tbody></table></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s-faq" data-act="申請與上市後">
+  <div class="wrap">
+    <h2 class="sticky-h"><span class="no">12</span>常見錯誤與問答</h2>
+    <div class="sec-head"><p>左邊是常見誤解與正確做法，右邊是常見問題。</p></div>
+    <div class="split">
+      <ul class="mist" id="mist" style="grid-template-columns:1fr"></ul>
+      <div class="faq" id="faq"></div>
+    </div>
+  </div>
+</section>
+
+<div class="act wrap"><h2>第五部　外銷：主要經濟體比較</h2><p>勾選要賣的市場，看要管哪些物質、要哪些標誌與文件。</p></div>
+
+<section id="s-world" data-act="外銷比較">
+  <div class="wrap">
+    <h2 class="sticky-h"><span class="no">13</span>主要經濟體 RoHS 要求比較</h2>
+    <div class="sec-head"><p>勾選目標市場，下方會合併算出要管的物質、要準備的標誌與文件，比較表也只顯示勾選的地區。</p></div>
+    <div class="mk" id="mkts"></div>
+    <div class="need" id="needOut"></div>
+    <div class="tbl-wrap" style="margin-top:16px"><table class="cmp" id="cmp"></table></div>
+    <p class="small muted" style="margin-top:8px"><span class="mode d">揭露</span>超出可賣但須標示；<span class="mode p">禁止</span>超出且不屬豁免不得上市；<span class="mode m">混合</span>部分揭露、部分禁止。</p>
+  </div>
+</section>
+
+<section id="glossary" data-act="附錄">
+  <div class="wrap">
+    <h2 class="sticky-h"><span class="no">附</span>名詞解釋</h2>
+    <div class="sec-head"><p>內文加虛底線的名詞，移到上方可看簡短說明，點選會跳到這裡。</p></div>
+    <dl class="gl" id="gl"><div id="g-cns15663"><dt>CNS 15663<span class="en">Guidance to reduction of the restricted chemical substances in electrical and electronic equipment</span></dt><dd>國家標準「電機電子類設備降低限用化學物質含量指引」，現行為 102 年版；第 5 節規定含有標示。</dd><dd class="b">依據：CNS 15663（102 年版）</dd></div>
+<div id="g-rohs"><dt>RoHS<span class="en">Restriction of Hazardous Substances</span></dt><dd>電器電子產品限用有害物質的法規通稱。臺灣以 CNS 15663 第 5 節要求「含有標示」，歐盟則直接禁止超量。</dd><dd class="b">依據：CNS 15663；Directive 2011/65/EU</dd></div>
+<div id="g-ce"><dt>CE<span class="en">Conformité Européenne</span></dt><dd>歐盟符合性標誌。RoHS 由製造商自行評估（模組 A），出具 EU 符合性聲明並保存技術文件 10 年。</dd><dd class="b">依據：Directive 2011/65/EU Art. 7</dd></div>
+<div id="g-eac"><dt>EAC<span class="en">Eurasian Conformity</span></dt><dd>歐亞經濟聯盟（俄、白俄、哈、吉、亞）的符合性標誌；RoHS 以宣告辦理，申請人須在聯盟境內。</dd><dd class="b">依據：TR EAEU 037/2016</dd></div>
+<div id="g-jmoss"><dt>J-Moss<span class="en">JIS C 0950</span></dt><dd>日本對 7 類家電資訊產品的含有標示制度；超量且不屬豁免時，須貼橙色含有標誌並在網頁揭露。</dd><dd class="b">依據：JIS C 0950:2021</dd></div>
+<div id="g-efup"><dt>環保使用期限<span class="en">Environment-friendly use period (EFUP)</span></dt><dd>中國 RoHS 的標誌：全部限量內可用綠色 e，否則標橙色數字年限並附○／×有害物質表。</dd><dd class="b">依據：SJ/T 11364-2024</dd></div>
+<div id="g-bom"><dt>BOM<span class="en">Bill of Materials</span></dt><dd>產品的物料清單。RoHS 管理要列到材料層級，包括焊料、塗料、黏著劑等製程材料。</dd><dd class="b">依據：IEC 63000 第 4.3 節</dd></div>
+<div id="g-iec62321"><dt>IEC 62321<span class="en">Determination of certain substances in electrotechnical products</span></dt><dd>限用物質的檢測方法標準系列，國家標準為 CNS 15050；含 XRF 篩選、鉛鎘汞、六價鉻、溴系阻燃劑、鄰苯二甲酸酯等各部。</dd><dd class="b">依據：IEC 62321 系列</dd></div>
+<div id="g-iec63000"><dt>IEC 63000<span class="en">Technical documentation for RoHS</span></dt><dd>RoHS 技術文件的國際標準：依材料風險與供應商可信度，決定要收宣告書、材料宣告或檢測報告。</dd><dd class="b">依據：IEC 63000:2016；EN IEC 63000:2018</dd></div>
+<div id="g-xrf"><dt>XRF<span class="en">X-ray fluorescence screening</span></dt><dd>X 射線螢光篩選，可快速測鉛、汞、鎘與總鉻、總溴；結果接近基準值或測到鉻、溴時，要再做化學確認測試。</dd><dd class="b">依據：IEC 62321-3-1</dd></div>
+<div id="g-homog"><dt>均勻材料<span class="en">Homogeneous material</span></dt><dd>無法再用鑽、切、削、磨、刨等機械方法分開的單一材料，例如電線的銅芯或外皮。含量要一層一層算。</dd><dd class="b">依據：CNS 15663 第 3.4 節；歐盟 2011/65/EU Art. 3(20)</dd></div>
+<div id="g-matdecl"><dt>材料宣告<span class="en">Material declaration (IEC 62474 / IPC-1752)</span></dt><dd>供應商列出零件各材料成分與含量的文件，比單純的符合聲明更有說服力。</dd><dd class="b">依據：IEC 62474；IPC-1752</dd></div>
+<div id="g-phthal"><dt>鄰苯二甲酸酯<span class="en">Phthalates (DEHP, BBP, DBP, DIBP)</span></dt><dd>常用在 PVC 等軟質塑膠的塑化劑。歐盟、中國、韓國、阿聯管制 4 種，臺灣 CNS 15663 目前不在六種物質內。</dd><dd class="b">依據：(EU) 2015/863</dd></div>
+<div id="g-disclose"><dt>含有標示<span class="en">Marking of presence</span></dt><dd>把每個單元是否含有限用物質、是否超出基準值，用固定表格告訴消費者。臺灣的義務是誠實標示，不是禁用。</dd><dd class="b">依據：CNS 15663 第 5 節</dd></div>
+<div id="g-mark"><dt>商品檢驗標識<span class="en">BSMI inspection mark</span></dt><dd>BSMI 的檢驗合格標記。適用含有標示的商品要在識別號碼旁加註 RoHS，有超出時寫成 RoHS(Pb) 這類形式。</dd><dd class="b">依據：BSMI 各品目檢驗規定</dd></div>
+<div id="g-unit"><dt>單元<span class="en">Unit</span></dt><dd>構成設備本體的零組件。原則上劃分 4 個以上，名稱用繁體中文，合起來要能代表整台產品。</dd><dd class="b">依據：CNS 15663 第 3.9 節；BSMI 問答集</dd></div>
+<div id="g-exempt"><dt>排除項目<span class="en">Exemption</span></dt><dd>技術上暫時無法替代、允許超出基準值的特定用途，例如高熔點焊料中的鉛。臺灣依 CNS 15663 附錄 D 判定。</dd><dd class="b">依據：CNS 15663 附錄 D（D.1～D.37）</dd></div>
+<div id="g-base"><dt>百分比含量基準值<span class="en">Threshold concentration</span></dt><dd>判斷是否「超出」的門檻：鎘 0.01 wt%，其餘五種 0.1 wt%，以均勻材料的重量計算。</dd><dd class="b">依據：CNS 15663 附錄 A 表 A.1</dd></div>
+<div id="g-lab17025"><dt>ISO/IEC 17025<span class="en">Testing laboratory accreditation</span></dt><dd>測試實驗室能力的國際標準。作為佐證的檢測報告須由取得此認證的實驗室出具，國內外皆可。</dd><dd class="b">依據：BSMI RoHS 問答集</dd></div>
+<div id="g-sdoc"><dt>限用物質含有情況標示聲明書<span class="en">Declaration form 07_01</span></dt><dd>申請時繳交的表單 07_01，業者聲明含有情況表內容屬實，須蓋公司章與負責人章。</dd><dd class="b">依據：BSMI 106-03-08 一致性研討會紀錄</dd></div></dl>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <dl>
+      <dt>查證基準日</dt><dd>2026-10-30</dd>
+      <dt>臺灣依據</dt><dd>CNS 15663（102 年版）第 5 節；各品目檢驗規定；BSMI RoHS 問答集與一致性研討會紀錄；商品檢驗法</dd>
+      <dt>國際依據</dt><dd>歐盟 Directive 2011/65/EU 現行合併版與 2025 年委任指令；英國 SI 2012/3032；TR EAEU 037/2016；中國管理辦法、SJ/T 11364-2024、GB 26572-2025；JIS C 0950:2021；韓國資源循環法；印度 E-Waste Rules 2022；美國加州 HSC §25214.10 與 40 CFR 751.407</dd>
+      <dt>判定原則</dt><dd>檢驗判定依 CNS 現行版與各品目檢驗規定；豁免與到期日依各國公告為準</dd>
+    </dl>
+  </div>
+</footer>
+
+<nav class="toc" aria-label="目錄">
+  <div class="toc-panel" id="tocPanel" hidden><div class="toc-nav" id="tocNav"><div class="nav-ind no-anim" id="navInd" aria-hidden="true"></div></div></div>
+  <button class="toc-fab" id="tocFab" type="button" aria-expanded="false" aria-controls="tocPanel" aria-label="目錄">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+  </button>
+</nav>
+<div id="gtip" role="tooltip"></div>
+
+<script>
+var DATA={"asof":"2026-10-30","todo":[{"t":"確認商品品目的檢驗標準列有 CNS 15663 第 5 節","s":"BSMI 品目查詢或各品目檢驗規定"},{"t":"建立到材料層級的 BOM，標出高風險材料","s":"焊料、黃銅、PVC 線材、鍍層、阻燃塑膠"},{"t":"依風險向供應商取得聲明、材料宣告或檢測報告","s":"檢測報告須由 ISO/IEC 17025 認證實驗室出具"},{"t":"劃分 4 個以上單元並逐格判斷","s":"以均勻材料計算，排除項目依附錄 D"},{"t":"製作含有情況表與樣張，決定標示位置","s":"表 1 或表 2 的備考整組照抄"},{"t":"送件 07_01～07_03，佐證資料自行保存","s":"BSMI 要求時限期內提出（聲明書範本為 28 個工作天）"}],"subs":[{"k":"pb","sym":"Pb","nm":"鉛","lim":"0.1 wt%","ppm":"1,000 ppm","bar":100,"where":"焊料、黃銅與易切削鋼、PVC 安定劑、玻璃與陶瓷電子元件","use":"焊接、改善切削性、塑膠安定劑、玻璃釉料","risk":"含鉛焊點、銅合金接頭、PVC 線材外皮","test":"XRF 篩選；IEC 62321-5 化學確認"},{"k":"hg","sym":"Hg","nm":"汞","lim":"0.1 wt%","ppm":"1,000 ppm","bar":100,"where":"螢光燈管、冷陰極燈管、部分開關與感測器","use":"放電燈管、傾斜開關","risk":"舊式背光模組、照明光源","test":"XRF 篩選；IEC 62321-4"},{"k":"cd","sym":"Cd","nm":"鎘","lim":"0.01 wt%","ppm":"100 ppm","bar":10,"where":"塑膠顏料（黃、橘、紅）、PVC 安定劑、電鍍層、電接點","use":"顏料、安定劑、防蝕鍍層","risk":"彩色塑膠件、線材外皮、舊式接點","test":"XRF 篩選；IEC 62321-5"},{"k":"cr","sym":"Cr⁶⁺","nm":"六價鉻","lim":"0.1 wt%","ppm":"1,000 ppm","bar":100,"where":"金屬螺絲與鍍鋅件的黃色或橄欖色鈍化層","use":"防鏽鈍化處理","risk":"黃色鈍化螺絲、鍍鋅鋼板","test":"XRF 只能測總鉻；IEC 62321-7-1／-7-2 確認"},{"k":"pbb","sym":"PBB","nm":"多溴聯苯","lim":"0.1 wt%","ppm":"1,000 ppm","bar":100,"where":"舊式溴系阻燃塑膠","use":"阻燃劑","risk":"來源不明的阻燃外殼與電路板","test":"XRF 只能測總溴；IEC 62321-6 確認"},{"k":"pbde","sym":"PBDE","nm":"多溴二苯醚","lim":"0.1 wt%","ppm":"1,000 ppm","bar":100,"where":"溴系阻燃塑膠、線材、電路板","use":"阻燃劑","risk":"阻燃 ABS／HIPS 外殼、線材","test":"XRF 只能測總溴；IEC 62321-6 確認"}],"cable":[{"t":"外皮（PVC）","r":92,"c":"#7C8B84","x":"PVC 外皮是一種均勻材料，含量只以外皮自身的重量計算。","risk":"鉛、鎘（安定劑）"},{"t":"遮蔽層（編織銅網）","r":74,"c":"#C98A3A","x":"編織網可與外皮分開，是另一種均勻材料。","risk":"鉛（銅合金）"},{"t":"絕緣層（PE）","r":52,"c":"#E8E2D0","x":"包覆芯線的絕緣塑膠，單獨計算。","risk":"鎘（顏料）、溴系阻燃劑"},{"t":"導體（銅芯）","r":26,"c":"#D07A2C","x":"銅芯可與絕緣層分開；若有鍍錫層，鍍層又是另一種均勻材料。","risk":"鉛（鍍層、銅合金）"}],"matrix":[{"t":"低風險、可信供應商","x":"收供應商符合聲明即可；聲明要對應料號、簽署日期。"},{"t":"低風險、可信度不明","x":"要求材料宣告（列出成分與含量），必要時加簽合約條款。"},{"t":"高風險、可信供應商","x":"材料宣告加上定期抽測；換料或換製程時重新取得報告。"},{"t":"高風險、可信度不明","x":"取得 ISO/IEC 17025 認證實驗室依 IEC 62321 出具、料號對得上的檢測報告，或自行送測。"}],"evidence":[{"t":"檢測報告（IEC 62321）","w":100,"x":"證明力最強，但只代表送測的那一批；報告料號、日期要對得上 BOM。"},{"t":"材料宣告（IEC 62474、IPC-1752）","w":66,"x":"列出各材料成分與含量，可逐一比對基準值。"},{"t":"供應商符合聲明","w":33,"x":"只是聲明，適合低風險材料與可信供應商。"}],"xrf":{"pb":{"lo":700,"hi":1300,"max":2000,"over":"超出","okt":"可判未超出基準值。","hit":"落在超出區：化學確認後若仍超出，表內填「超出0.1 wt %」。","note":"鉛的基準值為 1,000 ppm。"},"cd":{"lo":70,"hi":130,"max":300,"over":"超出","okt":"可判未超出基準值。","hit":"落在超出區：化學確認後若仍超出，表內填「超出0.01 wt %」。","note":"鎘的基準值為 100 ppm，是其他物質的十分之一。"},"cr":{"lo":700,"hi":700,"max":2000,"over":"需確認","okt":"總鉻已低於門檻，六價鉻必然更低。","hit":"落在需確認區：總鉻偏高不代表六價鉻超出，須依 IEC 62321-7-1／-7-2 測六價鉻。","note":"XRF 分不出三價與六價鉻，所以總鉻只有「合格」與「需確認」兩區。"},"br":{"lo":300,"hi":300,"max":2000,"over":"需確認","okt":"總溴已很低，PBB、PBDE 不致超出。","hit":"落在需確認區：總溴偏高可能來自其他溴系阻燃劑，須依 IEC 62321-6 測 PBB、PBDE。","note":"XRF 分不出溴的化學形態，所以總溴只有「合格」與「需確認」兩區；示意門檻僅供理解。"}},"units":[{"t":"桌上型電腦","u":[{"n":"機殼","d":"金屬與塑膠外框","risk":""},{"n":"主機板組件","d":"電路板、焊點、插槽","risk":"焊料"},{"n":"電源供應器","d":"獨立功能模組","risk":"焊料、線材"},{"n":"儲存裝置","d":"硬碟或固態硬碟","risk":""},{"n":"記憶體模組","d":"記憶體條","risk":""},{"n":"內部線材","d":"SATA、電源線","risk":"PVC 外皮"}]},{"t":"液晶顯示器","u":[{"n":"顯示面板模組","d":"液晶面板、背光模組","risk":""},{"n":"塑膠外殼","d":"前框、後蓋","risk":"阻燃塑膠"},{"n":"電路板","d":"主驅動板、電源板","risk":"焊料"},{"n":"內部線材","d":"排線","risk":""},{"n":"支架與底座","d":"金屬或塑膠支撐件","risk":"鈍化螺絲"},{"n":"外接電源供應器","d":"使用外接變壓器時","risk":"線材"}]},{"t":"LED 燈泡","u":[{"n":"LED 與基板","d":"發光元件","risk":"焊料"},{"n":"驅動電路","d":"驅動電路板","risk":"焊料"},{"n":"燈罩","d":"PC 或玻璃","risk":""},{"n":"散熱器","d":"鋁或陶瓷","risk":"鋁合金含鉛"},{"n":"燈頭","d":"金屬與絕緣部分","risk":"黃銅"}]},{"t":"冷氣機","u":[{"n":"室內機組件","d":"外殼、風扇、蒸發器","risk":""},{"n":"室外機組件","d":"外殼、壓縮機、冷凝器","risk":"銅合金"},{"n":"控制電路板","d":"室內外控制板","risk":"焊料"},{"n":"遙控器","d":"獨立控制單元","risk":""},{"n":"冷媒管線","d":"銅管與保溫材","risk":""}]},{"t":"電冰箱","u":[{"n":"箱體與門板","d":"金屬外殼、內膽、發泡層","risk":""},{"n":"壓縮機模組","d":"製冷核心","risk":"銅合金"},{"n":"溫控電路板","d":"溫度控制","risk":"焊料"},{"n":"層架與抽屜","d":"玻璃或塑膠","risk":""},{"n":"散熱排管","d":"背部或底部金屬管","risk":""}]},{"t":"洗衣機","u":[{"n":"機身外殼與上蓋","d":"金屬或塑膠主體","risk":""},{"n":"內外槽","d":"不鏽鋼或塑膠","risk":""},{"n":"馬達與傳動組件","d":"驅動核心","risk":"銅合金"},{"n":"控制面板與電路板","d":"操作介面","risk":"焊料"},{"n":"進排水管","d":"塑膠或橡膠","risk":"PVC"}]},{"t":"微波爐","u":[{"n":"外殼與爐門","d":"金屬腔體、玻璃門窗","risk":""},{"n":"磁控管","d":"產生微波","risk":""},{"n":"轉盤與支架","d":"玻璃轉盤","risk":""},{"n":"高壓變壓器與電容","d":"高壓元件","risk":""},{"n":"操作面板組件","d":"按鍵、顯示、控制電路","risk":"焊料"}]},{"t":"電風扇","u":[{"n":"馬達組件","d":"馬達本體與線圈","risk":"銅合金"},{"n":"扇葉","d":"塑膠","risk":""},{"n":"前後網罩","d":"金屬網","risk":"鈍化處理"},{"n":"底座與支撐桿","d":"塑膠或金屬","risk":""},{"n":"開關與電路","d":"按鍵或旋鈕","risk":"焊料"},{"n":"電源線","d":"外部線材","risk":"PVC 外皮"}]}],"tableUnits":["外殼","電路板組件","電源線","馬達組件","按鍵開關"],"notes":{"t1":["備考1.〝超出0.1 wt %〞及〝超出0.01 wt %〞係指限用物質之百分比含量超出百分比含量基準值。","備考2.〝○〞係指該項限用物質之百分比含量未超出百分比含量基準值。","備考3.〝－〞係指該項限用物質為排除項目。"],"t2":["備考1.〝○〞係指該項限用物質之百分比含量未超出百分比含量基準值。","備考2.〝－〞係指該項限用物質為排除項目。"]},"where":[{"t":"商品本體","x":"直接印製或貼附在產品上。"},{"t":"包裝","x":"印在外包裝盒上。"},{"t":"標貼","x":"以標貼方式貼附。"},{"t":"說明書","x":"放在使用說明書；夾頁須不易脫離。"},{"t":"網頁揭露","x":"網址須標在上述其中一處，並簡述用途。"},{"t":"標識與 RoHS 字樣","x":"一律永久標示於本體明顯處。"}],"apply":[{"t":"準備含有情況表與佐證","c":"","do":"依 BOM 與佐證完成表格；佐證二擇一：測試報告或品管措施。","basis":"BSMI RoHS 問答集"},{"t":"填寫 07_01 聲明書","c":"check","do":"蓋公司章與負責人章，聲明表格內容屬實。","basis":"106-03-08 一致性研討會紀錄"},{"t":"附 07_02 標籤及標識位置圖","c":"","do":"標示商品檢驗標識與 RoHS 字樣在本體的位置。","basis":"同上"},{"t":"附 07_03 樣張及標示位置","c":"","do":"提供含有情況表樣張，並說明放在本體、包裝、標貼、說明書或網頁。","basis":"同上"},{"t":"隨檢驗申請送件","c":"","do":"型式認可、驗證登錄或符合性聲明都要附；不必另附指定試驗室報告。","basis":"BSMI RoHS 問答集"},{"t":"上市後保存佐證","c":"deadline","do":"BSMI 要求時於限期內提出佐證；聲明書範本載明為 28 個工作天。","basis":"商品檢驗法第 49 條第 2 項；BSMI 聲明書範本"},{"t":"換料或換供應商時更新","c":"done","do":"重新評估並更新含有情況表與佐證。","basis":"IEC 63000 第 4.3 節"}],"fines":[{"t":"標示不符規定，限期改正而未改正","f":"10 萬～100 萬元","a":"第 59 條第 1 項"},{"t":"標示不實","f":"15 萬～150 萬元","a":"第 59 條第 2 項"},{"t":"商品不符檢驗規定（第 60 條第 1 項各款）","f":"20 萬～200 萬元","a":"第 60 條"},{"t":"第 60 條情形且商品總價未達 10 萬元","f":"總價 2 倍以下，最低 1 萬元","a":"第 60-1 條"},{"t":"得命限期回收或改正","f":"—","a":"第 63 條"}],"mistakes":[{"w":"超出基準值就不能賣。","r":"臺灣是揭露制：如實標示「超出」並在標識加註 RoHS(Pb) 等，仍可銷售。"},{"w":"用零件或整機重量算含量。","r":"以均勻材料計算，例如電線外皮單獨算。"},{"w":"只有出現「－」才要寫備考。","r":"備考是表格的一部分，依表 1 或表 2 整組照抄。"},{"w":"歐盟新的豁免也可以直接用。","r":"臺灣依 CNS 15663 附錄 D；歐盟新增項目要等 CNS 修訂。"},{"w":"一定要附指定試驗室的報告。","r":"送件不必附；佐證為測試報告或品管措施二擇一，自行保存。"},{"w":"單元分得越細越好，或只分一兩個。","r":"原則 4 個以上，能代表整台產品即可，用繁體中文命名。"},{"w":"XRF 測到鉻或溴就是超出。","r":"XRF 只測總鉻、總溴；要確認測試才能判定六價鉻或 PBB／PBDE。"},{"w":"改了表格欄位比較清楚。","r":"表格樣式與表內文字不可更改，補充說明寫在表格外。"}],"faq":[{"q":"供應商不給資料怎麼辦？","a":"可以改找能提供佐證的供應商，或自行把零件送 ISO/IEC 17025 認證實驗室依 IEC 62321 檢測。沒有佐證時，不宜在聲明書中宣告。"},{"q":"表格要用表 1 還是表 2？","a":"表內只要有任何一格「超出」，就用表 1（三條備考）；否則用表 2（兩條備考），包括全部 ○ 或只有排除項目「－」的情形。"},{"q":"可以只放網頁嗎？","a":"可以用網頁揭露，但網址必須標示在本體、包裝、標貼或說明書其中一處，並簡述用途；標識與 RoHS 字樣仍要在本體。"},{"q":"外銷歐盟也適用這張表嗎？","a":"不適用。歐盟是禁止制，另管 4 種鄰苯二甲酸酯，要以 CE、EU 符合性聲明與技術文件證明符合（見第 13 節）。"},{"q":"換了一個零件要重新申請嗎？","a":"要先評估是否影響含有情況：若表格內容改變，須依變更程序更新樣張與聲明；佐證資料一併更新。"},{"q":"超出基準值會被環保單位管嗎？","a":"CNS 15663 只要求標示；但若含量達到環境部毒性化學物質管制濃度，仍須遵守相關環保法規。"}],"regions":{"tw":"臺灣","eu":"歐盟、英國","cn":"中國","jk":"日本、韓國","other":"其他"},"types":{"law":"法規生效","ex":"豁免到期","std":"標準改版"},"timeline":[{"d":"2011-07-21","t":"歐盟 RoHS 2（2011/65/EU）生效","x":"取代 2002/95/EC，CE 標誌納入 RoHS。","reg":"eu","type":"law"},{"d":"2013-07-30","t":"CNS 15663（102 年版）","x":"現行版；各品目檢驗規定引用「102 年版」。","reg":"tw","type":"std"},{"d":"2015-12-29","t":"首批品目公告","x":"自動資料處理機等 6 項納入含有標示；舊標準 106-07-01 停止適用。","reg":"tw","type":"law"},{"d":"2016-07-01","t":"中國 RoHS 管理辦法施行","x":"全部電器電子產品須標示有害物質與環保使用期限。","reg":"cn","type":"law"},{"d":"2017-01-04","t":"資訊與影音類 92 項公告","x":"無線電鍵盤等。","reg":"tw","type":"law"},{"d":"2017-02-24","t":"家電類 63 項公告","x":"電毯等。","reg":"tw","type":"law"},{"d":"2017-03-27","t":"電動機等 32 項公告","x":"電動機與電動工具等。","reg":"tw","type":"law"},{"d":"2017-07-01","t":"首批品目舊標準停止適用","x":"自動資料處理機等 6 項全面要求含有標示。","reg":"tw","type":"law"},{"d":"2018-01-01","t":"106 年公告各批舊標準停止適用","x":"資訊與影音、家電、電動機等各批全面要求含有標示。","reg":"tw","type":"law","key":true},{"d":"2019-07-22","t":"歐盟開放範圍與 4 種鄰苯二甲酸酯","x":"第 11 類其他電器電子設備納入；DEHP、BBP、DBP、DIBP 開始管制。","reg":"eu","type":"law","key":true},{"d":"2020-03-01","t":"歐亞經濟聯盟 RoHS 強制","x":"TR EAEU 037/2016，以 EAC 宣告辦理。","reg":"other","type":"law"},{"d":"2021-07-01","t":"韓國管制 4 種鄰苯二甲酸酯","x":"限用物質由 6 種增為 10 種。","reg":"jk","type":"law"},{"d":"2021-07-22","t":"歐盟醫療與監控儀器適用鄰苯","x":"第 8、9 類。","reg":"eu","type":"law"},{"d":"2023-04-01","t":"印度 E-Waste Rules 2022 施行","x":"Rule 16 管 6 種物質。","reg":"other","type":"law"},{"d":"2024-10-01","t":"英國無限期接受 CE","x":"GB 市場可用 CE 或 UKCA。","reg":"eu","type":"law"},{"d":"2025-04-01","t":"中國 SJ/T 11364-2024 施行","x":"標示擴為 10 種物質，新增二維碼與網頁標示。","reg":"cn","type":"std"},{"d":"2026-01-01","t":"中國限量加入 4 種鄰苯","x":"GB/T 26572 第 1 號修改單實施（推薦性標準）。","reg":"cn","type":"std"},{"d":"2026-05-06","t":"IEC 62321-3-1 第 2 版","x":"XRF 篩選新增總磷、總氯、總錫、總銻。","reg":"other","type":"std"},{"d":"2026-05-28","t":"中國達標管理目錄 2026 年版","x":"管控品項擴為 33 種。","reg":"cn","type":"law"},{"d":"2026-07-01","t":"捕蚊拍、鋰儲能、電動車充電設備納入","x":"手持充電式捕蚊拍、放置型鋰儲能裝置、30 kW 以下電動車充電設備。","reg":"tw","type":"law","key":true},{"d":"2026-10-31","t":"美國 TSCA：PIP(3:1) 物品流通禁令","x":"部分電子用途另有排除與較晚期限。","reg":"other","type":"law"},{"d":"2026-12-11","t":"歐盟豁免 6(a) 鋼中含鉛到期","x":"改由 6(a)-I 切削用鋼（≤0.35%）、6(a)-II 批次熱浸鍍鋅件（≤0.2%）承接；兩項自 2026-07-01 起已適用。","reg":"eu","type":"ex","key":true},{"d":"2027-06-30","t":"歐盟多項鉛豁免到期","x":"6(a)-I、6(a)-II、6(c) 銅合金、7(a) 高熔點焊料、7(c)-I 玻璃陶瓷元件；已依規定申請續期者，在執委會決定前仍有效。兒童可能放入口中的消費品不適用 6 系列豁免。","reg":"eu","type":"ex","key":true},{"d":"2027-07-01","t":"照明燈具 4 項納入","x":"含露營燈具。","reg":"tw","type":"law"},{"d":"2027-07-01","t":"行動電源舊標準停止適用","x":"行動電源檢驗規定修正草案（項次 1）。","reg":"tw","type":"law","tag":"草案"},{"d":"2027-08-01","t":"中國強制國標 GB 26572-2025 施行","x":"2025-08-01 發布，取代 GB/T 26572-2011；把標示要求併入強制國標；新增目錄品項同日實施合格評定。","reg":"cn","type":"law","key":true},{"d":"2027-08-13","t":"歐盟 2025/2456 修正適用","x":"豁免科學評估改由 ECHA 處理。","reg":"eu","type":"law"},{"d":"2027-12-31","t":"歐盟 7(a)、7(c) 細分項目到期","x":"7(a)-I～VII 高熔點焊料細分項目、7(c)-II 等。","reg":"eu","type":"ex"},{"d":"2028-01-01","t":"韓國擴及所有低電壓產品；臺灣行動電源新納入品項","x":"韓國含量基準全面適用；臺灣行動電源修正草案擬自 117-01-01 新納入項次 2～6。","reg":"jk","type":"law","tag":"含草案"}],"world":[{"k":"tw","n":"臺灣","mode":"d","law":"CNS 15663 第 5 節（各品目檢驗規定）","subs":["Pb","Hg","Cd","Cr6+","PBB","PBDE"],"subsTxt":"6 種；Cd 0.01%，其餘 0.1%","scope":"列入 CNS 15663 第 5 節的應施檢驗品目","mark":"商品檢驗標識＋RoHS／RoHS(Pb) 等","markShort":"標識加註 RoHS","doc":"07_01 聲明書、標識位置圖、樣張；佐證自存","docShort":"聲明書與含有情況表","enf":"BSMI；罰鍰最高 200 萬元，得命回收","key":"106-07-01 首批；107-01-01 106 年各批；115-07-01 新增 3 項"},{"k":"eu","n":"歐盟","mode":"p","law":"Directive 2011/65/EU＋(EU) 2015/863","subs":["Pb","Hg","Cd","Cr6+","PBB","PBDE","DEHP","BBP","DBP","DIBP"],"subsTxt":"10 種；Cd 0.01%，其餘 0.1%","scope":"全部電器電子設備（Art. 2(4) 排除項除外）","mark":"CE","markShort":"CE","doc":"模組 A、EU 符合性聲明、技術文件保存 10 年；EN IEC 63000","docShort":"EU DoC＋技術文件","enf":"各會員國市場監督","key":"2026-12-11 豁免 6(a) 到期；2027-06-30 多項鉛豁免到期"},{"k":"uk","n":"英國","mode":"p","law":"RoHS Regulations 2012（SI 2012/3032）","subs":["Pb","Hg","Cd","Cr6+","PBB","PBDE","DEHP","BBP","DBP","DIBP"],"subsTxt":"10 種，同歐盟","scope":"同歐盟；GB 有獨立豁免，北愛爾蘭沿用歐盟","mark":"UKCA 或 CE（依賴的歐盟豁免在 GB 無對應時不承認 CE）","markShort":"UKCA 或 CE","doc":"符合性聲明、技術文件保存 10 年","docShort":"DoC＋技術文件","enf":"OPSS","key":"2024-10-01 起無限期接受 CE（有例外）"},{"k":"eaeu","n":"歐亞經濟聯盟","mode":"p","law":"TR EAEU 037/2016","subs":["Pb","Hg","Cd","Cr6+","PBB","PBDE"],"subsTxt":"6 種","scope":"附件正面表列產品","mark":"EAC","markShort":"EAC","doc":"EAC 宣告；申請人須在聯盟境內","docShort":"EAC 宣告","enf":"各會員國主管機關","key":"2020-03-01 強制"},{"k":"cn","n":"中國","mode":"m","law":"管理辦法（2016）；SJ/T 11364-2024；GB 26572-2025","subs":["Pb","Hg","Cd","Cr6+","PBB","PBDE","DEHP","BBP","DBP","DIBP"],"subsTxt":"10 種","scope":"標示：全部電器電子產品；限量：達標管理目錄 33 種","mark":"綠色 e 或橙色環保使用期限＋○／×表","markShort":"環保使用期限標誌＋有害物質表","doc":"目錄品項：自我聲明或國推認證，上傳公共服務平台","docShort":"目錄品項須合格評定","enf":"市場監管、海關等","key":"2027-08-01 GB 26572-2025 施行（標示要求併入強制國標）"},{"k":"jp","n":"日本","mode":"d","law":"資源有效利用促進法；JIS C 0950:2021（J-Moss）","subs":["Pb","Hg","Cd","Cr6+","PBB","PBDE"],"subsTxt":"6 種","scope":"7 類：個人電腦、空調、電視、冰箱、洗衣機、乾衣機、微波爐","mark":"超量且非豁免：橙色含有標誌（2021 版起加註年份）","markShort":"J-Moss 含有標誌（超量時）","doc":"日文網頁揭露；超量但屬豁免時免標誌、仍須揭露","docShort":"網頁揭露","enf":"經濟產業省","key":"JIS C 0950:2021"},{"k":"kr","n":"韓國","mode":"p","law":"電氣電子產品及汽車資源循環法","subs":["Pb","Hg","Cd","Cr6+","PBB","PBDE","DEHP","BBP","DBP","DIBP"],"subsTxt":"10 種","scope":"現行 49 種產品；2028-01-01 起所有低電壓電器電子產品","mark":"無專用標誌","markShort":"","doc":"製造商或進口商自我確認並公告","docShort":"自我確認公告","enf":"環境部","key":"2021-07-01 鄰苯；2028-01-01 範圍全面擴大（之前製造或輸入者依舊規定）"},{"k":"in","n":"印度","mode":"p","law":"E-Waste (Management) Rules 2022 第 16 條","subs":["Pb","Hg","Cd","Cr6+","PBB","PBDE"],"subsTxt":"6 種","scope":"附表 I 七大類產品","mark":"無專用標誌","markShort":"","doc":"自我宣告；使用文件附符合聲明","docShort":"說明書附符合聲明","enf":"CPCB 隨機抽測（費用由生產者負擔）","key":"2023-04-01"},{"k":"us","n":"美國","mode":"m","law":"無聯邦 RoHS；加州 HSC §25214.10；TSCA 40 CFR 751","subs":["Pb","Hg","Cd","Cr6+"],"subsTxt":"加州：4 種重金屬（顯示裝置）","scope":"加州：螢幕大於 4 吋的顯示裝置；TSCA 另管特定物質","mark":"無","markShort":"","doc":"依歐盟 RoHS 判定；部分州要求登錄","docShort":"加州依歐盟判定","enf":"加州 DTSC；EPA","key":"2026-10-31 TSCA PIP(3:1) 流通禁令；電路板與電線線束另有排除，替換零件與商用設備期限較晚"},{"k":"ae","n":"阿聯","mode":"p","law":"Cabinet Resolution No. 10 of 2017","subs":["Pb","Hg","Cd","Cr6+","PBB","PBDE","DEHP","BBP","DBP","DIBP"],"subsTxt":"10 種","scope":"低電壓電器電子產品","mark":"無專用標誌","markShort":"","doc":"ECAS 符合性證書","docShort":"ECAS","enf":"工業與先進技術部 MOIAT","key":"2017-04-27 刊登"},{"k":"sa","n":"沙烏地","mode":"p","law":"SASO RoHS 技術法規","subs":["Pb","Hg","Cd","Cr6+","PBB","PBDE"],"subsTxt":"6 種","scope":"7 類產品，分階段","mark":"無專用標誌","markShort":"","doc":"經 SABER 取得產品與批次符合證書","docShort":"SABER 證書","enf":"SASO","key":"2022-07～2023-12 分階段"}]};
+var GLOSS=[{"key":"rohs","name":"RoHS","en":"Restriction of Hazardous Substances","re":"RoHS","one":"電器電子產品限用有害物質的法規通稱。臺灣以 CNS 15663 第 5 節要求「含有標示」，歐盟則直接禁止超量。","basis":"CNS 15663；Directive 2011/65/EU","group":"制度"},{"key":"cns15663","name":"CNS 15663","en":"Guidance to reduction of the restricted chemical substances in electrical and electronic equipment","re":"CNS 15663","one":"國家標準「電機電子類設備降低限用化學物質含量指引」，現行為 102 年版；第 5 節規定含有標示。","basis":"CNS 15663（102 年版）","group":"制度"},{"key":"disclose","name":"含有標示","en":"Marking of presence","re":"含有標示|含有情況標示","one":"把每個單元是否含有限用物質、是否超出基準值，用固定表格告訴消費者。臺灣的義務是誠實標示，不是禁用。","basis":"CNS 15663 第 5 節","group":"標示"},{"key":"base","name":"百分比含量基準值","en":"Threshold concentration","re":"百分比含量基準值|基準值","one":"判斷是否「超出」的門檻：鎘 0.01 wt%，其餘五種 0.1 wt%，以均勻材料的重量計算。","basis":"CNS 15663 附錄 A 表 A.1","group":"標示"},{"key":"homog","name":"均勻材料","en":"Homogeneous material","re":"均勻材料|均質材料|均勻物質","one":"無法再用鑽、切、削、磨、刨等機械方法分開的單一材料，例如電線的銅芯或外皮。含量要一層一層算。","basis":"CNS 15663 第 3.4 節；歐盟 2011/65/EU Art. 3(20)","group":"技術"},{"key":"unit","name":"單元","en":"Unit","re":"單元","one":"構成設備本體的零組件。原則上劃分 4 個以上，名稱用繁體中文，合起來要能代表整台產品。","basis":"CNS 15663 第 3.9 節；BSMI 問答集","group":"標示"},{"key":"exempt","name":"排除項目","en":"Exemption","re":"排除項目|豁免","one":"技術上暫時無法替代、允許超出基準值的特定用途，例如高熔點焊料中的鉛。臺灣依 CNS 15663 附錄 D 判定。","basis":"CNS 15663 附錄 D（D.1～D.37）","group":"標示"},{"key":"mark","name":"商品檢驗標識","en":"BSMI inspection mark","re":"商品檢驗標識","one":"BSMI 的檢驗合格標記。適用含有標示的商品要在識別號碼旁加註 RoHS，有超出時寫成 RoHS(Pb) 這類形式。","basis":"BSMI 各品目檢驗規定","group":"標示"},{"key":"sdoc","name":"限用物質含有情況標示聲明書","en":"Declaration form 07_01","re":"限用物質含有情況標示聲明書|聲明書","one":"申請時繳交的表單 07_01，業者聲明含有情況表內容屬實，須蓋公司章與負責人章。","basis":"BSMI 106-03-08 一致性研討會紀錄","group":"申請"},{"key":"lab17025","name":"ISO/IEC 17025","en":"Testing laboratory accreditation","re":"ISO/IEC 17025|17025","one":"測試實驗室能力的國際標準。作為佐證的檢測報告須由取得此認證的實驗室出具，國內外皆可。","basis":"BSMI RoHS 問答集","group":"申請"},{"key":"iec62321","name":"IEC 62321","en":"Determination of certain substances in electrotechnical products","re":"IEC 62321|CNS 15050","one":"限用物質的檢測方法標準系列，國家標準為 CNS 15050；含 XRF 篩選、鉛鎘汞、六價鉻、溴系阻燃劑、鄰苯二甲酸酯等各部。","basis":"IEC 62321 系列","group":"技術"},{"key":"xrf","name":"XRF","en":"X-ray fluorescence screening","re":"XRF","one":"X 射線螢光篩選，可快速測鉛、汞、鎘與總鉻、總溴；結果接近基準值或測到鉻、溴時，要再做化學確認測試。","basis":"IEC 62321-3-1","group":"技術"},{"key":"iec63000","name":"IEC 63000","en":"Technical documentation for RoHS","re":"IEC 63000|EN IEC 63000","one":"RoHS 技術文件的國際標準：依材料風險與供應商可信度，決定要收宣告書、材料宣告或檢測報告。","basis":"IEC 63000:2016；EN IEC 63000:2018","group":"技術"},{"key":"matdecl","name":"材料宣告","en":"Material declaration (IEC 62474 / IPC-1752)","re":"材料宣告","one":"供應商列出零件各材料成分與含量的文件，比單純的符合聲明更有說服力。","basis":"IEC 62474；IPC-1752","group":"技術"},{"key":"bom","name":"BOM","en":"Bill of Materials","re":"BOM|物料清單","one":"產品的物料清單。RoHS 管理要列到材料層級，包括焊料、塗料、黏著劑等製程材料。","basis":"IEC 63000 第 4.3 節","group":"技術"},{"key":"phthal","name":"鄰苯二甲酸酯","en":"Phthalates (DEHP, BBP, DBP, DIBP)","re":"鄰苯二甲酸酯","one":"常用在 PVC 等軟質塑膠的塑化劑。歐盟、中國、韓國、阿聯管制 4 種，臺灣 CNS 15663 目前不在六種物質內。","basis":"(EU) 2015/863","group":"技術"},{"key":"ce","name":"CE","en":"Conformité Européenne","re":"CE","one":"歐盟符合性標誌。RoHS 由製造商自行評估（模組 A），出具 EU 符合性聲明並保存技術文件 10 年。","basis":"Directive 2011/65/EU Art. 7","group":"國際"},{"key":"efup","name":"環保使用期限","en":"Environment-friendly use period (EFUP)","re":"環保使用期限|EFUP","one":"中國 RoHS 的標誌：全部限量內可用綠色 e，否則標橙色數字年限並附○／×有害物質表。","basis":"SJ/T 11364-2024","group":"國際"},{"key":"jmoss","name":"J-Moss","en":"JIS C 0950","re":"J-Moss","one":"日本對 7 類家電資訊產品的含有標示制度；超量且不屬豁免時，須貼橙色含有標誌並在網頁揭露。","basis":"JIS C 0950:2021","group":"國際"},{"key":"eac","name":"EAC","en":"Eurasian Conformity","re":"EAC","one":"歐亞經濟聯盟（俄、白俄、哈、吉、亞）的符合性標誌；RoHS 以宣告辦理，申請人須在聯盟境內。","basis":"TR EAEU 037/2016","group":"國際"}];
+(function(){
+'use strict';
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return [].slice.call((r||document).querySelectorAll(s))}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+var root=document.documentElement;
+function curTheme(){var a=root.getAttribute('data-theme');if(a)return a;return matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
+function paintTheme(){var t=curTheme();$('#themeLbl').textContent=t==='dark'?'淺色':'深色';$('#themeBtn').setAttribute('aria-pressed',t==='dark'?'true':'false')}
+$('#themeBtn').addEventListener('click',function(){var t=curTheme()==='dark'?'light':'dark';root.setAttribute('data-theme',t);store('rohs-theme',t);paintTheme()});paintTheme();
+function today(){var d=new Date();function p(n){return (n<10?'0':'')+n}return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())}
+function roc(s){var a=s.split('-');return (a[0]-1911)+'-'+a[1]+(a[2]?'-'+a[2]:'')}
+
+/* paths */
+var PATHS=[[['s-what','是什麼'],['s-who','要不要做'],['s-subs','六種物質'],['s-homog','均勻材料']],
+  [['s-evid','佐證'],['s-unit','拆單元'],['s-table','填表'],['s-where','標示位置'],['s-apply','申請']],
+  [['s-evid','證據矩陣'],['s-xrf','XRF'],['s-homog','均勻材料'],['s-faq','常見錯誤']],
+  [['s-world','各國比較'],['s-time','時間軸']]];
+$$('#paths .path').forEach(function(b){b.addEventListener('click',function(){$$('#paths .path').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});var p=PATHS[+b.dataset.p];store('rohs-path',b.dataset.p);
+  $('#pathSteps').innerHTML=p.map(function(s,i){return (i?'<li class="sep">/</li>':'')+'<li><a href="#'+s[0]+'">'+(i+1)+'　'+s[1]+'</a></li>'}).join('')})});
+(function(){var b=$('#paths .path[data-p="'+(store('rohs-path')||'0')+'"]');if(b)b.click()})();
+
+/* todo */
+(function(){var saved={};try{saved=JSON.parse(store('rohs-todo')||'{}')}catch(e){}
+  $('#todo').innerHTML=DATA.todo.map(function(t,i){return '<li><label><input type="checkbox" data-i="'+i+'"'+(saved[i]?' checked':'')+'><span class="txt">'+esc(t.t)+'<span class="src">'+esc(t.s)+'</span></span></label></li>'}).join('');
+  function cnt(){$('#todoCnt').textContent=$$('#todo input:checked').length+' / '+DATA.todo.length}
+  $('#todo').addEventListener('change',function(e){saved[e.target.dataset.i]=e.target.checked;store('rohs-todo',JSON.stringify(saved));cnt()});cnt()})();
+
+/* substances */
+$('#subs').innerHTML=DATA.subs.map(function(s){return '<div class="sub node'+(s.k==='cd'?' cd':'')+'" tabindex="0"><div class="sym">'+esc(s.sym)+'</div><div class="nm">'+esc(s.nm)+'</div><div class="lim">'+esc(s.lim)+'</div><div class="ppm">'+esc(s.ppm)+'</div><div class="ppmbar"><i style="width:'+s.bar+'%"></i></div><div class="where">'+esc(s.where)+'</div><div class="tip"><div class="tt-h">'+esc(s.nm)+'（'+esc(s.sym)+'）</div><dl><dt>用途</dt><dd>'+esc(s.use)+'</dd><dt>高風險</dt><dd>'+esc(s.risk)+'</dd><dt>檢測</dt><dd>'+esc(s.test)+'</dd></dl></div></div>'}).join('');
+
+/* cable */
+(function(){var L=DATA.cable,svg=$('#cable'),cx=130,cy=120,s='';
+  L.forEach(function(l,i){s+='<g class="ly" tabindex="0" role="button" data-i="'+i+'" aria-label="'+esc(l.t)+'"><circle cx="'+cx+'" cy="'+cy+'" r="'+l.r+'" fill="'+l.c+'" stroke="#333" stroke-width="1.2"/></g>'});
+  L.forEach(function(l,i){var y=40+i*52,x0=cx+l.r*0.6,y0=cy-l.r*0.6;s+='<path class="lead" d="M'+x0+' '+y0+' L300 '+y+' H320"/><text x="326" y="'+(y+4)+'" class="lyl" data-i="'+i+'">'+esc(l.t)+'</text>'});
+  svg.innerHTML=s;
+  function sel(i){svg.classList.add('sel');$$('.ly',svg).forEach(function(g){g.classList.toggle('on',+g.dataset.i===i)});var l=L[i];$('#cableNote').innerHTML='<b>'+esc(l.t)+'</b>'+esc(l.x)+'<br><span class="small">高風險物質：'+esc(l.risk)+'</span>';mark($('#cableNote'))}
+  svg.addEventListener('click',function(e){var g=e.target.closest('[data-i]');if(g)sel(+g.dataset.i)});
+  svg.addEventListener('keydown',function(e){var g=e.target.closest('.ly');if(g&&(e.key==='Enter'||e.key===' ')){e.preventDefault();sel(+g.dataset.i)}});
+  function dil(){var pb=+$('#jPb').value,w=+$('#jW').value,whole=pb*w/100;$('#jPbO').textContent=pb.toLocaleString()+' ppm';$('#jWO').textContent=w+'%';
+    var okJ=pb<=1000,okW=whole<=1000;
+    $('#dilOut').innerHTML='<div><div class="k">外皮（正確算法）</div><div class="v '+(okJ?'ok':'ng')+'">'+pb.toLocaleString()+' ppm</div><div class="s">'+(okJ?'未超出 0.1 wt%，表內填 ○':'超出 0.1 wt%，表內填「超出0.1 wt %」')+'</div></div><div><div class="k">整條平均（錯誤算法）</div><div class="v">'+Math.round(whole).toLocaleString()+' ppm</div><div class="s">'+(okJ!==okW?'<span class="ng">會得到相反結論</span>':'結論剛好相同，但算法仍錯')+'</div></div>'}
+  $('#jPb').addEventListener('input',dil);$('#jW').addEventListener('input',dil);dil()})();
+
+/* evidence */
+(function(){var M=DATA.matrix;function pick(i){$$('#mtx button').forEach(function(b){b.setAttribute('aria-pressed',+b.dataset.c===i?'true':'false')});$('#mtxNote').innerHTML='<b>'+esc(M[i].t)+'</b>'+esc(M[i].x);mark($('#mtxNote'))}
+  $('#mtx').addEventListener('click',function(e){var b=e.target.closest('button');if(b)pick(+b.dataset.c)});pick(2);
+  $('#ladder').innerHTML=DATA.evidence.map(function(e,i){return '<li><b>'+(i+1)+'. '+esc(e.t)+'</b><div class="bar"><i style="width:'+e.w+'%"></i></div><div class="x">'+esc(e.x)+'</div></li>'}).join('')})();
+
+/* xrf */
+(function(){var X=DATA.xrf;function draw(){var k=$('#xrfSub input:checked').value,c=X[k],v=+$('#xrfV').value;var mx=c.max;$('#xrfV').max=mx;if(v>mx){v=mx;$('#xrfV').value=mx}
+  var a=c.lo/mx*100,b=c.hi/mx*100;var z=$$('#xrfBar > div');z[0].style.width=a+'%';z[1].style.width=(b-a)+'%';z[2].style.width=(100-b)+'%';z[0].textContent='合格';z[1].textContent='需確認';z[2].textContent=c.over;
+  $('#xrfPin').style.left=(v/mx*100)+'%';$('#xrfVO').textContent=v+' ppm';$('#xrfLeg').innerHTML='<span>0</span><span>'+c.lo+'</span><span>'+c.hi+'</span><span>'+mx+'</span>';
+  var r=v<c.lo?['ok','落在合格區：'+c.okt]:v<=c.hi?['warn','落在需確認區：送化學分析確認後才能判定。']:['ng',c.hit];
+  $('#xrfVerdict').innerHTML='<span class="'+(r[0]==='ok'?'ok':r[0]==='ng'?'ng':'')+'" style="font-weight:700">'+esc(r[1])+'</span><br><span class="small muted">'+esc(c.note)+'</span>'}
+  $('#xrfSub').addEventListener('change',draw);$('#xrfV').addEventListener('input',draw);draw()})();
+
+/* units */
+(function(){var U=DATA.units;$('#exTabs').innerHTML=U.map(function(u,i){return '<button type="button" data-i="'+i+'" aria-pressed="false">'+esc(u.t)+'</button>'}).join('');
+  function show(i){$$('#exTabs button').forEach(function(b){b.setAttribute('aria-pressed',+b.dataset.i===i?'true':'false')});
+    $('#units').innerHTML=U[i].u.map(function(x){return '<div class="unit"><b>'+esc(x.n)+'</b><span class="r">'+esc(x.d)+'</span>'+(x.risk?'<div class="risk"><span class="chip c-tag">'+esc(x.risk)+'</span></div>':'')+'</div>'}).join('');mark($('#units'))}
+  $('#exTabs').addEventListener('click',function(e){var b=e.target.closest('button');if(b)show(+b.dataset.i)});show(0)})();
+
+/* table builder */
+(function(){var T=DATA.tableUnits,S=['Pb','Hg','Cd','Cr6','PBB','PBDE'],H=['鉛<br>(Pb)','汞<br>(Hg)','鎘<br>(Cd)','六價鉻<br>(Cr<sup>+6</sup>)','多溴聯苯<br>(PBB)','多溴二苯醚<br>(PBDE)'];
+  var st=T.map(function(){return S.map(function(){return 'o'})});
+  function label(i,j){var v=st[i][j];if(v==='o')return '○';if(v==='x')return '－';return S[j]==='Cd'?'超出0.01 wt %':'超出0.1 wt %'}
+  function render(){var anyOver=false,anyEx=false,overS={};st.forEach(function(r){r.forEach(function(v,j){if(v==='over'){anyOver=true;overS[S[j]]=1}if(v==='x')anyEx=true})});
+    var h='<h4>限用物質含有情況標示</h4><div class="meta">設備名稱：（商品名稱），型號（型式）：（型號）</div><table><thead><tr><th rowspan="2">單元</th><th colspan="6">限用物質及其化學符號</th></tr><tr>'+H.map(function(x){return '<th>'+x+'</th>'}).join('')+'</tr></thead><tbody>';
+    T.forEach(function(u,i){h+='<tr><td class="unit-n">'+esc(u)+'</td>'+S.map(function(s,j){var v=st[i][j];return '<td><button type="button" class="cell'+(v==='over'?' over':v==='x'?' ex':'')+'" data-i="'+i+'" data-j="'+j+'" aria-label="'+esc(u)+' '+s+'">'+label(i,j)+'</button></td>'}).join('')+'</tr>'});
+    h+='</tbody></table><div class="notes">';
+    var N=DATA.notes;var which=anyOver?'t1':'t2';N[which].forEach(function(n){h+='<div>'+esc(n)+'</div>'});
+    $('#mock').innerHTML=h+'</div>';
+    var mk=anyOver?'RoHS('+Object.keys(overS).map(function(k){return k==='Cr6'?'Cr+6':k}).join(',')+')':'RoHS';
+    $('#tbWhich').innerHTML=anyOver?'<b>套用表 1</b>表內有「超出」，備考三條全部照抄。標識加註 <b>'+esc(mk)+'</b>。':'<b>套用表 2</b>'+(anyEx?'只有排除項目（－），':'全部未超出，')+'備考兩條照抄。標識加註 <b>RoHS</b>。';
+    $('#labelMock').innerHTML='<rect x="6" y="6" width="348" height="108" rx="4"/><circle cx="58" cy="60" r="34" fill="none" stroke="#111" stroke-width="2"/><text x="58" y="66" text-anchor="middle" font-size="15" font-weight="700">標識</text><text x="110" y="52" font-size="17">R3XXXX（識別號碼）</text><text x="110" y="84" font-size="19" font-weight="700">'+esc(mk)+'</text>';}
+  $('#mock').addEventListener('click',function(e){var b=e.target.closest('button.cell');if(!b)return;var i=+b.dataset.i,j=+b.dataset.j,v=st[i][j];st[i][j]=v==='o'?'over':v==='over'?'x':'o';render()});
+  $('#tbAll').addEventListener('click',function(){st=T.map(function(){return S.map(function(){return 'o'})});render()});
+  $('#tbDemo').addEventListener('click',function(){st=T.map(function(){return S.map(function(){return 'o'})});st[1][0]='x';render()});
+  $('#tbOver').addEventListener('click',function(){st=T.map(function(){return S.map(function(){return 'o'})});st[0][0]='over';st[1][0]='x';render()});
+  render()})();
+
+/* where / sop / fines / mistakes / faq */
+$('#where').innerHTML=DATA.where.map(function(w){return '<div><h4>'+esc(w.t)+'</h4><p class="small" style="margin:0">'+esc(w.x)+'</p></div>'}).join('');
+$('#sop').innerHTML=DATA.apply.map(function(s,i){return '<li class="node '+(s.c||'')+'" tabindex="0"><span class="badge">'+(i+1)+'</span><div class="rcard"><b>'+esc(s.t)+'</b>'+(s.c?'<span class="chip c-'+s.c+'">'+({check:'查核',deadline:'期限',done:'完成'})[s.c]+'</span>':'')+'</div><div class="tip"><div class="tt-h">'+esc(s.t)+'</div><dl><dt>做什麼</dt><dd>'+esc(s.do)+'</dd><dt>依據</dt><dd>'+esc(s.basis)+'</dd></dl></div></li>'}).join('');
+$('#fines').innerHTML=DATA.fines.map(function(f){return '<tr><td>'+esc(f.t)+'</td><td class="num">'+esc(f.f)+'</td><td>'+esc(f.a)+'</td></tr>'}).join('');
+$('#mist').innerHTML=DATA.mistakes.map(function(m){return '<li><div class="w">誤：'+esc(m.w)+'</div><div class="r">正：'+esc(m.r)+'</div></li>'}).join('');
+$('#faq').innerHTML=DATA.faq.map(function(f){return '<details><summary>'+esc(f.q)+'</summary><p>'+esc(f.a)+'</p></details>'}).join('');
+
+/* world */
+(function(){var W=DATA.world,ALL=['Pb','Hg','Cd','Cr6+','PBB','PBDE','DEHP','BBP','DBP','DIBP'];
+  var sel={};try{sel=JSON.parse(store('rohs-mk')||'null')}catch(e){}if(!sel){sel={};['tw','eu','cn'].forEach(function(k){sel[k]=1})}
+  $('#mkts').innerHTML=W.map(function(w){return '<label><input type="checkbox" value="'+w.k+'"'+(sel[w.k]?' checked':'')+'>'+esc(w.n)+'</label>'}).join('');
+  var cols=[['n','地區'],['mode','制度'],['law','法源'],['subs','物質'],['scope','適用範圍'],['mark','標誌'],['doc','文件與評估'],['enf','執行'],['key','關鍵日期']];
+  var mm={d:'揭露',p:'禁止',m:'混合'};
+  $('#cmp').innerHTML='<thead><tr>'+cols.map(function(c){return '<th>'+c[1]+'</th>'}).join('')+'</tr></thead><tbody>'+W.map(function(w){return '<tr data-k="'+w.k+'">'+cols.map(function(c){var v=w[c[0]];if(c[0]==='mode')v='<span class="mode '+w.mode+'">'+mm[w.mode]+'</span>';else if(c[0]==='subs')v=esc(w.subsTxt);else v=esc(v);return '<td>'+v+'</td>'}).join('')+'</tr>'}).join('')+'</tbody>';
+  function upd(){var ks=$$('#mkts input:checked').map(function(i){return i.value});var s={};ks.forEach(function(k){s[k]=1});store('rohs-mk',JSON.stringify(s));
+    var on={},marks=[],modes={};W.forEach(function(w){if(!s[w.k])return;w.subs.forEach(function(x){on[x]=1});marks.push(w.n+'：'+(w.markShort?w.markShort+'；':'')+w.docShort);modes[w.mode]=(modes[w.mode]||[]).concat(w.n)});
+    $$('#cmp tbody tr').forEach(function(r){r.classList.toggle('hide',!s[r.dataset.k])});
+    if(!ks.length){$('#needOut').innerHTML='<div style="grid-column:1/-1">請勾選至少一個市場。</div>';return}
+    $('#needOut').innerHTML='<div><h4>要管的物質（'+Object.keys(on).length+' 種）</h4><div class="subgrid">'+ALL.map(function(x){return '<span class="'+(on[x]?'on':'')+'">'+x+'</span>'}).join('')+'</div>'+(on.DEHP?'<p class="small" style="margin:8px 0 0">含 4 種鄰苯二甲酸酯：PVC 線材、軟質塑膠、膠帶要另外取得佐證。</p>':'')+'</div>'
+      +'<div><h4>制度</h4><ul>'+Object.keys(modes).map(function(m){return '<li><span class="mode '+m+'">'+mm[m]+'</span> '+esc(modes[m].join('、'))+'</li>'}).join('')+'</ul></div>'
+      +'<div><h4>標誌與文件</h4><ul>'+marks.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')+'</ul></div>';}
+  $('#mkts').addEventListener('change',upd);upd()})();
+
+/* timeline */
+(function(){var T=DATA.timeline,td=today();var DIM=[['reg','地區',DATA.regions],['type','類型',DATA.types],['st','狀態',{past:'已發生',next:'接下來'}]];
+  T.forEach(function(e){e.st=e.d<td?'past':'next'});
+  var sel={};try{sel=JSON.parse(store('rohs-tl')||'{}')}catch(e){}DIM.forEach(function(d){if(!Array.isArray(sel[d[0]]))sel[d[0]]=[]});
+  var ol=$('#tl'),todayLi=null,items=[];
+  function mkToday(){var li=document.createElement('li');li.className='today';li.innerHTML='<span class="d">'+td+'</span><span class="bar"><span>今天</span></span>';return li}
+  T.forEach(function(e){if(!todayLi&&e.d>=td){todayLi=mkToday();ol.appendChild(todayLi)}
+    var li=document.createElement('li');li.className='ev'+(e.key?' key':'')+(e.st==='next'?' future':'');
+    li.innerHTML='<span class="d">'+(e.label||e.d)+'</span><span class="n"></span><div class="card"><b>'+esc(e.t)+'</b><div class="x">'+esc(e.x)+'</div><div class="tags"><span class="chip c-mute">'+esc(DATA.regions[e.reg])+'</span>'+(e.reg==='tw'?'<span class="chip c-mute">民國 '+roc(e.label||e.d)+'</span>':'')+'<span class="chip c-mute">'+esc(DATA.types[e.type])+'</span>'+(e.tag?'<span class="chip c-ask">'+esc(e.tag)+'</span>':'')+(e.st==='next'?'<span class="chip c-rel">接下來</span>':'')+'</div></div>';
+    ol.appendChild(li);items.push({e:e,li:li,shown:true})});
+  if(!todayLi){todayLi=mkToday();ol.appendChild(todayLi)}
+  var empty=document.createElement('li');empty.className='empty';empty.textContent='沒有符合條件的項目。';empty.hidden=true;ol.appendChild(empty);
+  function passDim(e,k){var s=sel[k];return !s.length||s.indexOf(e[k])>=0}
+  function pass(e){return DIM.every(function(d){return passDim(e,d[0])})}
+  var F=$('#tlFilter');
+  F.innerHTML=DIM.map(function(d){return '<div class="fr" data-k="'+d[0]+'"><span class="fl">'+d[1]+'</span>'+Object.keys(d[2]).map(function(v){return '<button type="button" class="fb" data-v="'+v+'" aria-pressed="false">'+esc(d[2][v])+'<span class="ct"></span></button>'}).join('')+'</div>'}).join('');
+  function counts(){DIM.forEach(function(d){var k=d[0];$$('.fr[data-k="'+k+'"] .fb',F).forEach(function(b){var v=b.dataset.v;var n=T.filter(function(e){return e[k]===v&&DIM.every(function(o){return o[0]===k||passDim(e,o[0])})}).length;var on=sel[k].indexOf(v)>=0;b.setAttribute('aria-pressed',on?'true':'false');b.querySelector('.ct').textContent=n;b.disabled=(n===0&&!on);b.title=b.disabled?'目前其他條件下沒有符合的項目':''})})}
+  var EASE='cubic-bezier(.33,1,.68,1)';
+  function anim(li,entering){var h=li.offsetHeight||li.scrollHeight,gap=12,d=h+gap;li.getAnimations().forEach(function(a){a.cancel()});
+    var away={transform:'translateY('+(-d)+'px)',clipPath:'inset('+d+'px -48px 0 -48px)',marginBottom:(-h)+'px',opacity:.35};var home={transform:'translateY(0)',clipPath:'inset(0px -48px 0 -48px)',marginBottom:gap+'px',opacity:1};
+    if(!li.animate){li.hidden=!entering;return}
+    if(entering){li.hidden=false;li.classList.remove('leaving');li.animate([away,home],{duration:700,easing:EASE})}else{li.classList.add('leaving');var a=li.animate([home,away],{duration:700,easing:EASE});a.onfinish=function(){li.hidden=true;li.classList.remove('leaving')}}}
+  function apply(first){var n=0;items.forEach(function(it){var ok=pass(it.e);if(ok)n++;if(ok!==it.shown){it.shown=ok;if(first)it.li.hidden=!ok;else anim(it.li,ok)}});empty.hidden=n>0;$('#tlCount').textContent='顯示 '+n+' / '+T.length+' 項';$('#tlClear').disabled=DIM.every(function(d){return !sel[d[0]].length});counts();store('rohs-tl',JSON.stringify(sel))}
+  F.addEventListener('click',function(e){var b=e.target.closest('.fb');if(!b||b.disabled)return;var k=b.parentNode.dataset.k,v=b.dataset.v,a=sel[k],i=a.indexOf(v);if(i>=0)a.splice(i,1);else a.push(v);apply(false)});
+  $('#tlClear').addEventListener('click',function(){DIM.forEach(function(d){sel[d[0]]=[]});apply(false)});apply(true)})();
+
+/* glossary */
+var GM={};GLOSS.forEach(function(g){GM[g.key]=g});
+var SORTED=[];GLOSS.forEach(function(g){g.re.split('|').forEach(function(r){SORTED.push({k:g.key,s:r})})});SORTED.sort(function(a,b){return b.s.length-a.s.length});
+var BIG=new RegExp(SORTED.map(function(x){return x.s.replace(/[.*+?^${}()|[\]\\\/]/g,'\\$&')}).join('|'),'g');var LOOK={};SORTED.forEach(function(x){LOOK[x.s]=x.k});
+function mark(scope){if(!BIG)return;var seen={};$$('.term',scope).forEach(function(t){seen[t.dataset.g]=1});
+  var w=document.createTreeWalker(scope,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentNode;if(!p||p.closest('h1,h2,h3,h4,.sticky-h,script,style,button,.term,#gl,#gtip,.tip,svg,input,label,textarea,code,.chip,.keynums,.status,.brand,.crumb,.toc,.mock,.mode,th'))return NodeFilter.FILTER_REJECT;BIG.lastIndex=0;return BIG.test(n.nodeValue)?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_SKIP}});
+  var list=[];while(w.nextNode())list.push(w.currentNode);
+  list.forEach(function(n){var txt=n.nodeValue,frag=document.createDocumentFragment(),last=0,m,did=false;BIG.lastIndex=0;
+    while((m=BIG.exec(txt))){var k=LOOK[m[0]];if(seen[k])continue;seen[k]=1;did=true;frag.appendChild(document.createTextNode(txt.slice(last,m.index)));var s=document.createElement('span');s.className='term';s.tabIndex=0;s.dataset.g=k;s.textContent=m[0];frag.appendChild(s);last=m.index+m[0].length}
+    if(did){frag.appendChild(document.createTextNode(txt.slice(last)));n.parentNode.replaceChild(frag,n)}})}
+$$('main section, .hero').forEach(function(s){mark(s)});
+var gt=$('#gtip'),gtFor=null;
+function showTip(el){var g=GM[el.dataset.g];if(!g)return;gtFor=el;gt.innerHTML='<b>'+esc(g.name)+' <span class="en">'+esc(g.en)+'</span></b>'+esc(g.one);
+  var r=el.getBoundingClientRect(),w=gt.offsetWidth,h=gt.offsetHeight,hdr=$('#hdr').offsetHeight;var x=Math.min(Math.max(8,r.left+r.width/2-w/2),innerWidth-w-8);var up=r.top-h-12>hdr+4;var y=up?r.top-h-10:r.bottom+10;
+  gt.className='on '+(up?'up':'dn');gt.style.left=x+'px';gt.style.top=y+'px';gt.style.setProperty('--ax',Math.min(Math.max(14,r.left+r.width/2-x),w-14)+'px')}
+function hideTip(){gt.classList.remove('on');gtFor=null}
+document.addEventListener('mouseover',function(e){var t=e.target.closest&&e.target.closest('.term');if(t)showTip(t)});
+document.addEventListener('mouseout',function(e){if(e.target.closest&&e.target.closest('.term'))hideTip()});
+document.addEventListener('focusin',function(e){if(e.target.classList&&e.target.classList.contains('term'))showTip(e.target)});
+document.addEventListener('focusout',hideTip);document.addEventListener('keydown',function(e){if(e.key==='Escape')hideTip()});addEventListener('scroll',hideTip,{passive:true});
+var touch=matchMedia('(hover: none)').matches;
+document.addEventListener('click',function(e){var t=e.target.closest('.term');if(!t)return;if(touch&&gtFor!==t){showTip(t);return}hideTip();var d=$('#g-'+t.dataset.g);if(d)goTo(d,function(){d.classList.remove('flash');void d.offsetWidth;d.classList.add('flash')})});
+document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.classList&&e.target.classList.contains('term'))e.target.click()});
+
+/* node tip flip */
+function flip(n){var t=n.querySelector(':scope > .tip');if(!t)return;var r=n.getBoundingClientRect(),hdr=$('#hdr').offsetHeight+(+getComputedStyle(root).getPropertyValue('--sh').replace('px','')||52);t.classList.toggle('tip-down',r.top-t.offsetHeight-16<hdr)}
+document.addEventListener('mouseover',function(e){var n=e.target.closest&&e.target.closest('.node');if(n)flip(n)});
+document.addEventListener('focusin',function(e){var n=e.target.closest&&e.target.closest('.node');if(n)flip(n)});
+
+/* sticky + scroll + toc */
+var hdrEl=$('#hdr');function setHdr(){root.style.setProperty('--hdr',hdrEl.offsetHeight+'px');var h=$('.sticky-h');if(h)root.style.setProperty('--sh',h.offsetHeight+'px')}
+if(window.ResizeObserver)new ResizeObserver(setHdr).observe(hdrEl);setHdr();
+var heads=$$('.sticky-h');function markStuck(){var hh=hdrEl.offsetHeight;heads.forEach(function(h){var sec=h.closest('section');var r=h.getBoundingClientRect(),sr=sec.getBoundingClientRect();h.classList.toggle('stuck',r.top<=hh+1&&sr.bottom>hh+r.height+20)})}
+var raf=null,navLock=null;function stop(){if(raf){cancelAnimationFrame(raf);raf=null;navLock=null}}
+['wheel','touchstart'].forEach(function(ev){addEventListener(ev,stop,{passive:true})});
+addEventListener('keydown',function(e){if(['ArrowUp','ArrowDown','PageUp','PageDown','Home','End',' '].indexOf(e.key)>=0)stop()});
+function target(el){var off=hdrEl.offsetHeight+(el.tagName==='SECTION'?0:(+getComputedStyle(root).getPropertyValue('--sh').replace('px','')||52))+10;return Math.max(0,el.getBoundingClientRect().top+scrollY-off)}
+function goTo(el,done){stop();var from=scrollY,to=target(el),dist=to-from;var dur=Math.min(1800,Math.max(900,600+Math.sqrt(Math.abs(dist))*13)),t0=null;
+  function step(ts){if(!t0)t0=ts;var t=Math.min(1,(ts-t0)/dur),e=1-Math.pow(1-t,3);scrollTo(0,from+dist*e);if(t<1){raf=requestAnimationFrame(step)}else{raf=null;var fix=target(el);if(Math.abs(fix-scrollY)>2)scrollTo(0,fix);navLock=null;spy();if(done)done()}}
+  raf=requestAnimationFrame(step)}
+document.addEventListener('click',function(e){var a=e.target.closest('a[href^="#"]');if(!a)return;var id=decodeURIComponent(a.getAttribute('href').slice(1));var el=document.getElementById(id);if(!el)return;e.preventDefault();if(a.closest('#tocNav')){navLock=id;moveInd(a,false)}goTo(el);history.replaceState(null,'','#'+id);if(innerWidth<760&&a.closest('#tocNav'))toggleToc(false)});
+var secs=$$('main section[id]'),nav=$('#tocNav'),ind=$('#navInd');var groups={},gorder=[];
+secs.forEach(function(s){var g=s.dataset.act||'';if(!groups[g]){groups[g]=[];gorder.push(g)}groups[g].push(s)});
+nav.insertAdjacentHTML('beforeend',gorder.map(function(g){return '<span class="g">'+esc(g)+'</span><ol>'+groups[g].map(function(s){var h=s.querySelector('.sticky-h');return '<li><a href="#'+s.id+'">'+esc(h?h.textContent.replace(/^(\d+|附)/,'$1　'):s.id)+'</a></li>'}).join('')+'</ol>'}).join(''));
+var links=$$('#tocNav a');
+function moveInd(a,noAnim){if(!a)return;ind.classList.toggle('no-anim',!!noAnim);ind.style.transform='translate('+a.offsetLeft+'px,'+a.offsetTop+'px)';ind.style.width=a.offsetWidth+'px';ind.style.height=a.offsetHeight+'px';links.forEach(function(x){if(x===a)x.setAttribute('aria-current','true');else x.removeAttribute('aria-current')});if(noAnim){void ind.offsetWidth;ind.classList.remove('no-anim')}}
+var curId=null;
+function spy(){var hh=hdrEl.offsetHeight+80,cur=null;secs.forEach(function(s){if(s.getBoundingClientRect().top<=hh)cur=s});var h=cur&&cur.querySelector('.sticky-h');$('#crumb').innerHTML=h?'目前：<b>'+esc(h.textContent.replace(/^(\d+|附)/,'$1 '))+'</b>':'';
+  var max=document.documentElement.scrollHeight-innerHeight;$('#prog').style.width=(max>0?scrollY/max*100:0)+'%';markStuck();if(navLock||!cur)return;if(cur.id!==curId){curId=cur.id;moveInd(links.filter(function(a){return a.getAttribute('href')==='#'+cur.id})[0],$('#tocPanel').hidden)}}
+addEventListener('scroll',spy,{passive:true});addEventListener('resize',function(){setHdr();var a=$('#tocNav a[aria-current="true"]');if(a)moveInd(a,true)});
+var fab=$('#tocFab'),panel=$('#tocPanel');
+function toggleToc(open){panel.hidden=!open;fab.setAttribute('aria-expanded',open?'true':'false');store('rohs-toc',open?'1':'0');if(open){var a=$('#tocNav a[aria-current="true"]')||links[0];moveInd(a,true)}}
+fab.addEventListener('click',function(){toggleToc(panel.hidden)});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!panel.hidden){toggleToc(false);fab.focus()}});
+toggleToc(store('rohs-toc')==='1');spy();
+})();
+</script>
+</body>
+</html>
