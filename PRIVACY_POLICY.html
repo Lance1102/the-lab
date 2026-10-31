@@ -52,7 +52,7 @@
   <body>
     <div class="container">
       <h1>Privacy Policy for OrbitFlow</h1>
-      <p><strong>Last Updated:</strong> February 05, 2026</p>
+      <p><strong>Last Updated:</strong> October 31, 2026</p>
 
       <p>
         Your privacy is important to us. This Privacy Policy explains how
@@ -71,20 +71,39 @@
 
       <h3>Local Data Storage</h3>
       <p>
-        OrbitFlow stores your dashboard configuration (links, groups, layout
-        settings, custom icons) locally on your device using the
-        <code>chrome.storage</code> API. This data never leaves your browser
-        unless you explicitly enable the Sync feature.
+        OrbitFlow stores your dashboard configuration (links, groups, tabs,
+        layout settings, custom icons) locally on your device using the
+        <code>chrome.storage</code> API. This data is not sent to us; it only
+        leaves your browser when you back it up to your own Google Drive.
       </p>
 
-      <h3>Google Account Data (Optional Sync Feature)</h3>
+      <h3>Website Icons</h3>
       <p>
-        If you choose to sign in with Google to use the "Sync & Backup" feature:
+        To show an icon for each saved link, OrbitFlow loads the site's icon
+        from Google's public favicon service
+        (<code>www.google.com/s2/favicons</code>, served from
+        <code>*.gstatic.com</code>). This request includes the address of the
+        saved link. If you turn on <strong>Offline Icons</strong> in Settings,
+        OrbitFlow asks for permission to these two Google hosts and keeps a copy
+        of the icons in <code>chrome.storage</code> on your device so they still
+        appear offline. Icon copies are never included in backups and can be
+        cleared in Settings at any time.
+      </p>
+
+      <h3>Google Account Data (Optional Sign-in and Cloud Backup)</h3>
+      <p>
+        If you choose to sign in with Google and use the "Cloud Backup" feature:
       </p>
       <ul>
         <li>
           We use the <code>identity</code> permission to facilitate
-          authentication.
+          authentication. Your Google account name, email address and profile
+          picture are read to show who is signed in, and are stored only on
+          your device.
+        </li>
+        <li>
+          Google access tokens are stored locally in <code>chrome.storage</code>
+          and are used only to call Google APIs on your behalf.
         </li>
         <li>
           We request access to a specialized, hidden folder in your Google Drive
@@ -92,7 +111,10 @@
           <code>https://www.googleapis.com/auth/drive.appdata</code>).
         </li>
         <li>
-          Your dashboard data is encrypted and backed up to this private folder.
+          When you press Backup, your dashboard data (groups, links and
+          settings) is saved as a file in this private folder. It is protected
+          by Google's own storage security; OrbitFlow does not add its own
+          encryption.
         </li>
         <li>
           <strong
@@ -117,13 +139,23 @@
           <strong>Identity:</strong> Required only for authenticating with
           Google to enable the cloud backup feature.
         </li>
+        <li>
+          <strong>Optional host access</strong> to
+          <code>https://www.google.com/*</code> and
+          <code>https://*.gstatic.com/*</code>: requested only when you enable
+          Offline Icons, and used only to download website icons. You can
+          decline, and icons will keep loading from the network.
+        </li>
       </ul>
 
       <h2>3. Third-Party Services</h2>
       <p>
-        This extension interacts with <strong>Google APIs</strong> strictly for
-        the purpose of authentication and data synchronization as described
-        above. We do not sell, trade, or transfer your data to outside parties.
+        This extension interacts with <strong>Google services</strong> only for
+        sign-in, backup to your own Google Drive, and loading website icons, as
+        described above. Those requests are governed by Google's Privacy
+        Policy. OrbitFlow has no server of its own and does not use analytics or
+        advertising. We do not sell, trade, or transfer your data to outside
+        parties.
       </p>
 
       <h2>4. Data Retention</h2>
