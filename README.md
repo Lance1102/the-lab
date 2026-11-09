@@ -58,6 +58,6 @@
 ## [BSMI技術文件準備指引](https://lance1102.github.io/the-lab/BSMI技術文件準備指引.html)
 > BSMI 技術文件準備指引
 
-## [UL 9540A 第 6 版（2026）互動教學](https://lance1102.github.io/the-lab/UL9540A-2026/2026-11-09_2255_UL9540A第6版互動教學.html)
+## [UL 9540A 第 6 版（2026）互動教學](https://lance1102.github.io/the-lab/2026-11-09_1302_金工中心考題_UL9540A-2026_參考解答.html)
 > 金工中心考題四題：教學影片（含旁白、章節、逐字稿）、生活類比、參考解答、十個專業視角、測驗、閃卡與條號地圖
-> [LSFT 3D 試驗模擬器](https://lance1102.github.io/the-lab/UL9540A-2026/2026-11-09_2255_UL9540A_LSFT_3D試驗模擬.html)（教學示意模型，非標準計算方法）｜舊版：[2026-11-09_1302_金工中心考題_UL9540A-2026_參考解答](https://lance1102.github.io/the-lab/2026-11-09_1302_金工中心考題_UL9540A-2026_參考解答.html)
+> [舊版答題參考內容](https://lance1102.github.io/the-lab/2026-11-09_1302_金工中心考題_UL9540A-2026_參考解答_舊版.html)｜[LSFT 3D 試驗模擬器](https://lance1102.github.io/the-lab/UL9540A-2026/2026-11-09_2255_UL9540A_LSFT_3D試驗模擬.html)（教學示意模型，非標準計算方法）
