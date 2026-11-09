@@ -485,10 +485,34 @@ video::cue{background:#111;color:#fff;font-weight:700;font-family:"Microsoft Jhe
 .basis li{margin:4px 0;line-height:1.6}
 footer{max-width:1320px;margin:0 auto;padding:18px 20px 40px;color:var(--mut);font-size:13.5px;border-top:1px solid var(--line)}
 
+/* warp jump overlay (page.js goTo): light-speed streaks while a long scroll jumps */
+.warp{position:fixed;inset:0;z-index:90;pointer-events:none;display:none;overflow:hidden}
+.warp.on{display:block}
+.warp-rays{position:absolute;left:50%;top:50%;width:260vmax;height:260vmax;margin:-130vmax 0 0 -130vmax;
+  background:repeating-conic-gradient(from 3deg,transparent 0 2.1deg,rgba(242,140,40,.55) 2.2deg 2.35deg,transparent 2.5deg 4.6deg,rgba(255,236,210,.7) 4.7deg 4.8deg,transparent 4.9deg 7.3deg);
+  -webkit-mask:radial-gradient(circle,transparent 0 7%,#000 30%,transparent 62%);mask:radial-gradient(circle,transparent 0 7%,#000 30%,transparent 62%);
+  opacity:0;transform:scale(.35)}
+.warp-core{position:absolute;left:50%;top:50%;width:46vmin;height:46vmin;margin:-23vmin 0 0 -23vmin;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,244,228,.95) 0,rgba(242,140,40,.45) 28%,transparent 68%);opacity:0;transform:scale(.2)}
+.warp.on .warp-rays{animation:warpRays .2s cubic-bezier(.55,0,.9,.4) forwards}
+.warp.on .warp-core{animation:warpCore .2s ease-in forwards}
+.warp.on.down .warp-rays{transform-origin:50% 50%}
+.warp.on::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(20,14,8,.0) 30%,rgba(20,14,8,.55) 100%);opacity:0;animation:warpVig .2s forwards}
+.warp.out .warp-rays{animation:warpRaysOut .5s ease-out forwards}
+.warp.out .warp-core{animation:warpCoreOut .45s ease-out forwards}
+.warp.out::before{animation:warpVigOut .5s ease-out forwards}
+@keyframes warpRays{to{opacity:1;transform:scale(1.25)}}
+@keyframes warpCore{to{opacity:1;transform:scale(1)}}
+@keyframes warpVig{to{opacity:1}}
+@keyframes warpRaysOut{from{opacity:1;transform:scale(1.25)}to{opacity:0;transform:scale(2.4)}}
+@keyframes warpCoreOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(2.2)}}
+@keyframes warpVigOut{from{opacity:1}to{opacity:0}}
+
 /* reduced motion: keep scroll + nav indicator (user decision), stop decorative loops */
 @media (prefers-reduced-motion:reduce){
   .heat,.flame{animation:none}
   .flip-in{transition-duration:.01s}
+  .warp{display:none !important}
 }
 
 /* ---------- responsive ---------- */
@@ -544,7 +568,7 @@ footer{max-width:1320px;margin:0 auto;padding:18px 20px 40px;color:var(--mut);fo
 @media print{
   :root:root:not(.zz){--bg:#ffffff;--panel:#ffffff;--panel2:#f3f3f3;--line:#cfcfcf;--line2:#bdbdbd;--tx:#111;--mut:#444;--dim:#666;--acc:#f28c28;--acc-tx:#9a4a06;--accbg:rgba(242,140,40,.12);--ok:#1d855a;--bad:#c0392f;--amber:#9a6200;--shadow:none;color-scheme:light;}
   body{background:#fff;font-size:11pt}
-  .hdr,.toc,.fab,.toc-backdrop,.skip,#gtip,.chaps button,.transcript,.score,.toolbar,.deck-ctl,.deck-dots,.yn,.seg,.sim-wrap,.presets,.gfilter,.vframe,.roles,.tip,.hint,.steps{display:none !important}
+  .hdr,.toc,.fab,.toc-backdrop,.skip,#gtip,.warp,.chaps button,.transcript,.score,.toolbar,.deck-ctl,.deck-dots,.yn,.seg,.sim-wrap,.presets,.gfilter,.vframe,.roles,.tip,.hint,.steps{display:none !important}
   .layout{display:block;padding:0}
   .sec-title{position:static;box-shadow:none;border:0}
   .sub,.hero{box-shadow:none;break-inside:auto}
@@ -3353,21 +3377,64 @@ function targetY(el){
   var off = px('--hdr') + (isSec ? 8 : px('--sh') + 12);
   return Math.max(0, el.getBoundingClientRect().top + window.pageYOffset - off);
 }
-function stopScroll(){ if (raf){ cancelAnimationFrame(raf); raf = null; lockNav = null; } }
+function stopScroll(){
+  if (raf){ cancelAnimationFrame(raf); raf = null; lockNav = null; }
+  if (typeof warpEl !== 'undefined' && warpEl && warpEl.classList.contains('on') && !warpEl.classList.contains('out')){
+    warpEl.classList.add('out'); root.classList.remove('warping');
+    setTimeout(function(){ warpEl.classList.remove('on', 'out'); }, 520);
+  }
+}
 ['wheel','touchstart'].forEach(function(ev){ window.addEventListener(ev, stopScroll, {passive:true}); });
 window.addEventListener('keydown', function(e){
   if (['ArrowUp','ArrowDown','PageUp','PageDown','Home','End',' '].indexOf(e.key) >= 0) stopScroll();
 });
+/* warp jump: long distances jump instantly (with a short light-speed streak), then decelerate into place */
+var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var warpEl = null, warpTimer = null;
+function easeOutQuint(t){ return 1 - Math.pow(1 - t, 5); }
+function warpFx(dir){
+  if (!warpEl){
+    warpEl = document.createElement('div');
+    warpEl.className = 'warp'; warpEl.setAttribute('aria-hidden', 'true');
+    warpEl.innerHTML = '<i class="warp-rays"></i><i class="warp-core"></i>';
+    document.body.appendChild(warpEl);
+  }
+  clearTimeout(warpTimer);
+  warpEl.classList.remove('out', 'on', 'up', 'down');
+  void warpEl.offsetWidth;                       // restart the CSS animation
+  warpEl.classList.add('on', dir < 0 ? 'up' : 'down');
+  root.classList.add('warping');
+  return function(){
+    warpEl.classList.add('out');
+    root.classList.remove('warping');
+    warpTimer = setTimeout(function(){ warpEl.classList.remove('on', 'out'); }, 520);
+  };
+}
 function goTo(el, after){
   if (!el) return;
   stopScroll();
   var from = window.pageYOffset, to = targetY(el), dist = to - from;
+  var vh = window.innerHeight;
+  var warp = Math.abs(dist) > vh * 1.3, endFx = null;
   var dur = Math.min(1800, Math.max(900, 600 + Math.sqrt(Math.abs(dist)) * 13));
-  var t0 = null;
+  var ease = easeOut, t0 = null, delay = 0;
+  if (warp){
+    // jump to just short of the target, keep only the last stretch as a decelerating glide
+    var approach = Math.min(vh * 0.8, Math.abs(dist)) * (dist > 0 ? 1 : -1);
+    endFx = reduceMotion ? function(){} : warpFx(dist);   // reduced motion: keep the jump + glide, drop the streaks
+    delay = reduceMotion ? 0.001 : 190;
+    dur = 760; ease = easeOutQuint;
+  }
   function step(ts){
     if (t0 === null) t0 = ts;
+    if (warp && delay){
+      if (ts - t0 < delay){ raf = requestAnimationFrame(step); return; }
+      from = targetY(el) - approach; to = targetY(el); dist = to - from;
+      window.scrollTo(0, from); spy();
+      t0 = ts; delay = 0; endFx();
+    }
     var p = Math.min(1, (ts - t0) / dur);
-    window.scrollTo(0, from + dist * easeOut(p));
+    window.scrollTo(0, from + dist * ease(p));
     if (p < 1){ raf = requestAnimationFrame(step); }
     else {
       raf = null;
