@@ -57,3 +57,5 @@
 
 ## [BSMI技術文件準備指引](https://lance1102.github.io/the-lab/BSMI技術文件準備指引.html)
 > BSMI 技術文件準備指引
+
+## [2026-11-09_1302_金工中心考題_UL9540A-2026_參考解答](https://lance1102.github.io/the-lab/2026-11-09_1302_金工中心考題_UL9540A-2026_參考解答.html)
