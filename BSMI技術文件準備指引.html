@@ -8,7 +8,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BSMI 商品驗證登錄　技術文件準備指引　V2.1</title>
+<title>BSMI 商品驗證登錄　技術文件準備指引　V2.2</title>
 <meta name="generator" content="round-table:RT-beginner-friendly-html 1.3.1 (round-table 1.22.0)">
 <meta name="design-system" content="round-table:RT-beginner-friendly-html 1.3.1 (round-table 1.22.0)">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232f6fdb'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11' stroke='white' stroke-width='3.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
@@ -312,7 +312,7 @@ footer{max-width:1180px; margin:20px auto 0; padding:26px 20px 46px; border-top:
 <body>
 <header class="top">
   <div class="top-in">
-    <div class="brand">BSMI 技術文件準備指引<span class="ver" title="版本 V2.1（2026-11-11）">V2.1</span><small>商品驗證登錄（安規）</small></div>
+    <div class="brand">BSMI 技術文件準備指引<span class="ver" title="版本 V2.2（2026-11-11）">V2.2</span><small>商品驗證登錄（安規）</small></div>
     <div class="tools">
       <button class="btn primary" id="btnTour" type="button" title="指引導覽"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 9.5a2.2 2.2 0 1 1 3 2c-.7.3-1 .8-1 1.5M12 17h.01"/></svg><span class="lbl">指引導覽</span></button>
       <button class="btn" id="btnPrint" type="button" title="列印文件清單"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4v-7h16v7h-2M8 14h8v7H8z"/></svg><span class="lbl">列印清單</span></button>
@@ -1197,7 +1197,7 @@ IEC 60127-3</td><td>VDE 40xxxxxx</td><td></td><td></td><td>主控PCB</td><td>原
 
 <footer>
   <div>BSMI 商品驗證登錄技術文件準備指引</div>
-  <div>版本 V2.1　2026-11-11</div>
+  <div>版本 V2.2　2026-11-11</div>
   <div>財團法人金屬工業研究發展中心　智慧暨系統研發服務處　電氣安全實驗室</div>
 </footer>
 
@@ -1284,10 +1284,22 @@ var raf=null, lockNav=false;
 function easeOut(t){return 1-Math.pow(1-t,3);}
 function destY(el){var extra=el.matches('section.sec')?8:px('--sh')+12; return Math.max(0,Math.round(el.getBoundingClientRect().top+scrollY-px('--hdr')-extra));}
 function stop(){if(raf){cancelAnimationFrame(raf); raf=null; lockNav=false; spy();}}
+/* 長距離跳轉（V2.2，比照 the-lab UL 9540A 頁；RT-beginner-friendly-html 1.4.0 規範）：
+   距離超過 1.3 個視窗高時，先瞬間跳到目標前 0.8 個視窗高處，再以 easeOutQuint 用 760 ms 減速滑入；
+   較短的距離維持 easeOutCubic（依距離 0.9–1.8 秒）。滑入的起點每次以目標的即時位置重算（黏著標題縮放會位移）。 */
+function easeOutQuint(t){return 1-Math.pow(1-t,5);}
+function warpPlan(dist){
+  var vh=innerHeight;
+  if(Math.abs(dist)<=vh*1.3) return null;
+  return {approach:Math.min(vh*0.8,Math.abs(dist))*(dist>0?1:-1), dur:760, ease:easeOutQuint};
+}
 function goTo(el,done){
   stop(); var from=scrollY, to=destY(el), dist=to-from; if(Math.abs(dist)<2){done&&done(); return;}
-  var dur=Math.min(1800,Math.max(900,600+Math.sqrt(Math.abs(dist))*13)); var t0=null;
-  function step(ts){ if(!t0) t0=ts; var t=Math.min(1,(ts-t0)/dur); scrollTo(0,from+dist*easeOut(t));
+  var dur=Math.min(1800,Math.max(900,600+Math.sqrt(Math.abs(dist))*13)), ease=easeOut, t0=null;
+  var warp=warpPlan(dist); if(warp){dur=warp.dur; ease=warp.ease;}
+  function step(ts){
+    if(warp){ to=destY(el); from=to-warp.approach; dist=warp.approach; scrollTo(0,from); spy(); t0=ts; warp=null; }
+    if(!t0) t0=ts; var t=Math.min(1,(ts-t0)/dur); scrollTo(0,from+dist*ease(t));
     if(t<1){raf=requestAnimationFrame(step);} else {raf=null; var fix=destY(el); if(Math.abs(fix-scrollY)>2) scrollTo(0,fix); lockNav=false; spy(); done&&done();}}
   raf=requestAnimationFrame(step);
 }
@@ -1510,8 +1522,10 @@ var tourScrollRaf=null;
 function tourScrollTo(y){
   if(tourScrollRaf) cancelAnimationFrame(tourScrollRaf);
   var from=scrollY, dist=y-from; if(Math.abs(dist)<2) return;
-  var dur=Math.min(1200,Math.max(600,400+Math.sqrt(Math.abs(dist))*9)), t0=null;
-  (function step(ts){ if(!t0) t0=ts; var t=Math.min(1,(ts-t0)/dur); scrollTo(0,from+dist*easeOut(t)); tourPlace(); if(t<1) tourScrollRaf=requestAnimationFrame(step); else tourScrollRaf=null; })(performance.now());
+  var dur=Math.min(1200,Math.max(600,400+Math.sqrt(Math.abs(dist))*9)), ease=easeOut, t0=null;
+  var warp=warpPlan(dist);   // 導覽換步的長距離也是先跳再減速
+  if(warp){ from=y-warp.approach; dist=warp.approach; dur=warp.dur; ease=warp.ease; scrollTo(0,from); }
+  (function step(ts){ if(!t0) t0=ts; var t=Math.min(1,(ts-t0)/dur); scrollTo(0,from+dist*ease(t)); tourPlace(); if(t<1) tourScrollRaf=requestAnimationFrame(step); else tourScrollRaf=null; })(performance.now());
 }
 function tourGo(ch,i){
   tourStopDemo();
@@ -1593,7 +1607,7 @@ document.getElementById('btnTour').addEventListener('click',function(){tourOpen(
    第一次來：先跑完整導覽，導覽結束（走完或中途關閉）才出現；之後任何導覽結束也會出現。
    版本記號：localStorage 的 vg-seen-version；V1 沒有記號，以 V1 留下的 vg-tour-seen／vg-checklist-v1／vg-theme 判定舊訪客。
    讀不到 localStorage：照常出現提醒（不判定新版、不自動導覽）。淡出動畫不跟隨「減少動態效果」（全域規則）。 */
-var VER='V2.1', CHANGES=[{"version": "V2.1", "date": "2026-11-11", "items": ["章節目錄移到頁面左側並固定，各章節顯示全名；手機上目錄在頁首下方，可左右滑動"], "steps": [{"el": "nav.tabs", "title": "左側目錄", "text": "章節目錄改放在左側並固定不動，捲動時目前所在的章節會亮起，點名稱即可跳到該段。手機上目錄在頁首下方，可左右滑動。"}]}, {"version": "V2", "date": "2026-11-11", "items": ["每次開啟本頁，畫面中央會提醒：查詢規則、做法時請回到本頁確認最新資訊；本頁有更新時也在這裡顯示重點", "標題顯示版本號", "案件流程圖加上實驗室同時進行的測試：收到樣品後開始，與文件往來並行", "文件清單：委託單移到「貴司確認／用印」一組，說明改為貴司要做的事", "02_05 電路方塊圖可依供電型態切換：電源插頭、室內配線、USB 輸入（有／無隨附電源供應器）", "07_xx 新增 07_01／07_02／07_03 空白範本下載", "07_xx 說明更新：非範本格式的聲明書由實驗室轉錄成正確版，貴司核對後用印"], "steps": [{"el": ".brand", "title": "標題顯示版本", "text": "頁面標題旁標示目前版本。與實驗室聯絡時，可告知您看的是哪一版。"}, {"el": "#fig-flow g[data-tip=\"t-ftest\"]", "title": "同時進行的測試", "text": "實驗室收到樣品後就開始測試，與貴司補件、修正文件同時進行。淡色點線框是測試，主線仍是文件往來。"}, {"el": "#ck-sign-order", "title": "委託單的位置", "text": "委託單由實驗室提供，請核對內容後簽名或用印回傳，所以放在「貴司確認／用印」這一組。"}, {"el": "#ptype", "title": "依供電型態看方塊圖", "text": "點選貴司產品的供電方式：電源插頭、室內配線、USB 輸入（有或沒有隨附電源供應器），方塊圖與要畫出的項目會跟著切換。"}, {"el": "#tpl07", "title": "RoHS 空白範本下載", "text": "07_01、07_02、07_03 的空白範本可直接下載填寫，三份請分開成三個檔案。"}, {"el": "#rohs-flow", "title": "非範本格式怎麼處理", "text": "若貴司使用其他格式，實驗室會把貴司申報的內容轉錄到範本並修正格式，回傳正確版與修改之處，請核對後用印。"}]}], SEEN_KEY='vg-seen-version';
+var VER='V2.2', CHANGES=[{"version": "V2.2", "date": "2026-11-11", "items": ["點目錄或連結跳到較遠的章節時，改為先直接跳到附近、再減速停到位置，不再長時間捲動"], "steps": [{"el": "nav.tabs", "title": "跳轉方式", "text": "從目錄點選較遠的章節時，頁面會先直接跳到附近，再減速停到該章節開頭，不必等長距離捲動。"}]}, {"version": "V2.1", "date": "2026-11-11", "items": ["章節目錄移到頁面左側並固定，各章節顯示全名；手機上目錄在頁首下方，可左右滑動"], "steps": [{"el": "nav.tabs", "title": "左側目錄", "text": "章節目錄改放在左側並固定不動，捲動時目前所在的章節會亮起，點名稱即可跳到該段。手機上目錄在頁首下方，可左右滑動。"}]}, {"version": "V2", "date": "2026-11-11", "items": ["每次開啟本頁，畫面中央會提醒：查詢規則、做法時請回到本頁確認最新資訊；本頁有更新時也在這裡顯示重點", "標題顯示版本號", "案件流程圖加上實驗室同時進行的測試：收到樣品後開始，與文件往來並行", "文件清單：委託單移到「貴司確認／用印」一組，說明改為貴司要做的事", "02_05 電路方塊圖可依供電型態切換：電源插頭、室內配線、USB 輸入（有／無隨附電源供應器）", "07_xx 新增 07_01／07_02／07_03 空白範本下載", "07_xx 說明更新：非範本格式的聲明書由實驗室轉錄成正確版，貴司核對後用印"], "steps": [{"el": ".brand", "title": "標題顯示版本", "text": "頁面標題旁標示目前版本。與實驗室聯絡時，可告知您看的是哪一版。"}, {"el": "#fig-flow g[data-tip=\"t-ftest\"]", "title": "同時進行的測試", "text": "實驗室收到樣品後就開始測試，與貴司補件、修正文件同時進行。淡色點線框是測試，主線仍是文件往來。"}, {"el": "#ck-sign-order", "title": "委託單的位置", "text": "委託單由實驗室提供，請核對內容後簽名或用印回傳，所以放在「貴司確認／用印」這一組。"}, {"el": "#ptype", "title": "依供電型態看方塊圖", "text": "點選貴司產品的供電方式：電源插頭、室內配線、USB 輸入（有或沒有隨附電源供應器），方塊圖與要畫出的項目會跟著切換。"}, {"el": "#tpl07", "title": "RoHS 空白範本下載", "text": "07_01、07_02、07_03 的空白範本可直接下載填寫，三份請分開成三個檔案。"}, {"el": "#rohs-flow", "title": "非範本格式怎麼處理", "text": "若貴司使用其他格式，實驗室會把貴司申報的內容轉錄到範本並修正格式，回傳正確版與修改之處，請核對後用印。"}]}], SEEN_KEY='vg-seen-version';
 var REMIND_MAIN='不論何時遇到需要查詢規則、做法，都請回來查詢檢查，以確認最新資訊。';
 var REMIND_MS=5000;
 function lsGet(k){try{return localStorage.getItem(k);}catch(e){return undefined;}}
