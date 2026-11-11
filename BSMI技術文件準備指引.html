@@ -8,7 +8,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BSMI 商品驗證登錄　技術文件準備指引　V2</title>
+<title>BSMI 商品驗證登錄　技術文件準備指引　V2.1</title>
 <meta name="generator" content="round-table:RT-beginner-friendly-html 1.3.1 (round-table 1.22.0)">
 <meta name="design-system" content="round-table:RT-beginner-friendly-html 1.3.1 (round-table 1.22.0)">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232f6fdb'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11' stroke='white' stroke-width='3.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
@@ -38,21 +38,27 @@ a{color:var(--brand)}
 code,.mono{font-family:Consolas,'Cascadia Mono',monospace; font-size:.92em}
 /* ---------- header ---------- */
 header.top{position:sticky; top:0; z-index:40; background:color-mix(in srgb,var(--bg) 88%,transparent); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border-bottom:1px solid var(--line)}
-.top-in{max-width:1180px; margin:0 auto; padding:8px 20px; display:flex; align-items:center; gap:14px}
+.top-in{max-width:1440px; margin:0 auto; padding:8px 20px; display:flex; align-items:center; gap:14px}
+.top-in .tools{margin-left:auto}
 .brand{font-weight:700; white-space:nowrap; font-size:15px}
 .brand small{display:block; font-weight:400; color:var(--mute); font-size:12px; line-height:1.2}
-nav.tabs{position:relative; display:flex; gap:2px; overflow-x:auto; scrollbar-width:none; flex:1; padding:4px 0}
-nav.tabs::-webkit-scrollbar{display:none}
-nav.tabs a{position:relative; z-index:1; padding:6px 11px; border-radius:999px; color:var(--ink2); text-decoration:none; font-size:14px; white-space:nowrap; transition:color .3s}
-nav.tabs a[aria-current="true"]{color:#fff}
-.nav-ind{position:absolute; z-index:0; left:0; top:0; border-radius:999px; background:var(--brand-solid); pointer-events:none; transition:transform .7s cubic-bezier(.22,1,.36,1),width .7s cubic-bezier(.22,1,.36,1),height .7s cubic-bezier(.22,1,.36,1),opacity .3s}
+/* 左側目錄（V2.1，使用者 2026-11-11 指定左側；窄螢幕改為頁首下方的橫向捲動列） */
+.layout{max-width:1440px; margin:0 auto; padding:0 20px; display:grid; grid-template-columns:248px minmax(0,1fr); gap:28px; align-items:start}
+aside.toc{position:sticky; top:calc(var(--hdr) + 16px); max-height:calc(100vh - var(--hdr) - 32px); overflow:auto; padding:18px 0 18px; scrollbar-width:thin}
+.toc-h{font-size:12px; font-weight:700; letter-spacing:.08em; color:var(--mute); margin:0 0 8px 12px}
+nav.tabs{position:relative; display:flex; flex-direction:column; gap:2px}
+nav.tabs a{position:relative; z-index:1; display:flex; align-items:baseline; gap:8px; padding:7px 12px; border-radius:10px; color:var(--ink2); text-decoration:none; font-size:14.5px; line-height:1.45; transition:color .3s}
+nav.tabs a:hover{color:var(--ink)}
+nav.tabs .toc-code{flex:none; font:700 12px Consolas,monospace; color:var(--brand); min-width:3.6em; transition:color .3s}
+nav.tabs a[aria-current="true"],nav.tabs a[aria-current="true"] .toc-code{color:#fff}
+.nav-ind{position:absolute; z-index:0; left:0; top:0; border-radius:10px; background:var(--brand-solid); pointer-events:none; transition:transform .7s cubic-bezier(.22,1,.36,1),width .7s cubic-bezier(.22,1,.36,1),height .7s cubic-bezier(.22,1,.36,1),opacity .3s}
 .nav-ind.no-anim{transition:none}
 .tools{display:flex; gap:6px}
 .btn{border:1px solid var(--line); background:var(--card); color:var(--ink); border-radius:10px; padding:6px 11px; font:inherit; font-size:14px; cursor:pointer; display:inline-flex; align-items:center; gap:6px}
 .btn:hover{border-color:var(--brand)}
 .btn svg{width:16px; height:16px}
 /* ---------- layout ---------- */
-main{max-width:1180px; margin:0 auto; padding:8px 20px 40px}
+main{min-width:0; padding:8px 0 40px}
 section.sec{padding:34px 0 26px; scroll-margin-top:calc(var(--hdr) + 8px)}
 .sec-title{position:sticky; top:var(--hdr); z-index:15; background:var(--bg); margin:0 0 6px; padding:12px 0 10px; font-size:26px; line-height:1.35; display:flex; align-items:center; gap:12px; border-bottom:1px solid transparent; transition:font-size .15s,padding .15s}
 .sec-title.stuck{font-size:19px; padding:7px 0 6px; border-bottom-color:var(--line); box-shadow:0 8px 10px -10px rgba(0,0,0,.25)}
@@ -252,13 +258,27 @@ footer{max-width:1180px; margin:20px auto 0; padding:26px 20px 46px; border-top:
 .tour-demo .pulse{transition:stroke-width .3s,stroke .3s}
 .tour-demo .pulse.on{stroke:var(--brand); stroke-width:3}
 /* ---------- responsive ---------- */
+@media (max-width:1279px){.layout{grid-template-columns:208px minmax(0,1fr); gap:24px} nav.tabs a{font-size:14px}}
+@media (max-width:959px){
+  .layout{display:block; padding:0 20px}
+  aside.toc{position:sticky; z-index:39; top:var(--hdr0,60px); max-height:none; overflow:visible; margin:0 -20px; padding:0 20px;
+    background:color-mix(in srgb,var(--bg) 88%,transparent); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px); border-bottom:1px solid var(--line)}
+  .toc-h{display:none}
+  nav.tabs{flex-direction:row; overflow-x:auto; scrollbar-width:none; padding:6px 0}
+  nav.tabs::-webkit-scrollbar{display:none}
+  nav.tabs a{white-space:nowrap; padding:6px 11px; border-radius:999px; font-size:14px}
+  nav.tabs a .toc-code+.toc-name{display:none}
+  nav.tabs .toc-code{min-width:0; font-size:13px}
+  .nav-ind{border-radius:999px}
+}
 @media (max-width:960px){.g3{grid-template-columns:1fr 1fr}}
 @media (max-width:760px){
   body{font-size:15.5px}
   .top-in{padding:6px 12px; gap:8px; flex-wrap:wrap}
   .brand small{display:none}
-  nav.tabs{order:3; flex-basis:100%}
-  main{padding:4px 14px 30px}
+  .layout{padding:0 14px}
+  aside.toc{margin:0 -14px; padding:0 14px}
+  main{padding:4px 0 30px}
   .g2,.g3,.g-wrap{grid-template-columns:1fr}
   .sec-title{font-size:21px}
   .sec-title.stuck{font-size:16px; padding:5px 0 4px}
@@ -273,7 +293,8 @@ footer{max-width:1180px; margin:20px auto 0; padding:26px 20px 46px; border-top:
 /* ---------- print ---------- */
 @media print{
   :root,:root[data-theme="dark"]{--bg:#fff; --card:#fff; --ink:#000; --ink2:#333; --mute:#555; --line:#bbb; --brand:#1a4fae; --brand-soft:#eef3fc; --brand-solid:#1a4fae; color-scheme:light}
-  header.top,.tools,#gtip,.filter,.copybox .btn,#tour,.seg,.remind,.dl-list .btn{display:none!important}
+  header.top,.tools,#gtip,.filter,.copybox .btn,#tour,.seg,.remind,.dl-list .btn,aside.toc{display:none!important}
+  .layout{display:block; max-width:none; padding:0}
   .ptype-panel[hidden]{display:block!important}
   .ptype-print{display:block; font-weight:700; margin:12px 0 0}
   .ptype-panel{break-inside:avoid}
@@ -291,20 +312,7 @@ footer{max-width:1180px; margin:20px auto 0; padding:26px 20px 46px; border-top:
 <body>
 <header class="top">
   <div class="top-in">
-    <div class="brand">BSMI 技術文件準備指引<span class="ver" title="版本 V2（2026-11-11）">V2</span><small>商品驗證登錄（安規）</small></div>
-    <nav class="tabs" aria-label="章節">
-      <span class="nav-ind no-anim" aria-hidden="true"></span>
-      <a href="#start">先看這裡</a>
-      <a href="#flow">案件流程</a>
-      <a href="#checklist">文件清單</a>
-      <a href="#d0207">02_07</a>
-      <a href="#d0205">02_05</a>
-      <a href="#d0202">02_02</a>
-      <a href="#d0203">02_03</a>
-      <a href="#d0210">02_10</a>
-      <a href="#d07">RoHS 與用印</a>
-      <a href="#glossary">名詞解釋</a>
-    </nav>
+    <div class="brand">BSMI 技術文件準備指引<span class="ver" title="版本 V2.1（2026-11-11）">V2.1</span><small>商品驗證登錄（安規）</small></div>
     <div class="tools">
       <button class="btn primary" id="btnTour" type="button" title="指引導覽"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 9.5a2.2 2.2 0 1 1 3 2c-.7.3-1 .8-1 1.5M12 17h.01"/></svg><span class="lbl">指引導覽</span></button>
       <button class="btn" id="btnPrint" type="button" title="列印文件清單"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4v-7h16v7h-2M8 14h8v7H8z"/></svg><span class="lbl">列印清單</span></button>
@@ -312,6 +320,24 @@ footer{max-width:1180px; margin:20px auto 0; padding:26px 20px 46px; border-top:
     </div>
   </div>
 </header>
+
+<div class="layout">
+<aside class="toc" aria-label="目錄">
+  <p class="toc-h">目錄</p>
+  <nav class="tabs" aria-label="章節">
+    <span class="nav-ind no-anim" aria-hidden="true"></span>
+    <a href="#start"><span class="toc-name">先看這裡</span></a>
+    <a href="#flow"><span class="toc-name">案件流程</span></a>
+    <a href="#checklist"><span class="toc-name">文件清單</span></a>
+    <a href="#d0207"><span class="toc-code">02_07</span><span class="toc-name">重要零組件一覽表</span></a>
+    <a href="#d0205"><span class="toc-code">02_05</span><span class="toc-name">電路圖及相關圖面</span></a>
+    <a href="#d0202"><span class="toc-code">02_02</span><span class="toc-name">主型式及系列差異表</span></a>
+    <a href="#d0203"><span class="toc-code">02_03</span><span class="toc-name">繁體中文標籤</span></a>
+    <a href="#d0210"><span class="toc-code">02_10</span><span class="toc-name">中文使用手冊及規格</span></a>
+    <a href="#d07"><span class="toc-code">07_xx</span><span class="toc-name">RoHS 與用印文件</span></a>
+    <a href="#glossary"><span class="toc-name">名詞解釋</span></a>
+  </nav>
+</aside>
 
 <main>
 
@@ -407,7 +433,7 @@ footer{max-width:1180px; margin:20px auto 0; padding:26px 20px 46px; border-top:
   </div>
 
   <div class="ck-group" data-g="you">
-    <h3><span class="chip c-brand">貴司提供</span>需要向工廠或供應商取得</h3>
+    <h3><span class="chip c-brand">貴司提供</span>貴司準備（部分需向工廠或供應商取得）</h3>
     <ul class="ck-list">
       <li data-g="you" id="ck-first"><input type="checkbox" data-ck="c-id" aria-label="基本資料"><span class="cd">基本資料</span><span class="nm">申請者與生產廠的名稱、地址、統編</span><span class="when chip c-green">一律</span><span class="ds">申請者就是證書上的名義人；實際製造的生產廠也請一併提供。</span></li>
       <li data-g="you"><input type="checkbox" data-ck="c-0203" aria-label="02_03"><span class="cd">02_03</span><span class="nm">繁體中文標籤</span><span class="when chip c-green">一律</span><span class="ds">台灣版標籤樣稿與貼附位置。<a href="#d0203">看說明</a></span></li>
@@ -1167,10 +1193,11 @@ IEC 60127-3</td><td>VDE 40xxxxxx</td><td></td><td></td><td>主控PCB</td><td>原
 </section>
 
 </main>
+</div>
 
 <footer>
   <div>BSMI 商品驗證登錄技術文件準備指引</div>
-  <div>版本 V2　2026-11-11</div>
+  <div>版本 V2.1　2026-11-11</div>
   <div>財團法人金屬工業研究發展中心　智慧暨系統研發服務處　電氣安全實驗室</div>
 </footer>
 
@@ -1191,8 +1218,11 @@ bt.addEventListener('click',function(){var t=root.getAttribute('data-theme')==='
 
 /* ---------- header height ---------- */
 var hdr=document.querySelector('header.top');
-function setHdr(){root.style.setProperty('--hdr',hdr.offsetHeight+'px');}
-setHdr(); if(window.ResizeObserver){new ResizeObserver(setHdr).observe(hdr);} else {addEventListener('resize',setHdr);}
+var tocEl=document.querySelector('aside.toc'), STRIP=matchMedia('(max-width: 959px)');
+/* --hdr＝頂部被固定佔住的高度：寬螢幕只有頁首；窄螢幕的目錄是頁首下方的橫向列，一併算進去 */
+function setHdr(){var h=hdr.offsetHeight; root.style.setProperty('--hdr0',h+'px'); if(STRIP.matches&&tocEl) h+=tocEl.offsetHeight; root.style.setProperty('--hdr',h+'px');}
+setHdr(); if(window.ResizeObserver){var ro=new ResizeObserver(setHdr); ro.observe(hdr); if(tocEl) ro.observe(tocEl);} else {addEventListener('resize',setHdr);}
+if(STRIP.addEventListener) STRIP.addEventListener('change',setHdr);
 function px(v){return parseFloat(getComputedStyle(root).getPropertyValue(v))||0;}
 
 /* ---------- auto-mark glossary terms (first per section) ---------- */
@@ -1276,7 +1306,8 @@ var active=null;
 function moveInd(a){ind.style.width=a.offsetWidth+'px'; ind.style.height=a.offsetHeight+'px'; ind.style.transform='translate('+a.offsetLeft+'px,'+a.offsetTop+'px)';}
 function setActive(a){
   if(active===a) return; if(active) active.removeAttribute('aria-current'); active=a; a.setAttribute('aria-current','true'); moveInd(a);
-  var want=a.offsetLeft-(nav.clientWidth-a.offsetWidth)/2; nav.scrollTo({left:want,behavior:'smooth'});
+  if(STRIP.matches){ var want=a.offsetLeft-(nav.clientWidth-a.offsetWidth)/2; nav.scrollTo({left:want,behavior:'smooth'}); }
+  else if(tocEl&&tocEl.scrollHeight>tocEl.clientHeight){ var y=a.offsetTop-(tocEl.clientHeight-a.offsetHeight)/2; tocEl.scrollTo({top:y,behavior:'smooth'}); }
 }
 function spy(){
   if(lockNav) return; var line=px('--hdr')+px('--sh')+40; var pick=links[0];
@@ -1285,7 +1316,7 @@ function spy(){
   setActive(pick);
 }
 function relayout(){ind.classList.add('no-anim'); if(active) moveInd(active); void ind.offsetWidth; ind.classList.remove('no-anim');}
-addEventListener('resize',relayout);
+addEventListener('resize',relayout); if(STRIP.addEventListener) STRIP.addEventListener('change',relayout);
 setTimeout(function(){ spy(); relayout(); },0);
 
 /* ---------- sticky section titles ---------- */
@@ -1395,7 +1426,7 @@ var TOUR=[
   {title:'開始',sec:'start',steps:[
     {title:'BSMI 技術文件準備指引',demo:'docs',text:'本指引說明申請 BSMI 商品驗證登錄需要哪些文件、由誰準備，以及向零件供應商該要什麼。導覽可隨時按右上角的關閉鈕或 Esc 鍵結束，之後從頂列「指引導覽」再開啟。'},
     {el:'#rules-start',title:'三條總則',text:'一個分類碼一份檔案、先給手上有的、看紅字回紅字。整份指引都從這三條展開。'},
-    {el:'nav.tabs',title:'章節',text:'點章節名稱直接跳到該段；捲動時，目前所在的章節會亮起。'},
+    {el:'nav.tabs',title:'目錄',text:'左側目錄列出各章節，點名稱直接跳到該段；捲動時，目前所在的章節會亮起。（手機上目錄在頁首下方，可左右滑動。）'},
     {el:'#btnTour',title:'指引導覽',text:'隨時按這裡重新開啟導覽；在哪一節按，就從那一節開始，也可以在說明卡上方切換章節。'}]},
   {title:'案件流程',sec:'flow',steps:[
     {el:'#fig-flow',title:'九站流程',text:'三條泳道分別是貴司、實驗室與 BSMI。白框是貴司要動手的站點；實驗室泳道的淡色點線框是同時進行的測試。滑鼠移到各站可看該站要準備什麼。'},
@@ -1534,9 +1565,10 @@ function tourClose(){
   tourStopDemo(); if(tourScrollRaf) cancelAnimationFrame(tourScrollRaf); T.on=false;
   var w=document.getElementById('tour'); if(w) w.remove();
   try{localStorage.setItem('vg-tour-seen','1')}catch(e){}
+  var wasUpdateTour=T.list!==TOUR;   // 改版導覽只從提醒視窗進入；走完不再跳一次提醒（使用者 2026-11-11 定）
   T.list=TOUR;
   if(T.back&&T.back.focus) T.back.focus();
-  onTourEnd();
+  if(!wasUpdateTour) onTourEnd();
 }
 document.addEventListener('keydown',function(e){
   if(!T.on) return;
@@ -1561,14 +1593,14 @@ document.getElementById('btnTour').addEventListener('click',function(){tourOpen(
    第一次來：先跑完整導覽，導覽結束（走完或中途關閉）才出現；之後任何導覽結束也會出現。
    版本記號：localStorage 的 vg-seen-version；V1 沒有記號，以 V1 留下的 vg-tour-seen／vg-checklist-v1／vg-theme 判定舊訪客。
    讀不到 localStorage：照常出現提醒（不判定新版、不自動導覽）。淡出動畫不跟隨「減少動態效果」（全域規則）。 */
-var VER='V2', CHANGES=[{"version": "V2", "date": "2026-11-11", "items": ["每次開啟本頁，畫面中央會提醒：查詢規則、做法時請回到本頁確認最新資訊；本頁有更新時也在這裡顯示重點", "標題顯示版本號", "案件流程圖加上實驗室同時進行的測試：收到樣品後開始，與文件往來並行", "文件清單：委託單移到「貴司確認／用印」一組，說明改為貴司要做的事", "02_05 電路方塊圖可依供電型態切換：電源插頭、室內配線、USB 輸入（有／無隨附電源供應器）", "07_xx 新增 07_01／07_02／07_03 空白範本下載", "07_xx 說明更新：非範本格式的聲明書由實驗室轉錄成正確版，貴司核對後用印"], "steps": [{"el": ".brand", "title": "標題顯示版本", "text": "頁面標題旁標示目前版本。與實驗室聯絡時，可告知您看的是哪一版。"}, {"el": "#fig-flow g[data-tip=\"t-ftest\"]", "title": "同時進行的測試", "text": "實驗室收到樣品後就開始測試，與貴司補件、修正文件同時進行。淡色點線框是測試，主線仍是文件往來。"}, {"el": "#ck-sign-order", "title": "委託單的位置", "text": "委託單由實驗室提供，請核對內容後簽名或用印回傳，所以放在「貴司確認／用印」這一組。"}, {"el": "#ptype", "title": "依供電型態看方塊圖", "text": "點選貴司產品的供電方式：電源插頭、室內配線、USB 輸入（有或沒有隨附電源供應器），方塊圖與要畫出的項目會跟著切換。"}, {"el": "#tpl07", "title": "RoHS 空白範本下載", "text": "07_01、07_02、07_03 的空白範本可直接下載填寫，三份請分開成三個檔案。"}, {"el": "#rohs-flow", "title": "非範本格式怎麼處理", "text": "若貴司使用其他格式，實驗室會把貴司申報的內容轉錄到範本並修正格式，回傳正確版與修改之處，請核對後用印。"}]}], SEEN_KEY='vg-seen-version';
+var VER='V2.1', CHANGES=[{"version": "V2.1", "date": "2026-11-11", "items": ["章節目錄移到頁面左側並固定，各章節顯示全名；手機上目錄在頁首下方，可左右滑動"], "steps": [{"el": "nav.tabs", "title": "左側目錄", "text": "章節目錄改放在左側並固定不動，捲動時目前所在的章節會亮起，點名稱即可跳到該段。手機上目錄在頁首下方，可左右滑動。"}]}, {"version": "V2", "date": "2026-11-11", "items": ["每次開啟本頁，畫面中央會提醒：查詢規則、做法時請回到本頁確認最新資訊；本頁有更新時也在這裡顯示重點", "標題顯示版本號", "案件流程圖加上實驗室同時進行的測試：收到樣品後開始，與文件往來並行", "文件清單：委託單移到「貴司確認／用印」一組，說明改為貴司要做的事", "02_05 電路方塊圖可依供電型態切換：電源插頭、室內配線、USB 輸入（有／無隨附電源供應器）", "07_xx 新增 07_01／07_02／07_03 空白範本下載", "07_xx 說明更新：非範本格式的聲明書由實驗室轉錄成正確版，貴司核對後用印"], "steps": [{"el": ".brand", "title": "標題顯示版本", "text": "頁面標題旁標示目前版本。與實驗室聯絡時，可告知您看的是哪一版。"}, {"el": "#fig-flow g[data-tip=\"t-ftest\"]", "title": "同時進行的測試", "text": "實驗室收到樣品後就開始測試，與貴司補件、修正文件同時進行。淡色點線框是測試，主線仍是文件往來。"}, {"el": "#ck-sign-order", "title": "委託單的位置", "text": "委託單由實驗室提供，請核對內容後簽名或用印回傳，所以放在「貴司確認／用印」這一組。"}, {"el": "#ptype", "title": "依供電型態看方塊圖", "text": "點選貴司產品的供電方式：電源插頭、室內配線、USB 輸入（有或沒有隨附電源供應器），方塊圖與要畫出的項目會跟著切換。"}, {"el": "#tpl07", "title": "RoHS 空白範本下載", "text": "07_01、07_02、07_03 的空白範本可直接下載填寫，三份請分開成三個檔案。"}, {"el": "#rohs-flow", "title": "非範本格式怎麼處理", "text": "若貴司使用其他格式，實驗室會把貴司申報的內容轉錄到範本並修正格式，回傳正確版與修改之處，請核對後用印。"}]}], SEEN_KEY='vg-seen-version';
 var REMIND_MAIN='不論何時遇到需要查詢規則、做法，都請回來查詢檢查，以確認最新資訊。';
 var REMIND_MS=5000;
 function lsGet(k){try{return localStorage.getItem(k);}catch(e){return undefined;}}
 function lsSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}
-function verNum(v){var m=/^V(\d+)$/.exec(v||''); return m?+m[1]:0;}
+function verNum(v){var m=/^V(\d+)(?:\.(\d+))?$/.exec(v||''); return m?(+m[1])*1000+(+(m[2]||0)):0;}
 function escHtml(t){return String(t).replace(/[&<>]/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[ch];});}
-function updateTour(c){return [{title:c.version+' 改版重點',sec:'start',steps:c.steps}];}
+function updateTour(list){return list.map(function(c){return {title:c.version+' 改版重點',sec:'start',steps:c.steps};});}
 var R={el:null,timer:null,left:REMIND_MS,t0:0,news:null};
 function remindClose(){
   if(!R.el) return;
@@ -1585,7 +1617,6 @@ function remindShow(news){
   if(T.on) return;
   remindClose();
   R.news=(news&&news.length)?news:null; R.left=REMIND_MS;
-  var latest=CHANGES[0];
   var el=document.createElement('section'); el.className='remind'+(R.news?' has-news':''); el.id='remind';
   el.setAttribute('role',R.news?'dialog':'status'); el.setAttribute('aria-labelledby','remindTitle');
   var html='<button class="tour-x remind-x" type="button" aria-label="關閉" title="關閉（Esc）">'+X_ICON+'</button>'+
@@ -1595,19 +1626,20 @@ function remindShow(news){
       R.news.map(function(c){return c.items.map(function(t){return '<li>'+escHtml(t)+'</li>';}).join('');}).join('')+'</ul></div>';
   }
   html+='<div class="remind-sub"><p>本頁內容有更新時，下次開啟會在這裡顯示更新重點。</p>'+
-    '<button class="btn primary" type="button" data-r="tour">看 '+escHtml(latest.version)+' 改版導覽</button></div>';
+    '<button class="btn primary" type="button" data-r="tour">看改版導覽</button></div>';
   if(!R.news) html+='<div class="remind-bar" aria-hidden="true"><i></i></div>';
   el.innerHTML=html;
   document.body.appendChild(el); R.el=el;
   el.querySelector('.remind-x').onclick=remindClose;
-  el.querySelector('[data-r="tour"]').onclick=function(){ var n=latest; remindClose(); lsSet(SEEN_KEY,VER); tourOpen(0,updateTour(n)); };
+  var tourList=R.news||CHANGES;
+  el.querySelector('[data-r="tour"]').onclick=function(){ remindClose(); lsSet(SEEN_KEY,VER); tourOpen(0,updateTour(tourList)); };
   el.addEventListener('mouseenter',remindPause); el.addEventListener('mouseleave',remindStart);
   el.addEventListener('focusin',remindPause); el.addEventListener('focusout',function(e){ if(!el.contains(e.relatedTarget)) remindStart(); });
   document.addEventListener('keydown',remindKey,true);
   if(R.news) el.querySelector('[data-r="tour"]').focus({preventScroll:true});
   remindStart();
 }
-/* 任何導覽結束後出現（第一次來的完整導覽、自己按「指引導覽」、改版導覽皆同）。 */
+/* 完整導覽（第一次來自動跑的、自己按「指引導覽」的）結束後出現；從提醒視窗進去的改版導覽結束後不再出現。 */
 function onTourEnd(){ setTimeout(function(){ if(!T.on) remindShow(null); },0); }
 (function(){
   var seen=lsGet(SEEN_KEY);
