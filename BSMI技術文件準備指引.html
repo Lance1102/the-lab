@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <!--
   BSMI 商品驗證登錄　技術文件準備指引
-  設計規範：round-table:RT-beginner-friendly-html 1.3.1 (round-table 1.20.0)
+  設計規範：round-table:RT-beginner-friendly-html 1.3.1 (round-table 1.22.0)
   建置方式：python docs/vendor-guide/_src/build.py（勿手改本檔）
 -->
 <html lang="zh-Hant-TW">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BSMI 商品驗證登錄　技術文件準備指引</title>
-<meta name="generator" content="round-table:RT-beginner-friendly-html 1.3.1 (round-table 1.20.0)">
-<meta name="design-system" content="round-table:RT-beginner-friendly-html 1.3.1 (round-table 1.20.0)">
+<title>BSMI 商品驗證登錄　技術文件準備指引　V2</title>
+<meta name="generator" content="round-table:RT-beginner-friendly-html 1.3.1 (round-table 1.22.0)">
+<meta name="design-system" content="round-table:RT-beginner-friendly-html 1.3.1 (round-table 1.22.0)">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232f6fdb'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11' stroke='white' stroke-width='3.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <script>
 (function(){try{var t=localStorage.getItem('vg-theme');if(!t){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.setAttribute('data-theme',t)}catch(e){}})();
@@ -180,6 +180,33 @@ footer{max-width:1180px; margin:20px auto 0; padding:26px 20px 46px; border-top:
 .dd-fig.mid{max-width:880px; margin-left:auto; margin-right:auto}
 .btn.primary{background:var(--brand-solid); border-color:var(--brand-solid); color:#fff}
 .btn.primary:hover{filter:brightness(1.08)}
+/* ---------- V2：版本標示、供電型態切換、範本下載、改版提示 ---------- */
+.brand .ver{display:inline-block; margin-left:8px; padding:1px 8px; border-radius:999px; background:var(--brand-solid); color:#fff; font-size:12px; font-weight:700; vertical-align:2px}
+.seg{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 14px}
+.seg button{border:1px solid var(--line); background:var(--card); color:var(--ink2); border-radius:999px; padding:6px 13px; font:inherit; font-size:14px; cursor:pointer}
+.seg button[aria-selected="true"]{background:var(--brand-solid); border-color:var(--brand-solid); color:#fff}
+.ptype-panel[hidden]{display:none}
+.ptype-print{display:none}
+.ptype-panel .must{margin:4px 0 0}
+.dl-list{display:grid; gap:10px; margin:8px 0 0; padding:0; list-style:none}
+.dl-list li{display:flex; align-items:center; gap:12px; flex-wrap:wrap; border:1px solid var(--line); border-radius:12px; padding:10px 14px; background:var(--card)}
+.dl-list .nm{flex:1; min-width:12em}
+.dl-list .sz{color:var(--mute); font-size:13px}
+.remind{position:fixed; z-index:90; top:50%; left:50%; transform:translate(-50%,-50%); width:min(600px,calc(100vw - 32px)); max-height:calc(100vh - 32px); overflow:auto;
+  background:var(--card); color:var(--ink); border:1px solid var(--line); border-top:6px solid var(--brand); border-radius:18px; box-shadow:0 24px 70px rgba(0,0,0,.34);
+  padding:26px 28px 20px; animation:remind-in .45s cubic-bezier(.22,.8,.24,1); transition:opacity .8s ease}
+.remind.out{opacity:0}
+.remind h2{font-size:22px; line-height:1.6; margin:0 36px 12px 0}
+.remind .remind-x{position:absolute; top:14px; right:14px}
+.remind-news{border:1px solid var(--line); border-radius:12px; background:var(--brand-soft); padding:12px 16px; margin:0 0 12px}
+.remind-news ul{margin:6px 0 0; padding-left:20px; line-height:1.7}
+.remind-sub{display:flex; align-items:center; gap:12px; flex-wrap:wrap}
+.remind-sub p{flex:1; min-width:14em; margin:0; color:var(--ink2)}
+.remind-bar{height:4px; border-radius:2px; background:var(--line); margin-top:16px; overflow:hidden}
+.remind-bar i{display:block; height:100%; background:var(--brand); transform-origin:left center; animation:remind-bar 5s linear forwards}
+.remind:hover .remind-bar i,.remind:focus-within .remind-bar i{animation-play-state:paused}
+@keyframes remind-in{from{opacity:0; transform:translate(-50%,-46%)}to{opacity:1; transform:translate(-50%,-50%)}}
+@keyframes remind-bar{from{transform:scaleX(1)}to{transform:scaleX(0)}}
 /* ---------- guided tour（版面語彙沿用 apps/bsmi_hub 操作導覽） ---------- */
 :root{--tour-dim:rgba(16,24,36,.56)}
 :root[data-theme="dark"]{--tour-dim:rgba(0,0,0,.68)}
@@ -246,7 +273,10 @@ footer{max-width:1180px; margin:20px auto 0; padding:26px 20px 46px; border-top:
 /* ---------- print ---------- */
 @media print{
   :root,:root[data-theme="dark"]{--bg:#fff; --card:#fff; --ink:#000; --ink2:#333; --mute:#555; --line:#bbb; --brand:#1a4fae; --brand-soft:#eef3fc; --brand-solid:#1a4fae; color-scheme:light}
-  header.top,.tools,#gtip,.filter,.copybox .btn,#tour{display:none!important}
+  header.top,.tools,#gtip,.filter,.copybox .btn,#tour,.seg,.remind,.dl-list .btn{display:none!important}
+  .ptype-panel[hidden]{display:block!important}
+  .ptype-print{display:block; font-weight:700; margin:12px 0 0}
+  .ptype-panel{break-inside:avoid}
   .dd-fig.wide{overflow:visible}
   .sec-title{position:static; box-shadow:none; border:0}
   .card,.g-group,.tbl,details{box-shadow:none; break-inside:avoid}
@@ -261,7 +291,7 @@ footer{max-width:1180px; margin:20px auto 0; padding:26px 20px 46px; border-top:
 <body>
 <header class="top">
   <div class="top-in">
-    <div class="brand">BSMI 技術文件準備指引<small>商品驗證登錄（安規）</small></div>
+    <div class="brand">BSMI 技術文件準備指引<span class="ver" title="版本 V2（2026-11-11）">V2</span><small>商品驗證登錄（安規）</small></div>
     <nav class="tabs" aria-label="章節">
       <span class="nav-ind no-anim" aria-hidden="true"></span>
       <a href="#start">先看這裡</a>
@@ -318,13 +348,14 @@ footer{max-width:1180px; margin:20px auto 0; padding:26px 20px 46px; border-top:
 <!-- ================= 案件流程 ================= -->
 <section class="sec" id="flow">
   <h2 class="sec-title">案件流程</h2>
-  <p class="lead">從詢價到取得證書共九站。白框是貴司要動手的站點，藍框是往返最多的一站。</p>
+  <p class="lead">從詢價到取得證書共九站。白框是貴司要動手的站點，藍框是往返最多的一站。實驗室收到樣品後的測試，與文件往來同時進行（淡色點線框）。</p>
 
-  <figure class="dd-fig wide" id="fig-flow"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 468" role="img" aria-labelledby="dd-flow-title dd-flow-desc" class="dd-svg"><title id="dd-flow-title">BSMI 驗證登錄案件流程</title><desc id="dd-flow-desc">貴司、實驗室與 BSMI 三方的九個步驟：從詢價、委託單回簽、提供文件，經測試審查與紅字補件、用印，到送件審查與核發證書。</desc><defs><marker id="dd-flow-a" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" class="dd-ah"/></marker><marker id="dd-flow-af" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" class="dd-ah-f"/></marker></defs><style>
+  <figure class="dd-fig wide" id="fig-flow"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 508" role="img" aria-labelledby="dd-flow-title dd-flow-desc" class="dd-svg"><title id="dd-flow-title">BSMI 驗證登錄案件流程</title><desc id="dd-flow-desc">貴司、實驗室與 BSMI 三方的九個步驟：從詢價、委託單回簽、提供文件與樣品，經文件審查與紅字補件、用印，到送件審查與核發證書；實驗室收到樣品後的測試與文件往來同時進行。</desc><defs><marker id="dd-flow-a" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" class="dd-ah"/></marker><marker id="dd-flow-af" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" class="dd-ah-f"/></marker></defs><style>
 .dd-paper{fill:var(--bg,#f6f8fb)}
 .dd-node{fill:var(--card,#ffffff);stroke:var(--ink,#1b2430);stroke-width:1.2}
 .dd-store{fill:var(--card,#ffffff);stroke:var(--ink2,#4a5666);stroke-width:1}
 .dd-ext{fill:var(--line,#e2e7ef);stroke:var(--ink2,#4a5666);stroke-width:1;stroke-dasharray:4 3}
+.dd-test{fill:var(--bg,#f6f8fb);stroke:var(--mute,#7a8696);stroke-width:1;stroke-dasharray:1 3;stroke-linecap:round}
 .dd-focal{fill:var(--brand-soft,#e8f0fd);stroke:var(--brand,#2f6fdb);stroke-width:1.6}
 .dd-name{fill:var(--ink,#1b2430);font:600 16px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
 .dd-sub{fill:var(--ink2,#4a5666);font:400 12px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
@@ -343,14 +374,15 @@ footer{max-width:1180px; margin:20px auto 0; padding:26px 20px 46px; border-top:
 .dd-ah-f{fill:var(--brand,#2f6fdb)}
 .dd-aside{fill:var(--ink2,#4a5666);font:italic 400 16px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
 .dd-hit{cursor:help;outline:none}
-.dd-hit:hover .dd-node,.dd-hit:focus .dd-node,.dd-hit:hover .dd-store,.dd-hit:focus .dd-store,.dd-hit:hover .dd-ext,.dd-hit:focus .dd-ext{stroke:var(--brand,#2f6fdb);stroke-width:2}
+.dd-hit:hover .dd-node,.dd-hit:focus .dd-node,.dd-hit:hover .dd-store,.dd-hit:focus .dd-store,.dd-hit:hover .dd-ext,.dd-hit:focus .dd-ext,.dd-hit:hover .dd-test,.dd-hit:focus .dd-test{stroke:var(--brand,#2f6fdb);stroke-width:2}
 .dd-hit:hover .dd-focal,.dd-hit:focus .dd-focal{stroke-width:2.4}
-</style><rect width="1200" height="468" class="dd-paper"/><rect x="0" y="16" width="1200" height="128" class="dd-lane"/><line x1="0" y1="16" x2="1200" y2="16" class="dd-rule"/><text x="16" y="72" class="dd-name" text-anchor="start">貴司</text><text x="16" y="92" class="dd-sub" text-anchor="start">業務／品保</text><rect x="0" y="144" width="1200" height="128" class="dd-lane"/><line x1="0" y1="144" x2="1200" y2="144" class="dd-rule"/><text x="16" y="200" class="dd-name" text-anchor="start">實驗室</text><text x="16" y="220" class="dd-sub" text-anchor="start">電氣安全實驗室</text><rect x="0" y="272" width="1200" height="128" class="dd-lane"/><line x1="0" y1="272" x2="1200" y2="272" class="dd-rule"/><text x="16" y="328" class="dd-name" text-anchor="start">BSMI</text><text x="16" y="348" class="dd-sub" text-anchor="start">標準檢驗局</text><line x1="0" y1="400" x2="1200" y2="400" class="dd-rule"/><line x1="112" y1="16" x2="112" y2="400" class="dd-rule"/><path d="M224 80H248" class="dd-wire" marker-end="url(#dd-flow-a)"/><path d="M344 80H368" class="dd-wire" marker-end="url(#dd-flow-a)"/><path d="M464 80H468Q476 80 476 88V200Q476 208 484 208H488" class="dd-wire" marker-end="url(#dd-flow-a)"/><path d="M584 196H588Q596 196 596 188V88Q596 80 604 80H608" class="dd-wire-f" marker-end="url(#dd-flow-af)"/><path d="M704 80H708Q716 80 716 88V200Q716 208 724 208H728" class="dd-wire" marker-end="url(#dd-flow-a)"/><path d="M824 208H828Q836 208 836 200V88Q836 80 844 80H848" class="dd-wire" marker-end="url(#dd-flow-a)"/><path d="M944 92H948Q956 92 956 100V328Q956 336 964 336H968" class="dd-wire" marker-end="url(#dd-flow-a)"/><path d="M1064 336H1088" class="dd-wire" marker-end="url(#dd-flow-a)"/><path d="M656 120V212Q656 220 648 220H584" class="dd-dash" marker-end="url(#dd-flow-a)"/><rect x="664" y="164" width="40" height="16" rx="2" class="dd-mask"/><text x="684" y="176" class="dd-lbl" text-anchor="middle">往返</text><path d="M1016 296V76Q1016 68 1008 68H944" class="dd-dash" marker-end="url(#dd-flow-a)"/><rect x="1024" y="220" width="80" height="16" rx="2" class="dd-mask"/><text x="1064" y="232" class="dd-lbl" text-anchor="middle">補件(如有)</text><g class="dd-hit" tabindex="0" data-tip="t-f1"><rect x="128" y="40" width="96" height="80" rx="6" class="dd-paper"/><rect x="128" y="40" width="96" height="80" rx="6" class="dd-node"/><text x="140" y="60" class="dd-tag" text-anchor="start">01</text><text x="176" y="88" class="dd-name" text-anchor="middle">詢價</text><text x="176" y="108" class="dd-name" text-anchor="middle">提供資料</text></g><g class="dd-hit" tabindex="0" data-tip="t-f2"><rect x="248" y="40" width="96" height="80" rx="6" class="dd-paper"/><rect x="248" y="40" width="96" height="80" rx="6" class="dd-node"/><text x="260" y="60" class="dd-tag" text-anchor="start">02</text><text x="296" y="88" class="dd-name" text-anchor="middle">委託單</text><text x="296" y="108" class="dd-name" text-anchor="middle">回簽</text></g><g class="dd-hit" tabindex="0" data-tip="t-f3"><rect x="368" y="40" width="96" height="80" rx="6" class="dd-paper"/><rect x="368" y="40" width="96" height="80" rx="6" class="dd-node"/><text x="380" y="60" class="dd-tag" text-anchor="start">03</text><text x="416" y="88" class="dd-name" text-anchor="middle">提供文件</text><text x="416" y="108" class="dd-name" text-anchor="middle">與樣品</text></g><g class="dd-hit" tabindex="0" data-tip="t-f4"><rect x="488" y="168" width="96" height="80" rx="6" class="dd-paper"/><rect x="488" y="168" width="96" height="80" rx="6" class="dd-store"/><text x="500" y="188" class="dd-tag" text-anchor="start">04</text><text x="536" y="216" class="dd-name" text-anchor="middle">測試與</text><text x="536" y="236" class="dd-name" text-anchor="middle">文件審查</text></g><g class="dd-hit" tabindex="0" data-tip="t-f5"><rect x="608" y="40" width="96" height="80" rx="6" class="dd-paper"/><rect x="608" y="40" width="96" height="80" rx="6" class="dd-focal"/><text x="620" y="60" class="dd-tag dd-focal-t" text-anchor="start">05</text><text x="656" y="88" class="dd-name" text-anchor="middle">依紅字</text><text x="656" y="108" class="dd-name" text-anchor="middle">補件修正</text></g><g class="dd-hit" tabindex="0" data-tip="t-f6"><rect x="728" y="168" width="96" height="80" rx="6" class="dd-paper"/><rect x="728" y="168" width="96" height="80" rx="6" class="dd-store"/><text x="740" y="188" class="dd-tag" text-anchor="start">06</text><text x="776" y="216" class="dd-name" text-anchor="middle">擬申請書</text><text x="776" y="236" class="dd-name" text-anchor="middle">與聲明書</text></g><g class="dd-hit" tabindex="0" data-tip="t-f7"><rect x="848" y="40" width="96" height="80" rx="6" class="dd-paper"/><rect x="848" y="40" width="96" height="80" rx="6" class="dd-node"/><text x="860" y="60" class="dd-tag" text-anchor="start">07</text><text x="896" y="88" class="dd-name" text-anchor="middle">確認內容</text><text x="896" y="108" class="dd-name" text-anchor="middle">後用印</text></g><g class="dd-hit" tabindex="0" data-tip="t-f8"><rect x="968" y="296" width="96" height="80" rx="6" class="dd-paper"/><rect x="968" y="296" width="96" height="80" rx="6" class="dd-ext"/><text x="980" y="316" class="dd-tag" text-anchor="start">08</text><text x="1016" y="344" class="dd-name" text-anchor="middle">送件</text><text x="1016" y="364" class="dd-name" text-anchor="middle">審查</text></g><g class="dd-hit" tabindex="0" data-tip="t-f9"><rect x="1088" y="296" width="96" height="80" rx="6" class="dd-paper"/><rect x="1088" y="296" width="96" height="80" rx="6" class="dd-ext"/><text x="1100" y="316" class="dd-tag" text-anchor="start">09</text><text x="1136" y="344" class="dd-name" text-anchor="middle">核發</text><text x="1136" y="364" class="dd-name" text-anchor="middle">證書</text></g><line x1="24" y1="416" x2="1176" y2="416" class="dd-rule"/><text x="24" y="440" class="dd-tag" text-anchor="start">圖例</text><rect x="88" y="428" width="32" height="16" rx="4" class="dd-node"/><text x="128" y="441" class="dd-sub" text-anchor="start">貴司動手</text><rect x="216" y="428" width="32" height="16" rx="4" class="dd-store"/><text x="256" y="441" class="dd-sub" text-anchor="start">實驗室處理</text><rect x="356" y="428" width="32" height="16" rx="4" class="dd-ext"/><text x="396" y="441" class="dd-sub" text-anchor="start">BSMI</text><rect x="484" y="428" width="32" height="16" rx="4" class="dd-focal"/><text x="524" y="441" class="dd-sub" text-anchor="start">往返最多的一站</text><path d="M648 436H680" class="dd-dash" marker-end="url(#dd-flow-a)"/><text x="688" y="441" class="dd-sub" text-anchor="start">退回或補件</text></svg>
+</style><rect width="1200" height="508" class="dd-paper"/><rect x="0" y="16" width="1200" height="128" class="dd-lane"/><line x1="0" y1="16" x2="1200" y2="16" class="dd-rule"/><text x="16" y="72" class="dd-name" text-anchor="start">貴司</text><text x="16" y="92" class="dd-sub" text-anchor="start">業務／品保</text><rect x="0" y="144" width="1200" height="168" class="dd-lane"/><line x1="0" y1="144" x2="1200" y2="144" class="dd-rule"/><text x="16" y="220" class="dd-name" text-anchor="start">實驗室</text><text x="16" y="240" class="dd-sub" text-anchor="start">電氣安全實驗室</text><rect x="0" y="312" width="1200" height="128" class="dd-lane"/><line x1="0" y1="312" x2="1200" y2="312" class="dd-rule"/><text x="16" y="368" class="dd-name" text-anchor="start">BSMI</text><text x="16" y="388" class="dd-sub" text-anchor="start">標準檢驗局</text><line x1="0" y1="440" x2="1200" y2="440" class="dd-rule"/><line x1="112" y1="16" x2="112" y2="440" class="dd-rule"/><g class="dd-hit" tabindex="0" data-tip="t-ftest"><rect x="488" y="256" width="224" height="36" rx="6" class="dd-paper"/><rect x="488" y="256" width="224" height="36" rx="6" class="dd-test"/><text x="500" y="279" class="dd-sub" text-anchor="start">測試｜與文件往來同時進行</text></g><path d="M224 80H248" class="dd-wire" marker-end="url(#dd-flow-a)"/><path d="M344 80H368" class="dd-wire" marker-end="url(#dd-flow-a)"/><path d="M464 80H468Q476 80 476 88V192Q476 200 484 200H488" class="dd-wire" marker-end="url(#dd-flow-a)"/><path d="M584 188H588Q596 188 596 180V88Q596 80 604 80H608" class="dd-wire-f" marker-end="url(#dd-flow-af)"/><path d="M704 80H708Q716 80 716 88V192Q716 200 724 200H728" class="dd-wire" marker-end="url(#dd-flow-a)"/><path d="M824 200H828Q836 200 836 192V88Q836 80 844 80H848" class="dd-wire" marker-end="url(#dd-flow-a)"/><path d="M944 92H948Q956 92 956 100V368Q956 376 964 376H968" class="dd-wire" marker-end="url(#dd-flow-a)"/><path d="M1064 376H1088" class="dd-wire" marker-end="url(#dd-flow-a)"/><path d="M656 120V204Q656 212 648 212H584" class="dd-dash" marker-end="url(#dd-flow-a)"/><rect x="664" y="156" width="40" height="16" rx="2" class="dd-mask"/><text x="684" y="168" class="dd-lbl" text-anchor="middle">往返</text><path d="M1016 336V76Q1016 68 1008 68H944" class="dd-dash" marker-end="url(#dd-flow-a)"/><rect x="1024" y="188" width="80" height="16" rx="2" class="dd-mask"/><text x="1064" y="200" class="dd-lbl" text-anchor="middle">補件(如有)</text><g class="dd-hit" tabindex="0" data-tip="t-f1"><rect x="128" y="40" width="96" height="80" rx="6" class="dd-paper"/><rect x="128" y="40" width="96" height="80" rx="6" class="dd-node"/><text x="140" y="60" class="dd-tag" text-anchor="start">01</text><text x="176" y="88" class="dd-name" text-anchor="middle">詢價</text><text x="176" y="108" class="dd-name" text-anchor="middle">提供資料</text></g><g class="dd-hit" tabindex="0" data-tip="t-f2"><rect x="248" y="40" width="96" height="80" rx="6" class="dd-paper"/><rect x="248" y="40" width="96" height="80" rx="6" class="dd-node"/><text x="260" y="60" class="dd-tag" text-anchor="start">02</text><text x="296" y="88" class="dd-name" text-anchor="middle">委託單</text><text x="296" y="108" class="dd-name" text-anchor="middle">回簽</text></g><g class="dd-hit" tabindex="0" data-tip="t-f3"><rect x="368" y="40" width="96" height="80" rx="6" class="dd-paper"/><rect x="368" y="40" width="96" height="80" rx="6" class="dd-node"/><text x="380" y="60" class="dd-tag" text-anchor="start">03</text><text x="416" y="88" class="dd-name" text-anchor="middle">提供文件</text><text x="416" y="108" class="dd-name" text-anchor="middle">與樣品</text></g><g class="dd-hit" tabindex="0" data-tip="t-f4"><rect x="488" y="160" width="96" height="80" rx="6" class="dd-paper"/><rect x="488" y="160" width="96" height="80" rx="6" class="dd-store"/><text x="500" y="180" class="dd-tag" text-anchor="start">04</text><text x="536" y="208" class="dd-name" text-anchor="middle">文件</text><text x="536" y="228" class="dd-name" text-anchor="middle">審查</text></g><g class="dd-hit" tabindex="0" data-tip="t-f5"><rect x="608" y="40" width="96" height="80" rx="6" class="dd-paper"/><rect x="608" y="40" width="96" height="80" rx="6" class="dd-focal"/><text x="620" y="60" class="dd-tag dd-focal-t" text-anchor="start">05</text><text x="656" y="88" class="dd-name" text-anchor="middle">依紅字</text><text x="656" y="108" class="dd-name" text-anchor="middle">補件修正</text></g><g class="dd-hit" tabindex="0" data-tip="t-f6"><rect x="728" y="160" width="96" height="80" rx="6" class="dd-paper"/><rect x="728" y="160" width="96" height="80" rx="6" class="dd-store"/><text x="740" y="180" class="dd-tag" text-anchor="start">06</text><text x="776" y="208" class="dd-name" text-anchor="middle">擬申請書</text><text x="776" y="228" class="dd-name" text-anchor="middle">與聲明書</text></g><g class="dd-hit" tabindex="0" data-tip="t-f7"><rect x="848" y="40" width="96" height="80" rx="6" class="dd-paper"/><rect x="848" y="40" width="96" height="80" rx="6" class="dd-node"/><text x="860" y="60" class="dd-tag" text-anchor="start">07</text><text x="896" y="88" class="dd-name" text-anchor="middle">確認內容</text><text x="896" y="108" class="dd-name" text-anchor="middle">後用印</text></g><g class="dd-hit" tabindex="0" data-tip="t-f8"><rect x="968" y="336" width="96" height="80" rx="6" class="dd-paper"/><rect x="968" y="336" width="96" height="80" rx="6" class="dd-ext"/><text x="980" y="356" class="dd-tag" text-anchor="start">08</text><text x="1016" y="384" class="dd-name" text-anchor="middle">送件</text><text x="1016" y="404" class="dd-name" text-anchor="middle">審查</text></g><g class="dd-hit" tabindex="0" data-tip="t-f9"><rect x="1088" y="336" width="96" height="80" rx="6" class="dd-paper"/><rect x="1088" y="336" width="96" height="80" rx="6" class="dd-ext"/><text x="1100" y="356" class="dd-tag" text-anchor="start">09</text><text x="1136" y="384" class="dd-name" text-anchor="middle">核發</text><text x="1136" y="404" class="dd-name" text-anchor="middle">證書</text></g><line x1="24" y1="456" x2="1176" y2="456" class="dd-rule"/><text x="24" y="480" class="dd-tag" text-anchor="start">圖例</text><rect x="88" y="468" width="32" height="16" rx="4" class="dd-node"/><text x="128" y="481" class="dd-sub" text-anchor="start">貴司動手</text><rect x="216" y="468" width="32" height="16" rx="4" class="dd-store"/><text x="256" y="481" class="dd-sub" text-anchor="start">實驗室處理</text><rect x="356" y="468" width="32" height="16" rx="4" class="dd-ext"/><text x="396" y="481" class="dd-sub" text-anchor="start">BSMI</text><rect x="484" y="468" width="32" height="16" rx="4" class="dd-focal"/><text x="524" y="481" class="dd-sub" text-anchor="start">往返最多的一站</text><path d="M648 476H680" class="dd-dash" marker-end="url(#dd-flow-a)"/><text x="688" y="481" class="dd-sub" text-anchor="start">退回或補件</text><rect x="788" y="468" width="32" height="16" rx="4" class="dd-test"/><text x="828" y="481" class="dd-sub" text-anchor="start">同時進行的測試</text></svg>
     <figcaption>把滑鼠移到各站（手機點一下）可看說明。</figcaption></figure>
   <div class="tip-src" id="t-f1"><b>01 詢價與提供資料</b><ul><li>型號清單（有幾個型號、彼此差在哪）</li><li>說明書（簡中、英文皆可）、產品照片</li><li>電源方式、有無電源供應器或鋰電池</li><li>申請者（證書名義人）公司名稱與統編</li></ul><span class="k">這些項目都會影響報價。</span></div>
   <div class="tip-src" id="t-f2"><b>02 委託單回簽</b>委託單需有簽名或公司用印，案件才正式開始。<span class="k">委託單上的型號、產品名稱可以在案件進行中再確認定版。</span></div>
   <div class="tip-src" id="t-f3"><b>03 提供文件與樣品</b><ul><li>依「文件清單」準備，檔名以分類碼開頭</li><li>最常見：只給電路板線路圖，沒有整機接線圖</li><li>說明書請給可編修的電子檔</li></ul></div>
-  <div class="tip-src" id="t-f4"><b>04 測試與文件審查</b><ul><li>拆解樣品、拍攝 02_06 照片、進行測試</li><li>依實物比對零件資料，整理 02_07</li><li>審查標籤、說明書與 RoHS 文件</li></ul><span class="k">實驗室查得到的證書不會再向貴司索取。</span></div>
+  <div class="tip-src" id="t-f4"><b>04 文件審查</b><ul><li>拆解樣品、拍攝 02_06 照片</li><li>依實物比對零件資料，整理 02_07</li><li>審查標籤、說明書與 RoHS 文件</li></ul><span class="k">實驗室查得到的證書不會再向貴司索取。</span></div>
+  <div class="tip-src" id="t-ftest"><b>測試（與文件往來同時進行）</b><ul><li>收到樣品後，依適用標準排定測試</li><li>貴司依紅字補件、修正文件的期間，測試持續進行，不必等文件齊備</li><li>測完出具 02_04 安規測試報告</li></ul></div>
   <div class="tip-src" id="t-f5"><b>05 依紅字補件與修正</b><ul><li>02_07 紅字：向供應商索取證書與規格書</li><li>回覆檔名前綴序號，例如 <code>6-1_溫控器_證書.pdf</code></li><li>標籤、說明書依審查意見修正</li></ul><span class="k">這一站通常來回數輪，是進度的關鍵。</span></div>
   <div class="tip-src" id="t-f6"><b>06 擬申請書與聲明書</b>資料齊備後，實驗室擬好 00_01 申請書、07_01 聲明書等用印文件。</div>
   <div class="tip-src" id="t-f7"><b>07 確認內容後用印</b><ul><li>先核對公司名稱、地址、型號、產品名稱</li><li>每份文件分別掃描成獨立檔案</li><li>00_08 委任書：彩色列印、勾選特別聲明、彩色掃描</li></ul></div>
@@ -377,8 +409,7 @@ footer{max-width:1180px; margin:20px auto 0; padding:26px 20px 46px; border-top:
   <div class="ck-group" data-g="you">
     <h3><span class="chip c-brand">貴司提供</span>需要向工廠或供應商取得</h3>
     <ul class="ck-list">
-      <li data-g="you" id="ck-first"><input type="checkbox" data-ck="c-order" aria-label="委託單"><span class="cd">委託單</span><span class="nm">檢測委託申請單（簽名或用印）</span><span class="when chip c-green">一律</span><span class="ds">案件成立的依據。</span></li>
-      <li data-g="you"><input type="checkbox" data-ck="c-id" aria-label="基本資料"><span class="cd">基本資料</span><span class="nm">申請者與生產廠的名稱、地址、統編</span><span class="when chip c-green">一律</span><span class="ds">申請者是證書名義人。生產廠最常漏掉。</span></li>
+      <li data-g="you" id="ck-first"><input type="checkbox" data-ck="c-id" aria-label="基本資料"><span class="cd">基本資料</span><span class="nm">申請者與生產廠的名稱、地址、統編</span><span class="when chip c-green">一律</span><span class="ds">申請者就是證書上的名義人；實際製造的生產廠也請一併提供。</span></li>
       <li data-g="you"><input type="checkbox" data-ck="c-0203" aria-label="02_03"><span class="cd">02_03</span><span class="nm">繁體中文標籤</span><span class="when chip c-green">一律</span><span class="ds">台灣版標籤樣稿與貼附位置。<a href="#d0203">看說明</a></span></li>
       <li data-g="you"><input type="checkbox" data-ck="c-0205" aria-label="02_05"><span class="cd">02_05</span><span class="nm">電路圖及相關圖面</span><span class="when chip c-green">一律</span><span class="ds">整機方塊圖／接線圖 ＋ 每塊電路板的原理圖與銅軌圖。<a href="#d0205">看說明</a></span></li>
       <li data-g="you"><input type="checkbox" data-ck="c-0208" aria-label="02_08"><span class="cd">02_08</span><span class="nm">重要零組件證書及規格書</span><span class="when chip c-green">一律</span><span class="ds">依 02_07 紅字提供；開案時可先給工廠的零件清單（CDF）。<a href="#d0207">看說明</a></span></li>
@@ -387,16 +418,17 @@ footer{max-width:1180px; margin:20px auto 0; padding:26px 20px 46px; border-top:
       <li data-g="you"><input type="checkbox" data-ck="c-diff" aria-label="系列差異說明"><span class="cd">差異說明</span><span class="nm">各型號之間的差異（供 02_02）</span><span class="when chip c-amber">多型號時</span><span class="ds">先列出差異，越詳細越好。<a href="#d0202">看說明</a></span></li>
       <li data-g="you"><input type="checkbox" data-ck="c-0003" aria-label="00_03"><span class="cd">00_03</span><span class="nm">ISO 9001 證書</span><span class="when chip c-amber">視登錄模式</span><span class="ds">僅模式二加四、二加五需要。須為 TAF 認證、在有效期內，且認證範圍涵蓋本產品。</span></li>
       <li data-g="you"><input type="checkbox" data-ck="c-0009" aria-label="00_09"><span class="cd">00_09</span><span class="nm">原申請證書</span><span class="when chip c-amber">系列／核備</span><span class="ds">在既有證書下新增型號或變更零件時，提供證書號碼或最新證書檔。</span></li>
-      <li data-g="you"><input type="checkbox" data-ck="c-sample" aria-label="樣品"><span class="cd">樣品</span><span class="nm">完整樣機 ＋ 電控元件一組</span><span class="when chip c-green">一律</span><span class="ds">數量依報價單。樣品到達時間為排程起點。</span></li>
+      <li data-g="you"><input type="checkbox" data-ck="c-sample" aria-label="樣品"><span class="cd">樣品</span><span class="nm">完整樣機 ＋ 電控元件一組</span><span class="when chip c-green">一律</span><span class="ds">數量依報價單。樣品送達後，實驗室才開始排定測試時程。</span></li>
     </ul>
   </div>
 
   <div class="ck-group" data-g="sign">
     <h3><span class="chip c-amber">貴司確認／用印</span>實驗室擬稿，貴司核對</h3>
     <ul class="ck-list">
+      <li data-g="sign" id="ck-sign-order"><input type="checkbox" data-ck="c-order" aria-label="委託單"><span class="cd">委託單</span><span class="nm">檢測委託申請單</span><span class="when chip c-green">一律</span><span class="ds">實驗室提供。請核對公司名稱、產品名稱、型號與試驗標準，簽名或用印後回傳；回簽後案件才正式開始。</span></li>
       <li data-g="sign"><input type="checkbox" data-ck="c-0207" aria-label="02_07"><span class="cd">02_07</span><span class="nm">重要零組件一覽表</span><span class="when chip c-green">一律</span><span class="ds">實驗室依實物整理，貴司核對黑字、補齊紅字。<a href="#d0207">看說明</a></span></li>
       <li data-g="sign"><input type="checkbox" data-ck="c-0202" aria-label="02_02"><span class="cd">02_02</span><span class="nm">主型式及系列差異表</span><span class="when chip c-amber">多型號時</span><span class="ds">實驗室依差異說明與比對照片編製，貴司確認。</span></li>
-      <li data-g="sign"><input type="checkbox" data-ck="c-0701" aria-label="07_01-07_03"><span class="cd">07_01～03</span><span class="nm">RoHS 聲明書、商品標籤、樣張</span><span class="when chip c-amber">新案／新增系列</span><span class="ds">實驗室提供空白範本，貴司填寫；07_01 需用印。<a href="#d07">看說明</a></span></li>
+      <li data-g="sign"><input type="checkbox" data-ck="c-0701" aria-label="07_01-07_03"><span class="cd">07_01～03</span><span class="nm">RoHS 聲明書、商品標籤、樣張</span><span class="when chip c-amber">新案／新增系列</span><span class="ds">07_01 請用空白範本填寫並用印；07_02、07_03 由實驗室依標籤與說明書製作，請核對。<a href="#d07">看說明</a></span></li>
       <li data-g="sign"><input type="checkbox" data-ck="c-0799" aria-label="07_99"><span class="cd">07_99</span><span class="nm">RoHS 切結書</span><span class="when chip c-amber">核備案</span><span class="ds">核備案以切結書取代 07_01～07_03，實驗室擬稿、貴司用印。</span></li>
       <li data-g="sign"><input type="checkbox" data-ck="c-0001" aria-label="00_01"><span class="cd">00_01</span><span class="nm">商品驗證登錄申請書</span><span class="when chip c-green">一律</span><span class="ds">實驗室擬稿，貴司確認後用印大小章。</span></li>
       <li data-g="sign"><input type="checkbox" data-ck="c-0007" aria-label="00_07"><span class="cd">00_07</span><span class="nm">符合型式聲明書</span><span class="when chip c-green">一律</span><span class="ds">送件時由申請系統產生，貴司確認後用印。</span></li>
@@ -498,6 +530,7 @@ IEC 60127-3</td><td>VDE 40xxxxxx</td><td></td><td></td><td>主控PCB</td><td>原
 .dd-node{fill:var(--card,#ffffff);stroke:var(--ink,#1b2430);stroke-width:1.2}
 .dd-store{fill:var(--card,#ffffff);stroke:var(--ink2,#4a5666);stroke-width:1}
 .dd-ext{fill:var(--line,#e2e7ef);stroke:var(--ink2,#4a5666);stroke-width:1;stroke-dasharray:4 3}
+.dd-test{fill:var(--bg,#f6f8fb);stroke:var(--mute,#7a8696);stroke-width:1;stroke-dasharray:1 3;stroke-linecap:round}
 .dd-focal{fill:var(--brand-soft,#e8f0fd);stroke:var(--brand,#2f6fdb);stroke-width:1.6}
 .dd-name{fill:var(--ink,#1b2430);font:600 16px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
 .dd-sub{fill:var(--ink2,#4a5666);font:400 12px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
@@ -516,7 +549,7 @@ IEC 60127-3</td><td>VDE 40xxxxxx</td><td></td><td></td><td>主控PCB</td><td>原
 .dd-ah-f{fill:var(--brand,#2f6fdb)}
 .dd-aside{fill:var(--ink2,#4a5666);font:italic 400 16px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
 .dd-hit{cursor:help;outline:none}
-.dd-hit:hover .dd-node,.dd-hit:focus .dd-node,.dd-hit:hover .dd-store,.dd-hit:focus .dd-store,.dd-hit:hover .dd-ext,.dd-hit:focus .dd-ext{stroke:var(--brand,#2f6fdb);stroke-width:2}
+.dd-hit:hover .dd-node,.dd-hit:focus .dd-node,.dd-hit:hover .dd-store,.dd-hit:focus .dd-store,.dd-hit:hover .dd-ext,.dd-hit:focus .dd-ext,.dd-hit:hover .dd-test,.dd-hit:focus .dd-test{stroke:var(--brand,#2f6fdb);stroke-width:2}
 .dd-hit:hover .dd-focal,.dd-hit:focus .dd-focal{stroke-width:2.4}
 </style><rect width="760" height="680" class="dd-paper"/><path d="M472.000 76.821A260 260 0 0 1 612.151 202.927" class="dd-wire" marker-end="url(#dd-loop-a)"/><path d="M636.250 276.000A260 260 0 0 1 572.184 495.115" class="dd-wire-f" marker-end="url(#dd-loop-af)"/><path d="M458.077 568.000A260 260 0 0 1 303.069 568.358" class="dd-wire" marker-end="url(#dd-loop-a)"/><path d="M188.626 496.000A260 260 0 0 1 123.550 277.183" class="dd-wire" marker-end="url(#dd-loop-a)"/><path d="M147.311 204.000A260 260 0 0 1 286.879 77.248" class="dd-wire" marker-end="url(#dd-loop-a)"/><path d="M532.19 270.91L465.90 292.29" class="dd-dash" marker-end="url(#dd-loop-a)"/><path d="M227.81 270.91L294.10 292.29" class="dd-dash" marker-end="url(#dd-loop-a)"/><rect x="296" y="272" width="168" height="96" rx="6" class="dd-paper"/><rect x="296" y="272" width="168" height="96" rx="6" class="dd-store"/><text x="380" y="312" class="dd-name" text-anchor="middle">02_07 一覽表</text><text x="380" y="336" class="dd-sub" text-anchor="middle">每輪紅字越來越少</text><rect x="288" y="24" width="184" height="72" rx="6" class="dd-paper"/><rect x="288" y="24" width="184" height="72" rx="6" class="dd-node"/><text x="380" y="56" class="dd-name" text-anchor="middle">實驗室依實物核對</text><text x="380" y="78" class="dd-sub" text-anchor="middle">照片、零件資料、證書</text><rect x="536" y="204" width="184" height="72" rx="6" class="dd-paper"/><rect x="536" y="204" width="184" height="72" rx="6" class="dd-node"/><text x="628" y="236" class="dd-name" text-anchor="middle">開出紅字</text><text x="628" y="258" class="dd-sub" text-anchor="middle">缺什麼、哪裡不一致</text><rect x="440" y="496" width="184" height="72" rx="6" class="dd-paper"/><rect x="440" y="496" width="184" height="72" rx="6" class="dd-focal"/><text x="532" y="528" class="dd-name" text-anchor="middle">貴司轉給供應商</text><text x="532" y="550" class="dd-sub" text-anchor="middle">用本頁的索取範本</text><rect x="136" y="496" width="184" height="72" rx="6" class="dd-paper"/><rect x="136" y="496" width="184" height="72" rx="6" class="dd-node"/><text x="228" y="528" class="dd-name" text-anchor="middle">供應商提供</text><text x="228" y="550" class="dd-sub" text-anchor="middle">證書全部頁面與規格書</text><rect x="40" y="204" width="184" height="72" rx="6" class="dd-paper"/><rect x="40" y="204" width="184" height="72" rx="6" class="dd-node"/><text x="132" y="236" class="dd-name" text-anchor="middle">貴司回傳</text><text x="132" y="258" class="dd-sub" text-anchor="middle">檔名前綴表中序號</text><text x="380" y="608" class="dd-aside" text-anchor="middle">往返輪數，取決於「貴司轉給供應商」這一站要得對不對</text><line x1="24" y1="628" x2="736" y2="628" class="dd-rule"/><text x="24" y="652" class="dd-tag" text-anchor="start">圖例</text><path d="M88 648H120" class="dd-wire" marker-end="url(#dd-loop-a)"/><text x="128" y="653" class="dd-sub" text-anchor="start">每一輪的順序</text><path d="M240 648H272" class="dd-dash" marker-end="url(#dd-loop-a)"/><text x="280" y="653" class="dd-sub" text-anchor="start">寫回一覽表</text><rect x="380" y="640" width="32" height="16" rx="4" class="dd-focal"/><text x="420" y="653" class="dd-sub" text-anchor="start">最關鍵的一站</text></svg></figure>
 
@@ -526,6 +559,7 @@ IEC 60127-3</td><td>VDE 40xxxxxx</td><td></td><td></td><td>主控PCB</td><td>原
 .dd-node{fill:var(--card,#ffffff);stroke:var(--ink,#1b2430);stroke-width:1.2}
 .dd-store{fill:var(--card,#ffffff);stroke:var(--ink2,#4a5666);stroke-width:1}
 .dd-ext{fill:var(--line,#e2e7ef);stroke:var(--ink2,#4a5666);stroke-width:1;stroke-dasharray:4 3}
+.dd-test{fill:var(--bg,#f6f8fb);stroke:var(--mute,#7a8696);stroke-width:1;stroke-dasharray:1 3;stroke-linecap:round}
 .dd-focal{fill:var(--brand-soft,#e8f0fd);stroke:var(--brand,#2f6fdb);stroke-width:1.6}
 .dd-name{fill:var(--ink,#1b2430);font:600 16px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
 .dd-sub{fill:var(--ink2,#4a5666);font:400 12px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
@@ -544,7 +578,7 @@ IEC 60127-3</td><td>VDE 40xxxxxx</td><td></td><td></td><td>主控PCB</td><td>原
 .dd-ah-f{fill:var(--brand,#2f6fdb)}
 .dd-aside{fill:var(--ink2,#4a5666);font:italic 400 16px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
 .dd-hit{cursor:help;outline:none}
-.dd-hit:hover .dd-node,.dd-hit:focus .dd-node,.dd-hit:hover .dd-store,.dd-hit:focus .dd-store,.dd-hit:hover .dd-ext,.dd-hit:focus .dd-ext{stroke:var(--brand,#2f6fdb);stroke-width:2}
+.dd-hit:hover .dd-node,.dd-hit:focus .dd-node,.dd-hit:hover .dd-store,.dd-hit:focus .dd-store,.dd-hit:hover .dd-ext,.dd-hit:focus .dd-ext,.dd-hit:hover .dd-test,.dd-hit:focus .dd-test{stroke:var(--brand,#2f6fdb);stroke-width:2}
 .dd-hit:hover .dd-focal,.dd-hit:focus .dd-focal{stroke-width:2.4}
 </style><rect width="920" height="416" class="dd-paper"/><path d="M88 32V280" class="dd-wire" marker-end="url(#dd-layers-a)"/><text x="76" y="148" class="dd-sub" text-anchor="end">越往下</text><text x="76" y="168" class="dd-sub" text-anchor="end">越詳細</text><rect x="120" y="24" width="520" height="88" class="dd-node"/><text x="140" y="72" class="dd-tag" text-anchor="start">第 1 層</text><text x="232" y="64" class="dd-name" text-anchor="start">證書首頁</text><text x="232" y="88" class="dd-sub" text-anchor="start">持證者、證書號碼、依據標準</text><path d="M640 68H688" class="dd-wire" marker-end="url(#dd-layers-a)"/><rect x="696" y="44" width="160" height="48" rx="6" class="dd-paper"/><rect x="696" y="44" width="160" height="48" rx="6" class="dd-store"/><text x="776" y="74" class="dd-name" text-anchor="middle">C  G  H 欄</text><rect x="120" y="112" width="520" height="88" class="dd-focal"/><text x="140" y="160" class="dd-tag dd-focal-t" text-anchor="start">第 2 層</text><text x="232" y="152" class="dd-name" text-anchor="start">證書附錄／型號清單</text><text x="232" y="176" class="dd-sub" text-anchor="start">涵蓋哪些型號、每個型號的額定</text><path d="M640 156H688" class="dd-wire-f" marker-end="url(#dd-layers-af)"/><rect x="696" y="132" width="160" height="48" rx="6" class="dd-paper"/><rect x="696" y="132" width="160" height="48" rx="6" class="dd-store"/><text x="776" y="162" class="dd-name" text-anchor="middle">E  F 欄</text><rect x="120" y="200" width="520" height="88" class="dd-node"/><text x="140" y="248" class="dd-tag" text-anchor="start">第 3 層</text><text x="232" y="240" class="dd-name" text-anchor="start">規格書</text><text x="232" y="264" class="dd-sub" text-anchor="start">型號編碼規則、尾碼、材質</text><path d="M640 244H688" class="dd-wire" marker-end="url(#dd-layers-a)"/><rect x="696" y="220" width="160" height="48" rx="6" class="dd-paper"/><rect x="696" y="220" width="160" height="48" rx="6" class="dd-store"/><text x="776" y="250" class="dd-name" text-anchor="middle">E  F 欄佐證</text><text x="776" y="20" class="dd-sub" text-anchor="middle"></text><text x="776" y="316" class="dd-sub" text-anchor="middle">對應 02_07 的欄位</text><text x="380" y="344" class="dd-aside" text-anchor="middle">只提供第 1 層時，常查不到實際型號與額定值</text><line x1="24" y1="352" x2="896" y2="352" class="dd-rule"/><text x="24" y="376" class="dd-tag" text-anchor="start">圖例</text><rect x="88" y="364" width="32" height="16" rx="4" class="dd-node"/><text x="128" y="377" class="dd-sub" text-anchor="start">證書的一層</text><rect x="228" y="364" width="32" height="16" rx="4" class="dd-focal"/><text x="268" y="377" class="dd-sub" text-anchor="start">最常漏給的一層</text><rect x="392" y="364" width="32" height="16" rx="4" class="dd-store"/><text x="432" y="377" class="dd-sub" text-anchor="start">02_07 欄位</text></svg></figure>
 
@@ -636,11 +670,23 @@ IEC 60127-3</td><td>VDE 40xxxxxx</td><td></td><td></td><td>主控PCB</td><td>原
     只提供電路板的線路圖，沒有整機的接線圖。兩者回答的問題不同，缺一不可。
   </div>
 
-  <figure class="dd-fig wide" id="fig-block"><h4 class="fig-h"><span class="chip c-brand">整機</span>電路方塊圖（接線圖）：電從插頭進來，經過哪些保護元件，送到哪些負載</h4><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 328" role="img" aria-labelledby="dd-block-title dd-block-desc" class="dd-svg"><title id="dd-block-title">電路方塊圖範例</title><desc id="dd-block-desc">電源經插頭、電流熔線、電源開關，一路經溫控器、溫度熔線到加熱器，另一路到主控電路板驅動馬達。</desc><defs><marker id="dd-block-a" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" class="dd-ah"/></marker><marker id="dd-block-af" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" class="dd-ah-f"/></marker></defs><style>
+  <div id="fig-block">
+  <h4 class="fig-h"><span class="chip c-brand">整機</span>電路方塊圖（接線圖）：電從哪裡進來，經過哪些保護元件，送到哪些負載</h4>
+  <p style="margin:0">依貴司產品的供電方式選一種看：</p>
+  <div class="seg" id="ptype" role="tablist" aria-label="供電型態">
+    <button type="button" role="tab" id="pt-plug" aria-controls="pp-plug" aria-selected="true">電源插頭</button>
+    <button type="button" role="tab" id="pt-fixed" aria-controls="pp-fixed" aria-selected="false" tabindex="-1">室內配線（固定配線）</button>
+    <button type="button" role="tab" id="pt-usbpsu" aria-controls="pp-usbpsu" aria-selected="false" tabindex="-1">USB 輸入＋隨附電源供應器</button>
+    <button type="button" role="tab" id="pt-usb" aria-controls="pp-usb" aria-selected="false" tabindex="-1">USB 輸入，不附電源供應器</button>
+  </div>
+  <div class="ptype-panel" id="pp-plug" role="tabpanel" aria-labelledby="pt-plug">
+    <p class="ptype-print">供電型態：電源插頭</p>
+    <figure class="dd-fig wide"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 328" role="img" aria-labelledby="dd-block-title dd-block-desc" class="dd-svg"><title id="dd-block-title">電路方塊圖範例（電源插頭）</title><desc id="dd-block-desc">電源經插頭與電源線、電流熔線、電源開關，一路經溫控器、溫度熔線到加熱器，另一路到主控電路板驅動馬達。</desc><defs><marker id="dd-block-a" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" class="dd-ah"/></marker><marker id="dd-block-af" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" class="dd-ah-f"/></marker></defs><style>
 .dd-paper{fill:var(--bg,#f6f8fb)}
 .dd-node{fill:var(--card,#ffffff);stroke:var(--ink,#1b2430);stroke-width:1.2}
 .dd-store{fill:var(--card,#ffffff);stroke:var(--ink2,#4a5666);stroke-width:1}
 .dd-ext{fill:var(--line,#e2e7ef);stroke:var(--ink2,#4a5666);stroke-width:1;stroke-dasharray:4 3}
+.dd-test{fill:var(--bg,#f6f8fb);stroke:var(--mute,#7a8696);stroke-width:1;stroke-dasharray:1 3;stroke-linecap:round}
 .dd-focal{fill:var(--brand-soft,#e8f0fd);stroke:var(--brand,#2f6fdb);stroke-width:1.6}
 .dd-name{fill:var(--ink,#1b2430);font:600 16px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
 .dd-sub{fill:var(--ink2,#4a5666);font:400 12px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
@@ -659,10 +705,119 @@ IEC 60127-3</td><td>VDE 40xxxxxx</td><td></td><td></td><td>主控PCB</td><td>原
 .dd-ah-f{fill:var(--brand,#2f6fdb)}
 .dd-aside{fill:var(--ink2,#4a5666);font:italic 400 16px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
 .dd-hit{cursor:help;outline:none}
-.dd-hit:hover .dd-node,.dd-hit:focus .dd-node,.dd-hit:hover .dd-store,.dd-hit:focus .dd-store,.dd-hit:hover .dd-ext,.dd-hit:focus .dd-ext{stroke:var(--brand,#2f6fdb);stroke-width:2}
+.dd-hit:hover .dd-node,.dd-hit:focus .dd-node,.dd-hit:hover .dd-store,.dd-hit:focus .dd-store,.dd-hit:hover .dd-ext,.dd-hit:focus .dd-ext,.dd-hit:hover .dd-test,.dd-hit:focus .dd-test{stroke:var(--brand,#2f6fdb);stroke-width:2}
 .dd-hit:hover .dd-focal,.dd-hit:focus .dd-focal{stroke-width:2.4}
-</style><rect width="1040" height="328" class="dd-paper"/><path d="M168 76H200" class="dd-wire" marker-end="url(#dd-block-a)"/><path d="M336 76H368" class="dd-wire" marker-end="url(#dd-block-a)"/><path d="M504 76H536" class="dd-wire" marker-end="url(#dd-block-a)"/><path d="M672 76H704" class="dd-wire" marker-end="url(#dd-block-a)"/><path d="M840 76H872" class="dd-wire" marker-end="url(#dd-block-a)"/><path d="M436 112V184" class="dd-wire-f" marker-end="url(#dd-block-af)"/><rect x="452" y="132" width="64" height="16" rx="2" class="dd-mask"/><text x="484" y="144" class="dd-lbl" text-anchor="middle">110 V~</text><path d="M504 220H536" class="dd-wire" marker-end="url(#dd-block-a)"/><rect x="32" y="40" width="136" height="72" rx="6" class="dd-paper"/><rect x="32" y="40" width="136" height="72" rx="6" class="dd-node"/><rect x="40" y="48" width="36" height="16" rx="2" class="dd-tagbox"/><text x="58.0" y="60" class="dd-tag" text-anchor="middle">電源</text><text x="100" y="96" class="dd-name" text-anchor="middle">電源插頭</text><rect x="200" y="40" width="136" height="72" rx="6" class="dd-paper"/><rect x="200" y="40" width="136" height="72" rx="6" class="dd-node"/><rect x="208" y="48" width="36" height="16" rx="2" class="dd-tagbox"/><text x="226.0" y="60" class="dd-tag" text-anchor="middle">保護</text><text x="268" y="96" class="dd-name" text-anchor="middle">電流熔線</text><rect x="368" y="40" width="136" height="72" rx="6" class="dd-paper"/><rect x="368" y="40" width="136" height="72" rx="6" class="dd-node"/><rect x="376" y="48" width="36" height="16" rx="2" class="dd-tagbox"/><text x="394.0" y="60" class="dd-tag" text-anchor="middle">開關</text><text x="436" y="96" class="dd-name" text-anchor="middle">電源開關</text><rect x="536" y="40" width="136" height="72" rx="6" class="dd-paper"/><rect x="536" y="40" width="136" height="72" rx="6" class="dd-node"/><rect x="544" y="48" width="36" height="16" rx="2" class="dd-tagbox"/><text x="562.0" y="60" class="dd-tag" text-anchor="middle">保護</text><text x="604" y="96" class="dd-name" text-anchor="middle">溫控器</text><rect x="704" y="40" width="136" height="72" rx="6" class="dd-paper"/><rect x="704" y="40" width="136" height="72" rx="6" class="dd-node"/><rect x="712" y="48" width="36" height="16" rx="2" class="dd-tagbox"/><text x="730.0" y="60" class="dd-tag" text-anchor="middle">保護</text><text x="772" y="96" class="dd-name" text-anchor="middle">溫度熔線</text><rect x="872" y="40" width="136" height="72" rx="6" class="dd-paper"/><rect x="872" y="40" width="136" height="72" rx="6" class="dd-node"/><rect x="880" y="48" width="36" height="16" rx="2" class="dd-tagbox"/><text x="898.0" y="60" class="dd-tag" text-anchor="middle">負載</text><text x="940" y="96" class="dd-name" text-anchor="middle">加熱器</text><rect x="368" y="184" width="136" height="72" rx="6" class="dd-paper"/><rect x="368" y="184" width="136" height="72" rx="6" class="dd-focal"/><rect x="376" y="192" width="48" height="16" rx="2" class="dd-tagbox"/><text x="400.0" y="204" class="dd-tag" text-anchor="middle">電路板</text><text x="436" y="240" class="dd-name" text-anchor="middle">主控 PCB</text><rect x="536" y="184" width="136" height="72" rx="6" class="dd-paper"/><rect x="536" y="184" width="136" height="72" rx="6" class="dd-node"/><rect x="544" y="192" width="36" height="16" rx="2" class="dd-tagbox"/><text x="562.0" y="204" class="dd-tag" text-anchor="middle">負載</text><text x="604" y="240" class="dd-name" text-anchor="middle">馬達</text><text x="712" y="216" class="dd-aside" text-anchor="start">每一塊電路板，另附</text><text x="712" y="240" class="dd-aside" text-anchor="start">原理圖與銅軌圖</text><line x1="24" y1="280" x2="1016" y2="280" class="dd-rule"/><text x="24" y="304" class="dd-tag" text-anchor="start">圖例</text><path d="M88 300H120" class="dd-wire" marker-end="url(#dd-block-a)"/><text x="128" y="305" class="dd-sub" text-anchor="start">電源路徑</text><rect x="216" y="292" width="32" height="16" rx="4" class="dd-node"/><text x="256" y="305" class="dd-sub" text-anchor="start">零件或負載</text><rect x="356" y="292" width="32" height="16" rx="4" class="dd-focal"/><text x="396" y="305" class="dd-sub" text-anchor="start">電路板</text></svg>
-    <figcaption>每塊電路板、每個負載、每個保護元件都要出現；不需要畫出每顆電阻電容。</figcaption></figure>
+</style><rect width="1040" height="328" class="dd-paper"/><path d="M168 76H200" class="dd-wire" marker-end="url(#dd-block-a)"/><path d="M336 76H368" class="dd-wire" marker-end="url(#dd-block-a)"/><path d="M504 76H536" class="dd-wire" marker-end="url(#dd-block-a)"/><path d="M672 76H704" class="dd-wire" marker-end="url(#dd-block-a)"/><path d="M840 76H872" class="dd-wire" marker-end="url(#dd-block-a)"/><path d="M436 112V184" class="dd-wire-f" marker-end="url(#dd-block-af)"/><rect x="452" y="132" width="64" height="16" rx="2" class="dd-mask"/><text x="484" y="144" class="dd-lbl" text-anchor="middle">110 V~</text><path d="M504 220H536" class="dd-wire" marker-end="url(#dd-block-a)"/><rect x="32" y="40" width="136" height="72" rx="6" class="dd-paper"/><rect x="32" y="40" width="136" height="72" rx="6" class="dd-node"/><rect x="40" y="48" width="36" height="16" rx="2" class="dd-tagbox"/><text x="58.0" y="60" class="dd-tag" text-anchor="middle">電源</text><text x="100" y="96" class="dd-name" text-anchor="middle">插頭＋電源線</text><rect x="200" y="40" width="136" height="72" rx="6" class="dd-paper"/><rect x="200" y="40" width="136" height="72" rx="6" class="dd-node"/><rect x="208" y="48" width="36" height="16" rx="2" class="dd-tagbox"/><text x="226.0" y="60" class="dd-tag" text-anchor="middle">保護</text><text x="268" y="96" class="dd-name" text-anchor="middle">電流熔線</text><rect x="368" y="40" width="136" height="72" rx="6" class="dd-paper"/><rect x="368" y="40" width="136" height="72" rx="6" class="dd-node"/><rect x="376" y="48" width="36" height="16" rx="2" class="dd-tagbox"/><text x="394.0" y="60" class="dd-tag" text-anchor="middle">開關</text><text x="436" y="96" class="dd-name" text-anchor="middle">電源開關</text><rect x="536" y="40" width="136" height="72" rx="6" class="dd-paper"/><rect x="536" y="40" width="136" height="72" rx="6" class="dd-node"/><rect x="544" y="48" width="36" height="16" rx="2" class="dd-tagbox"/><text x="562.0" y="60" class="dd-tag" text-anchor="middle">保護</text><text x="604" y="96" class="dd-name" text-anchor="middle">溫控器</text><rect x="704" y="40" width="136" height="72" rx="6" class="dd-paper"/><rect x="704" y="40" width="136" height="72" rx="6" class="dd-node"/><rect x="712" y="48" width="36" height="16" rx="2" class="dd-tagbox"/><text x="730.0" y="60" class="dd-tag" text-anchor="middle">保護</text><text x="772" y="96" class="dd-name" text-anchor="middle">溫度熔線</text><rect x="872" y="40" width="136" height="72" rx="6" class="dd-paper"/><rect x="872" y="40" width="136" height="72" rx="6" class="dd-node"/><rect x="880" y="48" width="36" height="16" rx="2" class="dd-tagbox"/><text x="898.0" y="60" class="dd-tag" text-anchor="middle">負載</text><text x="940" y="96" class="dd-name" text-anchor="middle">加熱器</text><rect x="368" y="184" width="136" height="72" rx="6" class="dd-paper"/><rect x="368" y="184" width="136" height="72" rx="6" class="dd-focal"/><rect x="376" y="192" width="48" height="16" rx="2" class="dd-tagbox"/><text x="400.0" y="204" class="dd-tag" text-anchor="middle">電路板</text><text x="436" y="240" class="dd-name" text-anchor="middle">主控 PCB</text><rect x="536" y="184" width="136" height="72" rx="6" class="dd-paper"/><rect x="536" y="184" width="136" height="72" rx="6" class="dd-node"/><rect x="544" y="192" width="36" height="16" rx="2" class="dd-tagbox"/><text x="562.0" y="204" class="dd-tag" text-anchor="middle">負載</text><text x="604" y="240" class="dd-name" text-anchor="middle">馬達</text><text x="712" y="216" class="dd-aside" text-anchor="start">每一塊電路板，另附</text><text x="712" y="240" class="dd-aside" text-anchor="start">原理圖與銅軌圖</text><line x1="24" y1="280" x2="1016" y2="280" class="dd-rule"/><text x="24" y="304" class="dd-tag" text-anchor="start">圖例</text><path d="M88 300H120" class="dd-wire" marker-end="url(#dd-block-a)"/><text x="128" y="305" class="dd-sub" text-anchor="start">電源路徑</text><rect x="216" y="292" width="32" height="16" rx="4" class="dd-node"/><text x="256" y="305" class="dd-sub" text-anchor="start">零件或負載</text><rect x="356" y="292" width="32" height="16" rx="4" class="dd-focal"/><text x="396" y="305" class="dd-sub" text-anchor="start">電路板</text></svg></figure>
+    <ul class="points must">
+      <li>從<b>插頭與電源線</b>畫起；插頭、電源線在 02_07 各列一項，各附證書。</li>
+      <li>電源開關、保護元件（熔線、溫控器、溫度熔線）、每塊電路板、每個負載都要出現。</li>
+    </ul>
+  </div>
+  <div class="ptype-panel" id="pp-fixed" role="tabpanel" aria-labelledby="pt-fixed" hidden>
+    <p class="ptype-print">供電型態：室內配線（固定配線）</p>
+    <figure class="dd-fig wide"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 328" role="img" aria-labelledby="dd-blk-fix-title dd-blk-fix-desc" class="dd-svg"><title id="dd-blk-fix-title">電路方塊圖範例（室內配線／固定配線）</title><desc id="dd-blk-fix-desc">施工方的屋內配線經全極切斷開關接到本機端子台，再經電流熔線到主控電路板驅動馬達；施工方的部分以虛線框表示。</desc><defs><marker id="dd-blk-fix-a" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" class="dd-ah"/></marker><marker id="dd-blk-fix-af" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" class="dd-ah-f"/></marker></defs><style>
+.dd-paper{fill:var(--bg,#f6f8fb)}
+.dd-node{fill:var(--card,#ffffff);stroke:var(--ink,#1b2430);stroke-width:1.2}
+.dd-store{fill:var(--card,#ffffff);stroke:var(--ink2,#4a5666);stroke-width:1}
+.dd-ext{fill:var(--line,#e2e7ef);stroke:var(--ink2,#4a5666);stroke-width:1;stroke-dasharray:4 3}
+.dd-test{fill:var(--bg,#f6f8fb);stroke:var(--mute,#7a8696);stroke-width:1;stroke-dasharray:1 3;stroke-linecap:round}
+.dd-focal{fill:var(--brand-soft,#e8f0fd);stroke:var(--brand,#2f6fdb);stroke-width:1.6}
+.dd-name{fill:var(--ink,#1b2430);font:600 16px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
+.dd-sub{fill:var(--ink2,#4a5666);font:400 12px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
+.dd-tag{fill:var(--mute,#7a8696);font:600 12px Consolas,'Cascadia Mono',monospace;letter-spacing:.06em}
+.dd-tagbox{fill:none;stroke:var(--mute,#7a8696);stroke-width:.8}
+.dd-focal-t{fill:var(--brand,#2f6fdb)}
+.dd-lbl{fill:var(--ink2,#4a5666);font:600 12px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
+.dd-mask{fill:var(--bg,#f6f8fb)}
+.dd-wire{fill:none;stroke:var(--ink2,#4a5666);stroke-width:1.4}
+.dd-wire-f{fill:none;stroke:var(--brand,#2f6fdb);stroke-width:1.8}
+.dd-dash{fill:none;stroke:var(--ink2,#4a5666);stroke-width:1.4;stroke-dasharray:5 4}
+.dd-rule{stroke:var(--line,#e2e7ef);stroke-width:1}
+.dd-lane{fill:var(--card,#ffffff);opacity:.55}
+.dd-head{fill:none;stroke:var(--ink2,#4a5666)}
+.dd-ah{fill:var(--ink2,#4a5666)}
+.dd-ah-f{fill:var(--brand,#2f6fdb)}
+.dd-aside{fill:var(--ink2,#4a5666);font:italic 400 16px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
+.dd-hit{cursor:help;outline:none}
+.dd-hit:hover .dd-node,.dd-hit:focus .dd-node,.dd-hit:hover .dd-store,.dd-hit:focus .dd-store,.dd-hit:hover .dd-ext,.dd-hit:focus .dd-ext,.dd-hit:hover .dd-test,.dd-hit:focus .dd-test{stroke:var(--brand,#2f6fdb);stroke-width:2}
+.dd-hit:hover .dd-focal,.dd-hit:focus .dd-focal{stroke-width:2.4}
+</style><rect width="1040" height="328" class="dd-paper"/><path d="M168 100H200" class="dd-wire" marker-end="url(#dd-blk-fix-a)"/><path d="M336 100H368" class="dd-wire" marker-end="url(#dd-blk-fix-a)"/><rect x="320" y="40" width="64" height="16" rx="2" class="dd-mask"/><text x="352" y="52" class="dd-lbl" text-anchor="middle">110 V~</text><path d="M504 100H536" class="dd-wire" marker-end="url(#dd-blk-fix-a)"/><path d="M672 100H704" class="dd-wire" marker-end="url(#dd-blk-fix-a)"/><path d="M840 100H872" class="dd-wire" marker-end="url(#dd-blk-fix-a)"/><rect x="32" y="64" width="136" height="72" rx="6" class="dd-paper"/><rect x="32" y="64" width="136" height="72" rx="6" class="dd-ext"/><rect x="40" y="72" width="48" height="16" rx="2" class="dd-tagbox"/><text x="64.0" y="84" class="dd-tag" text-anchor="middle">施工方</text><text x="100" y="120" class="dd-name" text-anchor="middle">屋內配線</text><rect x="200" y="64" width="136" height="72" rx="6" class="dd-paper"/><rect x="200" y="64" width="136" height="72" rx="6" class="dd-ext"/><rect x="208" y="72" width="48" height="16" rx="2" class="dd-tagbox"/><text x="232.0" y="84" class="dd-tag" text-anchor="middle">施工方</text><text x="268" y="120" class="dd-name" text-anchor="middle">全極切斷開關</text><rect x="368" y="64" width="136" height="72" rx="6" class="dd-paper"/><rect x="368" y="64" width="136" height="72" rx="6" class="dd-node"/><rect x="376" y="72" width="36" height="16" rx="2" class="dd-tagbox"/><text x="394.0" y="84" class="dd-tag" text-anchor="middle">電源</text><text x="436" y="120" class="dd-name" text-anchor="middle">端子台</text><rect x="536" y="64" width="136" height="72" rx="6" class="dd-paper"/><rect x="536" y="64" width="136" height="72" rx="6" class="dd-node"/><rect x="544" y="72" width="36" height="16" rx="2" class="dd-tagbox"/><text x="562.0" y="84" class="dd-tag" text-anchor="middle">保護</text><text x="604" y="120" class="dd-name" text-anchor="middle">電流熔線</text><rect x="704" y="64" width="136" height="72" rx="6" class="dd-paper"/><rect x="704" y="64" width="136" height="72" rx="6" class="dd-focal"/><rect x="712" y="72" width="48" height="16" rx="2" class="dd-tagbox"/><text x="736.0" y="84" class="dd-tag" text-anchor="middle">電路板</text><text x="772" y="120" class="dd-name" text-anchor="middle">主控 PCB</text><rect x="872" y="64" width="136" height="72" rx="6" class="dd-paper"/><rect x="872" y="64" width="136" height="72" rx="6" class="dd-node"/><rect x="880" y="72" width="36" height="16" rx="2" class="dd-tagbox"/><text x="898.0" y="84" class="dd-tag" text-anchor="middle">負載</text><text x="940" y="120" class="dd-name" text-anchor="middle">馬達</text><text x="32" y="196" class="dd-aside" text-anchor="start">虛線框是現場施工的配線，不屬於本機，但要畫出接到哪個端子。</text><text x="32" y="224" class="dd-aside" text-anchor="start">說明書要寫明：固定配線內須加裝全極切斷裝置。</text><line x1="24" y1="280" x2="1016" y2="280" class="dd-rule"/><text x="24" y="304" class="dd-tag" text-anchor="start">圖例</text><path d="M88 300H120" class="dd-wire" marker-end="url(#dd-blk-fix-a)"/><text x="128" y="305" class="dd-sub" text-anchor="start">電源路徑</text><rect x="216" y="292" width="32" height="16" rx="4" class="dd-ext"/><text x="256" y="305" class="dd-sub" text-anchor="start">施工方配線</text><rect x="356" y="292" width="32" height="16" rx="4" class="dd-node"/><text x="396" y="305" class="dd-sub" text-anchor="start">零件或負載</text><rect x="496" y="292" width="32" height="16" rx="4" class="dd-focal"/><text x="536" y="305" class="dd-sub" text-anchor="start">電路板</text></svg></figure>
+    <ul class="points must">
+      <li>從本機的<b>端子台</b>（電源接線端子）畫起；屋內配線與全極切斷開關由施工方安裝，用虛線框畫在本機外。</li>
+      <li>說明書要寫明：固定配線內須加裝全極切斷裝置。</li>
+    </ul>
+  </div>
+  <div class="ptype-panel" id="pp-usbpsu" role="tabpanel" aria-labelledby="pt-usbpsu" hidden>
+    <p class="ptype-print">供電型態：USB 輸入＋隨附電源供應器</p>
+    <figure class="dd-fig wide"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 328" role="img" aria-labelledby="dd-blk-usbp-title dd-blk-usbp-desc" class="dd-svg"><title id="dd-blk-usbp-title">電路方塊圖範例（USB 輸入，隨附電源供應器）</title><desc id="dd-blk-usbp-desc">插頭接隨附的電源供應器，輸出 5 V 直流經 USB 線到本機 USB 輸入，再到主控電路板驅動馬達。</desc><defs><marker id="dd-blk-usbp-a" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" class="dd-ah"/></marker><marker id="dd-blk-usbp-af" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" class="dd-ah-f"/></marker></defs><style>
+.dd-paper{fill:var(--bg,#f6f8fb)}
+.dd-node{fill:var(--card,#ffffff);stroke:var(--ink,#1b2430);stroke-width:1.2}
+.dd-store{fill:var(--card,#ffffff);stroke:var(--ink2,#4a5666);stroke-width:1}
+.dd-ext{fill:var(--line,#e2e7ef);stroke:var(--ink2,#4a5666);stroke-width:1;stroke-dasharray:4 3}
+.dd-test{fill:var(--bg,#f6f8fb);stroke:var(--mute,#7a8696);stroke-width:1;stroke-dasharray:1 3;stroke-linecap:round}
+.dd-focal{fill:var(--brand-soft,#e8f0fd);stroke:var(--brand,#2f6fdb);stroke-width:1.6}
+.dd-name{fill:var(--ink,#1b2430);font:600 16px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
+.dd-sub{fill:var(--ink2,#4a5666);font:400 12px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
+.dd-tag{fill:var(--mute,#7a8696);font:600 12px Consolas,'Cascadia Mono',monospace;letter-spacing:.06em}
+.dd-tagbox{fill:none;stroke:var(--mute,#7a8696);stroke-width:.8}
+.dd-focal-t{fill:var(--brand,#2f6fdb)}
+.dd-lbl{fill:var(--ink2,#4a5666);font:600 12px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
+.dd-mask{fill:var(--bg,#f6f8fb)}
+.dd-wire{fill:none;stroke:var(--ink2,#4a5666);stroke-width:1.4}
+.dd-wire-f{fill:none;stroke:var(--brand,#2f6fdb);stroke-width:1.8}
+.dd-dash{fill:none;stroke:var(--ink2,#4a5666);stroke-width:1.4;stroke-dasharray:5 4}
+.dd-rule{stroke:var(--line,#e2e7ef);stroke-width:1}
+.dd-lane{fill:var(--card,#ffffff);opacity:.55}
+.dd-head{fill:none;stroke:var(--ink2,#4a5666)}
+.dd-ah{fill:var(--ink2,#4a5666)}
+.dd-ah-f{fill:var(--brand,#2f6fdb)}
+.dd-aside{fill:var(--ink2,#4a5666);font:italic 400 16px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
+.dd-hit{cursor:help;outline:none}
+.dd-hit:hover .dd-node,.dd-hit:focus .dd-node,.dd-hit:hover .dd-store,.dd-hit:focus .dd-store,.dd-hit:hover .dd-ext,.dd-hit:focus .dd-ext,.dd-hit:hover .dd-test,.dd-hit:focus .dd-test{stroke:var(--brand,#2f6fdb);stroke-width:2}
+.dd-hit:hover .dd-focal,.dd-hit:focus .dd-focal{stroke-width:2.4}
+</style><rect width="1040" height="328" class="dd-paper"/><path d="M168 100H200" class="dd-wire" marker-end="url(#dd-blk-usbp-a)"/><rect x="152" y="40" width="64" height="16" rx="2" class="dd-mask"/><text x="184" y="52" class="dd-lbl" text-anchor="middle">110 V~</text><path d="M336 100H368" class="dd-wire" marker-end="url(#dd-blk-usbp-a)"/><rect x="320" y="40" width="64" height="16" rx="2" class="dd-mask"/><text x="352" y="52" class="dd-lbl" text-anchor="middle">DC 5 V</text><path d="M504 100H536" class="dd-wire" marker-end="url(#dd-blk-usbp-a)"/><path d="M672 100H704" class="dd-wire" marker-end="url(#dd-blk-usbp-a)"/><path d="M840 100H872" class="dd-wire" marker-end="url(#dd-blk-usbp-a)"/><rect x="32" y="64" width="136" height="72" rx="6" class="dd-paper"/><rect x="32" y="64" width="136" height="72" rx="6" class="dd-node"/><rect x="40" y="72" width="36" height="16" rx="2" class="dd-tagbox"/><text x="58.0" y="84" class="dd-tag" text-anchor="middle">電源</text><text x="100" y="120" class="dd-name" text-anchor="middle">插頭</text><rect x="200" y="64" width="136" height="72" rx="6" class="dd-paper"/><rect x="200" y="64" width="136" height="72" rx="6" class="dd-focal"/><rect x="208" y="72" width="36" height="16" rx="2" class="dd-tagbox"/><text x="226.0" y="84" class="dd-tag" text-anchor="middle">隨附</text><text x="268" y="120" class="dd-name" text-anchor="middle">電源供應器</text><rect x="368" y="64" width="136" height="72" rx="6" class="dd-paper"/><rect x="368" y="64" width="136" height="72" rx="6" class="dd-node"/><rect x="376" y="72" width="36" height="16" rx="2" class="dd-tagbox"/><text x="394.0" y="84" class="dd-tag" text-anchor="middle">隨附</text><text x="436" y="120" class="dd-name" text-anchor="middle">USB 線</text><rect x="536" y="64" width="136" height="72" rx="6" class="dd-paper"/><rect x="536" y="64" width="136" height="72" rx="6" class="dd-node"/><rect x="544" y="72" width="36" height="16" rx="2" class="dd-tagbox"/><text x="562.0" y="84" class="dd-tag" text-anchor="middle">電源</text><text x="604" y="120" class="dd-name" text-anchor="middle">USB 輸入</text><rect x="704" y="64" width="136" height="72" rx="6" class="dd-paper"/><rect x="704" y="64" width="136" height="72" rx="6" class="dd-focal"/><rect x="712" y="72" width="48" height="16" rx="2" class="dd-tagbox"/><text x="736.0" y="84" class="dd-tag" text-anchor="middle">電路板</text><text x="772" y="120" class="dd-name" text-anchor="middle">主控 PCB</text><rect x="872" y="64" width="136" height="72" rx="6" class="dd-paper"/><rect x="872" y="64" width="136" height="72" rx="6" class="dd-node"/><rect x="880" y="72" width="36" height="16" rx="2" class="dd-tagbox"/><text x="898.0" y="84" class="dd-tag" text-anchor="middle">負載</text><text x="940" y="120" class="dd-name" text-anchor="middle">馬達</text><text x="32" y="196" class="dd-aside" text-anchor="start">電源供應器要標出輸入與輸出額定，並列在 02_07。</text><text x="32" y="224" class="dd-aside" text-anchor="start">說明書要寫明：僅可使用本機隨附的電源供應器。</text><line x1="24" y1="280" x2="1016" y2="280" class="dd-rule"/><text x="24" y="304" class="dd-tag" text-anchor="start">圖例</text><path d="M88 300H120" class="dd-wire" marker-end="url(#dd-blk-usbp-a)"/><text x="128" y="305" class="dd-sub" text-anchor="start">電源路徑</text><rect x="216" y="292" width="32" height="16" rx="4" class="dd-node"/><text x="256" y="305" class="dd-sub" text-anchor="start">零件或負載</text><rect x="356" y="292" width="32" height="16" rx="4" class="dd-focal"/><text x="396" y="305" class="dd-sub" text-anchor="start">電源供應器與電路板</text></svg></figure>
+    <ul class="points must">
+      <li>畫出隨附的<b>電源供應器</b>（標輸入、輸出額定）、USB 線與本機的 USB 輸入。</li>
+      <li>電源供應器請備 IEC 61558-1 與 IEC 61558-2-16 的 CB 報告和 CB 證書（兩份都要）。</li>
+      <li>說明書要寫明：僅可使用本機隨附的電源供應器。</li>
+    </ul>
+  </div>
+  <div class="ptype-panel" id="pp-usb" role="tabpanel" aria-labelledby="pt-usb" hidden>
+    <p class="ptype-print">供電型態：USB 輸入，不附電源供應器</p>
+    <figure class="dd-fig wide"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 328" role="img" aria-labelledby="dd-blk-usb-title dd-blk-usb-desc" class="dd-svg"><title id="dd-blk-usb-title">電路方塊圖範例（USB 輸入，不附電源供應器）</title><desc id="dd-blk-usb-desc">使用者自備的 USB 電源經 USB 線接到本機 USB 輸入，再到主控電路板驅動馬達；本機以外的部分以虛線框表示。</desc><defs><marker id="dd-blk-usb-a" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" class="dd-ah"/></marker><marker id="dd-blk-usb-af" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" class="dd-ah-f"/></marker></defs><style>
+.dd-paper{fill:var(--bg,#f6f8fb)}
+.dd-node{fill:var(--card,#ffffff);stroke:var(--ink,#1b2430);stroke-width:1.2}
+.dd-store{fill:var(--card,#ffffff);stroke:var(--ink2,#4a5666);stroke-width:1}
+.dd-ext{fill:var(--line,#e2e7ef);stroke:var(--ink2,#4a5666);stroke-width:1;stroke-dasharray:4 3}
+.dd-test{fill:var(--bg,#f6f8fb);stroke:var(--mute,#7a8696);stroke-width:1;stroke-dasharray:1 3;stroke-linecap:round}
+.dd-focal{fill:var(--brand-soft,#e8f0fd);stroke:var(--brand,#2f6fdb);stroke-width:1.6}
+.dd-name{fill:var(--ink,#1b2430);font:600 16px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
+.dd-sub{fill:var(--ink2,#4a5666);font:400 12px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
+.dd-tag{fill:var(--mute,#7a8696);font:600 12px Consolas,'Cascadia Mono',monospace;letter-spacing:.06em}
+.dd-tagbox{fill:none;stroke:var(--mute,#7a8696);stroke-width:.8}
+.dd-focal-t{fill:var(--brand,#2f6fdb)}
+.dd-lbl{fill:var(--ink2,#4a5666);font:600 12px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
+.dd-mask{fill:var(--bg,#f6f8fb)}
+.dd-wire{fill:none;stroke:var(--ink2,#4a5666);stroke-width:1.4}
+.dd-wire-f{fill:none;stroke:var(--brand,#2f6fdb);stroke-width:1.8}
+.dd-dash{fill:none;stroke:var(--ink2,#4a5666);stroke-width:1.4;stroke-dasharray:5 4}
+.dd-rule{stroke:var(--line,#e2e7ef);stroke-width:1}
+.dd-lane{fill:var(--card,#ffffff);opacity:.55}
+.dd-head{fill:none;stroke:var(--ink2,#4a5666)}
+.dd-ah{fill:var(--ink2,#4a5666)}
+.dd-ah-f{fill:var(--brand,#2f6fdb)}
+.dd-aside{fill:var(--ink2,#4a5666);font:italic 400 16px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
+.dd-hit{cursor:help;outline:none}
+.dd-hit:hover .dd-node,.dd-hit:focus .dd-node,.dd-hit:hover .dd-store,.dd-hit:focus .dd-store,.dd-hit:hover .dd-ext,.dd-hit:focus .dd-ext,.dd-hit:hover .dd-test,.dd-hit:focus .dd-test{stroke:var(--brand,#2f6fdb);stroke-width:2}
+.dd-hit:hover .dd-focal,.dd-hit:focus .dd-focal{stroke-width:2.4}
+</style><rect width="1040" height="328" class="dd-paper"/><path d="M168 100H200" class="dd-wire" marker-end="url(#dd-blk-usb-a)"/><rect x="152" y="40" width="64" height="16" rx="2" class="dd-mask"/><text x="184" y="52" class="dd-lbl" text-anchor="middle">DC 5 V</text><path d="M336 100H368" class="dd-wire" marker-end="url(#dd-blk-usb-a)"/><path d="M504 100H536" class="dd-wire" marker-end="url(#dd-blk-usb-a)"/><rect x="32" y="64" width="136" height="72" rx="6" class="dd-paper"/><rect x="32" y="64" width="136" height="72" rx="6" class="dd-ext"/><rect x="40" y="72" width="36" height="16" rx="2" class="dd-tagbox"/><text x="58.0" y="84" class="dd-tag" text-anchor="middle">自備</text><text x="100" y="120" class="dd-name" text-anchor="middle">USB 電源</text><rect x="200" y="64" width="136" height="72" rx="6" class="dd-paper"/><rect x="200" y="64" width="136" height="72" rx="6" class="dd-node"/><rect x="208" y="72" width="36" height="16" rx="2" class="dd-tagbox"/><text x="226.0" y="84" class="dd-tag" text-anchor="middle">電源</text><text x="268" y="120" class="dd-name" text-anchor="middle">USB 輸入</text><rect x="368" y="64" width="136" height="72" rx="6" class="dd-paper"/><rect x="368" y="64" width="136" height="72" rx="6" class="dd-focal"/><rect x="376" y="72" width="48" height="16" rx="2" class="dd-tagbox"/><text x="400.0" y="84" class="dd-tag" text-anchor="middle">電路板</text><text x="436" y="120" class="dd-name" text-anchor="middle">主控 PCB</text><rect x="536" y="64" width="136" height="72" rx="6" class="dd-paper"/><rect x="536" y="64" width="136" height="72" rx="6" class="dd-node"/><rect x="544" y="72" width="36" height="16" rx="2" class="dd-tagbox"/><text x="562.0" y="84" class="dd-tag" text-anchor="middle">負載</text><text x="604" y="120" class="dd-name" text-anchor="middle">馬達</text><text x="32" y="196" class="dd-aside" text-anchor="start">本機不附電源供應器：從本機的 USB 輸入畫起，標出輸入額定（例：DC 5 V）。</text><text x="32" y="224" class="dd-aside" text-anchor="start">說明書要寫明：只能接上本機標示的超低安全電壓。</text><line x1="24" y1="280" x2="1016" y2="280" class="dd-rule"/><text x="24" y="304" class="dd-tag" text-anchor="start">圖例</text><path d="M88 300H120" class="dd-wire" marker-end="url(#dd-blk-usb-a)"/><text x="128" y="305" class="dd-sub" text-anchor="start">電源路徑</text><rect x="216" y="292" width="32" height="16" rx="4" class="dd-ext"/><text x="256" y="305" class="dd-sub" text-anchor="start">本機以外</text><rect x="344" y="292" width="32" height="16" rx="4" class="dd-node"/><text x="384" y="305" class="dd-sub" text-anchor="start">零件或負載</text><rect x="484" y="292" width="32" height="16" rx="4" class="dd-focal"/><text x="524" y="305" class="dd-sub" text-anchor="start">電路板</text></svg></figure>
+    <ul class="points must">
+      <li>本機不附電源供應器：從本機的 <b>USB 輸入</b>畫起，標出輸入額定（例：DC 5 V）。</li>
+      <li>說明書要寫明：只能接上本機標示的超低安全電壓。</li>
+    </ul>
+  </div>
+  <p style="color:var(--ink2); margin-top:4px">每塊電路板、每個負載、每個保護元件都要出現；不需要畫出每顆電阻電容。</p>
+  </div>
 
   <div class="grid g2" id="fig-boards">
     <figure class="dd-fig"><h4 class="fig-h"><span class="chip c-brand">每塊板</span>PCB 原理圖</h4><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 300" role="img" aria-labelledby="dd-sch-title dd-sch-desc" class="dd-svg"><title id="dd-sch-title">PCB 原理圖範例</title><desc id="dd-sch-desc">電源 L、N 兩線之間依序接有熔線 F1、突波吸收器 RV1、X 電容 CX1 與繼電器 RY1，每顆零件標示位號與規格。</desc><defs><marker id="dd-sch-a" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" class="dd-ah"/></marker><marker id="dd-sch-af" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" class="dd-ah-f"/></marker></defs><style>
@@ -670,6 +825,7 @@ IEC 60127-3</td><td>VDE 40xxxxxx</td><td></td><td></td><td>主控PCB</td><td>原
 .dd-node{fill:var(--card,#ffffff);stroke:var(--ink,#1b2430);stroke-width:1.2}
 .dd-store{fill:var(--card,#ffffff);stroke:var(--ink2,#4a5666);stroke-width:1}
 .dd-ext{fill:var(--line,#e2e7ef);stroke:var(--ink2,#4a5666);stroke-width:1;stroke-dasharray:4 3}
+.dd-test{fill:var(--bg,#f6f8fb);stroke:var(--mute,#7a8696);stroke-width:1;stroke-dasharray:1 3;stroke-linecap:round}
 .dd-focal{fill:var(--brand-soft,#e8f0fd);stroke:var(--brand,#2f6fdb);stroke-width:1.6}
 .dd-name{fill:var(--ink,#1b2430);font:600 16px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
 .dd-sub{fill:var(--ink2,#4a5666);font:400 12px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
@@ -688,7 +844,7 @@ IEC 60127-3</td><td>VDE 40xxxxxx</td><td></td><td></td><td>主控PCB</td><td>原
 .dd-ah-f{fill:var(--brand,#2f6fdb)}
 .dd-aside{fill:var(--ink2,#4a5666);font:italic 400 16px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
 .dd-hit{cursor:help;outline:none}
-.dd-hit:hover .dd-node,.dd-hit:focus .dd-node,.dd-hit:hover .dd-store,.dd-hit:focus .dd-store,.dd-hit:hover .dd-ext,.dd-hit:focus .dd-ext{stroke:var(--brand,#2f6fdb);stroke-width:2}
+.dd-hit:hover .dd-node,.dd-hit:focus .dd-node,.dd-hit:hover .dd-store,.dd-hit:focus .dd-store,.dd-hit:hover .dd-ext,.dd-hit:focus .dd-ext,.dd-hit:hover .dd-test,.dd-hit:focus .dd-test{stroke:var(--brand,#2f6fdb);stroke-width:2}
 .dd-hit:hover .dd-focal,.dd-hit:focus .dd-focal{stroke-width:2.4}
 </style><rect width="520" height="300" class="dd-paper"/><path d="M24 64H96M144 64H496" class="dd-wire"/><path d="M24 216H496" class="dd-wire"/><text x="24" y="52" class="dd-tag" text-anchor="start">L</text><text x="24" y="240" class="dd-tag" text-anchor="start">N</text><rect x="96" y="52" width="48" height="24" rx="4" class="dd-paper"/><rect x="96" y="52" width="48" height="24" rx="4" class="dd-node"/><path d="M100 64H140" class="dd-wire"/><text x="120" y="40" class="dd-name" text-anchor="middle">F1</text><text x="120" y="100" class="dd-sub" text-anchor="middle">T3.15A 250V</text><path d="M208 64V112M208 168V216" class="dd-wire"/><rect x="196" y="112" width="24" height="56" rx="2" class="dd-paper"/><rect x="196" y="112" width="24" height="56" rx="2" class="dd-node"/><path d="M192 160L224 120" class="dd-wire"/><text x="232" y="132" class="dd-name" text-anchor="start">RV1</text><text x="232" y="152" class="dd-sub" text-anchor="start">14D471K</text><path d="M320 64V132M320 144V216" class="dd-wire"/><path d="M300 132H340M300 144H340" class="dd-wire" style="stroke-width:2.4"/><text x="348" y="132" class="dd-name" text-anchor="start">CX1</text><text x="348" y="152" class="dd-sub" text-anchor="start">0.1μF 275V~</text><path d="M424 64V108M424 172V216" class="dd-wire"/><rect x="400" y="108" width="48" height="64" rx="4" class="dd-paper"/><rect x="400" y="108" width="48" height="64" rx="4" class="dd-node"/><text x="460" y="132" class="dd-name" text-anchor="start">RY1</text><text x="460" y="152" class="dd-sub" text-anchor="start">線圈</text><text x="260" y="268" class="dd-aside" text-anchor="middle">位號（F1、RV1…）與 02_07、電路板絲印一致</text></svg>
       <figcaption>每顆零件怎麼連接，標有位號與規格。每塊電路板各一份，版次與實際生產的板子相同。</figcaption></figure>
@@ -697,6 +853,7 @@ IEC 60127-3</td><td>VDE 40xxxxxx</td><td></td><td></td><td>主控PCB</td><td>原
 .dd-node{fill:var(--card,#ffffff);stroke:var(--ink,#1b2430);stroke-width:1.2}
 .dd-store{fill:var(--card,#ffffff);stroke:var(--ink2,#4a5666);stroke-width:1}
 .dd-ext{fill:var(--line,#e2e7ef);stroke:var(--ink2,#4a5666);stroke-width:1;stroke-dasharray:4 3}
+.dd-test{fill:var(--bg,#f6f8fb);stroke:var(--mute,#7a8696);stroke-width:1;stroke-dasharray:1 3;stroke-linecap:round}
 .dd-focal{fill:var(--brand-soft,#e8f0fd);stroke:var(--brand,#2f6fdb);stroke-width:1.6}
 .dd-name{fill:var(--ink,#1b2430);font:600 16px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
 .dd-sub{fill:var(--ink2,#4a5666);font:400 12px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
@@ -715,7 +872,7 @@ IEC 60127-3</td><td>VDE 40xxxxxx</td><td></td><td></td><td>主控PCB</td><td>原
 .dd-ah-f{fill:var(--brand,#2f6fdb)}
 .dd-aside{fill:var(--ink2,#4a5666);font:italic 400 16px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
 .dd-hit{cursor:help;outline:none}
-.dd-hit:hover .dd-node,.dd-hit:focus .dd-node,.dd-hit:hover .dd-store,.dd-hit:focus .dd-store,.dd-hit:hover .dd-ext,.dd-hit:focus .dd-ext{stroke:var(--brand,#2f6fdb);stroke-width:2}
+.dd-hit:hover .dd-node,.dd-hit:focus .dd-node,.dd-hit:hover .dd-store,.dd-hit:focus .dd-store,.dd-hit:hover .dd-ext,.dd-hit:focus .dd-ext,.dd-hit:hover .dd-test,.dd-hit:focus .dd-test{stroke:var(--brand,#2f6fdb);stroke-width:2}
 .dd-hit:hover .dd-focal,.dd-hit:focus .dd-focal{stroke-width:2.4}
 </style><rect width="520" height="300" class="dd-paper"/><rect x="20" y="20" width="480" height="220" rx="12" fill="#2f6b4f"/><g fill="none" stroke="#b87333" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"><path d="M64 72H180V124H300H420V92"/><path d="M64 184H220V156H420"/></g><g fill="#b87333"><circle cx="64" cy="72" r="12"/><circle cx="64" cy="184" r="12"/><circle cx="420" cy="92" r="12"/><circle cx="420" cy="156" r="12"/></g><g fill="#ffffff" font-family="Consolas,'Cascadia Mono',monospace" font-size="16"><text x="112" y="56">F1</text><text x="252" y="112">RV1</text><text x="372" y="76">RY1</text><text x="300" y="188">CX1</text><text x="300" y="224" font-size="12">MAIN-BOARD V1.2</text></g><path d="M236 132V148M228 132H244M228 148H244" stroke="#ffd54f" stroke-width="2" fill="none"/><text x="252" y="148" fill="#ffd54f" font-size="12" font-family="system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif">距離</text><text x="260" y="280" class="dd-aside" text-anchor="middle">白字為絲印：位號、板號、版次</text></svg>
       <figcaption>銅箔的實際走線，用來確認帶電部位之間的距離。請輸出含絲印層、可放大的檔案。</figcaption></figure>
@@ -740,7 +897,7 @@ IEC 60127-3</td><td>VDE 40xxxxxx</td><td></td><td></td><td>主控PCB</td><td>原
   <h3>送出 02_05 前的自我檢查</h3>
   <div class="card">
     <ul class="selfck">
-      <li><input type="checkbox" data-ck="s05-1" id="s05-1"><label for="s05-1"><span>有整機方塊圖或接線圖（從電源插頭畫到每個負載）</span></label></li>
+      <li><input type="checkbox" data-ck="s05-1" id="s05-1"><label for="s05-1"><span>有整機方塊圖或接線圖（從電源進入本機處畫到每個負載：插頭、端子台或 USB 輸入）</span></label></li>
       <li><input type="checkbox" data-ck="s05-2" id="s05-2"><label for="s05-2"><span>每一塊電路板都有原理圖與銅軌圖</span></label></li>
       <li><input type="checkbox" data-ck="s05-3" id="s05-3"><label for="s05-3"><span>圖上的版次與實際電路板上的絲印版次相同</span></label></li>
       <li><input type="checkbox" data-ck="s05-4" id="s05-4"><label for="s05-4"><span>電壓、功率是台灣版規格（不是原廠內銷或外銷規格）</span></label></li>
@@ -766,6 +923,7 @@ IEC 60127-3</td><td>VDE 40xxxxxx</td><td></td><td></td><td>主控PCB</td><td>原
 .dd-node{fill:var(--card,#ffffff);stroke:var(--ink,#1b2430);stroke-width:1.2}
 .dd-store{fill:var(--card,#ffffff);stroke:var(--ink2,#4a5666);stroke-width:1}
 .dd-ext{fill:var(--line,#e2e7ef);stroke:var(--ink2,#4a5666);stroke-width:1;stroke-dasharray:4 3}
+.dd-test{fill:var(--bg,#f6f8fb);stroke:var(--mute,#7a8696);stroke-width:1;stroke-dasharray:1 3;stroke-linecap:round}
 .dd-focal{fill:var(--brand-soft,#e8f0fd);stroke:var(--brand,#2f6fdb);stroke-width:1.6}
 .dd-name{fill:var(--ink,#1b2430);font:600 16px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
 .dd-sub{fill:var(--ink2,#4a5666);font:400 12px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
@@ -784,7 +942,7 @@ IEC 60127-3</td><td>VDE 40xxxxxx</td><td></td><td></td><td>主控PCB</td><td>原
 .dd-ah-f{fill:var(--brand,#2f6fdb)}
 .dd-aside{fill:var(--ink2,#4a5666);font:italic 400 16px system-ui,'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif}
 .dd-hit{cursor:help;outline:none}
-.dd-hit:hover .dd-node,.dd-hit:focus .dd-node,.dd-hit:hover .dd-store,.dd-hit:focus .dd-store,.dd-hit:hover .dd-ext,.dd-hit:focus .dd-ext{stroke:var(--brand,#2f6fdb);stroke-width:2}
+.dd-hit:hover .dd-node,.dd-hit:focus .dd-node,.dd-hit:hover .dd-store,.dd-hit:focus .dd-store,.dd-hit:hover .dd-ext,.dd-hit:focus .dd-ext,.dd-hit:hover .dd-test,.dd-hit:focus .dd-test{stroke:var(--brand,#2f6fdb);stroke-width:2}
 .dd-hit:hover .dd-focal,.dd-hit:focus .dd-focal{stroke-width:2.4}
 </style><rect width="1040" height="656" class="dd-paper"/><path d="M360 72V104" class="dd-wire" marker-end="url(#dd-series-a)"/><path d="M360 200V240" class="dd-wire" marker-end="url(#dd-series-a)"/><rect x="374" y="216" width="28" height="16" rx="2" class="dd-mask"/><text x="388" y="228" class="dd-lbl" text-anchor="middle">是</text><path d="M496 152H688" class="dd-wire" marker-end="url(#dd-series-a)"/><rect x="598" y="128" width="28" height="16" rx="2" class="dd-mask"/><text x="612" y="140" class="dd-lbl" text-anchor="middle">否</text><path d="M360 336V376" class="dd-wire" marker-end="url(#dd-series-a)"/><rect x="374" y="352" width="28" height="16" rx="2" class="dd-mask"/><text x="388" y="364" class="dd-lbl" text-anchor="middle">是</text><path d="M496 288H688" class="dd-wire" marker-end="url(#dd-series-a)"/><rect x="598" y="264" width="28" height="16" rx="2" class="dd-mask"/><text x="612" y="276" class="dd-lbl" text-anchor="middle">否</text><path d="M360 472V512" class="dd-wire-f" marker-end="url(#dd-series-af)"/><rect x="374" y="488" width="28" height="16" rx="2" class="dd-mask"/><text x="388" y="500" class="dd-lbl" text-anchor="middle">是</text><path d="M496 424H688" class="dd-wire" marker-end="url(#dd-series-a)"/><rect x="598" y="400" width="28" height="16" rx="2" class="dd-mask"/><text x="612" y="412" class="dd-lbl" text-anchor="middle">否</text><rect x="200" y="16" width="320" height="56" rx="28" class="dd-paper"/><rect x="200" y="16" width="320" height="56" rx="28" class="dd-node"/><text x="360" y="50" class="dd-name" text-anchor="middle">多個型號想放在同一張證書</text><polygon points="360,104 496,152 360,200 224,152" class="dd-paper"/><polygon points="360,104 496,152 360,200 224,152" class="dd-node"/><text x="360" y="150" class="dd-name" text-anchor="middle">電器分類相同？</text><text x="360" y="172" class="dd-sub" text-anchor="middle">I 類／II 類</text><polygon points="360,240 496,288 360,336 224,288" class="dd-paper"/><polygon points="360,240 496,288 360,336 224,288" class="dd-node"/><text x="360" y="286" class="dd-name" text-anchor="middle">額定電壓相同？</text><text x="360" y="308" class="dd-sub" text-anchor="middle">例如都是 110 V~</text><polygon points="360,376 496,424 360,472 224,424" class="dd-paper"/><polygon points="360,376 496,424 360,472 224,424" class="dd-node"/><text x="360" y="422" class="dd-name" text-anchor="middle">適用標準相同？</text><text x="360" y="444" class="dd-sub" text-anchor="middle">同一份 CNS 60335-2-xx</text><rect x="688" y="112" width="240" height="352" rx="6" class="dd-paper"/><rect x="688" y="112" width="240" height="352" rx="6" class="dd-ext"/><text x="808" y="280" class="dd-name" text-anchor="middle">需分開申請</text><text x="808" y="304" class="dd-sub" text-anchor="middle">各自一張證書</text><rect x="200" y="512" width="320" height="64" rx="28" class="dd-paper"/><rect x="200" y="512" width="320" height="64" rx="28" class="dd-focal"/><text x="360" y="540" class="dd-name" text-anchor="middle">可列為同一系列</text><text x="360" y="562" class="dd-sub" text-anchor="middle">逐項寫出差異，編入 02_02</text><line x1="24" y1="604" x2="1016" y2="604" class="dd-rule"/><text x="24" y="628" class="dd-tag" text-anchor="start">圖例</text><rect x="88" y="616" width="32" height="16" rx="4" class="dd-node"/><text x="128" y="629" class="dd-sub" text-anchor="start">判斷</text><rect x="192" y="616" width="32" height="16" rx="4" class="dd-focal"/><text x="232" y="629" class="dd-sub" text-anchor="start">可同系列</text><rect x="320" y="616" width="32" height="16" rx="4" class="dd-ext"/><text x="360" y="629" class="dd-sub" text-anchor="start">需分開申請</text></svg>
     <figcaption>主型式由實驗室依 BSMI 型式分類原則建議。</figcaption></figure>
@@ -920,12 +1078,31 @@ IEC 60127-3</td><td>VDE 40xxxxxx</td><td></td><td></td><td>主控PCB</td><td>原
 <!-- ================= 07 + 用印 ================= -->
 <section class="sec" id="d07">
   <h2 class="sec-title"><span class="code">07_xx</span>RoHS 與用印文件</h2>
-  <p class="lead">RoHS 文件申報產品內六種限用物質的含有情況；用印文件在送件前由實驗室擬好，請貴司確認後用印。</p>
+  <p class="lead">RoHS 文件申報產品內六種限用物質的含有情況。三份各自一個檔案；07_01 由貴司申報並用印。</p>
 
   <div class="grid g3">
-    <div class="card"><h4><span class="chip c-brand">07_01</span>限用物質含有情況標示聲明書</h4><p>依產品的組成單元逐一申報，需用印。</p></div>
-    <div class="card"><h4><span class="chip c-brand">07_02</span>商品標籤及商品檢驗標識</h4><p>標示 RoHS 資訊的方式與位置。</p></div>
-    <div class="card"><h4><span class="chip c-brand">07_03</span>樣張及其標示位置</h4><p>通常就是說明書中 RoHS 表的那一頁。</p></div>
+    <div class="card"><h4><span class="chip c-brand">07_01</span>限用物質含有情況標示聲明書</h4><p>依產品的組成單元逐一申報，需用印。單元至少四個，合起來要涵蓋整台產品（外殼、螺絲等零碎件也要有歸屬）。</p></div>
+    <div class="card"><h4><span class="chip c-brand">07_02</span>商品標籤及商品檢驗標識</h4><p>標示 RoHS 資訊的方式與位置。實驗室會依貴司的 02_03 標籤製作。</p></div>
+    <div class="card"><h4><span class="chip c-brand">07_03</span>樣張及其標示位置</h4><p>通常就是說明書中 RoHS 表的那一頁。實驗室會依貴司的 02_10 說明書製作。</p></div>
+  </div>
+
+  <h3>空白範本下載</h3>
+  <div class="card" id="tpl07">
+    <p style="margin-top:0">請直接在範本上填寫，三份分開成三個檔案；不要另外加文字方塊或圖片蓋在表格上。</p>
+    <ul class="dl-list" id="tpl07-list">
+      <li><span class="chip c-brand">07_01</span><span class="nm">07_01_限用物質含有情況標示聲明書_空白範本.docx</span><span class="sz">Word，23 KB</span><a class="btn" href="bsmi-guide-files/07_01_%E9%99%90%E7%94%A8%E7%89%A9%E8%B3%AA%E5%90%AB%E6%9C%89%E6%83%85%E6%B3%81%E6%A8%99%E7%A4%BA%E8%81%B2%E6%98%8E%E6%9B%B8_%E7%A9%BA%E7%99%BD%E7%AF%84%E6%9C%AC.docx" download="07_01_限用物質含有情況標示聲明書_空白範本.docx" data-tpl="07_01">下載</a></li>
+      <li><span class="chip c-brand">07_02</span><span class="nm">07_02_商品標籤及商品檢驗標識_空白範本.docx</span><span class="sz">Word，34 KB</span><a class="btn" href="bsmi-guide-files/07_02_%E5%95%86%E5%93%81%E6%A8%99%E7%B1%A4%E5%8F%8A%E5%95%86%E5%93%81%E6%AA%A2%E9%A9%97%E6%A8%99%E8%AD%98_%E7%A9%BA%E7%99%BD%E7%AF%84%E6%9C%AC.docx" download="07_02_商品標籤及商品檢驗標識_空白範本.docx" data-tpl="07_02">下載</a></li>
+      <li><span class="chip c-brand">07_03</span><span class="nm">07_03_樣張及其標示位置_空白範本.docx</span><span class="sz">Word，81 KB</span><a class="btn" href="bsmi-guide-files/07_03_%E6%A8%A3%E5%BC%B5%E5%8F%8A%E5%85%B6%E6%A8%99%E7%A4%BA%E4%BD%8D%E7%BD%AE_%E7%A9%BA%E7%99%BD%E7%AF%84%E6%9C%AC.docx" download="07_03_樣張及其標示位置_空白範本.docx" data-tpl="07_03">下載</a></li>
+    </ul>
+  </div>
+
+  <div class="callout" id="rohs-flow">
+    <b>沒有使用範本怎麼辦</b>
+    實驗室會把貴司申報的內容轉錄到範本、修正格式後回傳正確版，並列出修改之處。缺少的判定以紅字「請提供」標示，請補填；核對無誤後在正確版上用印。
+  </div>
+  <div class="callout">
+    <b>符號要用全形</b>
+    未超出用「○」、排除項目用全形「－」。半形的「-」與數字「0」看起來很像，但會被退件。
   </div>
   <div class="callout green">
     <b>核備案</b>
@@ -933,7 +1110,7 @@ IEC 60127-3</td><td>VDE 40xxxxxx</td><td></td><td></td><td>主控PCB</td><td>原
   </div>
   <div class="callout">
     <b>三處要逐字一致</b>
-    07_01 的單元名稱、說明書內的 RoHS 表、設備名稱，字數與用字完全相同。例如「印刷電路板組件」與「電路板組件」視為不同。
+    07_01 的單元名稱、說明書內的 RoHS 表、設備名稱，字數與用字完全相同。例如「印刷電路板組件」與「電路板組件」視為不同。07_01 的單元有增修時，說明書內的表要一併修改。
   </div>
 
   <h3>用印的四個步驟</h3>
@@ -993,7 +1170,7 @@ IEC 60127-3</td><td>VDE 40xxxxxx</td><td></td><td></td><td>主控PCB</td><td>原
 
 <footer>
   <div>BSMI 商品驗證登錄技術文件準備指引</div>
-  <div>版本 V1　2026-11-05</div>
+  <div>版本 V2　2026-11-11</div>
   <div>財團法人金屬工業研究發展中心　智慧暨系統研發服務處　電氣安全實驗室</div>
 </footer>
 
@@ -1221,7 +1398,7 @@ var TOUR=[
     {el:'nav.tabs',title:'章節',text:'點章節名稱直接跳到該段；捲動時，目前所在的章節會亮起。'},
     {el:'#btnTour',title:'指引導覽',text:'隨時按這裡重新開啟導覽；在哪一節按，就從那一節開始，也可以在說明卡上方切換章節。'}]},
   {title:'案件流程',sec:'flow',steps:[
-    {el:'#fig-flow',title:'九站流程',text:'三條泳道分別是貴司、實驗室與 BSMI。白框是貴司要動手的站點；滑鼠移到各站可看該站要準備什麼。'},
+    {el:'#fig-flow',title:'九站流程',text:'三條泳道分別是貴司、實驗室與 BSMI。白框是貴司要動手的站點；實驗室泳道的淡色點線框是同時進行的測試。滑鼠移到各站可看該站要準備什麼。'},
     {el:'#fig-flow g[data-tip="t-f5"]',title:'往返最多的一站',text:'依 02_07 紅字向供應商索取資料，並依審查意見修正標籤與說明書。這一站通常來回數輪，資料一次給對，輪數就少。'}]},
   {title:'文件清單',sec:'checklist',steps:[
     {el:'#ck-filter',title:'依誰準備篩選',text:'分成「貴司提供」「貴司確認／用印」「實驗室製作」三組，點選即可只看其中一組。'},
@@ -1236,7 +1413,8 @@ var TOUR=[
     {el:'#rules07',title:'回覆檔名前綴序號',demo:'type',text:'回傳的檔案以 02_07 的序號開頭，實驗室才能直接對到是哪一列。'},
     {el:'#fam07',title:'各類零件要什麼',text:'依零件種類列出要提供的文件與常見標準。溫控器等自動控制器只採認 IEC／EN 60730 體系。'}]},
   {title:'02_05 電路圖',sec:'d0205',steps:[
-    {el:'#fig-block',title:'整機方塊圖',text:'從電源插頭畫到每一個負載，保護元件與電路板都要出現。只給電路板線路圖是最常見的缺漏。'},
+    {el:'#fig-block',title:'整機方塊圖',text:'從電源進入本機的地方畫到每一個負載，保護元件與電路板都要出現。只給電路板線路圖是最常見的缺漏。'},
+    {el:'#ptype',title:'依供電型態切換',text:'電源插頭、室內配線、USB 輸入（有或沒有隨附電源供應器），要畫出的項目不同。點選貴司產品的型態，圖與要點會跟著切換。'},
     {el:'#fig-boards',title:'每塊電路板兩張圖',text:'原理圖看零件怎麼連接，銅軌圖看帶電部位之間的距離。每一塊板各一份，版次要與實物絲印相同。'}]},
   {title:'02_02 系列差異',sec:'d0202',steps:[
     {el:'#fig-series',title:'能不能同一系列',text:'電器分類、額定電壓、適用標準三項都相同，才可以放在同一張證書。'},
@@ -1246,11 +1424,13 @@ var TOUR=[
   {title:'02_10 說明書',sec:'d0210',steps:[
     {el:'#warn10',title:'兩句監護警語',text:'兩句意思不同，都要照標準原句寫入。歐規「8 歲及以上兒童」的寫法不適用。'}]},
   {title:'RoHS 與用印',sec:'d07',steps:[
+    {el:'#tpl07',title:'空白範本',text:'07_01、07_02、07_03 的空白範本可直接下載，三份分開填寫。'},
+    {el:'#rohs-flow',title:'沒有使用範本時',text:'實驗室會轉錄成正確版並列出修改之處，缺的判定以紅字「請提供」標示；請核對、補填後用印。'},
     {el:'#seal07',title:'用印四步驟',demo:'seal',text:'先核對內容再用印；每份文件分別掃描。00_08 委任書請全程彩色。'}]},
   {title:'名詞解釋',sec:'glossary',steps:[
     {el:'#glossary .g-wrap',title:'名詞解釋',demo:'term',text:'內文虛線底線的詞，滑鼠移上去可看一句話說明，點一下跳到這裡看完整解釋。導覽到此結束。'}]}
 ];
-var T={on:false,ch:0,i:0,timers:[],token:0,back:null};
+var T={on:false,ch:0,i:0,timers:[],token:0,back:null,list:TOUR};
 var NARROW=matchMedia('(max-width: 760px)');
 function $t(sel){return document.querySelector(sel);}
 function tourTarget(s){if(!s.el) return null; var e=document.querySelector(s.el); if(!e) return null; var r=e.getBoundingClientRect(); return (r.width>0&&r.height>0)?e:null;}
@@ -1270,7 +1450,7 @@ function tourBuild(){
   var w=document.createElement('div'); w.className='tour'; w.id='tour';
   w.innerHTML='<div class="tour-block"></div><div class="tour-ring none"></div>'+
     '<section class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourTitle">'+
-    '<div class="tour-head"><select class="tour-ch" aria-label="章節">'+TOUR.map(function(c,k){return '<option value="'+k+'">'+c.title+'</option>';}).join('')+'</select>'+
+    '<div class="tour-head"><select class="tour-ch" name="tour-ch" aria-label="章節">'+T.list.map(function(c,k){return '<option value="'+k+'">'+c.title+'</option>';}).join('')+'</select>'+
     '<button class="tour-x" type="button" aria-label="結束導覽" title="結束導覽（Esc）">'+X_ICON+'</button></div>'+
     '<h2 id="tourTitle"></h2><div class="tour-demo" hidden></div><p class="tour-text"></p>'+
     '<div class="tour-foot"><span class="tour-n"></span><button class="btn" type="button" data-t="prev">上一步</button><button class="btn primary" type="button" data-t="next">下一步</button></div></section>';
@@ -1282,10 +1462,14 @@ function tourBuild(){
 }
 function currentChapter(){
   var line=px('--hdr')+px('--sh')+40, pick=0;
-  TOUR.forEach(function(c,k){var el=document.getElementById(c.sec); if(el&&el.getBoundingClientRect().top<=line) pick=k;});
+  T.list.forEach(function(c,k){var el=document.getElementById(c.sec); if(el&&el.getBoundingClientRect().top<=line) pick=k;});
   return pick;
 }
-function tourOpen(ch){
+function tourOpen(ch,list){
+  var want=list||TOUR;
+  remindClose();
+  if(T.on&&T.list!==want) tourClose();
+  T.list=want;
   if(ch==null) ch=currentChapter();
   hide();
   if(!T.on){T.back=document.activeElement; tourBuild(); T.on=true;}
@@ -1300,19 +1484,19 @@ function tourScrollTo(y){
 }
 function tourGo(ch,i){
   tourStopDemo();
-  var steps=TOUR[ch].steps; if(i<0) i=steps.length-1;
+  var steps=T.list[ch].steps; if(i<0) i=steps.length-1;
   T.ch=ch; T.i=i;
   var s=steps[i], t=tourTarget(s);
   $t('.tour-ch').value=ch;
   $t('#tourTitle').textContent=s.title;
   $t('.tour-text').textContent=s.text;
   $t('.tour-n').textContent=(i+1)+'／'+steps.length;
-  var last=i===steps.length-1, next=TOUR[ch+1];
+  var last=i===steps.length-1, next=T.list[ch+1];
   $t('[data-t="next"]').textContent=!last?'下一步':next?'下一章：'+next.title:'完成';
   $t('[data-t="prev"]').disabled=ch===0&&i===0;
   var box=$t('.tour-demo'); box.hidden=!s.demo; if(s.demo) tourDemo(box,DEMO[s.demo]);
   if(t&&!t.closest('header.top')){
-    var r=t.getBoundingClientRect(), hh=px('--hdr')+12;
+    var r=t.getBoundingClientRect(), hh=px('--hdr')+px('--sh')+12;
     var room=NARROW.matches?innerHeight*0.4:innerHeight-24;
     if(r.top<hh||r.bottom>room){
       var want=NARROW.matches?hh:Math.max(hh,(innerHeight-r.height)/2);
@@ -1326,7 +1510,7 @@ function tourGo(ch,i){
 }
 function tourPlace(){
   if(!T.on) return;
-  var s=TOUR[T.ch].steps[T.i], t=s&&tourTarget(s);
+  var s=T.list[T.ch].steps[T.i], t=s&&tourTarget(s);
   var ring=$t('.tour-ring'), card=$t('.tour-card'), vw=innerWidth, vh=innerHeight, P=6, G=14, M=16, r=null;
   if(t){var b=t.getBoundingClientRect(); r={top:b.top-P,left:b.left-P,width:b.width+2*P,height:b.height+2*P};}
   ring.classList.toggle('none',!r); $t('.tour-block').classList.toggle('full',!r);
@@ -1344,13 +1528,15 @@ function tourPlace(){
   else {x=vw-cw-M; y=vh-chh-M;}
   card.style.transform='translate('+Math.round(x)+'px,'+Math.round(y)+'px)';
 }
-function tourNext(){var n=TOUR[T.ch].steps.length; if(T.i+1<n) tourGo(T.ch,T.i+1); else if(T.ch+1<TOUR.length) tourGo(T.ch+1,0); else tourClose();}
+function tourNext(){var n=T.list[T.ch].steps.length; if(T.i+1<n) tourGo(T.ch,T.i+1); else if(T.ch+1<T.list.length) tourGo(T.ch+1,0); else tourClose();}
 function tourPrev(){if(T.i>0) tourGo(T.ch,T.i-1); else if(T.ch>0) tourGo(T.ch-1,-1);}
 function tourClose(){
   tourStopDemo(); if(tourScrollRaf) cancelAnimationFrame(tourScrollRaf); T.on=false;
   var w=document.getElementById('tour'); if(w) w.remove();
   try{localStorage.setItem('vg-tour-seen','1')}catch(e){}
+  T.list=TOUR;
   if(T.back&&T.back.focus) T.back.focus();
+  onTourEnd();
 }
 document.addEventListener('keydown',function(e){
   if(!T.on) return;
@@ -1368,7 +1554,85 @@ function tourFollow(){if(T.on&&!tourRaf) tourRaf=requestAnimationFrame(function(
 addEventListener('scroll',tourFollow,{passive:true});
 addEventListener('resize',tourFollow);
 document.getElementById('btnTour').addEventListener('click',function(){tourOpen();});
-try{ if(!localStorage.getItem('vg-tour-seen')) setTimeout(function(){tourOpen(0);},700); }catch(e){}
+
+/* ---------- V2：提醒視窗（每次載入都出現；與改版提示合為同一個視窗） ----------
+   一般載入：畫面正中出現，5 秒後淡出（滑鼠停在上面或焦點在裡面時暫停計時），可按關閉或 Esc。
+   有新版：同一個視窗多一段「本頁已更新」與重點，不自動淡出（避免訪客還沒看到就消失），關閉後記下本版。
+   第一次來：先跑完整導覽，導覽結束（走完或中途關閉）才出現；之後任何導覽結束也會出現。
+   版本記號：localStorage 的 vg-seen-version；V1 沒有記號，以 V1 留下的 vg-tour-seen／vg-checklist-v1／vg-theme 判定舊訪客。
+   讀不到 localStorage：照常出現提醒（不判定新版、不自動導覽）。淡出動畫不跟隨「減少動態效果」（全域規則）。 */
+var VER='V2', CHANGES=[{"version": "V2", "date": "2026-11-11", "items": ["每次開啟本頁，畫面中央會提醒：查詢規則、做法時請回到本頁確認最新資訊；本頁有更新時也在這裡顯示重點", "標題顯示版本號", "案件流程圖加上實驗室同時進行的測試：收到樣品後開始，與文件往來並行", "文件清單：委託單移到「貴司確認／用印」一組，說明改為貴司要做的事", "02_05 電路方塊圖可依供電型態切換：電源插頭、室內配線、USB 輸入（有／無隨附電源供應器）", "07_xx 新增 07_01／07_02／07_03 空白範本下載", "07_xx 說明更新：非範本格式的聲明書由實驗室轉錄成正確版，貴司核對後用印"], "steps": [{"el": ".brand", "title": "標題顯示版本", "text": "頁面標題旁標示目前版本。與實驗室聯絡時，可告知您看的是哪一版。"}, {"el": "#fig-flow g[data-tip=\"t-ftest\"]", "title": "同時進行的測試", "text": "實驗室收到樣品後就開始測試，與貴司補件、修正文件同時進行。淡色點線框是測試，主線仍是文件往來。"}, {"el": "#ck-sign-order", "title": "委託單的位置", "text": "委託單由實驗室提供，請核對內容後簽名或用印回傳，所以放在「貴司確認／用印」這一組。"}, {"el": "#ptype", "title": "依供電型態看方塊圖", "text": "點選貴司產品的供電方式：電源插頭、室內配線、USB 輸入（有或沒有隨附電源供應器），方塊圖與要畫出的項目會跟著切換。"}, {"el": "#tpl07", "title": "RoHS 空白範本下載", "text": "07_01、07_02、07_03 的空白範本可直接下載填寫，三份請分開成三個檔案。"}, {"el": "#rohs-flow", "title": "非範本格式怎麼處理", "text": "若貴司使用其他格式，實驗室會把貴司申報的內容轉錄到範本並修正格式，回傳正確版與修改之處，請核對後用印。"}]}], SEEN_KEY='vg-seen-version';
+var REMIND_MAIN='不論何時遇到需要查詢規則、做法，都請回來查詢檢查，以確認最新資訊。';
+var REMIND_MS=5000;
+function lsGet(k){try{return localStorage.getItem(k);}catch(e){return undefined;}}
+function lsSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+function verNum(v){var m=/^V(\d+)$/.exec(v||''); return m?+m[1]:0;}
+function escHtml(t){return String(t).replace(/[&<>]/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[ch];});}
+function updateTour(c){return [{title:c.version+' 改版重點',sec:'start',steps:c.steps}];}
+var R={el:null,timer:null,left:REMIND_MS,t0:0,news:null};
+function remindClose(){
+  if(!R.el) return;
+  clearTimeout(R.timer); R.timer=null;
+  if(R.news) lsSet(SEEN_KEY,VER);
+  R.el.remove(); R.el=null; R.news=null;
+  document.removeEventListener('keydown',remindKey,true);
+}
+function remindKey(e){if(e.key==='Escape'&&R.el&&!T.on){e.preventDefault(); remindClose();}}
+function remindStart(){ if(!R.el||R.news) return; R.t0=Date.now(); R.timer=setTimeout(remindFade,R.left); }
+function remindPause(){ if(!R.timer) return; clearTimeout(R.timer); R.timer=null; R.left=Math.max(800,R.left-(Date.now()-R.t0)); }
+function remindFade(){ R.timer=null; if(!R.el) return; var el=R.el; el.classList.add('out'); el.addEventListener('transitionend',function(){ if(R.el===el) remindClose(); },{once:true}); setTimeout(function(){ if(R.el===el) remindClose(); },1200); }
+function remindShow(news){
+  if(T.on) return;
+  remindClose();
+  R.news=(news&&news.length)?news:null; R.left=REMIND_MS;
+  var latest=CHANGES[0];
+  var el=document.createElement('section'); el.className='remind'+(R.news?' has-news':''); el.id='remind';
+  el.setAttribute('role',R.news?'dialog':'status'); el.setAttribute('aria-labelledby','remindTitle');
+  var html='<button class="tour-x remind-x" type="button" aria-label="關閉" title="關閉（Esc）">'+X_ICON+'</button>'+
+    '<h2 id="remindTitle">'+escHtml(REMIND_MAIN)+'</h2>';
+  if(R.news){
+    html+='<div class="remind-news"><b>本頁已更新為 '+escHtml(VER)+'（'+escHtml(R.news[0].date)+'）</b><ul>'+
+      R.news.map(function(c){return c.items.map(function(t){return '<li>'+escHtml(t)+'</li>';}).join('');}).join('')+'</ul></div>';
+  }
+  html+='<div class="remind-sub"><p>本頁內容有更新時，下次開啟會在這裡顯示更新重點。</p>'+
+    '<button class="btn primary" type="button" data-r="tour">看 '+escHtml(latest.version)+' 改版導覽</button></div>';
+  if(!R.news) html+='<div class="remind-bar" aria-hidden="true"><i></i></div>';
+  el.innerHTML=html;
+  document.body.appendChild(el); R.el=el;
+  el.querySelector('.remind-x').onclick=remindClose;
+  el.querySelector('[data-r="tour"]').onclick=function(){ var n=latest; remindClose(); lsSet(SEEN_KEY,VER); tourOpen(0,updateTour(n)); };
+  el.addEventListener('mouseenter',remindPause); el.addEventListener('mouseleave',remindStart);
+  el.addEventListener('focusin',remindPause); el.addEventListener('focusout',function(e){ if(!el.contains(e.relatedTarget)) remindStart(); });
+  document.addEventListener('keydown',remindKey,true);
+  if(R.news) el.querySelector('[data-r="tour"]').focus({preventScroll:true});
+  remindStart();
+}
+/* 任何導覽結束後出現（第一次來的完整導覽、自己按「指引導覽」、改版導覽皆同）。 */
+function onTourEnd(){ setTimeout(function(){ if(!T.on) remindShow(null); },0); }
+(function(){
+  var seen=lsGet(SEEN_KEY);
+  if(seen===undefined){ setTimeout(function(){remindShow(null);},500); return; }   // 讀不到 localStorage：照常提醒
+  var v1=lsGet('vg-tour-seen')||lsGet('vg-checklist-v1')||lsGet('vg-theme');
+  if(!seen&&!v1){ lsSet(SEEN_KEY,VER); setTimeout(function(){tourOpen(0);},700); return; }  // 第一次來：先導覽，結束後提醒
+  var since=seen||'V1';
+  var news=CHANGES.filter(function(c){return verNum(c.version)>verNum(since);});
+  setTimeout(function(){remindShow(news);},500);
+})();
+
+/* ---------- V2：供電型態切換 ---------- */
+(function(){
+  var tabs=[].slice.call(document.querySelectorAll('#ptype [role="tab"]'));
+  function pick(b,focus){
+    tabs.forEach(function(t){var on=t===b; t.setAttribute('aria-selected',on?'true':'false'); t.tabIndex=on?0:-1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden=!on;});
+    if(focus) b.focus();
+  }
+  tabs.forEach(function(b,k){
+    b.addEventListener('click',function(){pick(b);});
+    b.addEventListener('keydown',function(e){var d=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0; if(!d||T.on) return;
+      e.preventDefault(); pick(tabs[(k+d+tabs.length)%tabs.length],true);});
+  });
+})();
 })();
 </script>
 </body>
